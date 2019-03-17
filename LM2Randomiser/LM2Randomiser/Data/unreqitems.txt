@@ -1,0 +1,61 @@
+Egg of Creation,Egg
+Map,Map1
+Map,Map2
+Map,Map3
+Map,Map4
+Map,Map5
+Map,Map6
+Map,Map7
+Map,Map8
+Map,Map9
+Map,Map10
+Map,Map11
+Map,Map12
+Map,Map13
+Map,Map14
+Map,Map15
+Map,Map16
+Crystal Skull,Crystal S2
+Crystal Skull,Crystal S3
+Crystal Skull,Crystal S4
+Crystal Skull,Crystal S5
+Crystal Skull,Crystal S6
+Crystal Skull,Crystal S7
+Crystal Skull,Crystal S8
+Crystal Skull,Crystal S9
+Crystal Skull,Crystal S10
+Crystal Skull,Crystal S11
+Crystal Skull,Crystal S12
+Ring,Ring
+Vajra,Vajra
+Scriptures,Scriptures
+Spaulder,Spaulder
+Nemean Fur,Fur
+Gauntlet,Gauntlet
+Bracelet,Bracelet
+Book of the Dead,Book
+Shell Horn,Shell Horn
+Totem Pole,T Pole
+Bronze Mirror,B Mirror
+Crucifix,Crucifix
+Perfume,Perfume
+Codices,Pandora Box
+Mobile Super x3+,MSX
+Xelputter,Xelputter
+Yagoo Map Reader,G Map
+Yagoo Map Street,G Street
+TextTrax,TextTrax
+Ruins Encylopedia,R Book
+Guild,Guild
+Alert,Alarm
+Race Scanner,Race Reader
+Death Village,Death Village
+Rose and Camelia,R and C
+Space Capstar II,Capstar II
+Lonely House Moving,L House Moving
+Mekuri Master,Mekuri Master
+Bounce Shot,Bounce Shot
+Miracle Witch,Miracle Witch
+Future Development Company,Future DC
+La-Mulana,La-Mulana
+La-Mulana 2,La-Mulana 2
