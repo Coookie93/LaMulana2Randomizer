@@ -5,6 +5,7 @@
       "Xelpud's Item: True",
       "Map from Nebur: True",
       "Alsedana Item #1: IsDead(Vritra)",
+      "Funeral Item: True",
       "Nebur's Shop #1: True",
       "Nebur's Shop #2: True",
       "Nebur's Shop #3: True",
@@ -317,6 +318,7 @@
       "Hiro Roderick Shop #1: True",
       "Hiro Roderick Shop #2: True",
       "Hiro Roderick Shop #3: True",
+      "Mulbruk Item: True",
       "Ratatoskr #2: True",
       "Svipdagr: OrbCount(2)",
       "Jormangund: Has(Dinosaur Figure) and Has(Pochette Key) and OrbCount(5) and AnkhCount(????) and (Has(Whip2) or Has(Axe) or Has(Katana) or CanUse(Flare))"
