@@ -11,6 +11,7 @@ namespace LM2Randomiser
     {
         readonly string[] bossNames = {"Fafnir", "Surtr", "Vritra", "Kujata", "Aten-Ra", "Jormangund", "Anu", "Echidna", "Hel"};
 
+        //TODO?? change all these keys to ids will have to rewrite the rules where the value contains spaces
         Dictionary<string, bool> areaChecks;
         Dictionary<string, bool> entraceChecks;
         Dictionary<string, bool> collectedLocations;
