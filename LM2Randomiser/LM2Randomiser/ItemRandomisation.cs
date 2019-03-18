@@ -33,7 +33,7 @@ namespace LM2Randomiser
 
                 if(locationToPlaceAt != null)
                 {
-                    world.PlaceItem(locationToPlaceAt.name, new Item(item[0], item[1], true));
+                    world.PlaceItem(locationToPlaceAt.name, new Item(item[0], Int32.Parse(item[1]), true));
                     locations.Remove(locationToPlaceAt);
                    //Logger.GetLogger.Log("Placed Item {0} at location {1}", item[0], locationToPlaceAt.name);
                 }
@@ -69,7 +69,7 @@ namespace LM2Randomiser
 
                 if (locationToPlaceAt != null)
                 {
-                    world.PlaceItem(locationToPlaceAt.name, new Item(item[0], item[1], true));
+                    world.PlaceItem(locationToPlaceAt.name, new Item(item[0], Int32.Parse(item[1]), true));
                     locations.Remove(locationToPlaceAt);
                     //Logger.GetLogger.Log("Placed Item {0} at location {1}", item[0], locationToPlaceAt.name);
                 }
@@ -93,7 +93,7 @@ namespace LM2Randomiser
                 Location location = locations[index];
                 locations.Remove(location);
                 
-                world.PlaceItem(location.name, new Item(item[0], item[1], true));
+                world.PlaceItem(location.name, new Item(item[0], Int32.Parse(item[1]), true));
                 //Logger.GetLogger.Log("Placed Item {0} at location {1}", item[0], location.name);
 
                 index--;

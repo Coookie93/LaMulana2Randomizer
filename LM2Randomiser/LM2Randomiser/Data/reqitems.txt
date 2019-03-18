@@ -1,78 +1,78 @@
-Hand Scanner,H Scanner
-Djed Pillar,Djed Pillar
-Mjolnir,Mjolnir
-Beherit,Beherit
-Ancient Battery,Battery
-Lamp of Time,Lamp
-Pochette Key,P Key
-Pyramid Crystal,Crystal P
-Crystal Skull,Crystal S1
-Vessel,Vessel
-Pepper,Pepper
-Giants Flute,G Pipe
-Cog of Antiquity,Gear
-Mulana Talisman,M Talisman
-Chain Whip,Whip2
-Flail Whip,Whip3
-Knife,Knife
-Katana,Katana
-Axe,Axe
-Rapier,Rapier
-Shuriken,Shuriken
-Rolling Shuriken,R-Shuriken
-Earth Spear,E-Spear
-Flare,Flare Gun
-Bomb,Bomb
-Chakram,Chakram
-Caltrops,Caltrops
-Pistol,Pistol
-Buckler,Shield
-Silver Shield,Shield2
-Angel Shield,Shield3
-Sacred Orb,Sacred Orb0
-Sacred Orb,Sacred Orb1
-Sacred Orb,Sacred Orb2
-Sacred Orb,Sacred Orb3
-Sacred Orb,Sacred Orb4
-Sacred Orb,Sacred Orb5
-Sacred Orb,Sacred Orb6
-Sacred Orb,Sacred Orb7
-Sacred Orb,Sacred Orb8
-Sacred Orb,Sacred Orb9
-Ankh Jewel,Ankh Jewel1
-Ankh Jewel,Ankh Jewel2
-Ankh Jewel,Ankh Jewel3
-Ankh Jewel,Ankh Jewel4
-Ankh Jewel,Ankh Jewel5
-Ankh Jewel,Ankh Jewel6
-Ankh Jewel,Ankh Jewel7
-Ankh Jewel,Ankh Jewel8
-Ankh Jewel,Ankh Jewel9
-Gloves,Glove
-Grapple Claw,G Claw
-Snow Shoes,Snow Shoes
-Flame Torc,F Torque
-Gale Fibula,G Band
-Feather,Feather
-Ice Cloak,Ice Cape
-Scalesphere,Scalesphere
-Power Band,Power Band
-Anchor,Anchor
-Holy Grail,Holy Grail
-Fairy Pass,F Pass
-Freyas Pendant,F Pendant
-Maats Feather,M Feather
-Dinosaur Figure,D Figure
-Freys Ship,F Ship
-Ganesha Talisman,Gold Bangle
-Harp,Harp
-Destiny Tablet,Destiny Tablet
-Light Scythe,L Scythe
-Secret Treasure of Life,Secret Treasure
-Origin Sigil,Origin Sigil
-Birth Sigil,Birth Sigil
-Life Sigil,Life Sigil
-Death Sigil,Death Sigil
-Enga Musica,Enga Musica
-Snapshot,Snapshots
-Claydoll Suit,Claydoll
+Hand Scanner,0
+Djed Pillar,1
+Mjolnir,2
+Beherit,3
+Ancient Battery,4
+Lamp of Time,5
+Pochette Key,6
+Pyramid Crystal,7
+Crystal Skull,142
+Vessel,9
+Pepper,10
+Giants Flute,12
+Cog of Antiquity,13
+Mulana Talisman,14
+Holy Grail,17
+Fairy Pass,18
+Gloves,19
+Dinosaur Figure,20
+Gale Fibula,21
+Flame Torc,22
+Power Band,24
+Ice Cloak,27
+Anchor,30
+Freyas Pendant,31
+Grapple Claw,33
+Scalesphere,35
+Ganesha Talisman,37
+Maats Feather,38
+Feather,41
+Freys Ship,43
+Snow Shoes,45
+Harp,46
+Light Scythe,48
+Destiny Tablet,49
+Secret Treasure of Life,50
+Origin Sigil,51
+Birth Sigil,52
+Life Sigil,53
+Death Sigil,54
+Claydoll Suit,55
+Chain Whip,61
+Flail Whip,62
+Knife,63
+Katana,64
+Axe,65
+Rapier,66
+Shuriken,67
+Rolling Shuriken,68
+Earth Spear,69
+Flare,70
+Bomb,71
+Chakram,72
+Caltrops,73
+Pistol,74
+Buckler,75
+Silver Shield,76
+Angel Shield,77
+Enga Musica,87
+Snapshot,90
+Sacred Orb,103
+Sacred Orb,104
+Sacred Orb,105
+Sacred Orb,106
+Sacred Orb,107
+Sacred Orb,108
+Sacred Orb,109
+Sacred Orb,110
+Sacred Orb,111
+Sacred Orb,112
+Ankh Jewel,133
+Ankh Jewel,134
+Ankh Jewel,135
+Ankh Jewel,136
+Ankh Jewel,137
+Ankh Jewel,138
+Ankh Jewel,139
+Ankh Jewel,140
+Ankh Jewel,141

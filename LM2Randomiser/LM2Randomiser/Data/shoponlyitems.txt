@@ -1,33 +1,33 @@
-Weights,Weight
-Weights,Weight
-Weights,Weight
-Weights,Weight
-Weights,Weight
-Weights,Weight
-Weights,Weight
-Weights,Weight
-Weights,Weight
-Weights,Weight
-Weights,Weight
-Weights,Weight
-Weights,Weight
-Weights,Weight
-Weights,Weight
-Weights,Weight
-Shuriken Ammo,Shuriken-b
-Shuriken Ammo,Shuriken-b
-Shuriken Ammo,Shuriken-b
-Shuriken Ammo,Shuriken-b
-Rolling Shuriken Ammo,R-Shuriken-b
-Earth Spear Ammo,E-Spear-b
-Earth Spear Ammo,E-Spear-b
-Flare Ammo,Flare Gun-b
-Flare Ammo,Flare Gun-b
-Bomb Ammo,Bomb-b
-Bomb Ammo,Bomb-b
-Chakram Ammo,Chakram-b
-Caltrops Ammo,Caltrops-b
-Caltrops Ammo,Caltrops-b
-Caltrops Ammo,Caltrops-b
-Pistol Ammo,Pistol-B
-Pistol Ammo,Pistol-B
+Weights,154
+Weights,154
+Weights,154
+Weights,154
+Weights,154
+Weights,154
+Weights,154
+Weights,154
+Weights,154
+Weights,154
+Weights,154
+Weights,154
+Weights,154
+Weights,154
+Weights,154
+Weights,154
+Shuriken Ammo,155
+Shuriken Ammo,155
+Shuriken Ammo,155
+Shuriken Ammo,155
+Rolling Shuriken Ammo,156
+Earth Spear Ammo,157
+Earth Spear Ammo,157
+Flare Ammo,158
+Flare Ammo,158
+Bomb Ammo,159
+Bomb Ammo,159
+Chakram Ammo,160
+Caltrops Ammo,161
+Caltrops Ammo,161
+Caltrops Ammo,161
+Pistol Ammo,162
+Pistol Ammo,162

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
 using LM2Randomiser.Logging;
 using LM2Randomiser;
 
@@ -76,6 +78,51 @@ namespace LM2Randomiser.Utils
                 {
                     Logger.GetLogger.Log("Error: {1}", ex.Message);
                     return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public static bool WriteSeedFile(Randomiser randomiser)
+        {
+            string currentDir = Directory.GetCurrentDirectory();
+            List<Location> placedLocations = randomiser.GetPlacedLocations();
+
+            List<string[]> locationNames;
+            if (GetData(Path.Combine(currentDir, "Data\\locations.txt"), 1, out locationNames))
+            {
+                Dictionary<string, int> itemLocation = new Dictionary<string, int>();
+
+                foreach (var name in locationNames)
+                {
+                    foreach (var location in placedLocations)
+                    {
+                        if (name[0].Equals(location.name))
+                        {
+                            itemLocation.Add(location.name, location.item.id);
+                        }
+                    }
+                }
+                
+                FileStream fs = new FileStream(Path.Combine(currentDir, "Seed\\seed.lm2"), FileMode.Create);
+                BinaryFormatter formatter = new BinaryFormatter();
+                try
+                {
+                    formatter.Serialize(fs, itemLocation);
+                }
+                catch (Exception ex)
+                {
+                    Logger.GetLogger.Log("Error: {1}", ex.Message);
+                    return false;
+                }
+                finally
+                {
+                    fs.Close();
                 }
             }
             else

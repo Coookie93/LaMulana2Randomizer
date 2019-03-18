@@ -12,7 +12,8 @@ namespace LM2Randomiser
 {
     public class Randomiser
     {
-        public PlayerState state;
+        PlayerState state;
+        Settings settings;
 
         Dictionary<string, Area> areas;
         Dictionary<string, Location> locations;
@@ -20,8 +21,9 @@ namespace LM2Randomiser
         Random random;
         int seed;
 
-        public Randomiser()
+        public Randomiser(Settings settings)
         {
+            this.settings = settings;
             areas = new Dictionary<string, Area>();
             locations = new Dictionary<string, Location>();
             seed = DateTime.Now.GetHashCode();
@@ -159,7 +161,7 @@ namespace LM2Randomiser
             if(FileUtils.GetData(Path.Combine(currentDir, "Data\\murals.txt"), 2, out data)) {
                 foreach(var info in data)
                 {
-                    PlaceItem(info[0], new Item(info[1], "", true));
+                    PlaceItem(info[0], new Item(info[1], -1, true));
                 }
             }
             else
@@ -172,7 +174,7 @@ namespace LM2Randomiser
             {
                 foreach (var info in data)
                 {
-                    PlaceItem(info[0], new Item(info[1], "", true));
+                    PlaceItem(info[0], new Item(info[1], -1, true));
                 }
             }
             else
@@ -185,7 +187,7 @@ namespace LM2Randomiser
             {
                 foreach (var info in data)
                 {
-                    PlaceItem(info[0], new Item(info[0], "", true));
+                    PlaceItem(info[0], new Item(info[0], -1, true));
                 }
             }
             else
@@ -194,7 +196,7 @@ namespace LM2Randomiser
             }
 
             //Place Item to Check if the game has been beaten
-            PlaceItem("9th Child",new Item("Winner", "", true));
+            PlaceItem("9th Child",new Item("Winner", -1, true));
 
             return true;
         }
@@ -203,6 +205,8 @@ namespace LM2Randomiser
         {
             string currentDir = Directory.GetCurrentDirectory();
 
+            //Note: Changed this to to create the items from the data here rather than later
+            
             //get shop only items
             List<string[]> shopItems;
             if (FileUtils.GetData(Path.Combine(currentDir, "Data\\shoponlyitems.txt"), 2, out shopItems))
@@ -239,9 +243,22 @@ namespace LM2Randomiser
                 return false;
             }
             
+            //NOTE: when more options get add move these to a seperate method or something
+            if(!settings.randomiseGrail)
+            {
+                PlaceItem("Holy Grail Chest", new Item("Holy Grail", 17, true));
+                RemoveItemFromList("Holy Grail", requiredItems);
+            }
+
+            if (!settings.randomiseScanner)
+            {
+                PlaceItem("Sidro's Shop #1", new Item("Hand Scanner", 0, true));
+                RemoveItemFromList("Hand Scanner", requiredItems);
+            }
+
             //Places weights at a starting shop since they are needed for alot of early items
             //this means that player will not have to rely on drops or weights from pots
-            PlaceItem("Sidro's Shop #1", new Item("Weights", "Weight", true));
+            PlaceItem("Sidro's Shop #2", new Item("Weights", 154, true));
 
             //ammo can't be placed here since there is an second item that takes this slot after 
             //the first is purchased 
@@ -363,6 +380,19 @@ namespace LM2Randomiser
             }
 
             return placedLocations;
+        }
+
+        private void RemoveItemFromList(string name, List<string[]> list)
+        {
+            string[] itemToRemove = null;
+            foreach(var item in list)
+            {
+                if(item[0].Equals(name))
+                {
+                    itemToRemove = item;
+                }
+            }
+            list.Remove(itemToRemove);
         }
 
         private class AreaRuleInfo

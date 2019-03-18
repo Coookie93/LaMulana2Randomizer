@@ -39,7 +39,7 @@ namespace LM2Randomiser
         private void GenerateButton_Click(object sender, EventArgs e)
         {
             bool canBeatGame = false;
-            Randomiser randomiser = new Randomiser();
+            Randomiser randomiser = new Randomiser(settings);
 
             OutputText.AppendText("Starting seed generation.");
             OutputText.AppendText(Environment.NewLine);
@@ -89,6 +89,13 @@ namespace LM2Randomiser
                 OutputText.AppendText("Failed to write spoiler log.");
                 OutputText.AppendText(Environment.NewLine);
             }
+
+            if (!FileUtils.WriteSeedFile(randomiser))
+            {
+                OutputText.AppendText("Failed to write seed.");
+                OutputText.AppendText(Environment.NewLine);
+            }
+
 
             Logger.GetLogger.Log("Succesfully generated seed {0}", randomiser.Seed);
             OutputText.AppendText("Succesfully generated seed: " + randomiser.Seed);
