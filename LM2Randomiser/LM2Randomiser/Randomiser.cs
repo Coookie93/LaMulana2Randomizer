@@ -154,14 +154,14 @@ namespace LM2Randomiser
         //places mostly fake items that the player won't collect but are used by the access rules
         public bool PlaceNonRandomItems()
         {
-            string currentDir = Directory.GetCurrentDirectory();
+            //TODO: probably turn these into a method
 
             //Place Mantras, only exists since mantras currently cant be randomised
             List<string[]> data;
-            if(FileUtils.GetData(Path.Combine(currentDir, "Data\\murals.txt"), 2, out data)) {
+            if(FileUtils.GetData("Data\\murals.txt", 2, out data)) {
                 foreach(var info in data)
                 {
-                    PlaceItem(info[0], new Item(info[1], -1, true));
+                    PlaceItem(info[0], new Item(info[1], ItemID.Default));
                 }
             }
             else
@@ -170,11 +170,11 @@ namespace LM2Randomiser
             }
 
             //Place items to allow for checking of puzzle completion, fairies, dissonance
-            if (FileUtils.GetData(Path.Combine(currentDir, "Data\\nonrandom.txt"), 2, out data))
+            if (FileUtils.GetData("Data\\nonrandom.txt", 2, out data))
             {
                 foreach (var info in data)
                 {
-                    PlaceItem(info[0], new Item(info[1], -1, true));
+                    PlaceItem(info[0], new Item(info[1], ItemID.Default));
                 }
             }
             else
@@ -183,11 +183,11 @@ namespace LM2Randomiser
             }
 
             //Place enemy items allow for checks to see if certain Boss/miniboss is dead
-            if (FileUtils.GetData(Path.Combine(currentDir, "Data\\enemies.txt"), 1, out data))
+            if (FileUtils.GetData("Data\\enemies.txt", 1, out data))
             {
                 foreach (var info in data)
                 {
-                    PlaceItem(info[0], new Item(info[0], -1, true));
+                    PlaceItem(info[0], new Item(info[0], ItemID.Default));
                 }
             }
             else
@@ -196,7 +196,7 @@ namespace LM2Randomiser
             }
 
             //Place Item to Check if the game has been beaten
-            PlaceItem("9th Child",new Item("Winner", -1, true));
+            PlaceItem("9th Child",new Item("Winner", ItemID.Default));
 
             return true;
         }
@@ -206,59 +206,47 @@ namespace LM2Randomiser
             string currentDir = Directory.GetCurrentDirectory();
 
             //Note: Changed this to to create the items from the data here rather than later
-            
+
             //get shop only items
-            List<string[]> shopItems;
-            if (FileUtils.GetData(Path.Combine(currentDir, "Data\\shoponlyitems.txt"), 2, out shopItems))
+            List<Item> shopItems;
+            if(!ItemPool.CreatePool("Data\\shoponlyitems.txt", out shopItems))
             {
-                shopItems = Shuffle.FisherYates(shopItems, this);
-            }
-            else
-            {
-                //early out if item data can't be read properly
                 return false;
             }
-
+            
             //get required items
-            List<string[]> requiredItems;
-            if (FileUtils.GetData(Path.Combine(currentDir, "Data\\reqitems.txt"), 2, out requiredItems))
+            List<Item> requiredItems;
+            if (!ItemPool.CreatePool("Data\\reqitems.txt", out requiredItems))
             {
-                requiredItems = Shuffle.FisherYates(requiredItems, this);
-            }
-            else
-            {
-                //early out if item data can't be read properly
                 return false;
             }
 
             //get unrequired items
-            List<string[]> unrequiredItems;
-            if (FileUtils.GetData(Path.Combine(currentDir, "Data\\unreqitems.txt"), 2, out unrequiredItems))
+            List<Item> unrequiredItems;
+            if (!ItemPool.CreatePool("Data\\unreqitems.txt", out unrequiredItems))
             {
-                unrequiredItems = Shuffle.FisherYates(unrequiredItems, this);
-            }
-            else
-            {
-                //early out if item data can't be read properly
                 return false;
             }
             
             //NOTE: when more options get add move these to a seperate method or something
             if(!settings.randomiseGrail)
             {
-                PlaceItem("Holy Grail Chest", new Item("Holy Grail", 17, true));
-                RemoveItemFromList("Holy Grail", requiredItems);
+                PlaceItem("Holy Grail Chest", ItemPool.GetAndRemove(ItemID.HolyGrail, requiredItems));
             }
 
             if (!settings.randomiseScanner)
             {
-                PlaceItem("Sidro's Shop #1", new Item("Hand Scanner", 0, true));
-                RemoveItemFromList("Hand Scanner", requiredItems);
+                PlaceItem("Sidro's Shop #1", ItemPool.GetAndRemove(ItemID.HandScanner, requiredItems));
             }
+
+            //Shuffle all the item pools once
+            shopItems = Shuffle.FisherYates(shopItems, this);
+            requiredItems = Shuffle.FisherYates(requiredItems, this);
+            unrequiredItems = Shuffle.FisherYates(unrequiredItems, this);
 
             //Places weights at a starting shop since they are needed for alot of early items
             //this means that player will not have to rely on drops or weights from pots
-            PlaceItem("Sidro's Shop #2", new Item("Weights", 154, true));
+            PlaceItem("Sidro's Shop #2", new Item("Weights", ItemID.Weights));
 
             //ammo can't be placed here since there is an second item that takes this slot after 
             //the first is purchased 

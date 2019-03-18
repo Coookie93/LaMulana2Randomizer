@@ -14,10 +14,12 @@ namespace LM2Randomiser.Utils
     {
         public static bool GetData(string filePath, int columns, out List<string[]> data)
         {
+            string currentDir = Directory.GetCurrentDirectory();
+
             List<string[]> temp = new List<string[]>();
             try
             {
-                using (StreamReader sr = File.OpenText(filePath))
+                using (StreamReader sr = File.OpenText(Path.Combine(currentDir, filePath)))
                 {
                     string line;
                     while ((line = sr.ReadLine()) != null)
@@ -52,7 +54,7 @@ namespace LM2Randomiser.Utils
             List<Location> placedLocations = randomiser.GetPlacedLocations();
 
             List<string[]> locationNames;
-            if(GetData(Path.Combine(currentDir, "Data\\locations.txt"), 1, out locationNames))
+            if(GetData("Data\\locations.txt", 1, out locationNames))
             {
                 try
                 {
@@ -94,7 +96,7 @@ namespace LM2Randomiser.Utils
             List<Location> placedLocations = randomiser.GetPlacedLocations();
 
             List<string[]> locationNames;
-            if (GetData(Path.Combine(currentDir, "Data\\locations.txt"), 1, out locationNames))
+            if (GetData("Data\\locations.txt", 1, out locationNames))
             {
                 Dictionary<string, int> itemLocation = new Dictionary<string, int>();
 
@@ -104,7 +106,7 @@ namespace LM2Randomiser.Utils
                     {
                         if (name[0].Equals(location.name))
                         {
-                            itemLocation.Add(location.name, location.item.id);
+                            itemLocation.Add(location.name, (int)location.item.id);
                         }
                     }
                 }

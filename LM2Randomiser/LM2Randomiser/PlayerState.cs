@@ -27,7 +27,7 @@ namespace LM2Randomiser
             collectedItems = new Dictionary<string, int>();
         }
         
-        public static PlayerState GetStateWithItems(Randomiser world, List<string[]> currentItems)
+        public static PlayerState GetStateWithItems(Randomiser world, List<Item> currentItems)
         {
             PlayerState state = new PlayerState(world);
 
@@ -35,7 +35,7 @@ namespace LM2Randomiser
             {
                 foreach (var item in currentItems)
                 {
-                    state.CollectItem(item[0]);
+                    state.CollectItem(item);
                 }
             }
 
@@ -48,7 +48,7 @@ namespace LM2Randomiser
                 reachableLocations = state.GetReachableLocations(requiredLocations);
                 foreach (var location in reachableLocations)
                 {
-                    state.CollectItem(location.item.name);
+                    state.CollectItem(location.item);
                     state.collectedLocations.Add(location.name, true);
                 }
 
@@ -67,19 +67,14 @@ namespace LM2Randomiser
                 reachableLocations = GetReachableLocations(requiredLocations);
                 foreach (var location in reachableLocations)
                 {
-                    CollectItem(location.item.name);
+                    CollectItem(location.item);
                     collectedLocations.Add(location.name, true);
                 }
 
                 ResetCheckedAreasAndEntrances();
 
             } while (reachableLocations.Count > 0);
-
-            if(!HasItem("Winner"))
-            {
-                Logger.GetLogger.Log("Failed to generate beatable seed, generating new seed.");
-            }
-
+            
             return HasItem("Winner");
         }
 
@@ -136,18 +131,18 @@ namespace LM2Randomiser
             }
         }
 
-        public void CollectItem(string itemName)
+        public void CollectItem(Item item)
         {
-            if (collectedItems.ContainsKey(itemName))
+            if (collectedItems.ContainsKey(item.name))
             {
-                collectedItems[itemName]++;
+                collectedItems[item.name]++;
             }
             else
             {
-                collectedItems.Add(itemName, 1);
+                collectedItems.Add(item.name, 1);
             }
 
-            if (bossNames.Contains(itemName))
+            if (bossNames.Contains(item.name))
             {
                 if (collectedItems.ContainsKey("Guardians"))
                 {

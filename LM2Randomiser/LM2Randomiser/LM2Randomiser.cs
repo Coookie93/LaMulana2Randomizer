@@ -78,6 +78,7 @@ namespace LM2Randomiser
                 canBeatGame = randomiser.CanBeatGame();
                 if(!canBeatGame)
                 {
+                    Logger.GetLogger.Log("Failed to generate beatable seed, generating new seed.");
                     OutputText.AppendText("Failed to generate seed, retrying.");
                     OutputText.AppendText(Environment.NewLine);
                 }

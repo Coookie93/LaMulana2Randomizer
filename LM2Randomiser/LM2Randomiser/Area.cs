@@ -7,6 +7,9 @@ namespace LM2Randomiser
 {
     public class Area
     {
+        //TODO?? maybe have a location id enum like the items can be used as the key 
+        //for dictionaries instead of the area name string
+
         public string name;
         public List<Location> locations;
         public List<Connection> entrances;

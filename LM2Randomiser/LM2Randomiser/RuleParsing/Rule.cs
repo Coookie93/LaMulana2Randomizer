@@ -27,48 +27,11 @@ namespace LM2Randomiser.RuleParsing
     {
         public Rule(string rule, string value = null)
         {
-            ruleType = GetRuleType(rule);
+            ruleType = (RuleType)Enum.Parse(typeof(RuleType), rule);
             this.value = value;
         }
 
         public RuleType ruleType;
         public string value;
-        
-        private RuleType GetRuleType(string rule)
-        {
-            switch (rule)
-            {
-                case "True":
-                    return RuleType.True;
-                case "CanReach":
-                    return RuleType.CanReach;
-                case "CanChant":
-                    return RuleType.CanChant;
-                case "CanWarp":
-                    return RuleType.CanWarp;
-                case "CanSpinCorridor":
-                    return RuleType.CanSpinCorridor;
-                case "Has":
-                    return RuleType.Has;
-                case "CanUse":
-                    return RuleType.CanUse;
-                case "OrbCount":
-                    return RuleType.OrbCount;
-                case "IsDead":
-                    return RuleType.IsDead;
-                case "GuardianKills":
-                    return RuleType.GuardianKills;
-                case "AnkhCount":
-                    return RuleType.AnkhCount;
-                case "PuzzleFinished":
-                    return RuleType.PuzzleFinished;
-                case "SkullCount":
-                    return RuleType.SkullCount;
-                case "Dissonance":
-                    return RuleType.Dissonance;
-                default:
-                    throw new Exception();
-            }
-        }
     }
 }

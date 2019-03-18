@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Area.cs" />
     <Compile Include="Connection.cs" />
+    <Compile Include="ItemPool.cs" />
     <Compile Include="LM2Randomiser.cs">
       <SubType>Form</SubType>
     </Compile>

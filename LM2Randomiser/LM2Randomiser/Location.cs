@@ -8,6 +8,8 @@ namespace LM2Randomiser
 {
     public class Location
     {
+        //TODO?? maybe have a location id enum like the items 
+
         public string name;
         public Area parentArea;
         public BinaryNode ruleTree;
