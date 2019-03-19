@@ -53,37 +53,29 @@ namespace LM2Randomiser.Utils
             string currentDir = Directory.GetCurrentDirectory();
             List<Location> placedLocations = randomiser.GetPlacedLocations();
 
-            List<string[]> locationNames;
-            if(GetData("Data\\locations.txt", 1, out locationNames))
+            try
             {
-                try
+                using (StreamWriter sr = File.CreateText(Path.Combine(currentDir, "Seed\\spoilers.txt")))
                 {
-                    using (StreamWriter sr = File.CreateText(Path.Combine(currentDir, "Seed\\spoilers.txt")))
+
+                    sr.WriteLine("Seed: {0}", randomiser.Seed);
+                    sr.WriteLine();
+
+                    foreach (LocationID id in Enum.GetValues(typeof(LocationID)))
                     {
-
-                        sr.WriteLine("Seed: {0}", randomiser.Seed);
-                        sr.WriteLine();
-
-                        foreach (var name in locationNames)
+                        foreach (var location in placedLocations)
                         {
-                            foreach (var location in placedLocations)
+                            if (id == location.id && id != LocationID.Default)
                             {
-                                if (name[0].Equals(location.name))
-                                {
-                                    sr.WriteLine("{0} -> {1}", location.name, location.item.name);
-                                }
+                                sr.WriteLine("{0} -> {1}", location.name, location.item.name);
                             }
                         }
                     }
                 }
-                catch (Exception ex)
-                {
-                    Logger.GetLogger.Log("Error: {1}", ex.Message);
-                    return false;
-                }
             }
-            else
+            catch (Exception ex)
             {
+                Logger.GetLogger.Log("Error: {1}", ex.Message);
                 return false;
             }
 
@@ -94,43 +86,51 @@ namespace LM2Randomiser.Utils
         {
             string currentDir = Directory.GetCurrentDirectory();
             List<Location> placedLocations = randomiser.GetPlacedLocations();
+            
+            Dictionary<int, int> itemLocation = new Dictionary<int, int>();
 
-            List<string[]> locationNames;
-            if (GetData("Data\\locations.txt", 1, out locationNames))
+            foreach (LocationID id in Enum.GetValues(typeof(LocationID)))
             {
-                Dictionary<string, int> itemLocation = new Dictionary<string, int>();
-
-                foreach (var name in locationNames)
+                foreach (var location in placedLocations)
                 {
-                    foreach (var location in placedLocations)
+                    if (id == location.id && id != LocationID.Default)
                     {
-                        if (name[0].Equals(location.name))
-                        {
-                            itemLocation.Add(location.name, (int)location.item.id);
-                        }
+                        itemLocation.Add((int)location.id, (int)location.item.id);
                     }
                 }
-                
-                FileStream fs = new FileStream(Path.Combine(currentDir, "Seed\\seed.lm2"), FileMode.Create);
-                BinaryFormatter formatter = new BinaryFormatter();
-                try
-                {
-                    formatter.Serialize(fs, itemLocation);
-                }
-                catch (Exception ex)
-                {
-                    Logger.GetLogger.Log("Error: {1}", ex.Message);
-                    return false;
-                }
-                finally
-                {
-                    fs.Close();
-                }
             }
-            else
+                
+            FileStream fs = new FileStream(Path.Combine(currentDir, "Seed\\seed.lm2"), FileMode.Create);
+            BinaryFormatter formatter = new BinaryFormatter();
+            try
             {
+                formatter.Serialize(fs, itemLocation);
+            }
+            catch (Exception ex)
+            {
+                Logger.GetLogger.Log("Error: {1}", ex.Message);
                 return false;
             }
+            finally
+            {
+                fs.Close();
+            }
+
+            //Dictionary<int, int> read;
+            //FileStream fs2 = new FileStream(Path.Combine(currentDir, "Seed\\seed.lm2"), FileMode.Open);
+            //BinaryFormatter formatter2 = new BinaryFormatter();
+            //try
+            //{
+            //    read = (Dictionary<int, int>)formatter.Deserialize(fs2);
+            //}
+            //catch (Exception ex)
+            //{
+            //    Logger.GetLogger.Log("Error: {1}", ex.Message);
+            //}
+            //finally
+            //{
+            //    fs.Close();
+            //}
 
             return true;
         }

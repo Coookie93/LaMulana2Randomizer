@@ -1,7 +1,7 @@
-Ratatoskr #1
-Ratatoskr #2
-Ratatoskr #3
-Ratatoskr #4
+Ratatoskr 1
+Ratatoskr 2
+Ratatoskr 3
+Ratatoskr 4
 Fafnir
 Surtr
 Vritra

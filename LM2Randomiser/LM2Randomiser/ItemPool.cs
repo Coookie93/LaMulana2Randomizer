@@ -20,7 +20,7 @@ namespace LM2Randomiser
             {
                 foreach(var data in itemData)
                 {
-                    itemPool.Add(new Item(data[0], Int32.Parse(data[1])));
+                    itemPool.Add(new Item(data[0], Int32.Parse(data[1]) + 1));
                 }
             }
             else

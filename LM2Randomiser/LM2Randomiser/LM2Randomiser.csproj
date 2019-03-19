@@ -74,6 +74,7 @@
     <Compile Include="Settings.cs" />
     <Compile Include="Utils\FileUtils.cs" />
     <Compile Include="Utils\Shuffle.cs" />
+    <Compile Include="StringExtensions.cs" />
     <EmbeddedResource Include="LM2Randomiser.resx">
       <DependentUpon>LM2Randomiser.cs</DependentUpon>
     </EmbeddedResource>

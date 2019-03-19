@@ -28,7 +28,7 @@ namespace LM2Randomiser
 
     public enum ItemID
     {
-        Default = -1,
+        Default = 0,
         HandScanner,
         DjedPillar,
         Mjolnir,

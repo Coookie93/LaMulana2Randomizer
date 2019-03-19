@@ -236,7 +236,7 @@ namespace LM2Randomiser
 
             if (!settings.randomiseScanner)
             {
-                PlaceItem("Sidro's Shop #1", ItemPool.GetAndRemove(ItemID.HandScanner, requiredItems));
+                PlaceItem("Sidro Shop 1", ItemPool.GetAndRemove(ItemID.HandScanner, requiredItems));
             }
 
             //Shuffle all the item pools once
@@ -246,11 +246,11 @@ namespace LM2Randomiser
 
             //Places weights at a starting shop since they are needed for alot of early items
             //this means that player will not have to rely on drops or weights from pots
-            PlaceItem("Sidro's Shop #2", new Item("Weights", ItemID.Weights));
+            PlaceItem("Sidro Shop 2", new Item("Weights", ItemID.Weights));
 
             //ammo can't be placed here since there is an second item that takes this slot after 
             //the first is purchased 
-            locations["Hiner's Shop #3"].isLocked = true;
+            locations["Hiner Shop 3"].isLocked = true;
 
             //get list of shop locations as weights and ammo items can only be placed here
             List <Location> shopLocations = GetUnplacedShopLocations();
@@ -259,7 +259,7 @@ namespace LM2Randomiser
             ItemRandomisation.RandomiseSpecificItems(this, shopLocations, shopItems, requiredItems);
 
             //items can be placed here now
-            locations["Hiner's Shop #3"].isLocked = false;
+            locations["Hiner Shop 3"].isLocked = false;
             
             //lock locations that currently can't be randomised
             locations["Secret Treasure of Life Item"].isLocked = true;

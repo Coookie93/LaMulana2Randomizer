@@ -1,119 +1,119 @@
-Nebur's Shop #1
-Nebur's Shop #2
-Nebur's Shop #3
-Modro's Shop #1
-Modro's Shop #2
-Modro's Shop #3
-Sidro's Shop #1
-Sidro's Shop #2
-Sidro's Shop #3
-Hiner's Shop #1
-Hiner's Shop #2
-Hiner's Shop #3
-Hiner's Shop #4
-Korobok Shop #1
-Korobok Shop #2
-Korobok Shop #3
-Shuhoka Shop #1
-Shuhoka Shop #2
-Shuhoka Shop #3
-Pym Shop #1
-Pym Shop #2
-Pym Shop #3
-Btk Shop #1
-Btk Shop #2
-Btk Shop #3
-Mino Shop #1
-Mino Shop #2
-Mino Shop #3
-Bargain Duck Shop #1
-Bargain Duck Shop #2
-Bargain Duck Shop #3
-Venom Shop #1
-Venom Shop #2
-Venom Shop #3
-Piebalusa Shop #1
-Piebalusa Shop #2
-Piebalusa Shop #3
-Hiro Roderick Shop #1
-Hiro Roderick Shop #2
-Hiro Roderick Shop #3
-Hydlit Shop #1
-Hydlit Shop #2
-Hydlit Shop #3
-Aytum shop #1
-Aytum Shop #2
-Aytum Shop #3
-Kero Shop #1
-Kero Shop #2
-Kero Shop #3
-Ash Geen Shop #1
-Ash Geen Shop #2
-Ash Geen Shop #3
-FairyLan Shop #1
-FairyLan Shop #2
-FairyLan Shop #3
-Megarock Shop #1
-Megarock Shop #2
-Megarock Shop #3
-Sacred Orb (Village of Departure)
-Sacred Orb (Roots of Yggdrasil)
-Sacred Orb Chest (Divine Fortress)
-Sacred Orb Chest (Annwfn)
-Sacred Orb Chest (Icefire Treetop)
-Sacred Orb Chest (Immortal Battlefield)
-Sacred Orb Chest (Shrine of the Frost Giants)
-Sacred Orb Chest (Gate of the Dead)
-Sacred Orb Chest (Takamagahara Shrine)
-Sacred Orb Chest (Heavens Labyrinth)
-Map Chest (Roots of Yggdrasil)
-Map Chest (Divine Fortress)
-Map Chest (Annwfn)
-Map Chest (Icefire Treetop)
-Map Chest (Valhalla)
-Map Chest (Immortal Battlefield)
-Map Chest (Shrine of the Frost Giants)
-Map Chest (Gate of the Dead)
-Map Chest (Dark Lords Mausoleum)
-Map Chest (Takamagahara Shrine)
-Map Chest (Ancient Chaos)
-Map Chest (Hall of Malice)
-Map Chest (Heavens Labyrinth)
-Map Chest (Eternal Prison Doom)
-Map Chest (Eternal Prison Gloom)
-Crystal Skull Chest (Roots of Yggdrasil)
-Crystal Skull Chest (Annwfn)
-Crystal Skull Chest (Icefire Treetop)
-Crystal Skull Chest (Valhalla)
-Crystal Skull (Immortal Battlefield)
-Crystal Skull Chest (Gate of the Dead)
-Crystal Skull Chest (Dark Lords Mausoleum)
-Crystal Skull Chest (Takamagahara Shrine)
-Crystal Skull Chest (Ancient Chaos)
-Crystal Skull Chest(Hall of Malice)
-Crystal Skull Chest (Heavens Labyrinth)
-Crystal Skull Chest (Eternal Prison Doom)
-Ankh Chest (Roots of Yggdrasil)
-Ankh Chest (Divine Fortress)
-Ankh Chest (Icefire Treetop)
-Ankh Chest (Shrine of the Frost Giants)
-Ankh Chest (Dark Lords Mausoleum)
-Ankh Chest (Ancient Chaos)
+Nebur Shop 1
+Nebur Shop 2
+Nebur Shop 3
+Modro Shop 1
+Modro Shop 2
+Modro Shop 3
+Sidro Shop 1
+Sidro Shop 2
+Sidro Shop 3
+Hiner Shop 1
+Hiner Shop 2
+Hiner Shop 3
+Hiner Shop 4
+Korobok Shop 1
+Korobok Shop 2
+Korobok Shop 3
+Shuhoka Shop 1
+Shuhoka Shop 2
+Shuhoka Shop 3
+Pym Shop 1
+Pym Shop 2
+Pym Shop 3
+Btk Shop 1
+Btk Shop 2
+Btk Shop 3
+Mino Shop 1
+Mino Shop 2
+Mino Shop 3
+Bargain Duck Shop 1
+Bargain Duck Shop 2
+Bargain Duck Shop 3
+Venom Shop 1
+Venom Shop 2
+Venom Shop 3
+Piebalusa Shop 1
+Piebalusa Shop 2
+Piebalusa Shop 3
+Hiro Roderick Shop 1
+Hiro Roderick Shop 2
+Hiro Roderick Shop 3
+Hydlit Shop 1
+Hydlit Shop 2
+Hydlit Shop 3
+Aytum Shop 1
+Aytum Shop 2
+Aytum Shop 3
+Kero Shop 1
+Kero Shop 2
+Kero Shop 3
+Ash Geen Shop 1
+Ash Geen Shop 2
+Ash Geen Shop 3
+FairyLan Shop 1
+FairyLan Shop 2
+FairyLan Shop 3
+Megarock Shop 1
+Megarock Shop 2
+Megarock Shop 3
+Sacred Orb Village of Departure
+Sacred Orb Roots of Yggdrasil
+Sacred Orb Chest Divine Fortress
+Sacred Orb Chest Annwfn
+Sacred Orb Chest Icefire Treetop
+Sacred Orb Chest Immortal Battlefield
+Sacred Orb Chest Shrine of the Frost Giants
+Sacred Orb Chest Gate of the Dead
+Sacred Orb Chest Takamagahara Shrine
+Sacred Orb Chest Heavens Labyrinth
+Map Chest Roots of Yggdrasil
+Map Chest Divine Fortress
+Map Chest Annwfn
+Map Chest Icefire Treetop
+Map Chest Valhalla
+Map Chest Immortal Battlefield
+Map Chest Shrine of the Frost Giants
+Map Chest Gate of the Dead
+Map Chest Dark Lords Mausoleum
+Map Chest Takamagahara Shrine
+Map Chest Ancient Chaos
+Map Chest Hall of Malice
+Map Chest Heavens Labyrinth
+Map Chest Eternal Prison Doom
+Map Chest Eternal Prison Gloom
+Crystal Skull Chest Roots of Yggdrasil
+Crystal Skull Chest Annwfn
+Crystal Skull Chest Icefire Treetop
+Crystal Skull Chest Valhalla
+Crystal Skull Immortal Battlefield
+Crystal Skull Chest Gate of the Dead
+Crystal Skull Chest Dark Lords Mausoleum
+Crystal Skull Chest Takamagahara Shrine
+Crystal Skull Chest Ancient Chaos
+Crystal Skull Chest Hall of Malice
+Crystal Skull Chest Heavens Labyrinth
+Crystal Skull Chest Eternal Prison Doom
+Ankh Chest Roots of Yggdrasil
+Ankh Chest Divine Fortress
+Ankh Chest Icefire Treetop
+Ankh Chest Shrine of the Frost Giants
+Ankh Chest Dark Lords Mausoleum
+Ankh Chest Ancient Chaos
 Ankh Jewel
-Alsedana Item #1
+Alsedana Item
 Funeral Item
-Xelpud's Item
+Xelpud Item
 Map from Nebur
 Shell Horn Chest
 Holy Grail Chest
 Freyas Item
-Fobos's Item
+Fobos Item
 Bronze Mirror Spot
 Pyramid Crystal Chest
 Shuriken Puzzle Reward
 Knife Puzzle Reward
 Origin Seal Chest
-Frey's Ship
+Frey Ship
 Death Village Chest
 Glove Chest
 Rolling Shuriken Puzzle Reward
@@ -122,7 +122,7 @@ Djed Pillar Chest
 Grapple Claw Chest
 Life Sigil Chest
 Flame Torc Chest
-Fairy Pass Chest
+Fairy Guild Pass Chest
 Scalesphere Chest
 Caltrop Puzzle Reward
 Flail Whip Puzzle Reward
