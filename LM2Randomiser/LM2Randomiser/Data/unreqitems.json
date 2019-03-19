@@ -1,0 +1,307 @@
+[
+  {
+    "name": "Egg of Creation",
+    "id": 12,
+    "isRequired": false
+  },
+  {
+    "name": "Mobile Super x3+",
+    "id": 16,
+    "isRequired": false
+  },
+  {
+    "name": "Shell Horn",
+    "id": 17,
+    "isRequired": false
+  },
+  {
+    "name": "Vajra",
+    "id": 24,
+    "isRequired": false
+  },
+  {
+    "name": "Bronze Mirror",
+    "id": 26,
+    "isRequired": false
+  },
+  {
+    "name": "Perfume",
+    "id": 27,
+    "isRequired": false
+  },
+  {
+    "name": "Nemean Fur",
+    "id": 29,
+    "isRequired": false
+  },
+  {
+    "name": "Gauntlet",
+    "id": 30,
+    "isRequired": false
+  },
+  {
+    "name": "Totem Pole",
+    "id": 33,
+    "isRequired": false
+  },
+  {
+    "name": "Spaulder",
+    "id": 35,
+    "isRequired": false
+  },
+  {
+    "name": "Crucifix",
+    "id": 37,
+    "isRequired": false
+  },
+  {
+    "name": "Ring",
+    "id": 40,
+    "isRequired": false
+  },
+  {
+    "name": "Bracelet",
+    "id": 41,
+    "isRequired": false
+  },
+  {
+    "name": "Scriptures",
+    "id": 43,
+    "isRequired": false
+  },
+  {
+    "name": "Codices",
+    "id": 45,
+    "isRequired": false
+  },
+  {
+    "name": "Book of the Dead",
+    "id": 48,
+    "isRequired": false
+  },
+  {
+    "name": "Xelputter",
+    "id": 80,
+    "isRequired": false
+  },
+  {
+    "name": "Yagoo Map Reader",
+    "id": 81,
+    "isRequired": false
+  },
+  {
+    "name": "Yagoo Map Street",
+    "id": 82,
+    "isRequired": false
+  },
+  {
+    "name": "TextTrax",
+    "id": 83,
+    "isRequired": false
+  },
+  {
+    "name": "Ruins Encylopedia",
+    "id": 84,
+    "isRequired": false
+  },
+  {
+    "name": "Guild",
+    "id": 86,
+    "isRequired": false
+  },
+  {
+    "name": "Alert",
+    "id": 90,
+    "isRequired": false
+  },
+  {
+    "name": "Race Scanner",
+    "id": 93,
+    "isRequired": false
+  },
+  {
+    "name": "Death Village",
+    "id": 94,
+    "isRequired": false
+  },
+  {
+    "name": "Rose and Camelia",
+    "id": 95,
+    "isRequired": false
+  },
+  {
+    "name": "Space Capstar II",
+    "id": 96,
+    "isRequired": false
+  },
+  {
+    "name": "Lonely House Moving",
+    "id": 97,
+    "isRequired": false
+  },
+  {
+    "name": "Mekuri Master",
+    "id": 98,
+    "isRequired": false
+  },
+  {
+    "name": "Bounce Shot",
+    "id": 99,
+    "isRequired": false
+  },
+  {
+    "name": "Miracle Witch",
+    "id": 100,
+    "isRequired": false
+  },
+  {
+    "name": "Future Development Company",
+    "id": 101,
+    "isRequired": false
+  },
+  {
+    "name": "La-Mulana",
+    "id": 102,
+    "isRequired": false
+  },
+  {
+    "name": "La-Mulana 2",
+    "id": 103,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 114,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 115,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 116,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 117,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 118,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 119,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 120,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 121,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 122,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 123,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 124,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 125,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 126,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 127,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 128,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 129,
+    "isRequired": false
+  },
+  {
+    "name": "Crystal Skull",
+    "id": 144,
+    "isRequired": true
+  },
+  {
+    "name": "Crystal Skull",
+    "id": 145,
+    "isRequired": true
+  },
+  {
+    "name": "Crystal Skull",
+    "id": 146,
+    "isRequired": true
+  },
+  {
+    "name": "Crystal Skull",
+    "id": 147,
+    "isRequired": true
+  },
+  {
+    "name": "Crystal Skull",
+    "id": 148,
+    "isRequired": true
+  },
+  {
+    "name": "Crystal Skull",
+    "id": 149,
+    "isRequired": true
+  },
+  {
+    "name": "Crystal Skull",
+    "id": 150,
+    "isRequired": true
+  },
+  {
+    "name": "Crystal Skull",
+    "id": 151,
+    "isRequired": true
+  },
+  {
+    "name": "Crystal Skull",
+    "id": 152,
+    "isRequired": true
+  },
+  {
+    "name": "Crystal Skull",
+    "id": 153,
+    "isRequired": true
+  },
+  {
+    "name": "Crystal Skull",
+    "id": 154,
+    "isRequired": true
+  }
+]

@@ -11,6 +11,8 @@ namespace LM2Randomiser
         public ItemID id;
         public bool isRequired;
 
+        public Item() { }
+
         public Item(string name, int id, bool isRequired = true)
         {
             this.name = name;

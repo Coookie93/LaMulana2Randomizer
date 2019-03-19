@@ -26,6 +26,7 @@ namespace LM2RandomiserMod
         TreasureBoxScript[] cachedBoxes;
         EventItemScript[] cachedItems;
 
+        string error;
         Dictionary<int, int> locationToItemMap;
         bool randomising = false;
 
@@ -249,42 +250,42 @@ namespace LM2RandomiserMod
 
         SacredOrb0,
         SacredOrb1,
-        SacredOrb5,
         SacredOrb2,
-        SacredOrb4,
         SacredOrb3,
+        SacredOrb4,
+        SacredOrb5,
         SacredOrb6,
         SacredOrb7,
         SacredOrb8,
         SacredOrb9,
 
         Map1,
-        Map5,
         Map2,
-        Map4,
-        Map10,
         Map3,
+        Map4,
+        Map5,
         Map6,
         Map7,
-        Map11,
         Map8,
+        Map9,
+        Map10,
+        Map11,
         Map12,
         Map13,
-        Map9,
-        Map15,
         Map14,
-
+        Map15,
+        
         CrystalS1,
         CrystalS2,
+        CrystalS3,
         CrystalS4,
         CrystalS5,
-        CrystalS3,
         CrystalS6,
-        CrystalS8,
         CrystalS7,
+        CrystalS8,
         CrystalS9,
-        CrystalS11,
         CrystalS10,
+        CrystalS11,
         CrystalS12,
 
         AnkhJewel2,
@@ -303,7 +304,7 @@ namespace LM2RandomiserMod
         HolyGrail,
         FreyasItem,
         FobosItem,
-        ItemSymBMirror,
+        BMirror,
         CrystalP,
         Shuriken,
         Knife,

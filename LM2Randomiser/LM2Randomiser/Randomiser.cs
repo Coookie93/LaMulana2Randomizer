@@ -154,8 +154,10 @@ namespace LM2Randomiser
         //places mostly fake items that the player won't collect but are used by the access rules
         public bool PlaceNonRandomItems()
         {
-            //TODO: probably turn these into a method
+            //TODO: probably turn these into a method, also turn thses data files to json to
+            //
 
+            
             //Place Mantras, only exists since mantras currently cant be randomised
             List<string[]> data;
             if(FileUtils.GetData("Data\\murals.txt", 2, out data)) {
@@ -209,27 +211,29 @@ namespace LM2Randomiser
 
             //get shop only items
             List<Item> shopItems;
-            if(!ItemPool.CreatePool("Data\\shoponlyitems.txt", out shopItems))
+            if(!FileUtils.GetItemsFromJson("Data\\shopitems.json", out shopItems))
             {
                 return false;
             }
-            
+
             //get required items
             List<Item> requiredItems;
-            if (!ItemPool.CreatePool("Data\\reqitems.txt", out requiredItems))
+            if (!FileUtils.GetItemsFromJson("Data\\reqitems.json", out requiredItems))
             {
                 return false;
             }
 
             //get unrequired items
             List<Item> unrequiredItems;
-            if (!ItemPool.CreatePool("Data\\unreqitems.txt", out unrequiredItems))
+            if (!FileUtils.GetItemsFromJson("Data\\unreqitems.json", out unrequiredItems))
             {
                 return false;
             }
-            
+
+
+
             //NOTE: when more options get add move these to a seperate method or something
-            if(!settings.randomiseGrail)
+            if (!settings.randomiseGrail)
             {
                 PlaceItem("Holy Grail Chest", ItemPool.GetAndRemove(ItemID.HolyGrail, requiredItems));
             }
@@ -246,11 +250,11 @@ namespace LM2Randomiser
 
             //Places weights at a starting shop since they are needed for alot of early items
             //this means that player will not have to rely on drops or weights from pots
-            PlaceItem("Sidro Shop 2", new Item("Weights", ItemID.Weights));
+            PlaceItem("Sidro Shop 2", ItemPool.GetAndRemove(ItemID.Weights, shopItems));
 
             //ammo can't be placed here since there is an second item that takes this slot after 
             //the first is purchased 
-            locations["Hiner Shop 3"].isLocked = true;
+            GetLocation("Hiner Shop 3").isLocked = true;
 
             //get list of shop locations as weights and ammo items can only be placed here
             List <Location> shopLocations = GetUnplacedShopLocations();
@@ -259,12 +263,12 @@ namespace LM2Randomiser
             ItemRandomisation.RandomiseSpecificItems(this, shopLocations, shopItems, requiredItems);
 
             //items can be placed here now
-            locations["Hiner Shop 3"].isLocked = false;
-            
+            GetLocation("Hiner Shop 3").isLocked = false;
+
             //lock locations that currently can't be randomised
-            locations["Secret Treasure of Life Item"].isLocked = true;
-            locations["Funeral Item"].isLocked = true;
-            locations["Mulbruk Item"].isLocked = true;
+            GetLocation("Secret Treasure of Life Item").isLocked = true;
+            GetLocation("Funeral Item").isLocked = true;
+            GetLocation("Mulbruk Item").isLocked = true;
             
             //Get all unplaced locations as required items can go anywhere aslong as it can be reached
             List<Location> unplacedLocations = GetUnplacedLocations();
@@ -272,9 +276,9 @@ namespace LM2Randomiser
             ItemRandomisation.RandomiseRequiredItems(this, unplacedLocations, requiredItems);
 
             //unlock the locked locations now since any item that is not required can go there
-            locations["Secret Treasure of Life Item"].isLocked = false;
-            locations["Funeral Item"].isLocked = false;
-            locations["Mulbruk Item"].isLocked = false;
+            GetLocation("Secret Treasure of Life Item").isLocked = false;
+            GetLocation("Funeral Item").isLocked = false;
+            GetLocation("Mulbruk Item").isLocked = false;
 
             //Get unplaced locations after the required items have been placed
             unplacedLocations = GetUnplacedLocations();
@@ -312,6 +316,11 @@ namespace LM2Randomiser
         public Area GetArea(string areaName)
         {
             return areas[areaName];
+        }
+
+        public Location GetLocation(string locationName)
+        {
+            return locations[locationName];
         }
         
         public List<Location> GetPlacedLocations()

@@ -15,7 +15,7 @@
       "Sidro Shop 1: True",
       "Sidro Shop 2: True",
       "Sidro Shop 3: True",
-      "Sacred Orb Village of Departure: Has(Feather) and CanWarp"
+      "Sacred Orb VoD: Has(Feather) and CanWarp"
     ],
     "exits": [
       "Gate of Guidance: True",
@@ -75,11 +75,11 @@
   {
     "areaName": "Roots of Yggdrasil",
     "locations": [
-      "Sacred Orb Roots of Yggdrasil: True",
-      "Map Chest Roots of Yggdrasil: True",
-      "Ankh Chest Roots of Yggdrasil: Has(Feather) or CanUse(Bomb) or CanUse(Shuriken) or CanUse(Chakram) or CanUse(Earth Spear) or CanUse(Flare)",
+      "Sacred Orb Chest RoY: True",
+      "Map Chest RoY: True",
+      "Ankh Chest RoY: Has(Feather) or CanUse(Bomb) or CanUse(Shuriken) or CanUse(Chakram) or CanUse(Earth Spear) or CanUse(Flare)",
       "Pyramid Crystal Chest: Has(Life Sigil) and (Has(Knife) or Has(Lamp of Time))",
-      "Crystal Skull Chest Roots of Yggdrasil: IsDead(Fafnir)",
+      "Crystal Skull Chest RoY: IsDead(Fafnir)",
       "Shuriken Puzzle Reward: True",
       "Knife Puzzle Reward: Has(Origin Sigil)",
       "Mantra Mural: Has(Snapshot)",
@@ -110,7 +110,7 @@
   {
     "areaName": "Divine Fortress Right",
     "locations": [
-      "Map Chest Divine Fortress: True",
+      "Map Chest DF: True",
       "Origin Seal Chest: IsDead(Hugin and Munin)",
       "Frey Ship: CanReach(Annwfn Right) and Has(Hand Scanner) and (Has(Origin Sigil) or CanReach(Divine Fortress Top))",
       "Heaven Mantra Mural: Has(Snapshot)",
@@ -123,8 +123,8 @@
   {
     "areaName": "Divine Fortress Main",
     "locations": [
-      "Ankh Chest Divine Fortress: Has(Origin Sigil)",
-      "Sacred Orb Chest Divine Fortress: True",
+      "Ankh Chest DF: Has(Origin Sigil)",
+      "Sacred Orb Chest DF: True",
       "Shuhoka Shop 1: Has(Birth Sigil)",
       "Shuhoka Shop 2: Has(Birth Sigil)",
       "Shuhoka Shop 3: Has(Birth Sigil)"
@@ -196,8 +196,8 @@
   {
     "areaName":"Icefire Treetop Main",
     "locations":[
-      "Map Chest Icefire Treetop: True",
-      "Ankh Chest Icefire Treetop: ((Has(Ice Cloak) and OrbCount(2)) or OrbCount(4)) and IsDead(Vedfolnir)",
+      "Map Chest IT: True",
+      "Ankh Chest IT: ((Has(Ice Cloak) and OrbCount(2)) or OrbCount(4)) and IsDead(Vedfolnir)",
       "Grapple Claw Chest: True",
       "Life Sigil Chest: Has(Birth Sigil) and CanWarp",
       "Flame Torc Chest: IsDead(Surtr) and Has(Mulana Talisman)",
@@ -219,8 +219,8 @@
     "areaName":"Icefire Treetop Right",
     "locations":[
       "Fairy Guild Pass Chest: Has(Life Sigil)",
-      "Crystal Skull Chest Icefire Treetop: IsDead(Ratatoskr 3)",
-      "Sacred Orb Chest Icefire Treetop: Has(Anchor) and (OrbCount(2) or Has(Scalesphere))",
+      "Crystal Skull Chest IT: IsDead(Ratatoskr 3)",
+      "Sacred Orb Chest IT: Has(Anchor) and (OrbCount(2) or Has(Scalesphere))",
       "Ratatoskr 3: IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2) and OrbCount(4)"
     ],
     "exits":[
@@ -307,15 +307,15 @@
   {
     "areaName":"Immortal Battlefield Main",
     "locations":[
-      "Map Chest Immortal Battlefield: True",
+      "Map Chest IB: True",
       "Ice Cloak Chest: Has(Life Sigil) and (Has(Feather) or CanUse(Chakram) or CanUse(Shuriken) or CanUse(Bomb))",
       "Totem Pole Chest: Has(Birth Sigil) and Has(Gale Fibula)",
-      "Sacred Orb Chest Immortal Battlefield: Has(Birth Sigil)",
+      "Sacred Orb Chest IB: Has(Birth Sigil)",
       "Lamp of Time Chest: IsDead(Ratatoskr 2) and Has(Cog of Antiquity) and Has(Life Sigil)",
       "Mjolnir Chest:IsDead(Jormangund)",
       "Chain Whip Puzzle Reward: OrbCount(2) or Has(Ice Cloak)",
       "Chakram Puzzle Reward: IsDead(Svipdagr) and Has(Life Sigil) and CanUse(Earth Spear) and CanUse(Rolling Shuriken)",
-      "Crystal Skull Immortal Battlefield: IsDead(Ratatoskr 2)",
+      "Crystal Skull IB: IsDead(Ratatoskr 2)",
       "Secret Treasure of Life Item: Has(Dinosaur Figure) and CanReach(Immortal Battlefield Spiral Boat)",
       "Hiro Roderick Shop 1: True",
       "Hiro Roderick Shop 2: True",
@@ -389,9 +389,9 @@
   {
     "areaName":"Shrine of the Frost Giants Main",
     "locations":[
-      "Map Chest Shrine of the Frost Giants: True",
+      "Map Chest SotFG: True",
       "Birth Sigil Chest: Has(Origin Sigil)",
-      "Ankh Chest Shrine of the Frost Giants: True",
+      "Ankh Chest SotFG: True",
       "Pochette Key Chest: Has(Life Sigil) and Has(Grapple Claw)",
       "Rapier Puzzle Reward: True",
       "Weapon Fairy: Has(Fairy Pass) and Has(Freyas Pendant)"
@@ -404,7 +404,7 @@
   {
     "areaName":"Shrine of the Frost Giants Mid",
     "locations":[
-      "Sacred Orb Chest Shrine of the Frost Giants: CanUse(Earth Spear) and Has(Grapple Claw)",
+      "Sacred Orb Chest SotFG: CanUse(Earth Spear) and Has(Grapple Claw)",
       "Sea Mantra Mural: Has(Snapshot) and Has(Birth Sigil)"
     ],
     "exits":[
@@ -460,12 +460,12 @@
   {
     "areaName":"Gate of the Dead",
     "locations":[
-      "Map Chest Gate of the Dead: True",
+      "Map Chest GotD: True",
       "Yagoo Map Street Chest: Has(Gloves)",
       "Vajra Chest: True",
-      "Sacred Orb Chest Gate of the Dead: True",
+      "Sacred Orb Chest GotD: True",
       "Anchor Chest: CanReach(Divine Fortress Main) and Has(Gloves)",
-      "Crystal Skull Chest Gate of the Dead: True",
+      "Crystal Skull Chest GotD: True",
       "Katana Puzzle Reward: Has(Life Sigil)",
       "Aytum Shop 1: True",
       "Aytum Shop 2: True",
@@ -481,8 +481,8 @@
     "areaName":"Dark Lords Mausoleum Main",
     "locations":[
       "Feather Chest: Has(Feather) or IsDead(Angra Mainyu)",
-      "Ankh Chest Dark Lords Mausoleum: Has(Grapple Claw)",
-      "Map Chest Dark Lords Mausoleum: Has(Birth Sigil)",
+      "Ankh Chest DLM: Has(Grapple Claw)",
+      "Map Chest DLM: Has(Birth Sigil)",
       "Kero Shop 1: Has(Feather)",
       "Kero Shop 2: Has(Feather)",
       "Kero Shop 3: Has(Feather)",
@@ -501,7 +501,7 @@
   {
     "areaName":"Dark Lords Mausoleum Mid",
     "locations":[
-      "Crystal Skull Chest Dark Lords Mausoleum: SkullCount(1) and (Has(Feather) or CanWarp)",
+      "Crystal Skull Chest DLM: SkullCount(1) and (Has(Feather) or CanWarp)",
       "La Mulana Chest: CanUse(Bomb) and (Has(Feather) or CanWarp)",
       "Angra Mainyu: Has(Mjolnir) and OrbCount(3) and (Has(Feather) or CanWarp)"
     ],
@@ -566,10 +566,10 @@
   {
     "areaName": "Takamagahara Shrine",
     "locations":[
-      "Map Chest Takamagahara Shrine: Has(Katana)",
+      "Map Chest TS: Has(Katana)",
       "Ring Chest: Has(Katana) and Has(Feather) and Has(Life Sigil) and Has(Key Fairy)",
-      "Sacred Orb Chest Takamagahara Shrine: True",
-      "Crystal Skull Chest Takamagahara Shrine: Has(Life Sigil) and (Has(Feather) or CanUse(Bomb) or CanUse(Shuriken) or CanUse(Chakram) or CanUse(Earth Spear))",
+      "Sacred Orb Chest TS: True",
+      "Crystal Skull Chest TS: Has(Life Sigil) and (Has(Feather) or CanUse(Bomb) or CanUse(Shuriken) or CanUse(Chakram) or CanUse(Earth Spear))",
       "Egg of Creation: IsDead(Daji)",
       "Flare Puzzle Reward: IsDead(Raijin and Fujin) and Has(Birth Sigil) and Has(Gale Fibula) and Has(Grapple Claw) and CanWarp",
       "Ash Geen Shop 1: True",
@@ -596,7 +596,7 @@
   {
     "areaName":"Ancient Chaos Bottom",
     "locations":[
-      "Map Chest Ancient Chaos: True",
+      "Map Chest AC: True",
       "Venom Shop 1: Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(4))",
       "Venom Shop 2: Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(4))",
       "Venom Shop 3: Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(4))",
@@ -609,8 +609,8 @@
   {
     "areaName":"Ancient Chaos Tablet",
     "locations":[
-      "Ankh Chest Ancient Chaos: True",
-      "Crystal Skull Chest Ancient Chaos: CanUse(Shuriken)"
+      "Ankh Chest AC: True",
+      "Crystal Skull Chest AC: CanUse(Shuriken)"
     ],
     "exits":[
       "Ancient Chaos Main: True"
@@ -641,7 +641,7 @@
   {
     "areaName": "Hall of Malice",
     "locations":[
-      "Map Chest Hall of Malice: True",
+      "Map Chest HoM: True",
       "FairyLan Shop 1: Has(Claydoll Suit)",
       "FairyLan Shop 2: Has(Claydoll Suit)",
       "FairyLan Shop 3: Has(Claydoll Suit)"
@@ -657,7 +657,7 @@
     "areaName":"Hall of Malice Awoken",
     "locations":[
       "Nemean Fur: IsDead(Nemean Lion) and Has(Feather)",
-      "Crystal Skull Chest Hall of Malice: IsDead(Ladon) and Has(Death Sigil)",
+      "Crystal Skull Chest HoM: IsDead(Ladon) and Has(Death Sigil)",
       "Giants Flutes Chest: IsDead(Echidna) and Has(Mulana Talisman)",
       "Miracle Witch Chest: Has(Flame Torc) and IsDead(Cerberus)",
       "Delphyne: Has(Shuriken) or Has(Chakram)",
@@ -680,8 +680,8 @@
   {
     "areaName":"Heavens Labyrinth",
     "locations":[
-      "Map Chest Heavens Labyrinth: True",
-      "Crystal Skull Chest Heavens Labyrinth: True",
+      "Map Chest HL: True",
+      "Crystal Skull Chest HL: True",
       "Megarock Shop 1: Has(Grapple Claw)",
       "Megarock Shop 2: Has(Grapple Claw)",
       "Megarock Shop 3: Has(Grapple Claw)"
@@ -693,7 +693,7 @@
   {
     "areaName":"Heavens Labyrinth Spun",
     "locations":[
-      "Sacred Orb Chest Heavens Labyrinth: Has(Feather) and IsDead(Glasya-Labolas)",
+      "Sacred Orb Chest HL: Has(Feather) and IsDead(Glasya-Labolas)",
       "Perfume Chest: IsDead(Griffin)",
       "Axe Puzzle Reward: Has(Gloves) and IsDead(Griffin)",
       "Mobile Super X3 Item: IsDead(Griffin) and IsDead(Arachne) and IsDead(Scylla)",
@@ -719,8 +719,8 @@
   {
     "areaName":"Eternal Prison Doom",
     "locations":[
-      "Crystal Skull Chest Eternal Prison Doom: True",
-      "Map Chest Eternal Prison Doom: True",
+      "Crystal Skull Chest EPD: True",
+      "Map Chest EPD: True",
       "La Mulana 2: Has(Mjolnir) and Has(Power Band)",
       "Spaulder Chest: Has(Gloves) and Has(Key Fairy) and (Has(Feather) or (Has(Gale Fibula) and Has(Snow Shoes)))",
       "Light Scythe Item: Has(Maats Feather) and Has(Djed Pillar) and Has(Gale Fibula) and Has(Feather)",
@@ -745,7 +745,7 @@
   {
     "areaName":"Eternal Prison Gloom",
     "locations":[
-      "Map Chest Eternal Prison Gloom: Has(Life Sigil)",
+      "Map Chest EPG: Has(Life Sigil)",
       "Death Sigil Chest: Has(Mjolnir) and Has(Power Band) and Has(Life Sigil) and (CanWarp or Has(Death Sigil))",
       "Statue Lady Puzzle: Has(Harp) and Has(Enga Musica)",
       "Mother Mantra Mural: CanUse(Bomb) and Has(Snapshot) and PuzzleFinished(Statue Lady)",

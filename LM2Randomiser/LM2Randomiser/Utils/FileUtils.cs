@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
+using Newtonsoft.Json;
 using LM2Randomiser.Logging;
 using LM2Randomiser;
 
@@ -48,6 +49,27 @@ namespace LM2Randomiser.Utils
             return true;
         }
 
+        public static bool GetItemsFromJson(string filePath, out List<Item> itemPool)
+        {
+            string currentDir = Directory.GetCurrentDirectory();
+            try
+            {
+                using (StreamReader sr = File.OpenText(Path.Combine(currentDir, filePath)))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    itemPool = (List<Item>)serializer.Deserialize(sr, typeof(List<Item>));
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.GetLogger.Log("Error: {0}", ex.Message);
+                itemPool = null;
+                return false;
+            }
+
+            return true;
+        }
+
         public static bool WriteSpoilers(Randomiser randomiser)
         {
             string currentDir = Directory.GetCurrentDirectory();
@@ -65,7 +87,7 @@ namespace LM2Randomiser.Utils
                     {
                         foreach (var location in placedLocations)
                         {
-                            if (id == location.id && id != LocationID.Default)
+                            if (id == location.id && id != LocationID.None)
                             {
                                 sr.WriteLine("{0} -> {1}", location.name, location.item.name);
                             }
@@ -75,7 +97,7 @@ namespace LM2Randomiser.Utils
             }
             catch (Exception ex)
             {
-                Logger.GetLogger.Log("Error: {1}", ex.Message);
+                Logger.GetLogger.Log("Error: {0}", ex.Message);
                 return false;
             }
 
@@ -93,7 +115,7 @@ namespace LM2Randomiser.Utils
             {
                 foreach (var location in placedLocations)
                 {
-                    if (id == location.id && id != LocationID.Default)
+                    if (id == location.id && id != LocationID.None)
                     {
                         itemLocation.Add((int)location.id, (int)location.item.id);
                     }
@@ -108,30 +130,13 @@ namespace LM2Randomiser.Utils
             }
             catch (Exception ex)
             {
-                Logger.GetLogger.Log("Error: {1}", ex.Message);
+                Logger.GetLogger.Log("Error: {0}", ex.Message);
                 return false;
             }
             finally
             {
                 fs.Close();
             }
-
-            //Dictionary<int, int> read;
-            //FileStream fs2 = new FileStream(Path.Combine(currentDir, "Seed\\seed.lm2"), FileMode.Open);
-            //BinaryFormatter formatter2 = new BinaryFormatter();
-            //try
-            //{
-            //    read = (Dictionary<int, int>)formatter.Deserialize(fs2);
-            //}
-            //catch (Exception ex)
-            //{
-            //    Logger.GetLogger.Log("Error: {1}", ex.Message);
-            //}
-            //finally
-            //{
-            //    fs.Close();
-            //}
-
             return true;
         }
     }
