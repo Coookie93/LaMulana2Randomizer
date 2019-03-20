@@ -29,7 +29,6 @@ namespace LM2RandomiserMod
         Dictionary<int, int> locationToItemMap;
         bool randomising = false;
         string error;
-
         private void OnGUI()
         {
             if (this.showText)
@@ -54,7 +53,7 @@ namespace LM2RandomiserMod
                 GUI.Label(new Rect(0, Screen.height - 25f, 50f, 25f), randomising.ToString());
             }
         }
-
+        
         void OnEnable()
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -141,7 +140,7 @@ namespace LM2RandomiserMod
                 this.showText = !this.showText;
             }
         }
-
+        
         public void Initialise(L2ShopDataBase shopDataBase, L2TalkDataBase talkDataBase, L2System system)
         {
             this.shopDataBase = shopDataBase;
