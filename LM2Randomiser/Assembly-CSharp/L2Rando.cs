@@ -17,8 +17,6 @@ namespace LM2RandomiserMod
 {
     public class L2Rando : MonoBehaviour
     {
-        //bool showText = true;
-        
         L2ShopDataBase shopDataBase;
         L2TalkDataBase talkDataBase;
         L2Base.L2System sys;
@@ -29,32 +27,7 @@ namespace LM2RandomiserMod
         Dictionary<int, int> locationToItemMap;
         bool randomising = false;
         string error;
-
-        /*private void OnGUI()
-        {
-            if (this.showText)
-            {
-                GUI.Label(new Rect(100f, 0f, 100f, 22f), "Treasure Chests");
-                if (cachedBoxes != null)
-                {
-                    for (int i = 0; i < cachedBoxes.Length; i++)
-                    {
-                        EventItemScript es = cachedBoxes[i].itemObj.GetComponent<EventItemScript>();
-                        GUI.Label(new Rect(100f, 22f + (float)i * 22f, 100f, 22f), es.itemLabel);
-                    }
-                }
-                GUI.Label(new Rect(0f, 0f, 100f, 22f), "Free Items");
-                if (cachedItems != null)
-                {
-                    for (int i = 0; i < cachedItems.Length; i++)
-                    {
-                        GUI.Label(new Rect(0f, 25f + (float)i * 22f, 200f, 22f), cachedItems[i].itemLabel);
-                    }
-                }
-                GUI.Label(new Rect(0, Screen.height - 25f, 50f, 25f), randomising.ToString());
-            }
-        }*/
-
+        
         void OnEnable()
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -134,14 +107,6 @@ namespace LM2RandomiserMod
             }
         }
         
-        void Update()
-        {
-            //if (Input.GetKeyDown(KeyCode.F11))
-            //{
-            //    this.showText = !this.showText;
-            //}
-        }
-
         public void Initialise(L2ShopDataBase shopDataBase, L2TalkDataBase talkDataBase, L2System system)
         {
             this.shopDataBase = shopDataBase;
@@ -167,7 +132,7 @@ namespace LM2RandomiserMod
             BinaryFormatter formatter;
             try
             {
-                fs = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "Release\\Seed\\seed.lm2"), FileMode.Open);
+                fs = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "LM2Randomiser\\Seed\\seed.lm2"), FileMode.Open);
                 formatter = new BinaryFormatter();
                 itemLocations = (Dictionary<int, int>)formatter.Deserialize(fs);
             }
