@@ -50,6 +50,7 @@ namespace LM2RandomiserMod
                         GUI.Label(new Rect(0f, 25f + (float)i * 22f, 200f, 22f), cachedItems[i].itemLabel);
                     }
                 }
+                GUI.Label(new Rect(0, Screen.height - 75f, 500f, 25f), error);
                 GUI.Label(new Rect(0, Screen.height - 25f, 50f, 25f), randomising.ToString());
             }
         }
@@ -150,12 +151,19 @@ namespace LM2RandomiserMod
             //load the locationToItemMap from seed.lm2
             locationToItemMap = LoadSeedFile();
             //if we successfully loaded and the seed has the right amount of locations
-            if (locationToItemMap != null && locationToItemMap.Count == 172)
+            if (locationToItemMap != null && locationToItemMap.Count == 173)
             {
                 randomising = true;
                 ChangeShopItems();
                 ChangeShopThanks();
                 ChangeDialogueItems();
+            }
+            else
+            {
+                if (locationToItemMap != null)
+                {
+                    error += "total items randomised: " + locationToItemMap.Count;
+                }
             }
         }
         
@@ -402,7 +410,7 @@ namespace LM2RandomiserMod
 
                 //Sacred orbs might require some special work here if setting the orbcount flag doesnt give you the level up
                 string take;
-                if (newItemData.boxName.Equals("Crystal S")) {
+                if (newItemData.boxName.Equals("Crystal S") || newItemData.boxName.Equals("Sacred Orb")) {
                     take= String.Format("[@take,{0},02item,1]\n", newItemData.boxName);
                 }
                 else
@@ -655,7 +663,8 @@ namespace LM2RandomiserMod
         LightScytheItem,
         Book,
         DeathSeal,
-        Bomb
+        Bomb,
+        SecretTreasure
 
         //R-Shuriken,E-Spear,La-Mulana,La-Mulana2
     }
