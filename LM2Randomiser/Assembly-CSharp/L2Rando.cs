@@ -82,6 +82,12 @@ namespace LM2RandomiserMod
                         {
                             itemName = itemName.Remove(0, 8).RemoveWhitespace();
 
+                            //theres 4 items that contain '-' E-Spear, R-Shuriken, La-Mulana, La-Mulana2
+                            if (itemName.Contains("-"))
+                            {
+                                itemName = itemName.Replace("-", "");
+                            }
+
                             //if the name off the item is one we care about
                             if (Enum.IsDefined(typeof(LocationID), itemName))
                             {
@@ -105,10 +111,17 @@ namespace LM2RandomiserMod
                             continue;
                         }
 
+
                         //this should never fail currently, more of a sanity check
                         if (itemName.Contains("ItemSym "))
                         {
                             itemName = itemName.Remove(0, 8).RemoveWhitespace();
+
+                            //theres 4 items that contain '-' E-Spear, R-Shuriken, La-Mulana, La-Mulana2
+                            if (itemName.Contains("-"))
+                            {
+                                itemName = itemName.Replace("-", "");
+                            }
 
                             //if the name off the item is one we care about
                             if (Enum.IsDefined(typeof(LocationID), itemName))
@@ -645,6 +658,6 @@ namespace LM2RandomiserMod
         DeathSeal,
         Bomb
 
-        //R-Shuriken,ESpear,La-Mulana,La-Mulana2
+        //R-Shuriken,E-Spear,La-Mulana,La-Mulana2
     }
 }

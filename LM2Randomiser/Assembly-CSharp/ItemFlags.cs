@@ -624,7 +624,7 @@ namespace LM2RandomiserMod
 
         private static readonly Dictionary<ItemID, ItemData> itemData = new Dictionary<ItemID, ItemData>
         {
-            {ItemID.HandScanner,                  new ItemData("H Scanner",        "H Scanner",         "item",     10,  1)},
+            {ItemID.HandScanner,                  new ItemData("H Scanner",        "H Scanner",         "item",     10, 1)},
             {ItemID.DjedPillar,                   new ItemData("Djed Pillar",      "Djed Pillar",       "item",     50, 1)},
             {ItemID.Mjolnir,                      new ItemData("Mjolnir",          "Mjolnir",           "item",     50, 1)},
             {ItemID.Beherit,                      new ItemData("Beherit",          "Beherit",           "item",     50, 1)},
