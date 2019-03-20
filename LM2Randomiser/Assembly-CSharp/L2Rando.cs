@@ -17,7 +17,7 @@ namespace LM2RandomiserMod
 {
     public class L2Rando : MonoBehaviour
     {
-        //bool showText = true;
+        bool showText = true;
         
         L2ShopDataBase shopDataBase;
         L2TalkDataBase talkDataBase;
@@ -30,7 +30,7 @@ namespace LM2RandomiserMod
         bool randomising = false;
         string error;
 
-        /*private void OnGUI()
+        private void OnGUI()
         {
             if (this.showText)
             {
@@ -53,7 +53,7 @@ namespace LM2RandomiserMod
                 }
                 GUI.Label(new Rect(0, Screen.height - 25f, 50f, 25f), randomising.ToString());
             }
-        }*/
+        }
 
         void OnEnable()
         {
@@ -136,10 +136,10 @@ namespace LM2RandomiserMod
         
         void Update()
         {
-            //if (Input.GetKeyDown(KeyCode.F11))
-            //{
-            //    this.showText = !this.showText;
-            //}
+            if (Input.GetKeyDown(KeyCode.F11))
+            {
+                this.showText = !this.showText;
+            }
         }
 
         public void Initialise(L2ShopDataBase shopDataBase, L2TalkDataBase talkDataBase, L2System system)
@@ -167,7 +167,7 @@ namespace LM2RandomiserMod
             BinaryFormatter formatter;
             try
             {
-                fs = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "Release\\Seed\\seed.lm2"), FileMode.Open);
+                fs = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "LM2Randomiser\\Seed\\seed.lm2"), FileMode.Open);
                 formatter = new BinaryFormatter();
                 itemLocations = (Dictionary<int, int>)formatter.Deserialize(fs);
             }
