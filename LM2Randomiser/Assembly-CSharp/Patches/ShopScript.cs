@@ -44,6 +44,14 @@ namespace LM2RandomiserMod.Patches
                 this.item_name[counter].text = this.sys.getMojiText(true, this.sys.mojiSheetNameToNo(tab, this.sys.getMojiScript(mojiScriptType.item)), 
                     this.sys.mojiIdToNo(tab, "Sacred Orb", this.sys.getMojiScript(mojiScriptType.item)), this.sys.getNowLangage(), this.sys.getMojiScript(mojiScriptType.item));
             }
+            else if (result && name.Contains("Crystal S"))
+            {
+                int counter = this.item_copunter - 1;
+                this.icon[counter] = L2SystemCore.getMapIconSprite(L2SystemCore.getItemData("Crystal S"));
+                this.shop_item[counter].sprite = this.icon[counter];
+                this.item_name[counter].text = this.sys.getMojiText(true, this.sys.mojiSheetNameToNo(tab, this.sys.getMojiScript(mojiScriptType.item)),
+                    this.sys.mojiIdToNo(tab, "Crystal S", this.sys.getMojiScript(mojiScriptType.item)), this.sys.getNowLangage(), this.sys.getMojiScript(mojiScriptType.item));
+            }
             return result;
         }
     }

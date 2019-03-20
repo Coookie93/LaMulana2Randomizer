@@ -29,6 +29,13 @@ namespace LM2RandomiserMod
             return result;
         }
 
+        public static ItemData GetItemData(ItemID id)
+        {
+            ItemData result = null;
+            itemData.TryGetValue(id, out result);
+            return result;
+        }
+
         //NOTE: could put these all the flags into a file and load them in, just more convinient to do this atm
         //Also the reason this is like this is modifying the flag data of flags already set is a pain since would have to get the data
         //to change anyway its alot easier to just assign them to pre create flags
@@ -74,7 +81,7 @@ namespace LM2RandomiserMod
                                                                     new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 3, flag_no1 = 30, data = 4 }}},
             {ItemID.FlameTorc,                  new L2FlagBoxEnd[]{ new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = 22, data = 1 },
                                                                     new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 3, flag_no1 = 30, data = 4 }}},
-            {ItemID.Vajra,                   new L2FlagBoxEnd[]{ new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = 23, data = 1 }}},
+            {ItemID.Vajra,                      new L2FlagBoxEnd[]{ new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = 23, data = 1 }}},
             {ItemID.PowerBand,                  new L2FlagBoxEnd[]{ new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = 24, data = 1 },
                                                                     new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 3, flag_no1 = 30, data = 4 }}},
             {ItemID.BronzeMirror,               new L2FlagBoxEnd[]{ new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = 25, data = 1 }}},
@@ -175,16 +182,26 @@ namespace LM2RandomiserMod
             {ItemID.LaMulana,                   new L2FlagBoxEnd[]{ new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = 99, data = 1 }}},
             {ItemID.LaMulana2,                  new L2FlagBoxEnd[]{ new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = 100, data = 1 }}},
 
-            {ItemID.SacredOrb0,                 new L2FlagBoxEnd[]{ new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = 101, data = 1 }}},
-            {ItemID.SacredOrb1,                 new L2FlagBoxEnd[]{ new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = 102, data = 1 }}},
-            {ItemID.SacredOrb2,                 new L2FlagBoxEnd[]{ new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = 103, data = 1 }}},
-            {ItemID.SacredOrb3,                 new L2FlagBoxEnd[]{ new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = 104, data = 1 }}},
-            {ItemID.SacredOrb4,                 new L2FlagBoxEnd[]{ new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = 105, data = 1 }}},
-            {ItemID.SacredOrb5,                 new L2FlagBoxEnd[]{ new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = 106, data = 1 }}},
-            {ItemID.SacredOrb6,                 new L2FlagBoxEnd[]{ new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = 107, data = 1 }}},
-            {ItemID.SacredOrb7,                 new L2FlagBoxEnd[]{ new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = 108, data = 1 }}},
-            {ItemID.SacredOrb8,                 new L2FlagBoxEnd[]{ new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = 109, data = 1 }}},
-            {ItemID.SacredOrb9,                 new L2FlagBoxEnd[]{ new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = 110, data = 1 }}},
+            {ItemID.SacredOrb0,                 new L2FlagBoxEnd[]{ new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = 101, data = 1 },
+                                                                    new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 0, flag_no1 = 2,   data = 1 }}},
+            {ItemID.SacredOrb1,                 new L2FlagBoxEnd[]{ new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = 102, data = 1 },
+                                                                    new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 0, flag_no1 = 2,   data = 1 }}},
+            {ItemID.SacredOrb2,                 new L2FlagBoxEnd[]{ new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = 103, data = 1 },
+                                                                    new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 0, flag_no1 = 2,   data = 1 }}},
+            {ItemID.SacredOrb3,                 new L2FlagBoxEnd[]{ new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = 104, data = 1 },
+                                                                    new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 0, flag_no1 = 2,   data = 1 }}},
+            {ItemID.SacredOrb4,                 new L2FlagBoxEnd[]{ new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = 105, data = 1 },
+                                                                    new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 0, flag_no1 = 2,   data = 1 }}},
+            {ItemID.SacredOrb5,                 new L2FlagBoxEnd[]{ new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = 106, data = 1 },
+                                                                    new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 0, flag_no1 = 2,   data = 1 }}},
+            {ItemID.SacredOrb6,                 new L2FlagBoxEnd[]{ new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = 107, data = 1 },
+                                                                    new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 0, flag_no1 = 2,   data = 1 }}},
+            {ItemID.SacredOrb7,                 new L2FlagBoxEnd[]{ new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = 108, data = 1 },
+                                                                    new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 0, flag_no1 = 2,   data = 1 }}},
+            {ItemID.SacredOrb8,                 new L2FlagBoxEnd[]{ new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = 109, data = 1 },
+                                                                    new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 0, flag_no1 = 2,   data = 1 }}},
+            {ItemID.SacredOrb9,                 new L2FlagBoxEnd[]{ new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = 110, data = 1 },
+                                                                    new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 0, flag_no1 = 2,   data = 1 }}},
 
             {ItemID.Map1,                       new L2FlagBoxEnd[]{ new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = 111, data = 1 }}},
             {ItemID.Map2,                       new L2FlagBoxEnd[]{ new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = 112, data = 1 }}},
@@ -604,6 +621,205 @@ namespace LM2RandomiserMod
             {ItemID.CrystalSkull11,              new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 150, comp = COMPARISON.Equal, seet_no2 = -1, flag_no2 =0, logic = LOGIC.NON}}}}},
             {ItemID.CrystalSkull12,              new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 151, comp = COMPARISON.Equal, seet_no2 = -1, flag_no2 =0, logic = LOGIC.NON}}}}}
         };
+
+        private static readonly Dictionary<ItemID, ItemData> itemData = new Dictionary<ItemID, ItemData>
+        {
+            {ItemID.HandScanner,                  new ItemData("H Scanner",        "H Scanner",         "item",     10,  1)},
+            {ItemID.DjedPillar,                   new ItemData("Djed Pillar",      "Djed Pillar",       "item",     50, 1)},
+            {ItemID.Mjolnir,                      new ItemData("Mjolnir",          "Mjolnir",           "item",     50, 1)},
+            {ItemID.Beherit,                      new ItemData("Beherit",          "Beherit",           "item",     50, 1)},
+            {ItemID.AncientBattery,               new ItemData("Battery",          "Battery",           "item",     50, 1)},
+            {ItemID.LampofTime,                   new ItemData("Lamp",             "Lamp",              "item",     50, 1)},
+            {ItemID.PochetteKey,                  new ItemData("P Key",            "P Key",             "item",     50, 1)},
+            {ItemID.PyramidCrystal,               new ItemData("Crystal P",        "Crystal P",         "item",     50, 1)},
+            {ItemID.CrystalSkull,                 new ItemData("Crystal S",        "Crystal S",         "item",     50, 1)},
+            {ItemID.Vessel,                       new ItemData("Vessel",           "Vessel",            "item",     50, 1)},
+            {ItemID.Pepper,                       new ItemData("Pepper",           "Pepper",            "item",     50, 1)},
+            {ItemID.EggofCreation,                new ItemData("Egg",              "Egg",               "item",     50, 1)},
+            {ItemID.GiantsFlute,                  new ItemData("G Pipe",           "G Pipe",            "item",     50, 1)},
+            {ItemID.CogofAntiquity,               new ItemData("Gear",             "Gear",              "item",     50, 1)},
+            {ItemID.MulanaTalisman,               new ItemData("M Talisman",       "M Talisman",        "item",     50, 1)},
+                                                                                                                    
+            {ItemID.MobileSuperx3P,               new ItemData("MSX3p",            "MSX3p",             "item",     50, 1)},
+            {ItemID.ShellHorn,                    new ItemData("Shell Horn",       "Shell Horn",        "item",     50, 1)},
+            {ItemID.HolyGrail,                    new ItemData("Holy Grail",       "Holy Grail",        "item",     50, 1)},
+            {ItemID.FairyPass,                    new ItemData("F Pass",           "F Pass",            "item",     50, 1)},
+            {ItemID.Gloves,                       new ItemData("Glove",            "Glove",             "item",     50, 1)},
+            {ItemID.DinosaurFigure,               new ItemData("D Figure",         "D Figure",          "item",     50, 1)},
+            {ItemID.GaleFibula,                   new ItemData("G Band",           "G Band",            "item",     50, 1)},
+            {ItemID.FlameTorc,                    new ItemData("F Torque",         "F Torque",          "item",     50, 1)},
+            {ItemID.Vajra,                        new ItemData("Vajra",            "Vajra",             "item",     50, 1)},
+            {ItemID.PowerBand,                    new ItemData("Power Band",       "Power Band",        "item",     50, 1)},
+            {ItemID.BronzeMirror,                 new ItemData("B Mirror",         "B Mirror",          "item",     50, 1)},
+            {ItemID.Perfume,                      new ItemData("Perfume",          "Perfume",           "item",     50, 1)},
+            {ItemID.IceCloak,                     new ItemData("Ice Cape",         "Ice Cape",          "item",     50, 1)},
+            {ItemID.NemeanFur,                    new ItemData("Fur",              "Fur",               "item",     50, 1)},
+            {ItemID.Gauntlet,                     new ItemData("Gauntlet",         "Gauntlet",          "item",     50, 1)},
+            {ItemID.Anchor,                       new ItemData("Anchor",           "Anchor",            "item",     50, 1)},
+            {ItemID.FreyasPendant,                new ItemData("F Pendant",        "F Pendant",         "item",     50, 1)},
+            {ItemID.TotemPole,                    new ItemData("T Pole",           "T Pole",            "item",     50, 1)},
+            {ItemID.GrappleClaw,                  new ItemData("G Claw",           "G Claw",            "item",     50, 1)},
+            {ItemID.Spaulder,                     new ItemData("Spaulder",         "Spaulder",          "item",     50, 1)},
+            {ItemID.Scalesphere,                  new ItemData("Scalesphere",      "Scalesphere",       "item",     50, 1)},
+            {ItemID.Crucifix,                     new ItemData("Crucifix",         "Crucifix",          "item",     50, 1)},
+            {ItemID.GaneshaTalisman,              new ItemData("Gold Bangle",      "Gold Bangle",       "item",     50, 1)},
+            {ItemID.MaatsFeather,                 new ItemData("M Feather",        "M Feather",         "item",     50, 1)},
+            {ItemID.Ring,                         new ItemData("Ring",             "Ring",              "item",     50, 1)},
+            {ItemID.Bracelet,                     new ItemData("Bracelet",         "Bracelet",          "item",     50, 1)},
+            {ItemID.Feather,                      new ItemData("Feather",          "Feather",           "item",     50, 1)},
+            {ItemID.Scriptures,                   new ItemData("Scriptures",       "Scriptures",        "item",     50, 1)},
+            {ItemID.FreysShip,                    new ItemData("F Ship",           "F Ship",            "item",     50, 1)},
+            {ItemID.Codices,                      new ItemData("Pandora Box",      "Pandora Box",       "item",     50, 1)},
+            {ItemID.SnowShoes,                    new ItemData("Snow Shoes",       "Snow Shoes",        "item",     50, 1)},
+            {ItemID.Harp,                         new ItemData("Harp",             "Harp",              "item",     50, 1)},
+            {ItemID.BookoftheDead,                new ItemData("Book",             "Book",              "item",     50, 1)},
+            {ItemID.LightScythe,                  new ItemData("L Scythe",         "L Scythe",          "item",     50, 1)},
+            {ItemID.DestinyTablet,                new ItemData("Destiny Tablet",   "Destiny Tablet",    "item",     50, 1)},
+            {ItemID.SecretTreasureofLife,         new ItemData("Secret Treasure",  "Secret Treasure",   "item",     50, 1)},
+            
+            {ItemID.OriginSigil,                  new ItemData("Origin Seal",      "Origin Seal",       "item",     60,  1)},
+            {ItemID.BirthSigil,                   new ItemData("Birth Seal",       "Birth Seal",        "item",     80,  1)},
+            {ItemID.LifeSigil,                    new ItemData("Life Seal",        "Life Seal",         "item",     100, 1)},
+            {ItemID.DeathSigil,                   new ItemData("Death Seal",       "Death Seal",        "item",     120, 1)},
+            
+            {ItemID.ClaydollSuit,                 new ItemData("Clay Doll",        "Clay Doll",         "fashion",  100, 1)},
+            {ItemID.KimonoCowgirl,                new ItemData("Kimono Cowgirl",   "Kimono Cowgirl",    "fashion",  0,   1)},
+            {ItemID.Valkyria,                     new ItemData("Valkyria",         "Valkyria",          "fashion",  0,   1)},
+            {ItemID.LittleDevil,                  new ItemData("Little Devil",     "Little Devil",      "fashion",  0,   1)},
+            {ItemID.EasternEurope,                new ItemData("Eastern Europe",   "Eastern Europe",    "fashion",  0,   1)},
+            
+            {ItemID.Whip,                         new ItemData("Whip",             "Whip",              "weapon",   0,   1)},
+            {ItemID.ChainWhip,                    new ItemData("Whip2",            "Whip2",             "weapon",   80,  1)},
+            {ItemID.FlailWhip,                    new ItemData("Whip3",            "Whip3",             "weapon",   160, 1)},
+            
+            {ItemID.Knife,                        new ItemData("Knife",            "Knife",             "weapon",   50,  1)},
+            {ItemID.Rapier,                       new ItemData("Rapier",           "Rapier",            "weapon",   80,  1)},
+            {ItemID.Axe,                          new ItemData("Axe",              "Axe",               "weapon",   100, 1)},
+            {ItemID.Katana,                       new ItemData("Katana",           "Katana",            "weapon",   100, 1)},
+            {ItemID.Shuriken,                     new ItemData("Shuriken",         "Shuriken",          "weapon",   60,  1)},
+            {ItemID.RollingShuriken,              new ItemData("R-Shuriken",       "R-Shuriken",        "weapon",   60,  1)},
+            {ItemID.EarthSpear,                   new ItemData("E-Spear",          "E-Spear",           "weapon",   60,  1)},
+            {ItemID.Flare,                        new ItemData("Flare Gun",        "Flare Gun",         "weapon",   60,  1)},
+            {ItemID.Bomb,                         new ItemData("Bomb",             "Bomb",              "weapon",   60,  1)},
+            {ItemID.Chakram,                      new ItemData("Chakram",          "Chakram",           "weapon",   60,  1)},
+            {ItemID.Caltrops,                     new ItemData("Caltrops",         "Caltrops",          "weapon",   60,  1)},
+            {ItemID.Pistol,                       new ItemData("Pistol",           "Pistol",            "weapon",   200, 1)},
+            
+            {ItemID.Buckler,                      new ItemData("Shield",           "Shield",            "weapon",   10,  1)},
+            {ItemID.SilverShield,                 new ItemData("Shield2",          "Shield2",           "weapon",   100, 1)},
+            {ItemID.AngelShield,                  new ItemData("Shield3",          "Shield3",           "weapon",   200, 1)},
+            
+            {ItemID.AnkhJewel,                    new ItemData("Ankh Jewel",       "Ankh Jewel",        "weapon",   50,  1)},
+            
+            {ItemID.Xelputter,                    new ItemData("Xelputter",        "Xelputter",         "soft",     80,  1)},
+            {ItemID.YagooMapReader,               new ItemData("G Map",            "G Map",             "soft",     80,  1)},
+            {ItemID.YagooMapStreet,               new ItemData("G Street",         "G Street",          "soft",     80,  1)},
+            {ItemID.TextTrax,                     new ItemData("TextTrax",         "TextTrax",          "soft",     80,  1)},
+            {ItemID.RuinsEncylopedia,             new ItemData("R Book",           "R Book",            "soft",     80,  1)},
+            {ItemID.Mantra,                       new ItemData("Mantra",           "Mantra",            "soft",     80,  1)},
+            {ItemID.Guild,                        new ItemData("Guild",            "Guild",             "soft",     80,  1)},
+            {ItemID.Research,                     new ItemData("Research",         "Research",          "soft",     80,  1)},
+            {ItemID.EngaMusica,                   new ItemData("Enga Musica",      "Enga Musica",       "soft",     80,  1)},
+            {ItemID.BeoEglana,                    new ItemData("Beo Eg-lana",      "Beo Eg-lana",       "soft",     80,  1)},
+            {ItemID.Alert,                        new ItemData("Alarm",            "Alarm",             "soft",     80,  1)},
+            {ItemID.Snapshot,                     new ItemData("Snapshots",        "Snapshots",         "soft",     80,  1)},
+            {ItemID.SkullReader,                  new ItemData("Skull",            "Skull",             "soft",     80,  1)},
+            {ItemID.RaceScanner,                  new ItemData("Race Reader",      "Race Reader",       "soft",     80,  1)},
+            {ItemID.DeathVillage,                 new ItemData("Death Village",    "Death Village",     "soft",     80,  1)},
+            {ItemID.RoseandCamelia,               new ItemData("R and C",          "R and C",           "soft",     80,  1)},
+            {ItemID.SpaceCapstarII,               new ItemData("Capstar II",       "Capstar II",        "soft",     80,  1)},
+            {ItemID.LonelyHouseMoving,            new ItemData("L House Moving",   "L House Moving",    "soft",     80,  1)},
+            {ItemID.MekuriMaster,                 new ItemData("Mekuri Master",    "Mekuri Master",     "soft",     80,  1)},
+            {ItemID.BounceShot,                   new ItemData("Bounce Shot",      "Bounce Shot",       "soft",     80,  1)},
+            {ItemID.MiracleWitch,                 new ItemData("Miracle Witch",    "Miracle Witch",     "soft",     80,  1)},
+            {ItemID.FutureDevelopmentCompany,     new ItemData("Future DC",        "Future DC",         "soft",     80,  1)},
+            {ItemID.LaMulana,                     new ItemData("La-Mulana",        "La-Mulana",         "soft",     80,  1)},
+            {ItemID.LaMulana2,                    new ItemData("La-Mulana2",       "La-Mulana2",        "soft",     80,  1)},
+
+            {ItemID.SacredOrb0,                   new ItemData("Sacred Orb",       "Sacred Orb0",       "item",     30,  1)},
+            {ItemID.SacredOrb1,                   new ItemData("Sacred Orb",       "Sacred Orb1",       "item",     40,  1)},
+            {ItemID.SacredOrb2,                   new ItemData("Sacred Orb",       "Sacred Orb2",       "item",     50,  1)},
+            {ItemID.SacredOrb3,                   new ItemData("Sacred Orb",       "Sacred Orb3",       "item",     60,  1)},
+            {ItemID.SacredOrb4,                   new ItemData("Sacred Orb",       "Sacred Orb4",       "item",     70,  1)},
+            {ItemID.SacredOrb5,                   new ItemData("Sacred Orb",       "Sacred Orb5",       "item",     80, 1)},
+            {ItemID.SacredOrb6,                   new ItemData("Sacred Orb",       "Sacred Orb6",       "item",     90, 1)},
+            {ItemID.SacredOrb7,                   new ItemData("Sacred Orb",       "Sacred Orb7",       "item",     100, 1)},
+            {ItemID.SacredOrb8,                   new ItemData("Sacred Orb",       "Sacred Orb8",       "item",     110, 1)},
+            {ItemID.SacredOrb9,                   new ItemData("Sacred Orb",       "Sacred Orb9",       "item",     120, 1)},
+
+            {ItemID.Map1,                         new ItemData("Map",              "Map1",              "item",     40,  1)},
+            {ItemID.Map2,                         new ItemData("Map",              "Map2",              "item",     40,  1)},
+            {ItemID.Map3,                         new ItemData("Map",              "Map3",              "item",     40,  1)},
+            {ItemID.Map4,                         new ItemData("Map",              "Map4",              "item",     40,  1)},
+            {ItemID.Map5,                         new ItemData("Map",              "Map5",              "item",     40,  1)},
+            {ItemID.Map6,                         new ItemData("Map",              "Map6",              "item",     40,  1)},
+            {ItemID.Map7,                         new ItemData("Map",              "Map7",              "item",     40,  1)},
+            {ItemID.Map8,                         new ItemData("Map",              "Map8",              "item",     40,  1)},
+            {ItemID.Map9,                         new ItemData("Map",              "Map9",              "item",     40,  1)},
+            {ItemID.Map10,                        new ItemData("Map",              "Map10",             "item",     40,  1)},
+            {ItemID.Map11,                        new ItemData("Map",              "Map11",             "item",     40,  1)},
+            {ItemID.Map12,                        new ItemData("Map",              "Map12",             "item",     40,  1)},
+            {ItemID.Map13,                        new ItemData("Map",              "Map13",             "item",     40,  1)},
+            {ItemID.Map14,                        new ItemData("Map",              "Map14",             "item",     40,  1)},
+            {ItemID.Map15,                        new ItemData("Map",              "Map15",             "item",     40,  1)},
+            {ItemID.Map16,                        new ItemData("Map",              "Map16",             "item",     40,  1)},
+            {ItemID.Map17,                        new ItemData("Map",              "Map17",             "item",     40,  1)},
+            {ItemID.Map18,                        new ItemData("Map",              "Map18",             "item",     40,  1)},
+            {ItemID.Map19,                        new ItemData("Map",              "Map19",             "item",     40,  1)},
+            {ItemID.Map20,                        new ItemData("Map",              "Map20",             "item",     40,  1)},
+            
+            {ItemID.AnkhJewel1,                   new ItemData("Ankh Jewel",       "Ankh Jewel1",       "weapon",   50,  1)},
+            {ItemID.AnkhJewel2,                   new ItemData("Ankh Jewel",       "Ankh Jewel2",       "weapon",   50,  1)},
+            {ItemID.AnkhJewel3,                   new ItemData("Ankh Jewel",       "Ankh Jewel3",       "weapon",   50,  1)},
+            {ItemID.AnkhJewel4,                   new ItemData("Ankh Jewel",       "Ankh Jewel4",       "weapon",   50,  1)},
+            {ItemID.AnkhJewel5,                   new ItemData("Ankh Jewel",       "Ankh Jewel5",       "weapon",   50,  1)},
+            {ItemID.AnkhJewel6,                   new ItemData("Ankh Jewel",       "Ankh Jewel6",       "weapon",   50,  1)},
+            {ItemID.AnkhJewel7,                   new ItemData("Ankh Jewel",       "Ankh Jewel7",       "weapon",   50,  1)},
+            {ItemID.AnkhJewel8,                   new ItemData("Ankh Jewel",       "Ankh Jewel8",       "weapon",   50,  1)},
+            {ItemID.AnkhJewel9,                   new ItemData("Ankh Jewel",       "Ankh Jewel9",       "weapon",   50,  1)},
+            
+            {ItemID.CrystalSkull1,                new ItemData("Crystal S",        "Crystal S1",        "item",     60,  1)},
+            {ItemID.CrystalSkull2,                new ItemData("Crystal S",        "Crystal S2",        "item",     60,  1)},
+            {ItemID.CrystalSkull3,                new ItemData("Crystal S",        "Crystal S3",        "item",     60,  1)},
+            {ItemID.CrystalSkull4,                new ItemData("Crystal S",        "Crystal S4",        "item",     60,  1)},
+            {ItemID.CrystalSkull5,                new ItemData("Crystal S",        "Crystal S5",        "item",     60,  1)},
+            {ItemID.CrystalSkull6,                new ItemData("Crystal S",        "Crystal S6",        "item",     60,  1)},
+            {ItemID.CrystalSkull7,                new ItemData("Crystal S",        "Crystal S7",        "item",     60,  1)},
+            {ItemID.CrystalSkull8,                new ItemData("Crystal S",        "Crystal S8",        "item",     60,  1)},
+            {ItemID.CrystalSkull9,                new ItemData("Crystal S",        "Crystal S9",        "item",     60,  1)},
+            {ItemID.CrystalSkull10,               new ItemData("Crystal S",        "Crystal S10",       "item",     60,  1)},
+            {ItemID.CrystalSkull11,               new ItemData("Crystal S",        "Crystal S11",       "item",     60,  1)},
+            {ItemID.CrystalSkull12,               new ItemData("Crystal S",        "Crystal S12",       "item",     60,  1)},
+
+            {ItemID.Weights,                      new ItemData("Weight",           "Weight",            "item",     10,  5)},
+            {ItemID.ShurikenAmmo,                 new ItemData("Shuriken-b",       "Shuriken-b",        "weapon",   10,  10)},
+            {ItemID.RollingShurikenAmmo,          new ItemData("R-Shuriken-b",     "R-Shuriken-b",      "weapon",   10,  10)},
+            {ItemID.EarthSpearAmmo,               new ItemData("E-Spear-b",        "E-Spear-b",         "weapon",   20,  10)},
+            {ItemID.FlareAmmo,                    new ItemData("Flare Gun-b",      "Flare Gun-b",       "weapon",   40,  10)},
+            {ItemID.BombAmmo,                     new ItemData("Bomb-b",           "Bomb-b",            "weapon",   100, 5)},
+            {ItemID.ChakramAmmo,                  new ItemData("Chakram-b",        "Chakram-b",         "weapon",   40,  1)},
+            {ItemID.CaltropsAmmo,                 new ItemData("Caltrops-b",       "Caltrops-b",        "weapon",   30,  10)},
+            {ItemID.PistolAmmo,                   new ItemData("Pistol-b",         "Pistol-b",          "weapon",   500, 1)}
+        };
+
+    }
+
+    public class ItemData
+    {
+        public string boxName;
+        public string shopName;
+        public string shopType;
+        public int shopPrice;
+        public int shopAmount;
+
+        public ItemData(string boxName, string shopName, string type, int price, int amount)
+        {
+            this.boxName = boxName;
+            this.shopName = shopName;
+            this.shopType = type;
+            this.shopPrice = price;
+            this.shopAmount = amount;
+        }
     }
 
     //NOTE:there is an existing enum for the item names in the game, the problem is they have a single enum for all whips and all shields, so using this

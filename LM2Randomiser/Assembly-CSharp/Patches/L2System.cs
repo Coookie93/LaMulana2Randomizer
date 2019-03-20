@@ -12,13 +12,16 @@ namespace LM2RandomiserMod
         [MonoModIgnore]
         private L2ShopDataBase l2sdb;
 
+        [MonoModIgnore]
+        private L2TalkDataBase l2tdb;
+
         private void orig_Start() { }
         private void Start()
         {
             orig_Start();
             GameObject obj = new GameObject();
             L2Rando component = obj.AddComponent<L2Rando>() as L2Rando;
-            component.Initialise(this.l2sdb, this);
+            component.Initialise(this.l2sdb, this.l2tdb, this);
             DontDestroyOnLoad(obj);
         }
     }
