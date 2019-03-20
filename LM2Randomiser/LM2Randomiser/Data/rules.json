@@ -86,15 +86,15 @@
       "Korobok Shop 1: True",
       "Korobok Shop 2: True",
       "Korobok Shop 3: True",
-      "Ratatoskr 1: True",
-      "Nidhogg: (CanUse(Flare) or CanUse(Shuriken)) and OrbCount(1)",
+      "Ratatoskr 1: OrbCount(1)",
+      "Nidhogg: (CanUse(Flare) or CanUse(Shuriken)) and OrbCount(2)",
       "Fafnir: OrbCount(1) and AnkhCount(4)"
     ],
     "exits": [
       "Divine Fortress Entrance: GuardianKills(1)",
       "Annwfn Main: Has(Origin Sigil)",
       "Annwfn Right Entrance: IsDead(Ratatoskr 1) and CanUse(Rolling Shuriken)",
-      "Icefire Treetop Entrance: IsDead(Nidhogg) and (CanWarp or (Has(Ice Cloak) or OrbCount(3)) or (Has(Feather) and Has(Grapple)) or CanReach(Icefire Treetop Main))",
+      "Icefire Treetop Entrance: IsDead(Nidhogg) and (CanWarp or (Has(Ice Cloak) or OrbCount(3)) or (Has(Feather) and Has(Grapple Claw)) or CanReach(Icefire Treetop Main))",
       "Immortal Battlefield Left: Has(Birth Sigil) and (Has(Feather) or Has(Grapple Claw))"
     ]
   },
@@ -114,7 +114,7 @@
       "Origin Seal Chest: IsDead(Hugin and Munin)",
       "Frey Ship: CanReach(Annwfn Right) and Has(Hand Scanner) and (Has(Origin Sigil) or CanReach(Divine Fortress Top))",
       "Heaven Mantra Mural: Has(Snapshot)",
-      "Hugin and Munin: True"
+      "Hugin and Munin: OrbCount(2)"
     ],
     "exits": [
       "Divine Fortress Main: CanUse(Shuriken)"
@@ -130,7 +130,7 @@
       "Shuhoka Shop 3: Has(Birth Sigil)"
     ],
     "exits": [
-      "Divine Fortress Top: Has(Feather) or Has(Feather)",
+      "Divine Fortress Top: Has(Feather) or Has(Grapple Claw)",
       "Valhalla Main: True"
     ]
   },
@@ -166,7 +166,7 @@
     "locations":[
       "Sacred Orb Chest Annwfn: Has(Life Sigil) and Has(Feather)",
       "Silver Shield Puzzle Reward: CanChant(Earth)",
-      "Ixtab: OrbCount(2) and CanUse(Shuriken) or CanUse(Flare) or CanUse(Earth Spear) or CanUse(Chakram)"
+      "Ixtab: OrbCount(3) and CanUse(Shuriken) or CanUse(Flare) or CanUse(Earth Spear) or CanUse(Chakram)"
     ],
     "exits":[
       "Annwfn Main: IsDead(Ixtab) and Has(Feather)",
@@ -204,7 +204,7 @@
       "Btk Shop 1: True",
       "Btk Shop 2: True",
       "Btk Shop 3: True",
-      "Vedfolnir: OrbCount(1)",
+      "Vedfolnir: OrbCount(2)",
       "Mino Shop 1: Has(Feather)",
       "Mino Shop 2: Has(Feather)",
       "Mino Shop 3: Has(Feather)",
@@ -254,12 +254,12 @@
       "Vritra: OrbCount(3) and AnkhCount(6) and (CanUse(Shuriken) or CanUse(Earth Spear) or CanUse(Chakram) or CanUse(Bomb))",
       "Dissonance (Valhalla): Has(Beherit) and IsDead(Vritra)"
     ],
-    "exits":[
+    "exits": [
       "Valhalla Top: Has(Feather) or CanChant(Heaven)",
       "Shrine of the Frost Giants Blood: CanWarp or CanSpinCorridor or (IsDead(Tezcatlipoca) and CanReach(Shrine of the Frost Giants Main) and Has(Feather) and PuzzleFinished(Bergelmir))",
-      "Ancient Chaos Blood: CanWarp or CanSpinCorridor",
-      "Hall of Malice: CanWarp or CanSpinCorridor",
-      "Dark Lords Mausoleum Mid: CanWarp or CanSpinCorridor",
+      "Ancient Chaos Blood: CanSpinCorridor",
+      "Hall of Malice: CanSpinCorridor",
+      "Dark Lords Mausoleum Mid: CanSpinCorridor",
       "Eternal Prison Doom: CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Right)))"
     ]
   },
@@ -323,7 +323,7 @@
       "Mulbruk Item: True",
       "Ratatoskr 2: True",
       "Svipdagr: OrbCount(2)",
-      "Jormangund: Has(Dinosaur Figure) and Has(Pochette Key) and OrbCount(5) and AnkhCount(4) and (Has(Chain Whip) or Has(Axe) or Has(Katana) or CanUse(Flare))"
+      "Jormangund: Has(Dinosaur Figure) and Has(Pochette Key) and OrbCount(6) and AnkhCount(4) and (Has(Chain Whip) or Has(Axe) or Has(Katana)) and (CanUse(Flare) or CanUse(Shuriken) or CanUse(Earth Spear))"
     ],
     "exits":[
       "Immortal Battlefield Top: CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Rolling Shuriken) or CanUse(Caltrops)",
@@ -418,7 +418,7 @@
       "Balor: (Has(Chain Whip) or Has(Axe) or Has(Katana)) and OrbCount(4)"
     ],
     "exits":[
-      "Valhalla Top Right: Has(Claydoll Suit) and GuardianKills(5)"
+      "Valhalla Top Right: Has(Claydoll Suit) and GuardianKills(5) and IsDead(Balor)"
     ]
   },
   {
@@ -429,9 +429,9 @@
     "exits":[
       "Shrine of the Frost Giants Left: Has(Grapple Claw) and IsDead(Tezcatlipoca)",
       "Ancient Chaos Blood: CanWarp or CanSpinCorridor",
-      "Hall of Malice: CanWarp or CanSpinCorridor",
-      "Dark Lords Mausoleum Mid: CanWarp or CanSpinCorridor",
-      "Valhalla Main: CanWarp or CanSpinCorridor",
+      "Hall of Malice: CanSpinCorridor",
+      "Dark Lords Mausoleum Mid: CanSpinCorridor",
+      "Valhalla Main: CanSpinCorridor",
       "Eternal Prison Doom: CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Right)))"
     ]
   },
@@ -452,7 +452,7 @@
   {
     "areaName": "Shrine of the Frost Giants Fenrir",
     "locations":[
-      "Fenrir: Has(Flame Torc) and Has(Silver Shield) and OrbCount(7)",
+      "Fenrir: Has(Flame Torc) and (Has(Chain Whip) or Has(Axe) or Has(Katana)) and Has(Silver Shield) and OrbCount(7)",
       "Liquour: CanChant(Moon) and CanChant(Mother) and CanChant(Child) and Has(Vessel)"
     ],
     "exits":[]
@@ -509,9 +509,9 @@
       "Dark Lords Mausoleum Main: Has(Feather) or CanWarp",
       "Dark Lords Mausoleum Top: Has(Feather)",
       "Valhalla Main: CanWarp or CanSpinCorridor",
-      "Shrine of the Frost Giants Blood: CanWarp or CanSpinCorridor",
-      "Ancient Chaos Blood: CanWarp or CanSpinCorridor",
-      "Hall of Malice: CanWarp or CanSpinCorridor",
+      "Shrine of the Frost Giants Blood:CanSpinCorridor",
+      "Ancient Chaos Blood: CanSpinCorridor",
+      "Hall of Malice: CanSpinCorridor",
       "Eternal Prison Doom: CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Right)))"
     ]
   },
@@ -633,7 +633,7 @@
     ],
     "exits" :[
       "Takamagahara Shrine Blood: Has(Feather) and GuardianKills(5)",
-      "Dark Lords Mausoleum Mid: CanWarp or CanSpinCorridor",
+      "Dark Lords Mausoleum Mid: CanSpinCorridor",
       "Hall of Malice: CanWarp or CanSpinCorridor or CanReach(Heavens Labyrinth Spun)",
       "Eternal Prison Doom: CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Right)))"
     ]
@@ -648,8 +648,8 @@
     ],
     "exits":[
       "Hall of Malice Awoken: Has(Cog of Antiquity) and OrbCount(7)",
-      "Ancient Chaos Blood: CanWarp or CanSpinCorridor",
-      "Shrine of the Frost Giants Blood: CanWarp or CanSpinCorridor",
+      "Ancient Chaos Blood: CanSpinCorridor",
+      "Shrine of the Frost Giants Blood: CanSpinCorridor",
       "Eternal Prison Doom: CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Right)))"
     ]
   },
