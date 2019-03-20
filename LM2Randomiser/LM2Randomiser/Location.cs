@@ -221,6 +221,7 @@ namespace LM2Randomiser
         LightScytheItem,
         BookoftheDeadChest,
         DeathSigilChest,
-        BombPuzzleReward
+        BombPuzzleReward,
+        SecretTreasureofLifeItem
     }
 }

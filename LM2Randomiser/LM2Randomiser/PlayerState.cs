@@ -12,12 +12,12 @@ namespace LM2Randomiser
         readonly string[] bossNames = {"Fafnir", "Surtr", "Vritra", "Kujata", "Aten-Ra", "Jormangund", "Anu", "Echidna", "Hel"};
 
         //TODO?? change all these keys to ids will have to rewrite the rules where the value contains spaces
-        Dictionary<string, bool> areaChecks;
-        Dictionary<string, bool> entraceChecks;
-        Dictionary<string, bool> collectedLocations;
-        Dictionary<string, int> collectedItems;
-
-        Randomiser World;
+        public Dictionary<string, bool> areaChecks;
+        public Dictionary<string, bool> entraceChecks;
+        public Dictionary<string, bool> collectedLocations;
+        public Dictionary<string, int> collectedItems;
+        
+        public Randomiser World;
 
         public PlayerState(Randomiser world)
         {
@@ -207,7 +207,7 @@ namespace LM2Randomiser
             }
         }
 
-        private void ResetCheckedAreasAndEntrances()
+        public void ResetCheckedAreasAndEntrances()
         {
             //reset areas
             Dictionary<string, bool> temp = new Dictionary<string, bool>();
@@ -232,7 +232,7 @@ namespace LM2Randomiser
             entraceChecks = temp;
         }
 
-        private List<Location> GetReachableLocations(List<Location> requiredLocations)
+        public List<Location> GetReachableLocations(List<Location> requiredLocations)
         {
             List<Location> locations = new List<Location>();
 

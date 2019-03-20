@@ -93,6 +93,30 @@ namespace LM2Randomiser.Utils
                             }
                         }
                     }
+
+                    sr.WriteLine();
+                    sr.WriteLine("Expected Playthrough");
+
+                    PlayerState playthrough = new PlayerState(randomiser);
+                    List<Location> reachableLocations;
+
+                    do
+                    {
+                        reachableLocations = playthrough.GetReachableLocations(randomiser.GetPlacedRequiredItemLocations());
+                        sr.WriteLine("{");
+                        foreach (var location in reachableLocations)
+                        {
+                            playthrough.CollectItem(location.item);
+                            playthrough.collectedLocations.Add(location.name, true);
+                            if ((int)location.item.id < 155)
+                            {
+                                sr.WriteLine("  {0} -> {1}", location.name, location.item.name);
+                            }
+                        }
+                        sr.WriteLine("}");
+                        playthrough.ResetCheckedAreasAndEntrances();
+                        
+                    } while (reachableLocations.Count > 0);
                 }
             }
             catch (Exception ex)
@@ -103,7 +127,6 @@ namespace LM2Randomiser.Utils
 
             return true;
         }
-
         public static bool WriteSeedFile(Randomiser randomiser)
         {
             string currentDir = Directory.GetCurrentDirectory();
