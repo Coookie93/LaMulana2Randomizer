@@ -348,8 +348,8 @@ namespace LM2RandomiserMod
             {ItemID.EasternEurope,                  new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 60,  comp = COMPARISON.GreaterEq, seet_no2 = -1, flag_no2 =1, logic = LOGIC.NON}}}}},
 
             {ItemID.Whip,                           new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 62,  comp = COMPARISON.GreaterEq, seet_no2 = -1, flag_no2 =1, logic = LOGIC.NON}}}}},
-            {ItemID.ChainWhip,                      new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 62,  comp = COMPARISON.GreaterEq, seet_no2 = -1, flag_no2 =1, logic = LOGIC.NON}}}}},
-            {ItemID.FlailWhip,                      new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 62,  comp = COMPARISON.GreaterEq, seet_no2 = -1, flag_no2 =1, logic = LOGIC.NON}}}}},
+            {ItemID.ChainWhip,                      new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 62,  comp = COMPARISON.GreaterEq, seet_no2 = -1, flag_no2 =2, logic = LOGIC.NON}}}}},
+            {ItemID.FlailWhip,                      new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 62,  comp = COMPARISON.GreaterEq, seet_no2 = -1, flag_no2 =3, logic = LOGIC.NON}}}}},
 
             {ItemID.Knife,                          new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 63,  comp = COMPARISON.GreaterEq, seet_no2 = -1, flag_no2 =1, logic = LOGIC.NON}}}}},
             {ItemID.Rapier,                         new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 64,  comp = COMPARISON.GreaterEq, seet_no2 = -1, flag_no2 =1, logic = LOGIC.NON}}}}},
@@ -365,8 +365,8 @@ namespace LM2RandomiserMod
             {ItemID.Pistol,                         new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 74,  comp = COMPARISON.GreaterEq, seet_no2 = -1, flag_no2 =1, logic = LOGIC.NON}}}}},
 
             {ItemID.Buckler,                        new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 75,  comp = COMPARISON.GreaterEq, seet_no2 = -1, flag_no2 =1, logic = LOGIC.NON}}}}},
-            {ItemID.SilverShield,                   new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 75,  comp = COMPARISON.GreaterEq, seet_no2 = -1, flag_no2 =1, logic = LOGIC.NON}}}}},
-            {ItemID.AngelShield,                    new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 75,  comp = COMPARISON.GreaterEq, seet_no2 = -1, flag_no2 =1, logic = LOGIC.NON}}}}},
+            {ItemID.SilverShield,                   new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 75,  comp = COMPARISON.GreaterEq, seet_no2 = -1, flag_no2 =2, logic = LOGIC.NON}}}}},
+            {ItemID.AngelShield,                    new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 75,  comp = COMPARISON.GreaterEq, seet_no2 = -1, flag_no2 =3, logic = LOGIC.NON}}}}},
 
             {ItemID.AnkhJewel,                      new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 76,  comp = COMPARISON.GreaterEq, seet_no2 = -1, flag_no2 =1, logic = LOGIC.NON}}}}},
 
@@ -518,8 +518,8 @@ namespace LM2RandomiserMod
             {ItemID.LittleDevil,                 new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 59,  comp = COMPARISON.Equal, seet_no2 = -1, flag_no2 =0, logic = LOGIC.NON}}}}},
             {ItemID.EasternEurope,               new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 60,  comp = COMPARISON.Equal, seet_no2 = -1, flag_no2 =0, logic = LOGIC.NON}}}}},
 
-            {ItemID.Whip,                        new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 62,  comp = COMPARISON.LessEq, seet_no2 = -1, flag_no2 =2, logic = LOGIC.NON}}}}},
-            {ItemID.ChainWhip,                   new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 62,  comp = COMPARISON.LessEq, seet_no2 = -1, flag_no2 =2, logic = LOGIC.NON}}}}},
+            {ItemID.Whip,                        new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 62,  comp = COMPARISON.LessEq, seet_no2 = -1, flag_no2 =0, logic = LOGIC.NON}}}}},
+            {ItemID.ChainWhip,                   new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 62,  comp = COMPARISON.LessEq, seet_no2 = -1, flag_no2 =1, logic = LOGIC.NON}}}}},
             {ItemID.FlailWhip,                   new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 62,  comp = COMPARISON.LessEq, seet_no2 = -1, flag_no2 =2, logic = LOGIC.NON}}}}},
 
             {ItemID.Knife,                       new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 63,  comp = COMPARISON.Equal, seet_no2 = -1, flag_no2 =0, logic = LOGIC.NON}}}}},
@@ -535,8 +535,8 @@ namespace LM2RandomiserMod
             {ItemID.Caltrops,                    new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 73,  comp = COMPARISON.Equal, seet_no2 = -1, flag_no2 =0, logic = LOGIC.NON}}}}},
             {ItemID.Pistol,                      new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 74,  comp = COMPARISON.Equal, seet_no2 = -1, flag_no2 =0, logic = LOGIC.NON}}}}},
 
-            {ItemID.Buckler,                     new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 75,  comp = COMPARISON.LessEq, seet_no2 = -1, flag_no2 =2, logic = LOGIC.NON}}}}},
-            {ItemID.SilverShield,                new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 75,  comp = COMPARISON.LessEq, seet_no2 = -1, flag_no2 =2, logic = LOGIC.NON}}}}},
+            {ItemID.Buckler,                     new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 75,  comp = COMPARISON.LessEq, seet_no2 = -1, flag_no2 =0, logic = LOGIC.NON}}}}},
+            {ItemID.SilverShield,                new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 75,  comp = COMPARISON.LessEq, seet_no2 = -1, flag_no2 =1, logic = LOGIC.NON}}}}},
             {ItemID.AngelShield,                 new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 75,  comp = COMPARISON.LessEq, seet_no2 = -1, flag_no2 =2, logic = LOGIC.NON}}}}},
 
             {ItemID.AnkhJewel,                   new L2FlagBoxParent[]{ new L2FlagBoxParent { logoc =LOGIC.NON, BOX = new L2FlagBox[] { new L2FlagBox {seet_no1 = 2, flag_no1 = 76,  comp = COMPARISON.Equal, seet_no2 = -1, flag_no2 =0, logic = LOGIC.NON}}}}},
