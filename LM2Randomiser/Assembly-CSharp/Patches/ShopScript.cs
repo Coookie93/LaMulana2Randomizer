@@ -33,34 +33,35 @@ namespace LM2RandomiserMod.Patches
                                     "Chakram", "Caltrops, Clay Doll", "Origin Seal", "Birth Seal", "Life Seal", "Death Seal"};
 
             bool result = orig_itemCallBack(tab, name, vale, num);
-            if (result && this.sys.isMap(name))
+            if (result)
             {
                 int counter = this.item_copunter - 1;
-                this.icon[counter] = L2SystemCore.getMenuIconSprite(L2SystemCore.getItemData("Map"));
-                this.shop_item[counter].sprite = this.icon[counter];
-            }
-            else if (result && name.Contains("Sacred Orb"))
-            {
-                int counter = this.item_copunter - 1;
-                this.icon[counter] = L2SystemCore.getMenuIconSprite(L2SystemCore.getItemData("Sacred Orb"));
-                this.shop_item[counter].sprite = this.icon[counter];
-                this.item_name[counter].text = this.sys.getMojiText(true, this.sys.mojiSheetNameToNo(tab, this.sys.getMojiScript(mojiScriptType.item)),
-                    this.sys.mojiIdToNo(tab, "Sacred Orb", this.sys.getMojiScript(mojiScriptType.item)), this.sys.getNowLangage(), this.sys.getMojiScript(mojiScriptType.item));
-            }
-            else if (result && name.Contains("Crystal S"))
-            {
-                int counter = this.item_copunter - 1;
-                this.icon[counter] = L2SystemCore.getMenuIconSprite(L2SystemCore.getItemData("Crystal S"));
-                this.shop_item[counter].sprite = this.icon[counter];
-                this.item_name[counter].text = this.sys.getMojiText(true, this.sys.mojiSheetNameToNo(tab, this.sys.getMojiScript(mojiScriptType.item)),
-                    this.sys.mojiIdToNo(tab, "Crystal S", this.sys.getMojiScript(mojiScriptType.item)), this.sys.getNowLangage(), this.sys.getMojiScript(mojiScriptType.item));
-            }
-            else
-            {
-                if(Array.IndexOf(weapons,name) > -1) {
-                    int counter = this.item_copunter - 1;
-                    this.icon[counter] = L2SystemCore.getMenuIconSprite(L2SystemCore.getItemData(name));
+                if (this.sys.isMap(name))
+                {
+                    this.icon[counter] = L2SystemCore.getMenuIconSprite(L2SystemCore.getItemData("Map"));
                     this.shop_item[counter].sprite = this.icon[counter];
+                }
+                else if (name.Contains("Sacred Orb"))
+                {
+                    this.icon[counter] = L2SystemCore.getMenuIconSprite(L2SystemCore.getItemData("Sacred Orb"));
+                    this.shop_item[counter].sprite = this.icon[counter];
+                    this.item_name[counter].text = this.sys.getMojiText(true, this.sys.mojiSheetNameToNo(tab, this.sys.getMojiScript(mojiScriptType.item)),
+                        this.sys.mojiIdToNo(tab, "Sacred Orb", this.sys.getMojiScript(mojiScriptType.item)), this.sys.getNowLangage(), this.sys.getMojiScript(mojiScriptType.item));
+                }
+                else if (name.Contains("Crystal S"))
+                {
+                    this.icon[counter] = L2SystemCore.getMenuIconSprite(L2SystemCore.getItemData("Crystal S"));
+                    this.shop_item[counter].sprite = this.icon[counter];
+                    this.item_name[counter].text = this.sys.getMojiText(true, this.sys.mojiSheetNameToNo(tab, this.sys.getMojiScript(mojiScriptType.item)),
+                        this.sys.mojiIdToNo(tab, "Crystal S", this.sys.getMojiScript(mojiScriptType.item)), this.sys.getNowLangage(), this.sys.getMojiScript(mojiScriptType.item));
+                }
+                else
+                {
+                    if (Array.IndexOf(weapons, name) > -1)
+                    {
+                        this.icon[counter] = L2SystemCore.getMenuIconSprite(L2SystemCore.getItemData(name));
+                        this.shop_item[counter].sprite = this.icon[counter];
+                    }
                 }
             }
             return result;

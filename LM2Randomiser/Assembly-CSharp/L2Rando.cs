@@ -162,7 +162,7 @@ namespace LM2RandomiserMod
             {
                 if (locationToItemMap != null)
                 {
-                    error += "total items randomised: " + locationToItemMap.Count;
+                    error += ("total items randomised: " + locationToItemMap.Count + ", should be 173.");
                 }
             }
         }
@@ -201,13 +201,35 @@ namespace LM2RandomiserMod
                 ItemID newItemID = (ItemID)id;
 
                 //get the item data for the new item, only really need the
-                ItemData newItemData = ItemFlags.GetItemData(newItemID);
+                ItemInfo newItemInfo = ItemFlags.GetItemData(newItemID);
+                ItemData newItemData = L2SystemCore.getItemData(newItemInfo.shopName);
 
                 //the flags the box uses to check whether you have that item already if true the box will be open
                 //im pretty sure that it wont spawn the item if it this check is true on intialisation therefore if
                 //you collect the item that was originally in the box you now cant get the item in the box since it
                 //only spawns the item on box open
-                box.openFlags = ItemFlags.GetBoxOpenFlags(newItemID);
+
+                //box.openFlags = ItemFlags.GetBoxOpenFlags(newItemID);
+                for (int i = 0; i < box.openFlags.Length; i++)
+                {
+                    for (int j = 0; j < box.openFlags[0].BOX.Length; j++)
+                    {
+                        L2FlagBox flagBox = box.openFlags[i].BOX[j];
+                        if (flagBox.seet_no1 == 2)
+                        {
+                            flagBox.flag_no1 = (int)newItemData.getItemName();
+
+                            if (newItemID == ItemID.ChainWhip || newItemID == ItemID.SilverShield)
+                            {
+                                flagBox.flag_no2 = 2;
+                            }
+                            else if (newItemID == ItemID.FlailWhip || newItemID == ItemID.AngelShield)
+                            {
+                                flagBox.flag_no2 = 3;
+                            }
+                        }
+                    }
+                }
 
                 AbstractItemBase item = box.itemObj.GetComponent<AbstractItemBase>();
                 
@@ -215,18 +237,38 @@ namespace LM2RandomiserMod
                 //changed because if you only change the label the it will use the original items flags to check. This means that 
                 //if you change another item to what was this items original is and collect it when it comes to collecting the item 
                 //this has been changed too if won't be active as it thinks you already have it
-                item.itemActiveFlag = ItemFlags.GetActiveItemFlags(newItemID);
 
+                //item.itemActiveFlag = ItemFlags.GetActiveItemFlags(newItemID);
+                for (int i = 0; i < item.itemActiveFlag.Length; i++)
+                {
+                    for (int j = 0; j < item.itemActiveFlag[0].BOX.Length; j++)
+                    {
+                        L2FlagBox flagBox = item.itemActiveFlag[i].BOX[j];
+                        if (flagBox.seet_no1 == 2)
+                        {
+                            flagBox.flag_no1 = (int)newItemData.getItemName();
+
+                            if (newItemID == ItemID.ChainWhip || newItemID == ItemID.SilverShield)
+                            {
+                                flagBox.flag_no2 = 1;
+                            }
+                            else if (newItemID == ItemID.FlailWhip || newItemID == ItemID.AngelShield)
+                            {
+                                flagBox.flag_no2 = 2;
+                            }
+                        }
+                    }
+                }
                 //flags that the item sets when you collect it, important to change otherwise the original item will also be collected
                 //when you pick up the item because by default it sets the original items flags again, also other flags can be set here
                 //usually items that add to flags that are used as a type of counter eg.Sacred Orbs orb count
                 item.itemGetFlags = ItemFlags.GetItemGetFlags(newItemID);
 
                 //name used when calling setitem
-                item.itemLabel = newItemData.boxName;
+                item.itemLabel = newItemInfo.boxName;
 
                 //change the sprite to match the new item
-                Sprite sprite = L2SystemCore.getMapIconSprite(L2SystemCore.getItemData(newItemData.boxName));
+                Sprite sprite = L2SystemCore.getMapIconSprite(L2SystemCore.getItemData(newItemInfo.boxName));
                 item.gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
             }
         }
@@ -238,14 +280,36 @@ namespace LM2RandomiserMod
             {
                 ItemID newItemID = (ItemID)id;
 
-                //get the item data for the new item, only really need the name here
-                ItemData newItemData = ItemFlags.GetItemData(newItemID);
+                //get the item data for the new item, only really need the names here
+                ItemInfo newItemInfo = ItemFlags.GetItemData(newItemID);
+                ItemData newItemData = L2SystemCore.getItemData(newItemInfo.shopName);
 
                 //flags the item uses to check to see if it should be active and visible to the user, important that these are
                 //changed because if you only change the label the it will use the original items flags to check. This means that 
                 //if you change another item to what was this items original is and collect it when it comes to collecting the item 
                 //this has been changed too if won't be active as it thinks you already have it
-                eventItem.itemActiveFlag = ItemFlags.GetActiveItemFlags(newItemID);
+                
+                //eventItem.itemActiveFlag = ItemFlags.GetActiveItemFlags(newItemID);
+                for (int i = 0; i < eventItem.itemActiveFlag.Length; i++)
+                {
+                    for (int j = 0; j < eventItem.itemActiveFlag[0].BOX.Length; j++)
+                    {
+                        L2FlagBox flagBox = eventItem.itemActiveFlag[i].BOX[j];
+                        if (flagBox.seet_no1 == 2)
+                        {
+                            flagBox.flag_no1 = (int)newItemData.getItemName();
+
+                            if(newItemID == ItemID.ChainWhip || newItemID == ItemID.SilverShield)
+                            {
+                                flagBox.flag_no2 = 1;
+                            }
+                            else if (newItemID == ItemID.FlailWhip || newItemID == ItemID.AngelShield)
+                            {
+                                flagBox.flag_no2 = 2;
+                            }
+                        }
+                    }
+                }
 
                 //flags that the item sets when you collect it, important to change otherwise the original item will also be collected
                 //when you pick up the item because by default it sets the original items flags again, also other flags can be set here
@@ -253,10 +317,10 @@ namespace LM2RandomiserMod
                 eventItem.itemGetFlags = ItemFlags.GetItemGetFlags(newItemID);
 
                 //name used when calling setitem
-                eventItem.itemLabel = newItemData.boxName;
+                eventItem.itemLabel = newItemInfo.boxName;
 
                 //change the sprite to match the new item
-                Sprite sprite = L2SystemCore.getMapIconSprite(L2SystemCore.getItemData(newItemData.boxName));
+                Sprite sprite = L2SystemCore.getMapIconSprite(L2SystemCore.getItemData(newItemInfo.boxName));
                 eventItem.gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
             }
         }
@@ -299,7 +363,7 @@ namespace LM2RandomiserMod
                 ItemID newItemID = (ItemID)id;
                 //get the item data for the new item, only really need the
 
-                ItemData newItemData = ItemFlags.GetItemData(newItemID);
+                ItemInfo newItemData = ItemFlags.GetItemData(newItemID);
                 return String.Format("[@sitm,{0},{1},{2},{3}]", newItemData.shopType, newItemData.shopName, newItemData.shopPrice, newItemData.shopAmount);
             }
 
@@ -406,7 +470,7 @@ namespace LM2RandomiserMod
                 ItemID newItemID = (ItemID)id;
                 //get the item data for the new item, only really need the
 
-                ItemData newItemData = ItemFlags.GetItemData(newItemID);
+                ItemInfo newItemData = ItemFlags.GetItemData(newItemID);
 
                 //Sacred orbs might require some special work here if setting the orbcount flag doesnt give you the level up
                 string take;
@@ -452,7 +516,7 @@ namespace LM2RandomiserMod
                 
                 ItemID newItemID = (ItemID)id;
 
-                ItemData newItemData = ItemFlags.GetItemData(newItemID);
+                ItemInfo newItemData = ItemFlags.GetItemData(newItemID);
 
                 if (newItemData.boxName.Equals("Crystal S"))
                 {
