@@ -212,7 +212,7 @@ namespace LM2RandomiserMod
                 //box.openFlags = ItemFlags.GetBoxOpenFlags(newItemID);
                 for (int i = 0; i < box.openFlags.Length; i++)
                 {
-                    for (int j = 0; j < box.openFlags[0].BOX.Length; j++)
+                    for (int j = 0; j < box.openFlags[i].BOX.Length; j++)
                     {
                         L2FlagBox flagBox = box.openFlags[i].BOX[j];
                         if (flagBox.seet_no1 == 2)
@@ -241,7 +241,7 @@ namespace LM2RandomiserMod
                 //item.itemActiveFlag = ItemFlags.GetActiveItemFlags(newItemID);
                 for (int i = 0; i < item.itemActiveFlag.Length; i++)
                 {
-                    for (int j = 0; j < item.itemActiveFlag[0].BOX.Length; j++)
+                    for (int j = 0; j < item.itemActiveFlag[i].BOX.Length; j++)
                     {
                         L2FlagBox flagBox = item.itemActiveFlag[i].BOX[j];
                         if (flagBox.seet_no1 == 2)
@@ -292,7 +292,7 @@ namespace LM2RandomiserMod
                 //eventItem.itemActiveFlag = ItemFlags.GetActiveItemFlags(newItemID);
                 for (int i = 0; i < eventItem.itemActiveFlag.Length; i++)
                 {
-                    for (int j = 0; j < eventItem.itemActiveFlag[0].BOX.Length; j++)
+                    for (int j = 0; j < eventItem.itemActiveFlag[i].BOX.Length; j++)
                     {
                         L2FlagBox flagBox = eventItem.itemActiveFlag[i].BOX[j];
                         if (flagBox.seet_no1 == 2)
