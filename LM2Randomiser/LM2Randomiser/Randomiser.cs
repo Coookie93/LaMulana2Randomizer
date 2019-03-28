@@ -210,28 +210,23 @@ namespace LM2Randomiser
             //Note: Changed this to to create the items from the data here rather than later
 
             //get shop only items
-            List<Item> shopItems;
-            if(!FileUtils.GetItemsFromJson("Data\\shopitems.json", out shopItems))
+            if (!FileUtils.GetItemsFromJson("Data\\shopitems.json", out List<Item> shopItems))
             {
                 return false;
             }
 
             //get required items
-            List<Item> requiredItems;
-            if (!FileUtils.GetItemsFromJson("Data\\reqitems.json", out requiredItems))
+            if (!FileUtils.GetItemsFromJson("Data\\reqitems.json", out List<Item> requiredItems))
             {
                 return false;
             }
 
             //get unrequired items
-            List<Item> unrequiredItems;
-            if (!FileUtils.GetItemsFromJson("Data\\unreqitems.json", out unrequiredItems))
+            if (!FileUtils.GetItemsFromJson("Data\\unreqitems.json", out List<Item> unrequiredItems))
             {
                 return false;
             }
-
-
-
+            
             //NOTE: when more options get add move these to a seperate method or something
             if (!settings.randomiseGrail)
             {

@@ -15,7 +15,7 @@ namespace LM2RandomiserMod
             return result;
         }
         
-        public static ItemInfo GetItemData(ItemID id)
+        public static ItemInfo GetItemInfo(ItemID id)
         {
             ItemInfo result = null;
             itemData.TryGetValue(id, out result);
@@ -450,7 +450,7 @@ namespace LM2RandomiserMod
     public class ItemInfo
     {
         public string boxName;
-        public string shopName;
+        public string trueName;
         public string shopType;
         public int shopPrice;
         public int shopAmount;
@@ -458,15 +458,14 @@ namespace LM2RandomiserMod
         public ItemInfo(string boxName, string shopName, string type, int price, int amount)
         {
             this.boxName = boxName;
-            this.shopName = shopName;
+            this.trueName = shopName;
             this.shopType = type;
             this.shopPrice = price;
             this.shopAmount = amount;
         }
     }
 
-    //NOTE:there is an existing enum for the item names in the game, the problem is they have a single enum for all whips and all shields, so using this
-    //is easier than modifying the current one, also trying to change the least amount of the games code as possible.
+    //NOTE:maybe just use the existing itemdatabase enum, but if add stuff like mantras to randomisation that wont be viable
     public enum ItemID
     {
         Default = 0,

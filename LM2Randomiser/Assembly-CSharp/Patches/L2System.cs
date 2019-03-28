@@ -7,7 +7,7 @@ using L2Word;
 namespace LM2RandomiserMod
 {
     [MonoModPatch("L2Base.L2System")]
-    public class L2System : L2Base.L2System
+    public class patched_L2System : L2Base.L2System
     {
         [MonoModIgnore]
         private L2ShopDataBase l2sdb;

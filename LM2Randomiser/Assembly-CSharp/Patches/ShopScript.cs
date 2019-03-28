@@ -12,7 +12,7 @@ using UnityEngine.UI;
 namespace LM2RandomiserMod.Patches
 {
     [MonoModPatch("global::ShopScript")]
-    public class ShopScript : global::ShopScript
+    public class patched_ShopScript : global::ShopScript
     {
         [MonoModIgnore]
         private Sprite[] icon;

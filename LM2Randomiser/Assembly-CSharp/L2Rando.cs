@@ -8,6 +8,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 using ExtensionMethods;
+using MonoMod;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using L2Word;
@@ -76,24 +77,7 @@ namespace LM2RandomiserMod
                     //loop over all the boxes in the current scene and change their item and flags
                     foreach (var box in cachedBoxes)
                     {
-                        string itemName = box.itemObj.name;
-                        //this should never fail currently, more of a sanity check
-                        if (itemName.Contains("ItemSym "))
-                        {
-                            itemName = itemName.Remove(0, 8).RemoveWhitespace();
-
-                            //theres 4 items that contain '-' E-Spear, R-Shuriken, La-Mulana, La-Mulana2
-                            if (itemName.Contains("-"))
-                            {
-                                itemName = itemName.Replace("-", "");
-                            }
-
-                            //if the name off the item is one we care about
-                            if (Enum.IsDefined(typeof(LocationID), itemName))
-                            {
-                                ChangeBox(box, (LocationID)Enum.Parse(typeof(LocationID), itemName));
-                            }
-                        }
+                        ChangeBox(box);
                     }
                 }
 
@@ -102,33 +86,7 @@ namespace LM2RandomiserMod
                     //loop over all the event items in the current scene and change their flags
                     foreach (var eventItem in cachedItems)
                     {
-                        string itemName = eventItem.name;
-
-                        //there is 2 bronze mirrors for some reason just disable one of them
-                        if (itemName.Equals("ItemSym B Mirror2"))
-                        {
-                            eventItem.gameObject.SetActive(false);
-                            continue;
-                        }
-
-
-                        //this should never fail currently, more of a sanity check
-                        if (itemName.Contains("ItemSym "))
-                        {
-                            itemName = itemName.Remove(0, 8).RemoveWhitespace();
-
-                            //theres 4 items that contain '-' E-Spear, R-Shuriken, La-Mulana, La-Mulana2
-                            if (itemName.Contains("-"))
-                            {
-                                itemName = itemName.Replace("-", "");
-                            }
-
-                            //if the name off the item is one we care about
-                            if (Enum.IsDefined(typeof(LocationID), itemName))
-                            {
-                                ChangeEventItem(eventItem, (LocationID)Enum.Parse(typeof(LocationID), itemName));
-                            }
-                        }
+                        ChangeEventItem(eventItem);
                     }
                 }
             }
@@ -142,7 +100,7 @@ namespace LM2RandomiserMod
             }
         }
         
-        public void Initialise(L2ShopDataBase shopDataBase, L2TalkDataBase talkDataBase, L2System system)
+        public void Initialise(L2ShopDataBase shopDataBase, L2TalkDataBase talkDataBase, patched_L2System system)
         {
             this.shopDataBase = shopDataBase;
             this.talkDataBase = talkDataBase;
@@ -150,6 +108,7 @@ namespace LM2RandomiserMod
 
             //load the locationToItemMap from seed.lm2
             locationToItemMap = LoadSeedFile();
+
             //if we successfully loaded and the seed has the right amount of locations
             if (locationToItemMap != null && locationToItemMap.Count == 173)
             {
@@ -193,32 +152,32 @@ namespace LM2RandomiserMod
             return itemLocations;
         }
         
-        private void ChangeBox(TreasureBoxScript box, LocationID locationID)
+        private void ChangeBox(TreasureBoxScript box)
         {
-            int id;
-            if (locationToItemMap.TryGetValue((int)locationID, out id))
+            ItemData oldItemData = GetItemDataFromName(box.itemObj.name);
+
+            if (oldItemData != null && locationToItemMap.TryGetValue((int)oldItemData.getItemName(), out int id))
             {
                 ItemID newItemID = (ItemID)id;
 
-                //get the item data for the new item, only really need the
-                ItemInfo newItemInfo = ItemFlags.GetItemData(newItemID);
-                ItemData newItemData = L2SystemCore.getItemData(newItemInfo.shopName);
+                ItemInfo newItemInfo = ItemFlags.GetItemInfo(newItemID);
+                ItemData newItemData = GetNewItemData(newItemInfo);
+
+                AbstractItemBase item = box.itemObj.GetComponent<AbstractItemBase>();
 
                 //the flags the box uses to check whether you have that item already if true the box will be open
                 //im pretty sure that it wont spawn the item if it this check is true on intialisation therefore if
                 //you collect the item that was originally in the box you now cant get the item in the box since it
                 //only spawns the item on box open
-
-                //box.openFlags = ItemFlags.GetBoxOpenFlags(newItemID);
-                for (int i = 0; i < box.openFlags.Length; i++)
+                foreach (var flagBoxParent in box.openFlags)
                 {
-                    for (int j = 0; j < box.openFlags[i].BOX.Length; j++)
+                    foreach(var flagBox in flagBoxParent.BOX)
                     {
-                        L2FlagBox flagBox = box.openFlags[i].BOX[j];
                         if (flagBox.seet_no1 == 2)
                         {
                             flagBox.flag_no1 = (int)newItemData.getItemName();
 
+                            //the whips and shields use the same flag just increment higher with each upgrade cant just use the same as other items
                             if (newItemID == ItemID.ChainWhip || newItemID == ItemID.SilverShield)
                             {
                                 flagBox.flag_no2 = 2;
@@ -230,24 +189,20 @@ namespace LM2RandomiserMod
                         }
                     }
                 }
-
-                AbstractItemBase item = box.itemObj.GetComponent<AbstractItemBase>();
                 
                 //flags the item uses to check to see if it should be active and visible to the user, important that these are
                 //changed because if you only change the label the it will use the original items flags to check. This means that 
                 //if you change another item to what was this items original is and collect it when it comes to collecting the item 
                 //this has been changed too if won't be active as it thinks you already have it
-
-                //item.itemActiveFlag = ItemFlags.GetActiveItemFlags(newItemID);
-                for (int i = 0; i < item.itemActiveFlag.Length; i++)
+                foreach (var flagBoxParent in item.itemActiveFlag)
                 {
-                    for (int j = 0; j < item.itemActiveFlag[i].BOX.Length; j++)
+                    foreach (var flagBox in flagBoxParent.BOX)
                     {
-                        L2FlagBox flagBox = item.itemActiveFlag[i].BOX[j];
                         if (flagBox.seet_no1 == 2)
                         {
                             flagBox.flag_no1 = (int)newItemData.getItemName();
 
+                            //the whips and shields use the same flag just increment higher with each upgrade cant just use the same as other items
                             if (newItemID == ItemID.ChainWhip || newItemID == ItemID.SilverShield)
                             {
                                 flagBox.flag_no2 = 1;
@@ -273,33 +228,32 @@ namespace LM2RandomiserMod
             }
         }
 
-        private void ChangeEventItem(EventItemScript eventItem, LocationID locationID)
+        private void ChangeEventItem(EventItemScript eventItem)
         {
-            int id;
-            if (locationToItemMap.TryGetValue((int)locationID, out id))
+            ItemData oldItemData = GetItemDataFromName(eventItem.name);
+            
+            if (oldItemData != null && locationToItemMap.TryGetValue((int)oldItemData.getItemName(), out int id))
             {
                 ItemID newItemID = (ItemID)id;
 
                 //get the item data for the new item, only really need the names here
-                ItemInfo newItemInfo = ItemFlags.GetItemData(newItemID);
-                ItemData newItemData = L2SystemCore.getItemData(newItemInfo.shopName);
-
+                ItemInfo newItemInfo = ItemFlags.GetItemInfo(newItemID);
+                ItemData newItemData = GetNewItemData(newItemInfo);
+                
                 //flags the item uses to check to see if it should be active and visible to the user, important that these are
                 //changed because if you only change the label the it will use the original items flags to check. This means that 
                 //if you change another item to what was this items original is and collect it when it comes to collecting the item 
                 //this has been changed too if won't be active as it thinks you already have it
-                
-                //eventItem.itemActiveFlag = ItemFlags.GetActiveItemFlags(newItemID);
-                for (int i = 0; i < eventItem.itemActiveFlag.Length; i++)
+                foreach (var flagBoxParent in eventItem.itemActiveFlag)
                 {
-                    for (int j = 0; j < eventItem.itemActiveFlag[i].BOX.Length; j++)
+                    foreach (var flagBox in flagBoxParent.BOX)
                     {
-                        L2FlagBox flagBox = eventItem.itemActiveFlag[i].BOX[j];
                         if (flagBox.seet_no1 == 2)
                         {
                             flagBox.flag_no1 = (int)newItemData.getItemName();
 
-                            if(newItemID == ItemID.ChainWhip || newItemID == ItemID.SilverShield)
+                            //the whips and shields use the same flag just increment higher with each upgrade cant just use the same as other items
+                            if (newItemID == ItemID.ChainWhip || newItemID == ItemID.SilverShield)
                             {
                                 flagBox.flag_no2 = 1;
                             }
@@ -322,6 +276,38 @@ namespace LM2RandomiserMod
                 //change the sprite to match the new item
                 Sprite sprite = L2SystemCore.getMapIconSprite(L2SystemCore.getItemData(newItemInfo.boxName));
                 eventItem.gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
+            }
+        }
+
+        private ItemData GetItemDataFromName(string objName)
+        {
+            if (objName.Contains("ItemSym "))
+            {
+                string name = objName.Remove(0, 8);
+
+                if(name.Contains("SacredOrb"))
+                {
+                    name = name.Insert(6, " ");
+                }
+                return L2SystemCore.getItemData(name);
+            }
+            return null;
+        }
+
+        private ItemData GetNewItemData(ItemInfo itemInfo)
+        {
+
+            if (itemInfo.trueName.Contains("Whip"))
+            {
+                return L2SystemCore.getItemData("Whip");
+            }
+            else if (itemInfo.trueName.Contains("Shield"))
+            {
+                return L2SystemCore.getItemData("Shield");
+            }
+            else
+            {
+                return L2SystemCore.getItemData(itemInfo.trueName);
             }
         }
 
@@ -357,14 +343,13 @@ namespace LM2RandomiserMod
 
         private string CreateSetItemString(LocationID locationID)
         {
-            int id;
-            if (locationToItemMap.TryGetValue((int)locationID, out id))
+            if (locationToItemMap.TryGetValue((int)locationID, out int id))
             {
                 ItemID newItemID = (ItemID)id;
                 //get the item data for the new item, only really need the
 
-                ItemInfo newItemData = ItemFlags.GetItemData(newItemID);
-                return String.Format("[@sitm,{0},{1},{2},{3}]", newItemData.shopType, newItemData.shopName, newItemData.shopPrice, newItemData.shopAmount);
+                ItemInfo newItemData = ItemFlags.GetItemInfo(newItemID);
+                return String.Format("[@sitm,{0},{1},{2},{3}]", newItemData.shopType, newItemData.trueName, newItemData.shopPrice, newItemData.shopAmount);
             }
 
             return String.Empty;
@@ -464,22 +449,22 @@ namespace LM2RandomiserMod
 
         private string ChangeTalkString(LocationID locationID, string original)
         {
-            int id;
-            if (locationToItemMap.TryGetValue((int)locationID, out id))
+            if (locationToItemMap.TryGetValue((int)locationID, out int id))
             {
                 ItemID newItemID = (ItemID)id;
-                //get the item data for the new item, only really need the
 
-                ItemInfo newItemData = ItemFlags.GetItemData(newItemID);
+                //get the item data for the new item
+                ItemInfo newItemData = ItemFlags.GetItemInfo(newItemID);
 
                 //Sacred orbs might require some special work here if setting the orbcount flag doesnt give you the level up
                 string take;
-                if (newItemData.boxName.Equals("Crystal S") || newItemData.boxName.Equals("Sacred Orb")) {
-                    take= String.Format("[@take,{0},02item,1]\n", newItemData.boxName);
+                if (newItemData.boxName.Equals("Crystal S") || newItemData.boxName.Equals("Sacred Orb"))
+                {
+                    take = String.Format("[@take,{0},02item,1]\n", newItemData.boxName);
                 }
                 else
                 {
-                    take = String.Format("[@take,{0},02item,1]\n", newItemData.shopName);
+                    take = String.Format("[@take,{0},02item,1]\n", newItemData.trueName);
                 }
 
                 //if the item has more than just its set flags add the flags to the mojiscript string
@@ -516,7 +501,7 @@ namespace LM2RandomiserMod
                 
                 ItemID newItemID = (ItemID)id;
 
-                ItemInfo newItemData = ItemFlags.GetItemData(newItemID);
+                ItemInfo newItemData = ItemFlags.GetItemInfo(newItemID);
 
                 if (newItemData.boxName.Equals("Crystal S"))
                 {
@@ -545,13 +530,11 @@ namespace LM2RandomiserMod
         }
     }
 
-    //this is pretty bad but it works, use the name of the item in chests and free standing items since we can parse it to an enum which is
-    //easier than doing other checks to figure out which box is currently being modified, this is a direct mapping to the locations in the generators 
-    //LocationID 
+    //only have to use the shop and npc dialogue enums now since the itemdatabase enum is used for the chests and free standing items
     public enum LocationID
     {
         None = 0,
-        NeburShop1,
+        NeburShop1 = 256,
         NeburShop2,
         NeburShop3,
         ModroShop1,
@@ -609,127 +592,13 @@ namespace LM2RandomiserMod
         MegarockShop1,
         MegarockShop2,
         MegarockShop3,
-
-        SacredOrb0,
-        SacredOrb1,
-        SacredOrb2,
-        SacredOrb3,
-        SacredOrb4,
-        SacredOrb5,
-        SacredOrb6,
-        SacredOrb7,
-        SacredOrb8,
-        SacredOrb9,
-
-        Map1,
-        Map2,
-        Map3,
-        Map4,
-        Map5,
-        Map6,
-        Map7,
-        Map8,
-        Map9,
-        Map10,
-        Map11,
-        Map12,
-        Map13,
-        Map14,
-        Map15,
-        
-        CrystalS1,
-        CrystalS2,
-        CrystalS3,
-        CrystalS4,
-        CrystalS5,
-        CrystalS6,
-        CrystalS7,
-        CrystalS8,
-        CrystalS9,
-        CrystalS10,
-        CrystalS11,
-        CrystalS12,
-
-        AnkhJewel2,
-        AnkhJewel3,
-        AnkhJewel4,
-        AnkhJewel5,
-        AnkhJewel6,
-        AnkhJewel7,
-        AnkhJewel9,
-
         AlsedanaItem,
         FuneralItem,
         XelpudItem,
         MapfromNebur,
-        ShellHorn,
-        HolyGrail,
         FreyasItem,
         FobosItem,
-        BMirror,
-        CrystalP,
-        Shuriken,
-        Knife,
-        OriginSeal,
-        FShip,
-        DeathVillage,
-        Glove,
-        RShuriken,
-        Shield2,
-        DjedPillar,
-        GClaw,
-        LifeSeal,
-        FTorque,
-        FPass,
-        Scalesphere,
-        Caltrops,
-        Whip3,
-        GBand,
-        ESpear,
         MulbrukItem,
-        IceCape,
-        TPole,
-        Lamp,
-        Mjolnir,
-        Whip2,
-        Chakram,
-        Battery,
-        DFigure,
-        BirthSeal,
-        PKey,
-        Rapier,
-        ClayDoll,
-        Gauntlet,
-        GStreet,
-        Vajra,
-        Anchor,
-        Katana,
-        Feather,
-        LaMulana,
-        Vessel,
-        Crucifix,
-        MFeather,
-        Ring,
-        Egg,
-        FlareGun,
-        PowerBand,
-        DestinyTablet,
-        Scriptures,
-        Fur,
-        GPipe,
-        MiracleWitch,
-        Perfume,
-        Axe,
-        MSX3p,
-        Gear,
-        LaMulana2,
-        Spaulder,
-        LightScytheItem,
-        Book,
-        DeathSeal,
-        Bomb,
-        SecretTreasure
-
-        //R-Shuriken,E-Spear,La-Mulana,La-Mulana2
+        LightScytheItem
     }
 }
