@@ -206,10 +206,16 @@ namespace LM2RandomiserMod
                             if (newItemID == ItemID.ChainWhip || newItemID == ItemID.SilverShield)
                             {
                                 flagBox.flag_no2 = 1;
+                                flagBox.comp = COMPARISON.LessEq;
                             }
                             else if (newItemID == ItemID.FlailWhip || newItemID == ItemID.AngelShield)
                             {
                                 flagBox.flag_no2 = 2;
+                                flagBox.comp = COMPARISON.LessEq;
+                            }
+                            else if (newItemID == ItemID.Buckler)
+                            {
+                                flagBox.comp = COMPARISON.LessEq;
                             }
                         }
                     }
@@ -256,10 +262,16 @@ namespace LM2RandomiserMod
                             if (newItemID == ItemID.ChainWhip || newItemID == ItemID.SilverShield)
                             {
                                 flagBox.flag_no2 = 1;
+                                flagBox.comp = COMPARISON.LessEq;
                             }
                             else if (newItemID == ItemID.FlailWhip || newItemID == ItemID.AngelShield)
                             {
                                 flagBox.flag_no2 = 2;
+                                flagBox.comp = COMPARISON.LessEq;
+                            }
+                            else if (newItemID == ItemID.Buckler)
+                            {
+                                flagBox.comp = COMPARISON.LessEq;
                             }
                         }
                     }
