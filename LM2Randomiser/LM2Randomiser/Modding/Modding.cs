@@ -19,12 +19,12 @@ namespace LM2Randomiser.Modding
             string currentDir = Directory.GetCurrentDirectory();
             string parentDir = Directory.GetParent(currentDir).FullName;
 
-            string dllDir = Path.Combine(currentDir, "Dlls");
+            string dllDir = Path.Combine(currentDir, "Monomod");
             string managedDir = Path.Combine(parentDir, managed);
 
             string dllPath = Path.Combine(managedDir, dllName);
-            string moddeddllPath = Path.Combine(dllDir, moddeddllName);
-            string backupdllPath = Path.Combine(currentDir, "Assembly-CSharp.dll.Backup");
+            string moddeddllPath = Path.Combine(managedDir, moddeddllName);
+            string backupdllPath = Path.Combine(managedDir, "Assembly-CSharp.dll.Backup");
 
 
             //Make a backup of Assembly-CSharp.dll
@@ -33,14 +33,14 @@ namespace LM2Randomiser.Modding
                 File.Copy(dllPath, backupdllPath);
             }
 
-            //Copy all the dlls the game uses so monomod use them too
-            if (Directory.Exists(managedDir)) { 
-                foreach (var file in Directory.GetFiles(managedDir))
+            //Copy monomod files to LM2s managaed dir
+            if (Directory.Exists(dllDir)) { 
+                foreach (var file in Directory.GetFiles(dllDir))
                 {
-                    string copiedFile = Path.Combine(dllDir, Path.GetFileName(file));
-                    if (!File.Exists(copiedFile))
+                    string fileToCopy = Path.Combine(managedDir, Path.GetFileName(file));
+                    if (!File.Exists(fileToCopy))
                     {
-                        File.Copy(file, copiedFile);
+                        File.Copy(file, fileToCopy);
                     }
                     
                 }
@@ -52,7 +52,7 @@ namespace LM2Randomiser.Modding
                 const string commandString = "monomod.exe Assembly-CSharp.dll";
 
                 ProcessStartInfo procStartInfo = new ProcessStartInfo("cmd", "/c " + commandString);
-                procStartInfo.WorkingDirectory = dllDir;
+                procStartInfo.WorkingDirectory = managedDir;
                 procStartInfo.RedirectStandardOutput = true;
                 procStartInfo.UseShellExecute = false;
                 procStartInfo.CreateNoWindow = true;
@@ -66,7 +66,7 @@ namespace LM2Randomiser.Modding
 
                     string result = process.StandardOutput.ReadToEnd();
                     Logger.GetLogger.Log(result);
-                    if (result.Contains("Exception"))
+                    if (result.Contains("Exception") || String.IsNullOrEmpty(result))
                     {
                         return false;
                     }

@@ -16,26 +16,6 @@ namespace LM2Randomiser
             settings = new Settings();
         }
 
-        private void ModButton_MouseHover(object sender, EventArgs e)
-        {
-            this.ToolTip.Show("This only needs to be ran once, creates a modded version of the DLL, also creates a backup of the original. This takes a few seconds too complete.", ModButton);
-        }
-
-        private void ModButton_Click(object sender, EventArgs e)
-        {
-            OutputText.AppendText("Starting modding DLL.");
-            OutputText.AppendText(Environment.NewLine);
-            if (Modding.Modding.ModDLL())
-            {
-                OutputText.AppendText("Successfully modded the DLL.");
-            }
-            else
-            {
-                OutputText.AppendText("Failed modded the DLL.");
-            }
-            OutputText.AppendText(Environment.NewLine);
-        }
-
         private void GenerateButton_Click(object sender, EventArgs e)
         {
             bool canBeatGame = false;
@@ -90,9 +70,7 @@ namespace LM2Randomiser
                 OutputText.AppendText("Failed to write spoiler log.");
                 OutputText.AppendText(Environment.NewLine);
             }
-
-
-
+            
             if (!FileUtils.WriteSeedFile(randomiser))
             {
                 OutputText.AppendText("Failed to write seed.");
