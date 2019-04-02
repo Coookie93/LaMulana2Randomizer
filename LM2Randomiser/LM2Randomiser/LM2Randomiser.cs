@@ -19,7 +19,7 @@ namespace LM2Randomiser
         private void GenerateButton_Click(object sender, EventArgs e)
         {
             bool canBeatGame = false;
-            Randomiser randomiser = new Randomiser(settings);
+            Randomiser randomiser = new Randomiser(settings, SeedInput.Text);
 
             OutputText.AppendText("Starting seed generation.");
             OutputText.AppendText(Environment.NewLine);

@@ -19,15 +19,21 @@ namespace LM2Randomiser
         Dictionary<string, Location> locations;
         
         Random random;
-        int seed;
+        string seed;
 
-        public Randomiser(Settings settings)
+        public Randomiser(Settings settings, string seedInput)
         {
             this.settings = settings;
             areas = new Dictionary<string, Area>();
             locations = new Dictionary<string, Location>();
-            seed = DateTime.Now.GetHashCode();
-            random = new Random(seed);
+
+            seed = seedInput;
+            if (String.IsNullOrEmpty(seed))
+            {
+                seed = DateTime.Now.ToString();
+            }
+            random = new Random(seed.GetHashCode());
+
             state = new PlayerState(this);
         }
 
@@ -35,7 +41,7 @@ namespace LM2Randomiser
             get { return random; }
         }
 
-        public int Seed {
+        public string Seed {
             get { return seed; }
         }
 

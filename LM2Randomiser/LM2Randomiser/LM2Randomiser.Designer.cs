@@ -32,12 +32,14 @@
             this.GrailCheck = new System.Windows.Forms.CheckBox();
             this.ScannerCheck = new System.Windows.Forms.CheckBox();
             this.OutputText = new System.Windows.Forms.TextBox();
+            this.SeedLabel = new System.Windows.Forms.Label();
+            this.SeedInput = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // GenerateButton
             // 
             this.GenerateButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GenerateButton.Location = new System.Drawing.Point(12, 68);
+            this.GenerateButton.Location = new System.Drawing.Point(12, 111);
             this.GenerateButton.Name = "GenerateButton";
             this.GenerateButton.Size = new System.Drawing.Size(261, 33);
             this.GenerateButton.TabIndex = 0;
@@ -72,18 +74,38 @@
             // OutputText
             // 
             this.OutputText.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OutputText.Location = new System.Drawing.Point(12, 109);
+            this.OutputText.Location = new System.Drawing.Point(12, 150);
             this.OutputText.Multiline = true;
             this.OutputText.Name = "OutputText";
             this.OutputText.ReadOnly = true;
-            this.OutputText.Size = new System.Drawing.Size(260, 125);
+            this.OutputText.Size = new System.Drawing.Size(261, 125);
             this.OutputText.TabIndex = 4;
+            // 
+            // SeedLabel
+            // 
+            this.SeedLabel.AutoSize = true;
+            this.SeedLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SeedLabel.Location = new System.Drawing.Point(9, 62);
+            this.SeedLabel.Name = "SeedLabel";
+            this.SeedLabel.Size = new System.Drawing.Size(41, 17);
+            this.SeedLabel.TabIndex = 5;
+            this.SeedLabel.Text = "Seed";
+            // 
+            // SeedInput
+            // 
+            this.SeedInput.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SeedInput.Location = new System.Drawing.Point(12, 82);
+            this.SeedInput.Name = "SeedInput";
+            this.SeedInput.Size = new System.Drawing.Size(261, 23);
+            this.SeedInput.TabIndex = 6;
             // 
             // LM2Randomiser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(285, 242);
+            this.ClientSize = new System.Drawing.Size(285, 285);
+            this.Controls.Add(this.SeedInput);
+            this.Controls.Add(this.SeedLabel);
             this.Controls.Add(this.OutputText);
             this.Controls.Add(this.ScannerCheck);
             this.Controls.Add(this.GrailCheck);
@@ -103,6 +125,8 @@
         private System.Windows.Forms.CheckBox GrailCheck;
         private System.Windows.Forms.CheckBox ScannerCheck;
         private System.Windows.Forms.TextBox OutputText;
+        private System.Windows.Forms.Label SeedLabel;
+        private System.Windows.Forms.TextBox SeedInput;
     }
 }
 
