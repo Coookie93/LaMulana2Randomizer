@@ -245,7 +245,7 @@ namespace LM2Randomiser
 
             //Places weights at a starting shop since they are needed for alot of early items
             //this means that player will not have to rely on drops or weights from pots
-            PlaceItem("Sidro Shop 2", ItemPool.GetAndRemove(ItemID.Weights, shopItems));
+            PlaceItem("Nebur Shop 1", ItemPool.GetAndRemove(ItemID.Weights, shopItems));
 
             //ammo can't be placed here since there is an second item that takes this slot after 
             //the first is purchased 
@@ -261,7 +261,6 @@ namespace LM2Randomiser
             GetLocation("Hiner Shop 3").isLocked = false;
 
             //lock locations that currently can't be randomised
-            GetLocation("Secret Treasure of Life Item").isLocked = true;
             GetLocation("Funeral Item").isLocked = true;
             GetLocation("Mulbruk Item").isLocked = true;
             
@@ -271,7 +270,6 @@ namespace LM2Randomiser
             ItemRandomisation.RandomiseRequiredItems(this, unplacedLocations, requiredItems);
 
             //unlock the locked locations now since any item that is not required can go there
-            GetLocation("Secret Treasure of Life Item").isLocked = false;
             GetLocation("Funeral Item").isLocked = false;
             GetLocation("Mulbruk Item").isLocked = false;
 
