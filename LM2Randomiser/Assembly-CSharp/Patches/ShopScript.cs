@@ -8,7 +8,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-#pragma warning disable 0626, 0649, 0414
+#pragma warning disable 0626, 0649, 0414, 0108
 namespace LM2RandomiserMod.Patches
 {
     [MonoModPatch("global::ShopScript")]
@@ -16,6 +16,12 @@ namespace LM2RandomiserMod.Patches
     {
         [MonoModIgnore]
         private Sprite[] icon;
+
+        [MonoModIgnore]
+        private string[] item_id;
+
+        [MonoModIgnore]
+        private bool[] isSouldOut;
 
         [MonoModIgnore]
         private int item_copunter;
@@ -30,7 +36,7 @@ namespace LM2RandomiserMod.Patches
         public override bool itemCallBack(string tab, string name, int vale, int num)
         {
             string[] weapons = { "Whip2", "Whip3", "Knife", "Rapier", "Axe", "Katana", "Shuriken", "R-Shuriken", "E-Spear", "Flare Gun", "Bomb",
-                                    "Chakram", "Caltrops, Clay Doll", "Origin Seal", "Birth Seal", "Life Seal", "Death Seal"};
+                                    "Chakram", "Caltrops", "Clay Doll", "Origin Seal", "Birth Seal", "Life Seal", "Death Seal"};
 
             bool result = orig_itemCallBack(tab, name, vale, num);
             if (result)
@@ -39,6 +45,11 @@ namespace LM2RandomiserMod.Patches
                 if (this.sys.isMap(name))
                 {
                     this.icon[counter] = L2SystemCore.getMenuIconSprite(L2SystemCore.getItemData("Map"));
+                    this.shop_item[counter].sprite = this.icon[counter];
+                }
+                else if (name.Equals("MSX"))
+                {
+                    this.icon[counter] = L2SystemCore.getShopIconSprite(L2SystemCore.getItemData("MSX3p"));
                     this.shop_item[counter].sprite = this.icon[counter];
                 }
                 else if (name.Contains("Sacred Orb"))
@@ -65,6 +76,30 @@ namespace LM2RandomiserMod.Patches
                 }
             }
             return result;
+        }
+
+        public void orig_setSouldOut() { }
+        public void setSouldOut()
+        {
+            orig_setSouldOut();
+
+            for (int i = 0; i < 3; i++)
+            {
+                if (this.item_id[i] == "MSX")
+                {
+                    short num = 0;
+                    this.sys.getFlag(this.sys.SeetNametoNo("02Items"), "MSX", ref num);
+                    if (num >= 2)
+                    {
+                        this.isSouldOut[i] = true;
+                    }
+                    else
+                    {
+                        this.isSouldOut[i] = false;
+                    }
+                }
+            }
+            this.drawItems();
         }
     }
 }
