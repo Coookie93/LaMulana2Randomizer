@@ -78,7 +78,7 @@
       "Sacred Orb Chest RoY: True",
       "Map Chest RoY: True",
       "Ankh Chest RoY: Has(Feather) or CanUse(Bomb) or CanUse(Shuriken) or CanUse(Chakram) or CanUse(Earth Spear) or CanUse(Flare)",
-      "Pyramid Crystal Chest: Has(Life Sigil) and (Has(Knife) or Has(Lamp of Time))",
+      "Pyramid Crystal Chest: Has(Life Sigil) and (Has(Knife) or Has(Spaulder))",
       "Crystal Skull Chest RoY: IsDead(Fafnir)",
       "Shuriken Puzzle Reward: True",
       "Knife Puzzle Reward: Has(Origin Sigil)",
@@ -94,7 +94,7 @@
       "Divine Fortress Entrance: GuardianKills(1)",
       "Annwfn Main: Has(Origin Sigil)",
       "Annwfn Right Entrance: IsDead(Ratatoskr 1) and CanUse(Rolling Shuriken)",
-      "Icefire Treetop Entrance: IsDead(Nidhogg) and (CanWarp or (Has(Ice Cloak) or OrbCount(3)) or (Has(Feather) and Has(Grapple Claw)) or CanReach(Icefire Treetop Main))",
+      "Icefire Treetop Entrance: IsDead(Nidhogg) and (CanWarp or Has(Claydoll Suit) or (Has(Ice Cloak) or OrbCount(3)) or (Has(Feather) and Has(Grapple Claw)) or CanReach(Icefire Treetop Main))",
       "Immortal Battlefield Left: Has(Birth Sigil) and (Has(Feather) or Has(Grapple Claw))"
     ]
   },
@@ -163,10 +163,10 @@
   },
   {
     "areaName": "Annwfn Right Entrance",
-    "locations":[
+    "locations": [
       "Sacred Orb Chest Annwfn: Has(Life Sigil) and Has(Feather)",
       "Silver Shield Puzzle Reward: CanChant(Earth)",
-      "Ixtab: OrbCount(3) and CanUse(Shuriken) or CanUse(Flare) or CanUse(Earth Spear) or CanUse(Chakram)"
+      "Ixtab: OrbCount(3) and (CanUse(Shuriken) or CanUse(Flare) or CanUse(Earth Spear) or CanUse(Chakram) or Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana))"
     ],
     "exits":[
       "Annwfn Main: IsDead(Ixtab) and Has(Feather)",
@@ -195,9 +195,9 @@
   },
   {
     "areaName":"Icefire Treetop Main",
-    "locations":[
+    "locations": [
       "Map Chest IT: True",
-      "Ankh Chest IT: ((Has(Ice Cloak) and OrbCount(2)) or OrbCount(4)) and IsDead(Vedfolnir)",
+      "Ankh Chest IT: ((Has(Ice Cloak) and OrbCount(2)) or OrbCount(4) or Has(Claydoll Suit)) and IsDead(Vedfolnir)",
       "Grapple Claw Chest: True",
       "Life Sigil Chest: Has(Birth Sigil) and CanWarp",
       "Flame Torc Chest: IsDead(Surtr) and Has(Mulana Talisman)",
@@ -208,7 +208,7 @@
       "Mino Shop 1: Has(Feather)",
       "Mino Shop 2: Has(Feather)",
       "Mino Shop 3: Has(Feather)",
-      "Surtr: Has(Light Scythe) and (Has(Chain Whip) or Has(Axe) or Has(Katana)) and ((Has(Ice Cloak) and OrbCount(4)) or OrbCount(6)) and AnkhCount(4)"
+      "Surtr: Has(Light Scythe) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana)) and (((Has(Ice Cloak) or Has(Claydoll Suit)) and OrbCount(6)) or OrbCount(8)) and AnkhCount(4)"
     ],
     "exits":[
       "Icefire Treetop Right: Has(Feather)",
@@ -220,20 +220,20 @@
     "locations":[
       "Fairy Guild Pass Chest: Has(Life Sigil)",
       "Crystal Skull Chest IT: IsDead(Ratatoskr 3)",
-      "Sacred Orb Chest IT: Has(Anchor) and (OrbCount(2) or Has(Scalesphere))",
+      "Sacred Orb Chest IT: Has(Claydoll Suit) or (Has(Anchor) and (OrbCount(2) or Has(Scalesphere)))",
       "Ratatoskr 3: IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2) and OrbCount(4)"
     ],
     "exits":[
       "Icefire Treetop Main: True",
       "Immortal Battlefield Battery: True",
-      "Heavens Labyrinth: Has(Anchor) and GuardianKills(3) and IsDead(Ratatoskr 3)",
+      "Heavens Labyrinth: (Has(Anchor) or Has(Claydoll Suit)) and GuardianKills(3) and IsDead(Ratatoskr 3)",
       "Immortal Battlefield Moon: Has(Life Sigil) and (CanWarp or CanReach(Immortal Battlefield Main) or Has(Grapple Claw))"
     ]
   },
   {
     "areaName": "Icefire Treetop Vidofnir",
-    "locations":[
-      "Vidofnir: Has(Flame Torc) and OrbCount(7) and Has(Ice Cloak) and (Has(Chain Whip) or Has(Axe) or Has(Katana))"
+    "locations": [
+      "Vidofnir: Has(Flame Torc) and OrbCount(7) and (Has(Ice Cloak) or Has(Claydoll Suit)) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana))"
     ],
     "exits":[
       "Eternal Prison Gloom: IsDead(Vidofnir) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Right)))"
@@ -241,16 +241,16 @@
   }, 
   {
     "areaName":"Valhalla Main",
-    "locations":[
+    "locations": [
       "Map Chest Valhalla: Has(Origin Sigil)",
       "Scalesphere Chest: IsDead(Vritra)",
-      "Crystal Skull Chest Valhalla: Has(Anchor) and Has(Death Sigil) and CanChant(Fire) and CanChant(Earth) and IsDead(Jalandhara)",
+      "Crystal Skull Chest Valhalla: (Has(Anchor) or Has(Claydoll Suit)) and Has(Death Sigil) and CanChant(Fire) and CanChant(Earth) and IsDead(Jalandhara)",
       "Caltrop Puzzle Reward: True",
       "Bargain Duck Shop 1:True",
       "Bargain Duck Shop 2:True",
       "Bargain Duck Shop 3:True",
       "Vucub-Caquiz:True",
-      "Jalandhara: Has(Life Sigil) and Has(Feather) and OrbCount(4) and (Has(Chain Whip) or Has(Axe) or Has(Katana))",
+      "Jalandhara: Has(Life Sigil) and Has(Feather) and OrbCount(4) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana))",
       "Vritra: OrbCount(3) and AnkhCount(6) and (CanUse(Shuriken) or CanUse(Earth Spear) or CanUse(Chakram) or CanUse(Bomb))",
       "Dissonance (Valhalla): Has(Beherit) and IsDead(Vritra)"
     ],
@@ -306,14 +306,14 @@
   },
   {
     "areaName":"Immortal Battlefield Main",
-    "locations":[
+    "locations": [
       "Map Chest IB: True",
       "Ice Cloak Chest: Has(Life Sigil) and (Has(Feather) or CanUse(Chakram) or CanUse(Shuriken) or CanUse(Bomb))",
       "Totem Pole Chest: Has(Birth Sigil) and Has(Gale Fibula)",
       "Sacred Orb Chest IB: Has(Birth Sigil)",
       "Lamp of Time Chest: IsDead(Ratatoskr 2) and Has(Cog of Antiquity) and Has(Life Sigil)",
       "Mjolnir Chest:IsDead(Jormangund)",
-      "Chain Whip Puzzle Reward: OrbCount(2) or Has(Ice Cloak)",
+      "Chain Whip Puzzle Reward: Has(Gloves) and (Has(Claydoll Suit) or OrbCount(2) or Has(Ice Cloak))",
       "Chakram Puzzle Reward: IsDead(Svipdagr) and Has(Life Sigil) and CanUse(Earth Spear) and CanUse(Rolling Shuriken)",
       "Crystal Skull IB: IsDead(Ratatoskr 2)",
       "Secret Treasure of Life Item: Has(Dinosaur Figure) and CanReach(Immortal Battlefield Spiral Boat)",
@@ -323,12 +323,12 @@
       "Mulbruk Item: True",
       "Ratatoskr 2: True",
       "Svipdagr: OrbCount(2)",
-      "Jormangund: Has(Dinosaur Figure) and Has(Pochette Key) and OrbCount(6) and AnkhCount(4) and (Has(Chain Whip) or Has(Axe) or Has(Katana)) and (CanUse(Flare) or CanUse(Shuriken) or CanUse(Earth Spear))"
+      "Jormangund: Has(Dinosaur Figure) and Has(Pochette Key) and OrbCount(6) and AnkhCount(4) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana)) and (CanUse(Flare) or CanUse(Shuriken) or CanUse(Earth Spear))"
     ],
     "exits":[
       "Immortal Battlefield Top: CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Rolling Shuriken) or CanUse(Caltrops)",
       "Immortal Battlefield Top Left: True",
-      "Immortal Battlefield Dinosaur: Has(Anchor)",
+      "Immortal Battlefield Dinosaur: Has(Anchor) or Has(Claydoll Suit)",
       "Cavern: True",
       "Gate of the Dead: GuardianKills(2)"
     ]
@@ -353,8 +353,8 @@
   },
   {
     "areaName":"Immortal Battlefield Dinosaur",
-    "locations":[
-      "Dinosaur Figure Chest: CanUse(Flare) or Has(Rapier)"
+    "locations": [
+      "Dinosaur Figure Chest: CanUse(Flare) or CanUse(Earth Spear) or Has(Rapier)"
     ],
     "exits":[
       "Immortal Battlefield Battery: Has(Grapple Claw)"
@@ -404,7 +404,7 @@
   {
     "areaName":"Shrine of the Frost Giants Mid",
     "locations":[
-      "Sacred Orb Chest SotFG: CanUse(Earth Spear) and Has(Grapple Claw)",
+      "Sacred Orb Chest SotFG: CanUse(Earth Spear)",
       "Sea Mantra Mural: Has(Snapshot) and Has(Birth Sigil)"
     ],
     "exits":[
@@ -413,9 +413,9 @@
   },
   {
     "areaName": "Shrine of the Frost Giants Balor",
-    "locations":[
+    "locations": [
       "Claydoll Chest: Has(Life Sigil) and IsDead(Balor)",
-      "Balor: (Has(Chain Whip) or Has(Axe) or Has(Katana)) and OrbCount(4)"
+      "Balor: (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana)) and OrbCount(4)"
     ],
     "exits":[
       "Valhalla Top Right: Has(Claydoll Suit) and GuardianKills(5) and IsDead(Balor)"
@@ -437,11 +437,11 @@
   },
   {
     "areaName":"Shrine of the Frost Giants Left",
-    "locations":[
+    "locations": [
       "Gauntlet Chest: Has(Feather) and Has(Life Sigil)",
-      "Hydlit Shop 1: Has(Gale Fibula)",
-      "Hydlit Shop 2: Has(Gale Fibula)",
-      "Hydlit Shop 3: Has(Gale Fibula)",
+      "Hydlit Shop 1: Has(Gale Fibula) and Has(Snow Shoes)",
+      "Hydlit Shop 2: Has(Gale Fibula) and Has(Snow Shoes)",
+      "Hydlit Shop 3: Has(Gale Fibula) and Has(Snow Shoes)",
       "Bergelmir: CanChant(Earth) and CanChant(Moon) and CanChant(Heaven)"
     ],
     "exits":[
@@ -451,8 +451,8 @@
   },
   {
     "areaName": "Shrine of the Frost Giants Fenrir",
-    "locations":[
-      "Fenrir: Has(Flame Torc) and (Has(Chain Whip) or Has(Axe) or Has(Katana)) and Has(Silver Shield) and OrbCount(7)",
+    "locations": [
+      "Fenrir: Has(Flame Torc) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana)) and Has(Silver Shield) and OrbCount(7)",
       "Liquour: CanChant(Moon) and CanChant(Mother) and CanChant(Child) and Has(Vessel)"
     ],
     "exits":[]
@@ -466,11 +466,11 @@
       "Sacred Orb Chest GotD: True",
       "Anchor Chest: CanReach(Divine Fortress Main) and Has(Gloves)",
       "Crystal Skull Chest GotD: True",
-      "Katana Puzzle Reward: Has(Life Sigil)",
+      "Katana Puzzle Reward: Has(Life Sigil) and Has(Feather)",
       "Aytum Shop 1: True",
       "Aytum Shop 2: True",
       "Aytum Shop 3: True",
-      "White Pedestals: Has(Pepper) and Has(Birth Sigil) and CanChant(Sun) and IsDead(Unicorn)",
+      "White Pedestals: Has(Pepper) and Has(Feather) and Has(Birth Sigil) and CanChant(Sun) and IsDead(Unicorn)",
       "Unicorn: OrbCount(3)"
     ],
     "exits":[
@@ -535,8 +535,8 @@
   },
   {
     "areaName":"Dark Lords Mausoleum Ra",
-    "locations":[
-      "Aten-Ra: CanReach(Gate of the Dead) and OrbCount(5) and (Has(Chain Whip) or Has(Axe) or Has(Katana)) and AnkhCount(6)",
+    "locations": [
+      "Aten-Ra: PuzzleFinished(White Pedestals) and OrbCount(5) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana)) and AnkhCount(6)",
       "Crucifix Chest: IsDead(Aten-Ra)",
       "Dissonance (Dark Lords Mausoleum): Has(Beherit) and IsDead(Aten-Ra)"
     ],
@@ -565,29 +565,29 @@
   }, 
   {
     "areaName": "Takamagahara Shrine",
-    "locations":[
-      "Map Chest TS: Has(Katana)",
-      "Ring Chest: Has(Katana) and Has(Feather) and Has(Life Sigil) and Has(Key Fairy)",
+    "locations": [
+      "Map Chest TS: Has(Katana) or Has(Earth Spear)",
+      "Ring Chest: (Has(Katana) or Has(Earth Spear)) and Has(Feather) and Has(Life Sigil) and Has(Key Fairy)",
       "Sacred Orb Chest TS: True",
-      "Crystal Skull Chest TS: Has(Life Sigil) and (Has(Feather) or CanUse(Bomb) or CanUse(Shuriken) or CanUse(Chakram) or CanUse(Earth Spear))",
+      "Crystal Skull Chest TS: (Has(Katana) or Has(Earth Spear)) and Has(Life Sigil) and (Has(Feather) or CanWarp)",
       "Egg of Creation: IsDead(Daji)",
-      "Flare Puzzle Reward: IsDead(Raijin and Fujin) and Has(Birth Sigil) and Has(Gale Fibula) and Has(Grapple Claw) and CanWarp",
+      "Flare Puzzle Reward: IsDead(Raijin and Fujin) and Has(Birth Sigil) and Has(Gale Fibula) and (Has(Grapple Claw) or Has(Shuriken))",
       "Ash Geen Shop 1: True",
       "Ash Geen Shop 2: True",
       "Ash Geen Shop 3: True",
-      "Raijin and Fujin: Has(Mjolnir) and OrbCount(3) and (Has(Chain Whip) or Has(Axe) or Has(Katana))",
-      "Daji: (Has(Chain Whip) or Has(Axe) or Has(Katana)) and OrbCount(3)"
+      "Raijin and Fujin: Has(Mjolnir) and OrbCount(3) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana))",
+      "Daji: (Has(Katana) or Has(Earth Spear)) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana)) and OrbCount(3)"
     ],
-    "exits":[
-      "Ancient Chaos Bottom: True",
+    "exits": [
+      "Ancient Chaos Bottom: (Has(Katana) or Has(Earth Spear))",
       "Heavens Labyrinth Cog: IsDead(Raijin and Fujin) and CanWarp and CanChant(Earth) and CanChant(Wind) and CanChant(Fire) and CanChant(Sea) and CanChant(Heaven)"
     ]
   },
   {
     "areaName":"Takamagahara Shrine Blood",
-    "locations":[
+    "locations": [
       "Power Band Chest: IsDead(Belial) and Has(Mulana Talisman)",
-      "Belial: Has(Cog of Antiquity) and Has(Lamp of Time) and (Has(Chain Whip) or Has(Axe) or Has(Katana)) and ((Has(Ice Cloak) and OrbCount(5)) or Has(Claydoll Suit))"
+      "Belial: Has(Cog of Antiquity) and Has(Egg of Creation) and OrbCount(8) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana)) and (Has(Ice Cloak) or Has(Claydoll Suit))"
     ],
     "exits":[
 
@@ -610,7 +610,7 @@
     "areaName":"Ancient Chaos Tablet",
     "locations":[
       "Ankh Chest AC: True",
-      "Crystal Skull Chest AC: CanUse(Shuriken)"
+      "Crystal Skull Chest AC: CanUse(Shuriken) or CanUse(Earth Spear)"
     ],
     "exits":[
       "Ancient Chaos Main: True"
@@ -618,12 +618,12 @@
   },
   {
     "areaName" :"Ancient Chaos Main",
-    "locations":[
+    "locations": [
       "Destiny Tablet Chest: IsDead(Anzu) and Has(Mulana Talisman)",
       "Scriptures: IsDead(Anu)",
       "Wind Mantra Mural: Has(Snapshot)",
       "Anzu: Has(Lamp of Time) and Has(Claydoll Suit) and OrbCount(5) and (CanUse(Flare) or CanUse(Caltrops) or CanUse(Shuriken) or CanUse(Earth Spear))",
-      "Anu: Has(Gloves) and OrbCount(5) and (Has(Chain Whip) or Has(Axe) or Has(Katana)) and AnkhCount(9)"
+      "Anu: Has(Gloves) and OrbCount(5) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana)) and AnkhCount(9)"
     ]
   },
   {
@@ -655,15 +655,15 @@
   },
   {
     "areaName":"Hall of Malice Awoken",
-    "locations":[
+    "locations": [
       "Nemean Fur: IsDead(Nemean Lion) and Has(Feather)",
       "Crystal Skull Chest HoM: IsDead(Ladon) and Has(Death Sigil)",
       "Giants Flutes Chest: IsDead(Echidna) and Has(Mulana Talisman)",
       "Miracle Witch Chest: Has(Flame Torc) and IsDead(Cerberus)",
       "Delphyne: Has(Shuriken) or Has(Chakram)",
-      "Hydra: IsDead(Delphyne) and (Has(Chain Whip) or Has(Axe) or Has(Katana))",
+      "Hydra: IsDead(Delphyne) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana))",
       "Nemean Lion: IsDead(Hydra)",
-      "Sphynx: (Has(Chain Whip) or Has(Axe) or Has(Katana))",
+      "Sphynx: (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana))",
       "Ladon: IsDead(Sphynx)",
       "Phaia: IsDead(Ladon)",
       "Karkinos: IsDead(Phaia) and (Has(Lamp of Time) or CanUse(Earth Spear) or CanUse(Caltrops) or CanUse(Bomb))",
@@ -671,7 +671,7 @@
       "Colchian Dragon: IsDead(Chimera)",
       "Cerberus: IsDead(Colchian Dragon) and (CanUse(Shuriken) or CanUse(Chakram))",
       "Orthrus: IsDead(Cerberus)",
-      "Echidna: AnkhCount(9) and IsDead(Orthrus) and IsDead(Karkinos) and IsDead(Nemean Lion) and OrbCount(8) and (CanUse(Flare) or CanUse(Bomb))"
+      "Echidna: AnkhCount(9) and IsDead(Orthrus) and IsDead(Karkinos) and IsDead(Nemean Lion) and OrbCount(10) and Has(Flail Whip) and (CanUse(Flare) or CanUse(Bomb))"
     ],
     "exits":[
       "Immortal Battlefield Spiral Boat: Has(Death Sigil) and Has(Earth Spear) and GuardianKills(9)"
@@ -679,12 +679,12 @@
   },
   {
     "areaName":"Heavens Labyrinth",
-    "locations":[
+    "locations": [
       "Map Chest HL: True",
       "Crystal Skull Chest HL: True",
-      "Megarock Shop 1: Has(Grapple Claw)",
-      "Megarock Shop 2: Has(Grapple Claw)",
-      "Megarock Shop 3: Has(Grapple Claw)"
+      "Megarock Shop 1: Has(Grapple Claw) and Has(Feather)",
+      "Megarock Shop 2: Has(Grapple Claw) and Has(Feather)",
+      "Megarock Shop 3: Has(Grapple Claw) and Has(Feather)"
     ],
     "exits":[
       "Heavens Labyrinth Spun: CanChant(Heaven)"
@@ -700,7 +700,7 @@
       "Arachne: CanWarp",
       "Scylla: CanWarp",
       "Glasya-Labolas: CanWarp",
-      "Griffin: Has(Gale Fibula) and Has(Life Sigil) and IsDead(Glasya-Labolas)",
+      "Griffin: Has(Gale Fibula) and Has(Gloves) and Has(Life Sigil) and IsDead(Glasya-Labolas)",
       "Dissonance (Heavens Labyrinth): CanWarp and IsDead(Echidna) and Has(Beherit)"
     ],
     "exits":[
@@ -718,13 +718,13 @@
   },
   {
     "areaName":"Eternal Prison Doom",
-    "locations":[
+    "locations": [
       "Crystal Skull Chest EPD: True",
       "Map Chest EPD: True",
       "La Mulana 2: Has(Mjolnir) and Has(Power Band)",
       "Spaulder Chest: Has(Gloves) and Has(Key Fairy) and (Has(Feather) or (Has(Gale Fibula) and Has(Snow Shoes)))",
       "Light Scythe Item: Has(Maats Feather) and Has(Djed Pillar) and Has(Gale Fibula) and Has(Feather)",
-      "Hraesvelgr: IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2) and IsDead(Ratatoskr 3) and IsDead(Ratatoskr 4) and CanChant(Moon) and OrbCount(7) and (CanUse(Flare) or (Has(Chain Whip) or Has(Axe) or Has(Katana)))"
+      "Hraesvelgr: IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2) and IsDead(Ratatoskr 3) and IsDead(Ratatoskr 4) and CanChant(Moon) and OrbCount(7) and (CanUse(Flare) or (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana)))"
     ],
     "exits":[
       "Eternal Prison Doom Hel: CanWarp and Has(Hand Scanner) and IsDead(Vidofnir) and IsDead(Hraesvelgr) and Has(Grapple Claw) and Has(Gale Fibula) and Has(Claydoll Suit) and Has(Gloves) and Has(Anchor) and Has(Feather) and Has(Life Sigil)",
@@ -733,8 +733,8 @@
   },
   {
     "areaName": "Eternal Prison Doom Hel",
-    "locations":[
-      "Hel: OrbCount(9) and AnkhCount(9)",
+    "locations": [
+      "Hel: OrbCount(10) and AnkhCount(9) and Has(Flail Whip)",
       "Book of the Dead Chest: IsDead(Hel)",
       "Dissonance (Eternal Prison): IsDead(Hel) and Has(Beherit)"
     ],
@@ -744,14 +744,14 @@
   },
   {
     "areaName":"Eternal Prison Gloom",
-    "locations":[
+    "locations": [
       "Map Chest EPG: Has(Life Sigil)",
       "Death Sigil Chest: Has(Mjolnir) and Has(Power Band) and Has(Life Sigil) and (CanWarp or Has(Death Sigil))",
       "Statue Lady Puzzle: Has(Harp) and Has(Enga Musica)",
       "Mother Mantra Mural: CanUse(Bomb) and Has(Snapshot) and PuzzleFinished(Statue Lady)",
       "Garm Statue Puzzle: PuzzleFinished(Statue Lady) and Has(Feather) and CanChant(Fire) and CanChant(Earth) and CanChant(Sun)",
       "Bomb Puzzle Reward: Has(Key Fairy) and Has(Life Sigil) and PuzzleFinished(Garm)",
-      "Ratatoskr 4: PuzzleFinished(Garm) and OrbCount(8) and (Has(Chain Whip) or Has(Axe) or Has(Katana) or CanUse(Earth Spear) or CanUse(Bomb))",
+      "Ratatoskr 4: PuzzleFinished(Garm) and OrbCount(8) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana))",
       "Ankh Jewel: IsDead(Ratatoskr 4)",
       "Key Fairy: Has(Fairy Pass) and Has(Freyas Pendant)",
       "Sakit Puzzle: PuzzleFinished(Garm) and IsDead(Vidofnir) and CanChant(Moon) and Has(Giants Flute) and Has(Liquour)"
