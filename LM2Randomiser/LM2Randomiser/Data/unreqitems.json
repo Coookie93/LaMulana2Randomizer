@@ -1,10 +1,5 @@
 [
   {
-    "name": "Egg of Creation",
-    "id": 12,
-    "isRequired": false
-  },
-  {
     "name": "Mobile Super x3+",
     "id": 16,
     "isRequired": false
@@ -42,11 +37,6 @@
   {
     "name": "Totem Pole",
     "id": 33,
-    "isRequired": false
-  },
-  {
-    "name": "Spaulder",
-    "id": 35,
     "isRequired": false
   },
   {

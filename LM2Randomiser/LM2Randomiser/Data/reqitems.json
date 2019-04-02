@@ -55,6 +55,11 @@
     "isRequired": true
   },
   {
+    "name": "Egg of Creation",
+    "id": 12,
+    "isRequired": true
+  },
+  {
     "name": "Giants Flute",
     "id": 13,
     "isRequired": true
@@ -125,6 +130,11 @@
     "isRequired": true
   },
   {
+    "name": "Spaulder",
+    "id": 35,
+    "isRequired": true
+  },
+  {
     "name": "Scalesphere",
     "id": 36,
     "isRequired": true
@@ -167,11 +177,6 @@
   {
     "name": "Destiny Tablet",
     "id": 50,
-    "isRequired": true
-  },
-  {
-    "name": "Secret Treasure of Life",
-    "id": 51,
     "isRequired": true
   },
   {
