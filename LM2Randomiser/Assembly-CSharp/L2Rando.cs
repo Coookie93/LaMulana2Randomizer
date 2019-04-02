@@ -106,11 +106,18 @@ namespace LM2RandomiserMod
             this.talkDataBase = talkDataBase;
             this.sys = system;
 
+            StartCoroutine(Setup());
+        }
+        
+        private IEnumerator Setup()
+        {
             //load the locationToItemMap from seed.lm2
             locationToItemMap = LoadSeedFile();
 
+            yield return new WaitForSeconds(1f);
+
             //if we successfully loaded and the seed has the right amount of locations
-            if (locationToItemMap != null && locationToItemMap.Count == 173)
+            if (locationToItemMap != null && locationToItemMap.Count == 172)
             {
                 randomising = true;
                 ChangeShopItems();
@@ -121,11 +128,11 @@ namespace LM2RandomiserMod
             {
                 if (locationToItemMap != null)
                 {
-                    error += ("total items randomised: " + locationToItemMap.Count + ", should be 173.");
+                    error += ("total items randomised: " + locationToItemMap.Count + ", should be 172.");
                 }
             }
         }
-        
+
         private Dictionary<int, int> LoadSeedFile()
         {
             Dictionary<int, int> itemLocations = null;
@@ -176,9 +183,10 @@ namespace LM2RandomiserMod
                         if (flagBox.seet_no1 == 2)
                         {
                             flagBox.flag_no1 = (int)newItemData.getItemName();
+                            flagBox.flag_no2 = 1;
 
                             //the whips and shields use the same flag just increment higher with each upgrade cant just use the same as other items
-                            if (newItemID == ItemID.ChainWhip || newItemID == ItemID.SilverShield)
+                            if (newItemID == ItemID.ChainWhip || newItemID == ItemID.SilverShield || newItemID == ItemID.MobileSuperx3P)
                             {
                                 flagBox.flag_no2 = 2;
                             }
@@ -201,9 +209,11 @@ namespace LM2RandomiserMod
                         if (flagBox.seet_no1 == 2)
                         {
                             flagBox.flag_no1 = (int)newItemData.getItemName();
+                            flagBox.comp = COMPARISON.Equal;
+                            flagBox.flag_no2 = 0;
 
                             //the whips and shields use the same flag just increment higher with each upgrade cant just use the same as other items
-                            if (newItemID == ItemID.ChainWhip || newItemID == ItemID.SilverShield)
+                            if (newItemID == ItemID.ChainWhip || newItemID == ItemID.SilverShield || newItemID == ItemID.MobileSuperx3P)
                             {
                                 flagBox.flag_no2 = 1;
                                 flagBox.comp = COMPARISON.LessEq;
@@ -257,9 +267,11 @@ namespace LM2RandomiserMod
                         if (flagBox.seet_no1 == 2)
                         {
                             flagBox.flag_no1 = (int)newItemData.getItemName();
+                            flagBox.comp = COMPARISON.Equal;
+                            flagBox.flag_no2 = 0;
 
                             //the whips and shields use the same flag just increment higher with each upgrade cant just use the same as other items
-                            if (newItemID == ItemID.ChainWhip || newItemID == ItemID.SilverShield)
+                            if (newItemID == ItemID.ChainWhip || newItemID == ItemID.SilverShield || newItemID == ItemID.MobileSuperx3P)
                             {
                                 flagBox.flag_no2 = 1;
                                 flagBox.comp = COMPARISON.LessEq;
@@ -295,11 +307,15 @@ namespace LM2RandomiserMod
         {
             if (objName.Contains("ItemSym "))
             {
-                string name = objName.Remove(0, 8);
+                string name = objName.Substring(8);
 
                 if(name.Contains("SacredOrb"))
                 {
                     name = name.Insert(6, " ");
+                }
+                else if(name.Equals("MSX3p"))
+                {
+                    name = "MSX";
                 }
                 return L2SystemCore.getItemData(name);
             }
@@ -309,17 +325,21 @@ namespace LM2RandomiserMod
         private ItemData GetNewItemData(ItemInfo itemInfo)
         {
 
-            if (itemInfo.trueName.Contains("Whip"))
+            if (itemInfo.shopName.Contains("Whip"))
             {
                 return L2SystemCore.getItemData("Whip");
             }
-            else if (itemInfo.trueName.Contains("Shield"))
+            else if (itemInfo.shopName.Contains("Shield"))
             {
                 return L2SystemCore.getItemData("Shield");
             }
+            else if (itemInfo.shopName.Equals("MSX3p"))
+            {
+                return L2SystemCore.getItemData("MSX");
+            }
             else
             {
-                return L2SystemCore.getItemData(itemInfo.trueName);
+                return L2SystemCore.getItemData(itemInfo.shopName);
             }
         }
 
@@ -360,8 +380,8 @@ namespace LM2RandomiserMod
                 ItemID newItemID = (ItemID)id;
                 //get the item data for the new item, only really need the
 
-                ItemInfo newItemData = ItemFlags.GetItemInfo(newItemID);
-                return String.Format("[@sitm,{0},{1},{2},{3}]", newItemData.shopType, newItemData.trueName, newItemData.shopPrice, newItemData.shopAmount);
+                ItemInfo newItemInfo = ItemFlags.GetItemInfo(newItemID);
+                return String.Format("[@sitm,{0},{1},{2},{3}]", newItemInfo.shopType, newItemInfo.shopName, newItemInfo.shopPrice, newItemInfo.shopAmount);
             }
 
             return String.Empty;
@@ -410,17 +430,17 @@ namespace LM2RandomiserMod
             //Neburu map
             //"[@anim,thanks,1]\n[@take,Map16,02item,1]\n[@setf,2,126,=,1]\n[@setf,2,127,=,1]\n[@setf,2,128,=,1]\n[@setf,2,129,=,1]\n[@setf,2,130,=,1]\n[@setf,5,3,=,1]\n[@out]"
             talkDataBase.cellData[0][11][1][0] = ChangeTalkString(LocationID.MapfromNebur,
-                "[@anim,thanks,1]\n{0}[@setf,2,126,=,1]\n[@setf,2,127,=,1]\n[@setf,2,128,=,1]\n[@setf,2,129,=,1]\n[@setf,2,130,=,1]\n[@setf,5,3,=,1]\n[@out]");
+                "[@anim,thanks,1]\n{0}[@setf,2,127,=,1]\n[@setf,2,128,=,1]\n[@setf,2,129,=,1]\n[@setf,2,130,=,1]\n[@setf,5,3,=,1]\n[@out]");
 
             //xelpud item
             //"[@take,Xelputter,02item,1]\n[@setf,3,31,=,1]\n[@setf,5,2,=,1]\n[@setf,5,20,=,2]\n[@p,lastC]"
             talkDataBase.cellData[1][10][1][0] = ChangeTalkString(LocationID.XelpudItem,
                 "{0}[@setf,3,31,=,1]\n[@setf,5,2,=,1]\n[@setf,5,20,=,2]\n[@p,lastC]");
 
-            //if you say to neburs map xelpud gives it too you instead at some point, should never need to use this as it breaks logic
+            //if you say to neburs map xelpud gives it too you instead at some point, should never need to use as this isnt in logic
             //"[@take,Map16,02item,1]\n[@setf,2,126,=,1]\n[@setf,2,127,=,1]\n[@setf,5,4,=,2]\n[@anim,talk,1]"
             talkDataBase.cellData[1][70][1][0] = ChangeTalkString(LocationID.MapfromNebur,
-                "{0}[@setf,2,126,=,1]\n[@setf,2,127,=,1]\n[@setf,5,4,=,2]\n[@anim,talk,1]");
+                "{0}[@setf,2,127,=,1]\n[@setf,5,4,=,2]\n[@anim,talk,1]");
 
             //alsedana item
             //"[@take,Beherit,02item,1]\n[@anim,talk,1]\n[@setf,1,54,=,1]\n[@p,2nd-6]"
@@ -432,10 +452,19 @@ namespace LM2RandomiserMod
             talkDataBase.cellData[3][5][1][0] = ChangeTalkString(LocationID.FuneralItem,
                 "{0}[@setf,1,54,=,1]\n[@anim,talk,1]\n[@p,1st-3]");
 
+            //check to see if you can get the funeral item
+            talkDataBase.cellData[3][3][1][0] = ChangeTalkFlagCheck(LocationID.FuneralItem, "[@iff,5,62,=,7,giltoriyo,9th]\n[@iff,2,{0},&gt;,{1},giltoriyo,8th]\n" +
+                "[@iff,5,62,=,6,giltoriyo,7th]\n[@iff,5,62,=,5,giltoriyo,6th]\n[@iff,5,62,=,4,giltoriyo,5th]\n[@iff,5,62,=,3,giltoriyo,4th]\n[@iff,5,62,=,2,giltoriyo,2nd]\n" +
+                "[@exit]\n[@anim,talk,1]\n[@p,1st]");
+
             //if you are mean and never visited a dying man, this also isnt in logic
             //"[@iff,2,3,&gt;,0,giltoriyo,2nd]\n[@exit]\n[@take,Beherit,02item,1]\n[@anim,talk,1]\n[@p,1st-5]"
             talkDataBase.cellData[3][7][1][0] = ChangeTalkString(LocationID.AlsedanaItem,
                 "[@iff,2,3,&gt;,0,giltoriyo,2nd]\n[@exit]\n{0}[@anim,talk,1]\n[@p,1st-5]");
+
+            //check for above
+            talkDataBase.cellData[3][7][1][0] = ChangeTalkStringAndFlagCheck(LocationID.AlsedanaItem,
+                "[@iff,2,{0},&gt;,{1},giltoriyo,2nd]\n[@exit]\n{2}[@anim,talk,1]\n[@p,1st-5]");
 
             //fobos after you break statue
             //"[@setf,2,81,=,1]\n[@setf,5,16,=,5]\n[@anim,talk,1]\n[@take,R Book,02item,1]\n[@p,3rd-2]"
@@ -453,10 +482,8 @@ namespace LM2RandomiserMod
                 "{0}[@setf,5,101,=,2]\n[@anim,talk,1]\n[@p,3rd-2]");
 
             //anubis L scythe
-            //"[@iff,2,48,&gt;,0,f15-3,2nd]\n[@take,L Scythe,02Items,1]\n[@anim,talk,1]\n[@p,lastC]"
-            talkDataBase.cellData[78][7][1][0] = ChangeTalkString(LocationID.LightScytheItem,
-                "[@iff,2,48,&gt;,0,f15-3,2nd]\n{0}[@anim,talk,1]\n[@p,lastC]");
-
+            talkDataBase.cellData[78][7][1][0] = ChangeTalkStringAndFlagCheck(LocationID.LightScytheItem,
+                "[@iff,2,{0},&gt;,{1},f15-3,2nd]\n{2}[@anim,talk,1]\n[@p,lastC]");
         }
 
         private string ChangeTalkString(LocationID locationID, string original)
@@ -466,17 +493,17 @@ namespace LM2RandomiserMod
                 ItemID newItemID = (ItemID)id;
 
                 //get the item data for the new item
-                ItemInfo newItemData = ItemFlags.GetItemInfo(newItemID);
+                ItemInfo newItemInfo = ItemFlags.GetItemInfo(newItemID);
 
                 //Sacred orbs might require some special work here if setting the orbcount flag doesnt give you the level up
                 string take;
-                if (newItemData.boxName.Equals("Crystal S") || newItemData.boxName.Equals("Sacred Orb"))
+                if (newItemInfo.boxName.Equals("Crystal S") || newItemInfo.boxName.Equals("Sacred Orb") || newItemInfo.boxName.Equals("MSX3p"))
                 {
-                    take = String.Format("[@take,{0},02item,1]\n", newItemData.boxName);
+                    take = String.Format("[@take,{0},02item,1]\n", newItemInfo.boxName);
                 }
                 else
                 {
-                    take = String.Format("[@take,{0},02item,1]\n", newItemData.trueName);
+                    take = String.Format("[@take,{0},02item,1]\n", newItemInfo.shopName);
                 }
 
                 //if the item has more than just its set flags add the flags to the mojiscript string
@@ -539,6 +566,87 @@ namespace LM2RandomiserMod
             }
 
             return flagString;
+        }
+
+        private string ChangeTalkFlagCheck(LocationID locationID, string original)
+        {
+            int id;
+            if (locationToItemMap.TryGetValue((int)locationID, out id))
+            {
+                ItemID newItemID = (ItemID)id;
+                ItemInfo newItemInfo = ItemFlags.GetItemInfo(newItemID);
+                ItemData newItemData = GetNewItemData(newItemInfo);
+
+                int flagValue = 0;
+
+                if (newItemID == ItemID.ChainWhip || newItemID == ItemID.SilverShield || newItemID == ItemID.MobileSuperx3P)
+                {
+                    flagValue = 1;
+                }
+                else if (newItemID == ItemID.FlailWhip || newItemID == ItemID.AngelShield)
+                {
+                    flagValue = 2;
+                }
+
+                return String.Format(original, (int)newItemData.getItemName(), flagValue);
+            }
+
+            return original;
+        }
+
+        private string ChangeTalkStringAndFlagCheck(LocationID locationID, string original)
+        {
+            int id;
+            if (locationToItemMap.TryGetValue((int)locationID, out id))
+            {
+                ItemID newItemID = (ItemID)id;
+                ItemInfo newItemInfo = ItemFlags.GetItemInfo(newItemID);
+                ItemData newItemData = GetNewItemData(newItemInfo);
+
+                int flagValue = 0;
+
+                if (newItemID == ItemID.ChainWhip || newItemID == ItemID.SilverShield || newItemID == ItemID.MobileSuperx3P)
+                {
+                    flagValue = 1;
+                }
+                else if (newItemID == ItemID.FlailWhip || newItemID == ItemID.AngelShield)
+                {
+                    flagValue = 2;
+                }
+
+                //TODO:put this is into a method to remove redundancy
+                string takeString;
+                if (newItemInfo.boxName.Equals("Crystal S") || newItemInfo.boxName.Equals("Sacred Orb") || newItemInfo.boxName.Equals("MSX3p"))
+                {
+                    takeString = String.Format("[@take,{0},02item,1]\n", newItemInfo.boxName);
+                }
+                else
+                {
+                    takeString = String.Format("[@take,{0},02item,1]\n", newItemInfo.shopName);
+                }
+
+                //if the item has more than just its set flags add the flags to the mojiscript string
+                L2FlagBoxEnd[] getFLags = ItemFlags.GetItemGetFlags(newItemID);
+                if (getFLags != null)
+                {
+                    for (int i = 0; i < getFLags.Length; i++)
+                    {
+                        L2FlagBoxEnd flag = getFLags[i];
+                        if (flag.calcu == CALCU.ADD)
+                        {
+                            takeString += String.Format("[@setf,{0},{1},+,{2}]\n", flag.seet_no1, flag.flag_no1, flag.data);
+                        }
+                        else if (flag.calcu == CALCU.EQR)
+                        {
+                            takeString += String.Format("[@setf,{0},{1},=,{2}]\n", flag.seet_no1, flag.flag_no1, flag.data);
+                        }
+                    }
+                }
+
+                return String.Format(original, (int)newItemData.getItemName(), flagValue, takeString);
+            }
+
+            return original;
         }
     }
 
