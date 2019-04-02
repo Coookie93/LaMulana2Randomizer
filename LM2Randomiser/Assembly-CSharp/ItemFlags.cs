@@ -278,12 +278,12 @@ namespace LM2RandomiserMod
             {ItemID.CrystalSkull,                 new ItemInfo("Crystal S",        "Crystal S",         "item",     50, 1)},
             {ItemID.Vessel,                       new ItemInfo("Vessel",           "Vessel",            "item",     50, 1)},
             {ItemID.Pepper,                       new ItemInfo("Pepper",           "Pepper",            "item",     50, 1)},
-            {ItemID.EggofCreation,                new ItemInfo("Egg",              "Egg",               "item",     1,  1)},
+            {ItemID.EggofCreation,                new ItemInfo("Egg",              "Egg",               "item",     50, 1)},
             {ItemID.GiantsFlute,                  new ItemInfo("G Pipe",           "G Pipe",            "item",     120, 1)},
             {ItemID.CogofAntiquity,               new ItemInfo("Gear",             "Gear",              "item",     50, 1)},
             {ItemID.MulanaTalisman,               new ItemInfo("M Talisman",       "M Talisman",        "item",     80, 1)},
                                                                                                                     
-            {ItemID.MobileSuperx3P,               new ItemInfo("MSX3p",            "MSX3p",             "item",     150, 1)},
+            {ItemID.MobileSuperx3P,               new ItemInfo("MSX3p",            "MSX",               "item",     150, 2)},
             {ItemID.ShellHorn,                    new ItemInfo("Shell Horn",       "Shell Horn",        "item",     50, 1)},
             {ItemID.HolyGrail,                    new ItemInfo("Holy Grail",       "Holy Grail",        "item",     50, 1)},
             {ItemID.FairyPass,                    new ItemInfo("F Pass",           "F Pass",            "item",     50, 1)},
@@ -442,7 +442,7 @@ namespace LM2RandomiserMod
             {ItemID.BombAmmo,                     new ItemInfo("Bomb-b",           "Bomb-b",            "weapon",   30,  5)},
             {ItemID.ChakramAmmo,                  new ItemInfo("Chakram-b",        "Chakram-b",         "weapon",   20,  1)},
             {ItemID.CaltropsAmmo,                 new ItemInfo("Caltrops-b",       "Caltrops-b",        "weapon",   20,  10)},
-            {ItemID.PistolAmmo,                   new ItemInfo("Pistol-b",         "Pistol-b",          "weapon",   500, 1)}
+            {ItemID.PistolAmmo,                   new ItemInfo("Pistol-b",         "Pistol-b",          "weapon",   400, 1)}
         };
 
     }
@@ -450,7 +450,7 @@ namespace LM2RandomiserMod
     public class ItemInfo
     {
         public string boxName;
-        public string trueName;
+        public string shopName;
         public string shopType;
         public int shopPrice;
         public int shopAmount;
@@ -458,7 +458,7 @@ namespace LM2RandomiserMod
         public ItemInfo(string boxName, string shopName, string type, int price, int amount)
         {
             this.boxName = boxName;
-            this.trueName = shopName;
+            this.shopName = shopName;
             this.shopType = type;
             this.shopPrice = price;
             this.shopAmount = amount;
