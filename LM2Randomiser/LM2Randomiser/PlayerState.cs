@@ -170,7 +170,7 @@ namespace LM2Randomiser
                     return HasItem("Holy Grail");
 
                 case RuleType.CanSpinCorridor:
-                    return HasItem("Beherit");
+                    return CanSpinCorridor(); 
 
                 case RuleType.Has:
                     return HasItem(rule.value);
@@ -206,7 +206,7 @@ namespace LM2Randomiser
                     return false;
             }
         }
-
+        
         public void ResetCheckedAreasAndEntrances()
         {
             //reset areas
@@ -266,6 +266,11 @@ namespace LM2Randomiser
             return HasItem(subWeapon) && HasItem(subWeapon + " Ammo");
         }
         
+        private bool CanSpinCorridor()
+        {
+            return HasItem("Beherit") && Dissonance(1);
+        }
+
         private bool GuardianKills(int count)
         {
             int num;
