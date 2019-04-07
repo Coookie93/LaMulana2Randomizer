@@ -15,4 +15,3 @@ Weapon Fairy,Weapon Fairy
 Money Fairy,Money Fairy
 Key Fairy,Key Fairy
 Liquour,Liquour
-Secret Treasure of Life Item,Secret Treasure of Life

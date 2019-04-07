@@ -180,6 +180,11 @@
     "isRequired": true
   },
   {
+    "name": "Secret Treasure of Life",
+    "id": 51,
+    "isRequired": true
+  },
+  {
     "name": "Origin Sigil",
     "id": 52,
     "isRequired": true
@@ -220,7 +225,7 @@
     "isRequired": true
   },
   {
-    "name": "Katana",
+    "name": "Rapier",
     "id": 65,
     "isRequired": true
   },
@@ -230,7 +235,7 @@
     "isRequired": true
   },
   {
-    "name": "Rapier",
+    "name": "Katana",
     "id": 67,
     "isRequired": true
   },

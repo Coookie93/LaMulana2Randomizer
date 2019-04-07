@@ -85,7 +85,7 @@ namespace LM2Randomiser
         FreyShip = 43,
         BookoftheDeadChest = 47,
         DestinyTabletChest = 49,
-        //SecretTreasureofLifeItem = 50,
+        SecretTreasureofLifeItem = 50,
 
         OriginSealChest = 51,
         BirthSigilChest = 52,
@@ -229,6 +229,7 @@ namespace LM2Randomiser
         MapfromNebur,
         FreyasItem,
         FobosItem,
+        FobosSkullItem,
         MulbrukItem,
         LightScytheItem
     }

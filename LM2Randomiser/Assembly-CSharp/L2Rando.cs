@@ -51,7 +51,7 @@ namespace LM2RandomiserMod
                         GUI.Label(new Rect(0f, 25f + (float)i * 22f, 200f, 22f), cachedItems[i].itemLabel);
                     }
                 }
-                GUI.Label(new Rect(0, Screen.height - 75f, 500f, 25f), error);
+                GUI.Label(new Rect(0, Screen.height - 75f, 500f, 50f), error);
                 GUI.Label(new Rect(0, Screen.height - 25f, 50f, 25f), randomising.ToString());
             }
         }
@@ -108,30 +108,6 @@ namespace LM2RandomiserMod
 
             StartCoroutine(Setup());
         }
-        
-        private IEnumerator Setup()
-        {
-            //load the locationToItemMap from seed.lm2
-            locationToItemMap = LoadSeedFile();
-
-            yield return new WaitForSeconds(1f);
-
-            //if we successfully loaded and the seed has the right amount of locations
-            if (locationToItemMap != null && locationToItemMap.Count == 172)
-            {
-                randomising = true;
-                ChangeShopItems();
-                ChangeShopThanks();
-                ChangeDialogueItems();
-            }
-            else
-            {
-                if (locationToItemMap != null)
-                {
-                    error += ("total items randomised: " + locationToItemMap.Count + ", should be 172.");
-                }
-            }
-        }
 
         private Dictionary<int, int> LoadSeedFile()
         {
@@ -157,6 +133,30 @@ namespace LM2RandomiserMod
             }
 
             return itemLocations;
+        }
+
+        private IEnumerator Setup()
+        {
+            //load the locationToItemMap from seed.lm2
+            locationToItemMap = LoadSeedFile();
+
+            yield return new WaitForSeconds(1f);
+
+            //if we successfully loaded and the seed has the right amount of locations
+            if (locationToItemMap != null && locationToItemMap.Count == 172)
+            {
+                randomising = true;
+                ChangeShopItems();
+                ChangeShopThanks();
+                ChangeDialogueItems();
+            }
+            else
+            {
+                if (locationToItemMap != null)
+                {
+                    error += ("total items randomised: " + locationToItemMap.Count + ", should be 172.");
+                }
+            }
         }
         
         private void ChangeBox(TreasureBoxScript box)
@@ -471,6 +471,11 @@ namespace LM2RandomiserMod
             talkDataBase.cellData[6][9][1][0] = ChangeTalkString(LocationID.FobosItem,
                 "[@setf,5,16,=,5]\n[@anim,talk,1]\n{0}[@p,3rd-2]");
 
+            //fobos skull reader
+            //"[@exit]\n[@anim,talk,1]\n[@setf,23,15,=,4]\n[@take,Skull,02item,1]\n[@p,lastC]"
+            talkDataBase.cellData[5][24][1][0] = ChangeTalkString(LocationID.FobosSkullItem, 
+                "[@exit]\n[@anim,talk,1]\n[@setf,23,15,=,4]\n[@take,Skull,02item,1]\n[@p,lastC]");
+
             //freya item
             //"[@anim,talk,1]\n[@take,F Pendant,2,1]\n[@setf,5,67,=,1]\n[@p,lastC]"
             talkDataBase.cellData[7][7][1][0] = ChangeTalkString(LocationID.FreyasItem,
@@ -718,6 +723,7 @@ namespace LM2RandomiserMod
         MapfromNebur,
         FreyasItem,
         FobosItem,
+        FobosSkullItem,
         MulbrukItem,
         LightScytheItem
     }
