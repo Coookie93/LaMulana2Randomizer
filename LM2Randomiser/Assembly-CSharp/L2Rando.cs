@@ -143,7 +143,7 @@ namespace LM2RandomiserMod
             yield return new WaitForSeconds(1f);
 
             //if we successfully loaded and the seed has the right amount of locations
-            if (locationToItemMap != null && locationToItemMap.Count == 172)
+            if (locationToItemMap != null && locationToItemMap.Count == 174)
             {
                 randomising = true;
                 ChangeShopItems();
@@ -154,7 +154,7 @@ namespace LM2RandomiserMod
             {
                 if (locationToItemMap != null)
                 {
-                    error += ("total items randomised: " + locationToItemMap.Count + ", should be 172.");
+                    error += ("total items randomised: " + locationToItemMap.Count + ", should be 174.");
                 }
             }
         }
@@ -474,7 +474,7 @@ namespace LM2RandomiserMod
             //fobos skull reader
             //"[@exit]\n[@anim,talk,1]\n[@setf,23,15,=,4]\n[@take,Skull,02item,1]\n[@p,lastC]"
             talkDataBase.cellData[5][24][1][0] = ChangeTalkString(LocationID.FobosSkullItem, 
-                "[@exit]\n[@anim,talk,1]\n[@setf,23,15,=,4]\n[@take,Skull,02item,1]\n[@p,lastC]");
+                "[@exit]\n[@anim,talk,1]\n[@setf,23,15,=,4]\n{0}[@p,lastC]");
 
             //freya item
             //"[@anim,talk,1]\n[@take,F Pendant,2,1]\n[@setf,5,67,=,1]\n[@p,lastC]"
