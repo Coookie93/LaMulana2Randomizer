@@ -66,7 +66,8 @@
   {
     "areaName": "Gate of Illusion",
     "locations": [
-      "Fobos Item: True"
+      "Fobos Item: True",
+      "Fobos Skull Item: SkullCount(1)"
     ],
     "exits": [
       "Roots of Yggdrasil: True"
@@ -249,9 +250,9 @@
       "Bargain Duck Shop 1:True",
       "Bargain Duck Shop 2:True",
       "Bargain Duck Shop 3:True",
-      "Vucub-Caquiz:True",
+      "Vucub-Caquiz: Has(Origin Sigil)",
       "Jalandhara: Has(Life Sigil) and Has(Feather) and OrbCount(4) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana))",
-      "Vritra: OrbCount(3) and AnkhCount(6) and (CanUse(Shuriken) or CanUse(Earth Spear) or CanUse(Chakram) or CanUse(Bomb))",
+      "Vritra: OrbCount(3) and AnkhCount(6) and IsDead(Vucub-Caquiz) and (CanUse(Shuriken) or CanUse(Earth Spear) or CanUse(Chakram) or CanUse(Bomb))",
       "Dissonance (Valhalla): Has(Beherit) and IsDead(Vritra)"
     ],
     "exits": [
@@ -316,7 +317,7 @@
       "Chain Whip Puzzle Reward: Has(Gloves) and (Has(Claydoll Suit) or OrbCount(2) or Has(Ice Cloak))",
       "Chakram Puzzle Reward: IsDead(Svipdagr) and Has(Life Sigil) and CanUse(Earth Spear) and CanUse(Rolling Shuriken)",
       "Crystal Skull IB: IsDead(Ratatoskr 2)",
-      "Secret Treasure of Life Item: Has(Dinosaur Figure) and CanReach(Immortal Battlefield Spiral Boat)",
+      "Secret Treasure of Life Item: Has(Dinosaur Figure) and CanReach(Immortal Battlefield Spiral Boat) and Dissonance(6) and CanChant(Night)",
       "Hiro Roderick Shop 1: True",
       "Hiro Roderick Shop 2: True",
       "Hiro Roderick Shop 3: True",
