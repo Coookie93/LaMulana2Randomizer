@@ -227,6 +227,12 @@ namespace LM2Randomiser
                 return false;
             }
 
+            //get skulls
+            if (!FileUtils.GetItemsFromJson("Data\\skulls.json", out List<Item> skulls))
+            {
+                return false;
+            }
+
             //get unrequired items
             if (!FileUtils.GetItemsFromJson("Data\\unreqitems.json", out List<Item> unrequiredItems))
             {
@@ -259,7 +265,6 @@ namespace LM2Randomiser
 
             //get list of shop locations as weights and ammo items can only be placed here
             List <Location> shopLocations = GetUnplacedShopLocations();
-            
             //place shop only items
             ItemRandomisation.RandomiseSpecificItems(this, shopLocations, shopItems, requiredItems);
 
@@ -269,6 +274,7 @@ namespace LM2Randomiser
             //lock locations that currently can't be randomised
             GetLocation("Funeral Item").isLocked = true;
             GetLocation("Mulbruk Item").isLocked = true;
+            GetLocation("Fobos Skull Item").isLocked = true;
             
             //Get all unplaced locations as required items can go anywhere aslong as it can be reached
             List<Location> unplacedLocations = GetUnplacedLocations();
@@ -279,9 +285,15 @@ namespace LM2Randomiser
             GetLocation("Funeral Item").isLocked = false;
             GetLocation("Mulbruk Item").isLocked = false;
 
+            //randomise all skulls bar one seperately since its seem better for generation, needs testing 
+            unplacedLocations = GetUnplacedLocations();
+            ItemRandomisation.RandomiseSpecificItems(this, unplacedLocations, skulls, null);
+
+            //anything left can go here
+            GetLocation("Fobos Skull Item").isLocked = false;
+
             //Get unplaced locations after the required items have been placed
             unplacedLocations = GetUnplacedLocations();
-            
             //places no requires items
             ItemRandomisation.RandomiseUnrequiredItems(this, unplacedLocations, unrequiredItems);
 
