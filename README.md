@@ -27,6 +27,8 @@ Use Steam's file verification and it will redownload the original Assembly-CShar
 
 Notes currently only options are choosing to randomise the grail and scanner, current items in the randomisation pool are all the treasure box items, free standing items, shop items and npc items. Currently the the item you get after the funeral and mulbruks item will not contain an item required to beat the game. 
 
+Make sure to talk to nebur when she is outside at the beginning, she has an item
+
 The logic for bosses/minibosses needs some work along with the item pricing.
 
 F11 closes the overlay.
