@@ -682,7 +682,7 @@
     "areaName":"Heavens Labyrinth",
     "locations": [
       "Map Chest HL: True",
-      "Crystal Skull Chest HL: True",
+      "Crystal Skull Chest HL: Has(Grapple Claw) and Has(Feather)",
       "Megarock Shop 1: Has(Grapple Claw) and Has(Feather)",
       "Megarock Shop 2: Has(Grapple Claw) and Has(Feather)",
       "Megarock Shop 3: Has(Grapple Claw) and Has(Feather)"
