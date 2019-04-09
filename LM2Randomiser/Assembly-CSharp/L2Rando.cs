@@ -601,6 +601,7 @@ namespace LM2RandomiserMod
 
         private string ChangeTalkStringAndFlagCheck(LocationID locationID, string original)
         {
+
             int id;
             if (locationToItemMap.TryGetValue((int)locationID, out id))
             {
@@ -652,6 +653,13 @@ namespace LM2RandomiserMod
             }
 
             return original;
+        }
+
+        private void MojiScriptFixes()
+        {
+            //changes to Nebur's scripts so that she stays until you take her item or leave the surface
+            shopDataBase.cellData[2][4][1][0] = "[@anim,smile,1]\n[@setf,5,27,+,1]";
+            talkDataBase.cellData[0][10][1][0] = "[@anim,nejiru,1]\n[@out]";
         }
     }
 
