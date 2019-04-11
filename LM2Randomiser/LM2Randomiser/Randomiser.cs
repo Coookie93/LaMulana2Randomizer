@@ -274,6 +274,7 @@ namespace LM2Randomiser
             //lock locations that currently can't be randomised
             GetLocation("Funeral Item").isLocked = true;
             GetLocation("Mulbruk Item").isLocked = true;
+            GetLocation("Hiner Shop 4").isLocked = true;
             GetLocation("Fobos Skull Item").isLocked = true;
             
             //Get all unplaced locations as required items can go anywhere aslong as it can be reached
@@ -290,6 +291,7 @@ namespace LM2Randomiser
             ItemRandomisation.RandomiseSpecificItems(this, unplacedLocations, skulls, null);
 
             //anything left can go here
+            GetLocation("Hiner Shop 4").isLocked = false;
             GetLocation("Fobos Skull Item").isLocked = false;
 
             //Get unplaced locations after the required items have been placed
@@ -362,6 +364,20 @@ namespace LM2Randomiser
             return placedLocations;
         }
 
+        public List<Location> GetUnplacedShopLocations()
+        {
+            List<Location> placedLocations = new List<Location>();
+            foreach (var location in locations)
+            {
+                if (location.Value.item == null && !location.Value.isLocked && location.Value.locationType == LocationType.Shop)
+                {
+                    placedLocations.Add(location.Value);
+                }
+            }
+
+            return placedLocations;
+        }
+
         public List<Location> GetPlacedRequiredItemLocations()
         {
             List<Location> placedLocations = new List<Location>();
@@ -375,21 +391,7 @@ namespace LM2Randomiser
 
             return placedLocations;
         }
-
-        public List<Location> GetUnplacedShopLocations()
-        {
-            List<Location> placedLocations = new List<Location>();
-            foreach (var location in locations)
-            {
-                if (location.Value.item == null && location.Value.locationType == LocationType.Shop)
-                {
-                    placedLocations.Add(location.Value);
-                }
-            }
-
-            return placedLocations;
-        }
-
+        
         private void RemoveItemFromList(string name, List<string[]> list)
         {
             string[] itemToRemove = null;
