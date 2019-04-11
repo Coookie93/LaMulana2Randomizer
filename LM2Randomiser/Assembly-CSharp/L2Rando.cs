@@ -18,6 +18,12 @@ namespace LM2RandomiserMod
 {
     public class L2Rando : MonoBehaviour
     {
+        //number of items being randomised
+        const int ITEM_COUNT = 174;
+
+        Dictionary<int, int> locationToItemMap;
+        bool randomising = false;
+
         bool showText = true;
         
         L2ShopDataBase shopDataBase;
@@ -26,10 +32,9 @@ namespace LM2RandomiserMod
 
         TreasureBoxScript[] cachedBoxes;
         EventItemScript[] cachedItems;
-        
-        Dictionary<int, int> locationToItemMap;
-        bool randomising = false;
+
         string error;
+
         private void OnGUI()
         {
             if (this.showText)
@@ -140,21 +145,23 @@ namespace LM2RandomiserMod
             //load the locationToItemMap from seed.lm2
             locationToItemMap = LoadSeedFile();
 
+            //need to wait to ensure that the game has setup all its systems
             yield return new WaitForSeconds(1f);
 
             //if we successfully loaded and the seed has the right amount of locations
-            if (locationToItemMap != null && locationToItemMap.Count == 174)
+            if (locationToItemMap != null && locationToItemMap.Count == ITEM_COUNT)
             {
                 randomising = true;
                 ChangeShopItems();
                 ChangeShopThanks();
                 ChangeDialogueItems();
+                MojiScriptFixes();
             }
             else
             {
                 if (locationToItemMap != null)
                 {
-                    error += ("total items randomised: " + locationToItemMap.Count + ", should be 174.");
+                    error += String.Format(", total items randomised: {0}, should be {1}.", locationToItemMap.Count, ITEM_COUNT);
                 }
             }
         }
