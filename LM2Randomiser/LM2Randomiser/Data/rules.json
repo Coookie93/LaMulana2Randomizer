@@ -236,8 +236,8 @@
     "locations": [
       "Vidofnir: Has(Flame Torc) and OrbCount(7) and (Has(Ice Cloak) or Has(Claydoll Suit)) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana))"
     ],
-    "exits":[
-      "Eternal Prison Gloom: IsDead(Vidofnir) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Right)))"
+    "exits": [
+      "Eternal Prison Gloom: IsDead(Vidofnir) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Entrance)))"
     ]
   }, 
   {
@@ -261,14 +261,14 @@
       "Ancient Chaos Blood: CanSpinCorridor",
       "Hall of Malice: CanSpinCorridor",
       "Dark Lords Mausoleum Mid: CanSpinCorridor",
-      "Eternal Prison Doom: CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Right)))"
+      "Eternal Prison Doom: CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Entrance)))"
     ]
   },
   {
     "areaName":"Valhalla Top",
     "locations":[
       "Fire Mantra Mural: Has(Birth Sigil) and Has(Snapshot)",
-      "Flail Whip Puzzle Reward: Has(Origin Sigil) and Has(Birth Sigil) and Has(Life Sigil) and Has(Death Sigil) and Has(Claydoll Suit) and (CanUse(Rolling Shuriken) or CanReach(Valhalla Top Right))"
+      "Flail Whip Puzzle Reward: Has(Feather) and Has(Origin Sigil) and Has(Birth Sigil) and Has(Life Sigil) and Has(Death Sigil) and Has(Claydoll Suit) and (CanUse(Rolling Shuriken) or CanReach(Valhalla Top Right))"
     ],
     "exits":[
       "Valhalla Main: Has(Feather) or CanChant(Heaven)"
@@ -291,8 +291,8 @@
       "Piebalusa Shop 3: True",
       "Cetus: CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Rolling Shuriken) or CanUse(Caltrops)"
     ],
-    "exits":[
-      "Immortal Battlefield Top Left: CanWarp or Has(Feather) or CanUse(Bomb) or CanUse(Chakram) or CanUse(Rolling Shuriken) or CanUse(Earth Spear)",
+    "exits": [
+      "Immortal Battlefield Top Left: CanWarp or CanReach(Immortal Battlefield Main)",
       "Immortal Battlefield Main: IsDead(Cetus)"
     ]
   },
@@ -302,7 +302,8 @@
       "Gale Fibula Chest: CanUse(Earth Spear) and Has(Gloves)",
       "Earth Spear Puzzle Reward: Has(Gloves) or Has(Feather)"
     ],
-    "exits":[
+    "exits": [
+      "Immortal Battlefield Top: (Has(Gloves) or Has(Feather))"
     ]
   },
   {
@@ -311,25 +312,24 @@
       "Map Chest IB: True",
       "Ice Cloak Chest: Has(Life Sigil) and (Has(Feather) or CanUse(Chakram) or CanUse(Shuriken) or CanUse(Bomb))",
       "Totem Pole Chest: Has(Birth Sigil) and Has(Gale Fibula)",
-      "Sacred Orb Chest IB: Has(Birth Sigil)",
+      "Sacred Orb Chest IB: Has(Birth Sigil) and (IsDead(Cetus) or Has(Feather))",
       "Lamp of Time Chest: IsDead(Ratatoskr 2) and Has(Cog of Antiquity) and Has(Life Sigil)",
       "Mjolnir Chest:IsDead(Jormangund)",
       "Chain Whip Puzzle Reward: Has(Gloves) and (Has(Claydoll Suit) or OrbCount(2) or Has(Ice Cloak))",
       "Chakram Puzzle Reward: IsDead(Svipdagr) and Has(Life Sigil) and CanUse(Earth Spear) and CanUse(Rolling Shuriken)",
       "Crystal Skull IB: IsDead(Ratatoskr 2)",
       "Secret Treasure of Life Item: Has(Dinosaur Figure) and CanReach(Immortal Battlefield Spiral Boat) and Dissonance(6) and CanChant(Night)",
-      "Hiro Roderick Shop 1: True",
-      "Hiro Roderick Shop 2: True",
-      "Hiro Roderick Shop 3: True",
+      "Hiro Roderick Shop 1: IsDead(Cetus)",
+      "Hiro Roderick Shop 2: IsDead(Cetus)",
+      "Hiro Roderick Shop 3: IsDead(Cetus)",
       "Mulbruk Item: True",
-      "Ratatoskr 2: True",
+      "Ratatoskr 2: OrbCount(2)",
       "Svipdagr: OrbCount(2)",
-      "Jormangund: Has(Dinosaur Figure) and Has(Pochette Key) and OrbCount(6) and AnkhCount(4) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana)) and (CanUse(Flare) or CanUse(Shuriken) or CanUse(Earth Spear))"
+      "Jormangund: IsDead(Cetus) and Has(Dinosaur Figure) and Has(Pochette Key) and OrbCount(6) and AnkhCount(4) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana)) and (CanUse(Flare) or CanUse(Shuriken) or CanUse(Earth Spear))"
     ],
     "exits":[
-      "Immortal Battlefield Top: CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Rolling Shuriken) or CanUse(Caltrops)",
       "Immortal Battlefield Top Left: True",
-      "Immortal Battlefield Dinosaur: Has(Anchor) or Has(Claydoll Suit)",
+      "Immortal Battlefield Dinosaur: (Has(Anchor) or Has(Claydoll Suit)) and IsDead(Cetus)",
       "Cavern: True",
       "Gate of the Dead: GuardianKills(2)"
     ]
@@ -427,13 +427,13 @@
     "locations":[
       "Tezcatlipoca: Has(Gloves) and OrbCount(3)"
     ],
-    "exits":[
+    "exits": [
       "Shrine of the Frost Giants Left: Has(Grapple Claw) and IsDead(Tezcatlipoca)",
       "Ancient Chaos Blood: CanWarp or CanSpinCorridor",
       "Hall of Malice: CanSpinCorridor",
       "Dark Lords Mausoleum Mid: CanSpinCorridor",
       "Valhalla Main: CanSpinCorridor",
-      "Eternal Prison Doom: CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Right)))"
+      "Eternal Prison Doom: CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Entrance)))"
     ]
   },
   {
@@ -506,14 +506,14 @@
       "La Mulana Chest: CanUse(Bomb) and (Has(Feather) or CanWarp)",
       "Angra Mainyu: Has(Mjolnir) and OrbCount(3) and (Has(Feather) or CanWarp)"
     ],
-    "exits":[
+    "exits": [
       "Dark Lords Mausoleum Main: Has(Feather) or CanWarp",
       "Dark Lords Mausoleum Top: Has(Feather)",
       "Valhalla Main: CanWarp or CanSpinCorridor",
       "Shrine of the Frost Giants Blood:CanSpinCorridor",
       "Ancient Chaos Blood: CanSpinCorridor",
       "Hall of Malice: CanSpinCorridor",
-      "Eternal Prison Doom: CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Right)))"
+      "Eternal Prison Doom: CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Entrance)))"
     ]
   },
   {
@@ -632,11 +632,11 @@
     "locations":[
 
     ],
-    "exits" :[
+    "exits": [
       "Takamagahara Shrine Blood: Has(Feather) and GuardianKills(5)",
       "Dark Lords Mausoleum Mid: CanSpinCorridor",
       "Hall of Malice: CanWarp or CanSpinCorridor or CanReach(Heavens Labyrinth Spun)",
-      "Eternal Prison Doom: CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Right)))"
+      "Eternal Prison Doom: CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Entrance)))"
     ]
   },
   {
@@ -647,11 +647,11 @@
       "FairyLan Shop 2: Has(Claydoll Suit)",
       "FairyLan Shop 3: Has(Claydoll Suit)"
     ],
-    "exits":[
+    "exits": [
       "Hall of Malice Awoken: Has(Cog of Antiquity) and OrbCount(7)",
       "Ancient Chaos Blood: CanSpinCorridor",
       "Shrine of the Frost Giants Blood: CanSpinCorridor",
-      "Eternal Prison Doom: CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Right)))"
+      "Eternal Prison Doom: CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Entrance)))"
     ]
   },
   {
@@ -747,7 +747,7 @@
     "areaName":"Eternal Prison Gloom",
     "locations": [
       "Map Chest EPG: Has(Life Sigil)",
-      "Death Sigil Chest: Has(Mjolnir) and Has(Power Band) and Has(Life Sigil) and (CanWarp or Has(Death Sigil))",
+      "Death Sigil Chest: Has(Mjolnir) and Has(Power Band) and Has(Life Sigil) and Has(Death Sigil)",
       "Statue Lady Puzzle: Has(Harp) and Has(Enga Musica)",
       "Mother Mantra Mural: CanUse(Bomb) and Has(Snapshot) and PuzzleFinished(Statue Lady)",
       "Garm Statue Puzzle: PuzzleFinished(Statue Lady) and Has(Feather) and CanChant(Fire) and CanChant(Earth) and CanChant(Sun)",
