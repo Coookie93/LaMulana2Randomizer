@@ -740,7 +740,7 @@
       {
         "name": "Icefire Treetop Vidofnir to Eternal Prison Gloom",
         "connectingAreaName": "Eternal Prison Gloom",
-        "ruleString": "IsDead(Vidofnir) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Entrance)))"
+        "ruleString": "IsDead(Vidofnir) and GuardianKills(5) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Entrance)))"
       }
     ]
   },
@@ -2317,7 +2317,7 @@
       {
         "name": "Eternal Prison Doom to Eternal Prison Doom Hel",
         "connectingAreaName": "Eternal Prison Doom Hel",
-        "ruleString": "CanWarp and Has(Hand Scanner) and IsDead(Vidofnir) and IsDead(Hraesvelgr) and Has(Grapple Claw) and Has(Gale Fibula) and Has(Claydoll Suit) and Has(Gloves) and Has(Anchor) and Has(Feather) and Has(Life Sigil)"
+        "ruleString": "CanWarp and Has(Hand Scanner) and IsDead(Vidofnir) and GuardianKills(5) and IsDead(Hraesvelgr) and Has(Grapple Claw) and Has(Gale Fibula) and Has(Claydoll Suit) and Has(Gloves) and Has(Anchor) and Has(Feather) and Has(Life Sigil)"
       },
       {
         "name": "Eternal Prison Doom to Eternal Prison Gloom",

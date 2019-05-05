@@ -303,7 +303,7 @@
       "Earth Spear Puzzle Reward:Has(Gloves) or Has(Feather)"
     ],
     "exits": [
-      "Immortal Battlefield Top:(Has(Gloves) or Has(Feather))"
+      "Immortal Battlefield Top:(Has(Feather) and (CanUse(Earth Spear) or CanUse(Rolling Shuriken) or CanUse(Caltrops)))  or (Has(Gloves) and CanUse(Earth Spear))"
     ]
   },
   {
