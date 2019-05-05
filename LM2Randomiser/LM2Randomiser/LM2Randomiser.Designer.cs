@@ -28,18 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.GenerateButton = new System.Windows.Forms.Button();
             this.GrailCheck = new System.Windows.Forms.CheckBox();
             this.ScannerCheck = new System.Windows.Forms.CheckBox();
             this.OutputText = new System.Windows.Forms.TextBox();
             this.SeedLabel = new System.Windows.Forms.Label();
             this.SeedInput = new System.Windows.Forms.TextBox();
+            this.MiraiCheck = new System.Windows.Forms.CheckBox();
+            this.SettingsToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // GenerateButton
             // 
             this.GenerateButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GenerateButton.Location = new System.Drawing.Point(12, 111);
+            this.GenerateButton.Location = new System.Drawing.Point(12, 56);
             this.GenerateButton.Name = "GenerateButton";
             this.GenerateButton.Size = new System.Drawing.Size(261, 33);
             this.GenerateButton.TabIndex = 0;
@@ -51,7 +54,7 @@
             // 
             this.GrailCheck.AutoSize = true;
             this.GrailCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GrailCheck.Location = new System.Drawing.Point(12, 8);
+            this.GrailCheck.Location = new System.Drawing.Point(279, 26);
             this.GrailCheck.Name = "GrailCheck";
             this.GrailCheck.Size = new System.Drawing.Size(164, 21);
             this.GrailCheck.TabIndex = 2;
@@ -63,7 +66,7 @@
             // 
             this.ScannerCheck.AutoSize = true;
             this.ScannerCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ScannerCheck.Location = new System.Drawing.Point(12, 38);
+            this.ScannerCheck.Location = new System.Drawing.Point(279, 53);
             this.ScannerCheck.Name = "ScannerCheck";
             this.ScannerCheck.Size = new System.Drawing.Size(193, 21);
             this.ScannerCheck.TabIndex = 3;
@@ -74,7 +77,7 @@
             // OutputText
             // 
             this.OutputText.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OutputText.Location = new System.Drawing.Point(12, 150);
+            this.OutputText.Location = new System.Drawing.Point(12, 95);
             this.OutputText.Multiline = true;
             this.OutputText.Name = "OutputText";
             this.OutputText.ReadOnly = true;
@@ -85,7 +88,7 @@
             // 
             this.SeedLabel.AutoSize = true;
             this.SeedLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SeedLabel.Location = new System.Drawing.Point(9, 62);
+            this.SeedLabel.Location = new System.Drawing.Point(9, 7);
             this.SeedLabel.Name = "SeedLabel";
             this.SeedLabel.Size = new System.Drawing.Size(41, 17);
             this.SeedLabel.TabIndex = 5;
@@ -94,16 +97,32 @@
             // SeedInput
             // 
             this.SeedInput.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SeedInput.Location = new System.Drawing.Point(12, 82);
+            this.SeedInput.Location = new System.Drawing.Point(12, 27);
             this.SeedInput.Name = "SeedInput";
             this.SeedInput.Size = new System.Drawing.Size(261, 23);
             this.SeedInput.TabIndex = 6;
+            // 
+            // MiraiCheck
+            // 
+            this.MiraiCheck.AutoSize = true;
+            this.MiraiCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MiraiCheck.Location = new System.Drawing.Point(279, 80);
+            this.MiraiCheck.Name = "MiraiCheck";
+            this.MiraiCheck.Size = new System.Drawing.Size(200, 21);
+            this.MiraiCheck.TabIndex = 7;
+            this.MiraiCheck.Text = "Require Mirai for Backsides";
+            this.SettingsToolTip.SetToolTip(this.MiraiCheck, "Logic will require that you have Future \r\nDevelopment Company before being \r\nexpe" +
+        "cted to enter Valhalla, Dark Lord\'s \r\nMauseleum, Hall of Malice, Ancient Chaos\r\n" +
+        "and Eternal Prison.\r\n");
+            this.MiraiCheck.UseVisualStyleBackColor = true;
+            this.MiraiCheck.CheckedChanged += new System.EventHandler(this.MiraiCheck_CheckedChanged);
             // 
             // LM2Randomiser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(285, 285);
+            this.ClientSize = new System.Drawing.Size(474, 227);
+            this.Controls.Add(this.MiraiCheck);
             this.Controls.Add(this.SeedInput);
             this.Controls.Add(this.SeedLabel);
             this.Controls.Add(this.OutputText);
@@ -113,7 +132,6 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "LM2Randomiser";
             this.Text = "LM2Randomiser";
-            this.Load += new System.EventHandler(this.LM2Randomiser_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -127,6 +145,8 @@
         private System.Windows.Forms.TextBox OutputText;
         private System.Windows.Forms.Label SeedLabel;
         private System.Windows.Forms.TextBox SeedInput;
+        private System.Windows.Forms.CheckBox MiraiCheck;
+        private System.Windows.Forms.ToolTip SettingsToolTip;
     }
 }
 

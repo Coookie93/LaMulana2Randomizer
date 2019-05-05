@@ -63,7 +63,6 @@
     <Compile Include="ItemRandomisation.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="Logging\Logger.cs" />
-    <Compile Include="Modding\Modding.cs" />
     <Compile Include="PlayerState.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -105,6 +104,10 @@
     <None Include="Data\unreqitems.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Data\world.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Newtonsoft\LICENSE.md" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -117,21 +120,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Data\enemies.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\locations.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\murals.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\nonrandom.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\shops.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Monomod\Assembly-CSharp.mm.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -153,13 +141,14 @@
     <Content Include="Monomod\MonoMod.Utils.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Newtonsoft\Newtonsoft.Json.dll" />
+    <Content Include="Newtonsoft\Newtonsoft.Json.pdb" />
+    <Content Include="Newtonsoft\Newtonsoft.Json.xml" />
     <Content Include="Seed\spoilers.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Newtonsoft\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

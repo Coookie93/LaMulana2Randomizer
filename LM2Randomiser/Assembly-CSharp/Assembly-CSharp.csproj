@@ -87,9 +87,9 @@
     <Compile Include="ItemFlags.cs" />
     <Compile Include="L2Rando.cs" />
     <Compile Include="Patches\L2System.cs" />
+    <Compile Include="Patches\L2TaskShadow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Patches\ShopScript.cs" />
-    <Compile Include="StringExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
