@@ -13,40 +13,24 @@ namespace LM2Randomiser.Utils
 {
     public abstract class FileUtils
     {
-        public static bool GetData(string filePath, int columns, out List<string[]> data)
+        public static bool GetWorldData(out Dictionary<string, Area> areas)
         {
             string currentDir = Directory.GetCurrentDirectory();
-
-            List<string[]> temp = new List<string[]>();
             try
             {
-                using (StreamReader sr = File.OpenText(Path.Combine(currentDir, filePath)))
+                using (StreamReader sr = File.OpenText(Path.Combine(currentDir, "Data\\world.json")))
                 {
-                    string line;
-                    while ((line = sr.ReadLine()) != null)
-                    {
-                        string[] info = line.Split(',');
-                        if (info.Length == columns)
-                        {
-                            temp.Add(info);
-                        }
-                        else
-                        {
-                            Logger.GetLogger.Log("Error in line: {0} of file {1}, column count did not match.", line, filePath);
-                            data = null;
-                            return false;
-                        }
-                    }
+                    JsonSerializer serializer = new JsonSerializer();
+                    areas = (Dictionary<string, Area>)serializer.Deserialize(sr, typeof(Dictionary<string, Area>));
+                    return true;
                 }
             }
             catch (Exception ex)
             {
-                Logger.GetLogger.Log("Error: {1}", ex.Message);
-                data = null;
+                Logger.GetLogger.Log("Tried to deserialise world.json, Error: {0}", ex.Message);
+                areas = null;
                 return false;
             }
-            data = temp;
-            return true;
         }
 
         public static bool GetItemsFromJson(string filePath, out List<Item> itemPool)
@@ -85,7 +69,7 @@ namespace LM2Randomiser.Utils
 
                     foreach (LocationID id in Enum.GetValues(typeof(LocationID)))
                     {
-                        foreach (var location in placedLocations)
+                        foreach (Location location in placedLocations)
                         {
                             if (id == location.id && id != LocationID.None)
                             {
@@ -104,7 +88,7 @@ namespace LM2Randomiser.Utils
                     {
                         reachableLocations = playthrough.GetReachableLocations(randomiser.GetPlacedRequiredItemLocations());
                         sr.WriteLine("{");
-                        foreach (var location in reachableLocations)
+                        foreach (Location location in reachableLocations)
                         {
                             playthrough.CollectItem(location.item);
                             playthrough.collectedLocations.Add(location.name, true);
@@ -136,7 +120,7 @@ namespace LM2Randomiser.Utils
 
             foreach (LocationID id in Enum.GetValues(typeof(LocationID)))
             {
-                foreach (var location in placedLocations)
+                foreach (Location location in placedLocations)
                 {
                     if (id == location.id && id != LocationID.None)
                     {

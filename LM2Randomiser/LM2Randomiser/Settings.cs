@@ -10,5 +10,6 @@ namespace LM2Randomiser
     {
         public bool randomiseGrail;
         public bool randomiseScanner;
+        public bool requireMirai;
     }
 }

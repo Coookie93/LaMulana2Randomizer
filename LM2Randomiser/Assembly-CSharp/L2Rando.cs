@@ -7,33 +7,45 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
-using ExtensionMethods;
 using MonoMod;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using L2Word;
 using L2Flag;
+using L2Base;
+using L2Task;
 
 namespace LM2RandomiserMod
 {
     public class L2Rando : MonoBehaviour
     {
         //number of items being randomised
-        const int ITEM_COUNT = 174;
+        private const int ITEM_COUNT = 174;
 
-        Dictionary<int, int> locationToItemMap;
-        bool randomising = false;
+        private bool randomising = false;
+        private Dictionary<int, int> locationToItemMap;
 
-        bool showText = true;
+        private bool showText = true;
+        private string error;
+
+        private TreasureBoxScript[] cachedBoxes;
+        private EventItemScript[] cachedItems;
+
+        private L2ShopDataBase shopDataBase;
+        private L2TalkDataBase talkDataBase;
+        private L2System sys;
         
-        L2ShopDataBase shopDataBase;
-        L2TalkDataBase talkDataBase;
-        L2Base.L2System sys;
+        public ItemID GetItemIDForLocation(LocationID locationID)
+        {
+            locationToItemMap.TryGetValue((int)locationID, out int id);
+            return (ItemID)id;
+        }
 
-        TreasureBoxScript[] cachedBoxes;
-        EventItemScript[] cachedItems;
-
-        string error;
+        public ItemData GetItemDataForItemID(ItemID itemID)
+        {
+            ItemInfo newItemInfo = ItemFlags.GetItemInfo(itemID);
+            return GetNewItemData(newItemInfo);
+        }
 
         private void OnGUI()
         {
@@ -73,14 +85,15 @@ namespace LM2RandomiserMod
 
         void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            cachedBoxes = UnityEngine.Object.FindObjectsOfType<TreasureBoxScript>();
-            cachedItems = UnityEngine.Object.FindObjectsOfType<EventItemScript>();
             if (randomising)
             {
+                cachedBoxes = UnityEngine.Object.FindObjectsOfType<TreasureBoxScript>();
+                cachedItems = UnityEngine.Object.FindObjectsOfType<EventItemScript>();
+
                 if (cachedBoxes != null)
                 {
                     //loop over all the boxes in the current scene and change their item and flags
-                    foreach (var box in cachedBoxes)
+                    foreach (TreasureBoxScript box in cachedBoxes)
                     {
                         ChangeBox(box);
                     }
@@ -89,7 +102,7 @@ namespace LM2RandomiserMod
                 if (cachedItems != null)
                 {
                     //loop over all the event items in the current scene and change their flags
-                    foreach (var eventItem in cachedItems)
+                    foreach (EventItemScript eventItem in cachedItems)
                     {
                         ChangeEventItem(eventItem);
                     }
@@ -183,9 +196,9 @@ namespace LM2RandomiserMod
                 //im pretty sure that it wont spawn the item if it this check is true on intialisation therefore if
                 //you collect the item that was originally in the box you now cant get the item in the box since it
                 //only spawns the item on box open
-                foreach (var flagBoxParent in box.openFlags)
+                foreach (L2FlagBoxParent flagBoxParent in box.openFlags)
                 {
-                    foreach(var flagBox in flagBoxParent.BOX)
+                    foreach(L2FlagBox flagBox in flagBoxParent.BOX)
                     {
                         if (flagBox.seet_no1 == 2)
                         {
@@ -209,9 +222,9 @@ namespace LM2RandomiserMod
                 //changed because if you only change the label the it will use the original items flags to check. This means that 
                 //if you change another item to what was this items original is and collect it when it comes to collecting the item 
                 //this has been changed too if won't be active as it thinks you already have it
-                foreach (var flagBoxParent in item.itemActiveFlag)
+                foreach (L2FlagBoxParent flagBoxParent in item.itemActiveFlag)
                 {
-                    foreach (var flagBox in flagBoxParent.BOX)
+                    foreach (L2FlagBox flagBox in flagBoxParent.BOX)
                     {
                         if (flagBox.seet_no1 == 2)
                         {
@@ -267,9 +280,9 @@ namespace LM2RandomiserMod
                 //changed because if you only change the label the it will use the original items flags to check. This means that 
                 //if you change another item to what was this items original is and collect it when it comes to collecting the item 
                 //this has been changed too if won't be active as it thinks you already have it
-                foreach (var flagBoxParent in eventItem.itemActiveFlag)
+                foreach (L2FlagBoxParent flagBoxParent in eventItem.itemActiveFlag)
                 {
-                    foreach (var flagBox in flagBoxParent.BOX)
+                    foreach (L2FlagBox flagBox in flagBoxParent.BOX)
                     {
                         if (flagBox.seet_no1 == 2)
                         {
@@ -385,8 +398,6 @@ namespace LM2RandomiserMod
             if (locationToItemMap.TryGetValue((int)locationID, out int id))
             {
                 ItemID newItemID = (ItemID)id;
-                //get the item data for the new item, only really need the
-
                 ItemInfo newItemInfo = ItemFlags.GetItemInfo(newItemID);
                 return String.Format("[@sitm,{0},{1},{2},{3}]", newItemInfo.shopType, newItemInfo.shopName, newItemInfo.shopPrice, newItemInfo.shopAmount);
             }
@@ -435,27 +446,22 @@ namespace LM2RandomiserMod
             //to add the extra flags that need to be set, sadly can't rely modify the set item 
 
             //Neburu map
-            //"[@anim,thanks,1]\n[@take,Map16,02item,1]\n[@setf,2,126,=,1]\n[@setf,2,127,=,1]\n[@setf,2,128,=,1]\n[@setf,2,129,=,1]\n[@setf,2,130,=,1]\n[@setf,5,3,=,1]\n[@out]"
             talkDataBase.cellData[0][11][1][0] = ChangeTalkString(LocationID.MapfromNebur,
                 "[@anim,thanks,1]\n{0}[@setf,2,127,=,1]\n[@setf,2,128,=,1]\n[@setf,2,129,=,1]\n[@setf,2,130,=,1]\n[@setf,5,3,=,1]\n[@out]");
 
-            //xelpud item
-            //"[@take,Xelputter,02item,1]\n[@setf,3,31,=,1]\n[@setf,5,2,=,1]\n[@setf,5,20,=,2]\n[@p,lastC]"
+            //Xelpud item
             talkDataBase.cellData[1][10][1][0] = ChangeTalkString(LocationID.XelpudItem,
                 "{0}[@setf,3,31,=,1]\n[@setf,5,2,=,1]\n[@setf,5,20,=,2]\n[@p,lastC]");
 
             //if you say to neburs map xelpud gives it too you instead at some point, should never need to use as this isnt in logic
-            //"[@take,Map16,02item,1]\n[@setf,2,126,=,1]\n[@setf,2,127,=,1]\n[@setf,5,4,=,2]\n[@anim,talk,1]"
             talkDataBase.cellData[1][70][1][0] = ChangeTalkString(LocationID.MapfromNebur,
                 "{0}[@setf,2,127,=,1]\n[@setf,5,4,=,2]\n[@anim,talk,1]");
 
-            //alsedana item
-            //"[@take,Beherit,02item,1]\n[@anim,talk,1]\n[@setf,1,54,=,1]\n[@p,2nd-6]"
+            //Alsedana item
             talkDataBase.cellData[2][13][1][0] = ChangeTalkString(LocationID.AlsedanaItem,
                 "{0}[@anim,talk,1]\n[@setf,1,54,=,1]\n[@p,2nd-6]");
 
-            //funeral item
-            //"[@take,M Talisman,02item,1]\n[@setf,1,54,=,1]\n[@anim,talk,1]\n[@p,1st-3]"
+            //Funeral item
             talkDataBase.cellData[3][5][1][0] = ChangeTalkString(LocationID.FuneralItem,
                 "{0}[@setf,1,54,=,1]\n[@anim,talk,1]\n[@p,1st-3]");
 
@@ -465,7 +471,6 @@ namespace LM2RandomiserMod
                 "[@exit]\n[@anim,talk,1]\n[@p,1st]");
 
             //if you are mean and never visited a dying man, this also isnt in logic
-            //"[@iff,2,3,&gt;,0,giltoriyo,2nd]\n[@exit]\n[@take,Beherit,02item,1]\n[@anim,talk,1]\n[@p,1st-5]"
             talkDataBase.cellData[3][7][1][0] = ChangeTalkString(LocationID.AlsedanaItem,
                 "[@iff,2,3,&gt;,0,giltoriyo,2nd]\n[@exit]\n{0}[@anim,talk,1]\n[@p,1st-5]");
 
@@ -473,27 +478,23 @@ namespace LM2RandomiserMod
             talkDataBase.cellData[3][7][1][0] = ChangeTalkStringAndFlagCheck(LocationID.AlsedanaItem,
                 "[@iff,2,{0},&gt;,{1},giltoriyo,2nd]\n[@exit]\n{2}[@anim,talk,1]\n[@p,1st-5]");
 
-            //fobos after you break statue
-            //"[@setf,2,81,=,1]\n[@setf,5,16,=,5]\n[@anim,talk,1]\n[@take,R Book,02item,1]\n[@p,3rd-2]"
+            //Fobos after you break statue
             talkDataBase.cellData[6][9][1][0] = ChangeTalkString(LocationID.FobosItem,
                 "[@setf,5,16,=,5]\n[@anim,talk,1]\n{0}[@p,3rd-2]");
 
-            //fobos skull reader
-            //"[@exit]\n[@anim,talk,1]\n[@setf,23,15,=,4]\n[@take,Skull,02item,1]\n[@p,lastC]"
+            //Fobos skull reader
             talkDataBase.cellData[5][24][1][0] = ChangeTalkString(LocationID.FobosSkullItem, 
                 "[@exit]\n[@anim,talk,1]\n[@setf,23,15,=,4]\n{0}[@p,lastC]");
 
-            //freya item
-            //"[@anim,talk,1]\n[@take,F Pendant,2,1]\n[@setf,5,67,=,1]\n[@p,lastC]"
+            //Freya item
             talkDataBase.cellData[7][7][1][0] = ChangeTalkString(LocationID.FreyasItem,
                 "[@anim,talk,1]\n{0}[@setf,5,67,=,1]\n[@p,lastC]");
 
-            //mulbruk item
-            //"[@take,Snow Shoes,02item,1]\n[@setf,5,101,=,2]\n[@anim,talk,1]\n[@p,3rd-2]"
+            //Mulbruk item
             talkDataBase.cellData[10][42][1][0] = ChangeTalkString(LocationID.MulbrukItem,
                 "{0}[@setf,5,101,=,2]\n[@anim,talk,1]\n[@p,3rd-2]");
 
-            //anubis L scythe
+            //Osiris L scythe
             talkDataBase.cellData[78][7][1][0] = ChangeTalkStringAndFlagCheck(LocationID.LightScytheItem,
                 "[@iff,2,{0},&gt;,{1},f15-3,2nd]\n{2}[@anim,talk,1]\n[@p,lastC]");
         }

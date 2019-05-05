@@ -12,29 +12,27 @@ namespace LM2Randomiser
 {
     public class Randomiser
     {
-        PlayerState state;
-        Settings settings;
-
-        Dictionary<string, Area> areas;
-        Dictionary<string, Location> locations;
+        private PlayerState state;
+        private Settings settings;
         
-        Random random;
-        string seed;
+        private Dictionary<string, Area> areas;
+        private Dictionary<string, Location> locations;
+
+        readonly Random random;
 
         public Randomiser(Settings settings, string seedInput)
         {
             this.settings = settings;
-            areas = new Dictionary<string, Area>();
-            locations = new Dictionary<string, Location>();
 
-            seed = seedInput;
-            if (String.IsNullOrEmpty(seed))
+            Seed = seedInput;
+            if (String.IsNullOrEmpty(Seed))
             {
-                seed = DateTime.Now.ToString();
+                Seed = DateTime.Now.ToString();
             }
-            random = new Random(seed.GetHashCode());
-
+            random = new Random(Seed.GetHashCode());
+            
             state = new PlayerState(this);
+            locations = new Dictionary<string, Location>();
         }
 
         public Random Random {
@@ -42,179 +40,51 @@ namespace LM2Randomiser
         }
 
         public string Seed {
-            get { return seed; }
+            get;
         }
 
         public bool SetupWorld()
         {
-            const string rules = "Data\\rules.json";
-            string path = Path.Combine(Directory.GetCurrentDirectory(), rules);
+            string[] backsideAreas = { "Valhalla Main", "Dark Lords Mausoleum Main", "Hall of Malice", "Ancient Chaos Bottom", "Eternal Prison Gloom" };
 
-            List<AreaRuleInfo> areaRules = null;
-            
-            //maybe move this to file utils
-            try
+            if(!FileUtils.GetWorldData(out areas))
             {
-                using (StreamReader sr = File.OpenText(path))
-                {
-                    JsonSerializer serializer = new JsonSerializer();
-                    areaRules = (List<AreaRuleInfo>)serializer.Deserialize(sr, typeof(List<AreaRuleInfo>));
-                }
-            }
-            catch(Exception ex)
-            {
-                Logger.GetLogger.Log("Tried to deserialise rules.json, Error: {1}", ex.Message);
                 return false;
             }
 
-            foreach (AreaRuleInfo info in areaRules)
+            foreach (Area area in areas.Values)
             {
-                Area area = new Area(info.areaName);
-
-                //adding area locations to the area and world lists
-                foreach (var l in info.locations)
+                foreach (Location location in area.locations)
                 {
-                    string[] locationInfo = l.Split(':');
-
-                    if (locationInfo.Length == 2)
-                    {
-                        //this will get changed when more than just shop locations matter
-                        LocationType locationType = LocationType.Default;
-                        if (locationInfo[0].Contains("Shop"))
-                        {
-                            locationType = LocationType.Shop;
-                        }
-
-                        Location location = new Location(locationInfo[0], area, locationType);
-                        location.ruleTree = RuleTree.ParseAndBuildRules(locationInfo[1]);
-                        area.locations.Add(location);
-                         
-                        if (!locations.ContainsKey(location.name))
-                        {
-                            locations.Add(location.name, location);
-                        }
-                        else
-                        {
-                            Logger.GetLogger.Log("Location already exists {0} in area {1}.", location.name, area.name);
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        Logger.GetLogger.Log("Area {0} contains an invlaid location string: {1}", area.name, l);
-                        return false;
-                    }
-                }
-                //adding area exits to the area and world lists
-                foreach (var e in info.exits)
-                {
-                    string[] exitInfo = e.Split(':');
-
-                    if (exitInfo.Length == 2)
-                    {
-                        Connection exit = new Connection(exitInfo[0], area);
-                        exit.ruleTree = RuleTree.ParseAndBuildRules(exitInfo[1]);
-                        area.exits.Add(exit);
-                    }
-                    else
-                    {
-                        Logger.GetLogger.Log("Area {0} contains an invlaid exit string: {1}", area.name, e);
-                        return false;
-                    }
+                    location.parentArea = area;
+                    location.ruleTree = RuleTree.ParseAndBuildRules(location.ruleString);
+                    locations.Add(location.name, location);
                 }
 
-                if (!areas.ContainsKey(area.name))
+                foreach (Connection exit in area.exits)
                 {
-                    areas.Add(area.name, area);
+                    exit.parentArea = area;
+
+                    if (settings.requireMirai && backsideAreas.Contains(exit.connectingAreaName))
+                    {
+                        exit.AppendRuleString(" and Has(Future Development Company)");
+                    }
+
+                    exit.ruleTree = RuleTree.ParseAndBuildRules(exit.ruleString);
+
+                    //Add entrances to areas so that when we try to see if we can reach an area when can check its entraces rules 
+                    Area connectingArea = GetArea(exit.connectingAreaName);
+                    exit.connectingArea = connectingArea;
+                    connectingArea.entrances.Add(exit);
                 }
-                else
-                {
-                    Logger.GetLogger.Log("Area already exists {0}.", area.name);
-                    return false;
-                }
+
+
             }
-
-            //Add entrances to areas so that when we try to see if wee can reach an area when can check its entraces rules 
-            foreach (var area in areas)
-            {
-                foreach (var exit in area.Value.exits)
-                {
-                    Area connectingArea;
-                    if(areas.TryGetValue(exit.connectingAreaName, out connectingArea))
-                    {
-                        exit.connectingArea = connectingArea;
-                        connectingArea.entrances.Add(exit);
-                    }
-                    else
-                    {
-                        Logger.GetLogger.Log("Tried to add entrances to an area that doesn't exist {0}, from exit {1}", exit.connectingAreaName, exit.name);
-                        return false;
-                    }
-
-                }
-            }
-
             return true;
         }
-
-        //places mostly fake items that the player won't collect but are used by the access rules
-        public bool PlaceNonRandomItems()
-        {
-            //TODO: probably turn these into a method, also turn thses data files to json to
-            //
-
-            
-            //Place Mantras, only exists since mantras currently cant be randomised
-            List<string[]> data;
-            if(FileUtils.GetData("Data\\murals.txt", 2, out data)) {
-                foreach(var info in data)
-                {
-                    PlaceItem(info[0], new Item(info[1], ItemID.Default));
-                }
-            }
-            else
-            {
-                return false;
-            }
-
-            //Place items to allow for checking of puzzle completion, fairies, dissonance
-            if (FileUtils.GetData("Data\\nonrandom.txt", 2, out data))
-            {
-                foreach (var info in data)
-                {
-                    PlaceItem(info[0], new Item(info[1], ItemID.Default));
-                }
-            }
-            else
-            {
-                return false;
-            }
-
-            //Place enemy items allow for checks to see if certain Boss/miniboss is dead
-            if (FileUtils.GetData("Data\\enemies.txt", 1, out data))
-            {
-                foreach (var info in data)
-                {
-                    PlaceItem(info[0], new Item(info[0], ItemID.Default));
-                }
-            }
-            else
-            {
-                return false;
-            }
-
-            //Place Item to Check if the game has been beaten
-            PlaceItem("9th Child",new Item("Winner", ItemID.Default));
-
-            return true;
-        }
-
+        
         public bool PlaceRandomItems()
         {
-            string currentDir = Directory.GetCurrentDirectory();
-
-            //Note: Changed this to to create the items from the data here rather than later
-
             //get shop only items
             if (!FileUtils.GetItemsFromJson("Data\\shopitems.json", out List<Item> shopItems))
             {
@@ -238,8 +108,13 @@ namespace LM2Randomiser
             {
                 return false;
             }
-            
+
             //NOTE: when more options get add move these to a seperate method or something
+            if (settings.requireMirai)
+            {
+                requiredItems.Add(ItemPool.GetAndRemove(ItemID.FutureDevelopmentCompany, unrequiredItems));
+            }
+
             if (!settings.randomiseGrail)
             {
                 PlaceItem("Holy Grail Chest", ItemPool.GetAndRemove(ItemID.HolyGrail, requiredItems));
@@ -258,7 +133,7 @@ namespace LM2Randomiser
             //Places weights at a starting shop since they are needed for alot of early items
             //this means that player will not have to rely on drops or weights from pots
             PlaceItem("Nebur Shop 1", ItemPool.GetAndRemove(ItemID.Weights, shopItems));
-
+            
             //ammo can't be placed here since there is an second item that takes this slot after 
             //the first is purchased 
             GetLocation("Hiner Shop 3").isLocked = true;
@@ -309,9 +184,12 @@ namespace LM2Randomiser
         
         public void ClearItemsAndState()
         {
-            foreach(var location in locations)
+            foreach(Location location in locations.Values)
             {
-                location.Value.item = null;
+                if (location.item != null && location.item.id != ItemID.Default)
+                {
+                    location.item = null;
+                }
             }
             state = new PlayerState(this);
         }
@@ -339,11 +217,11 @@ namespace LM2Randomiser
         public List<Location> GetPlacedLocations()
         {
             List<Location> placedLocations = new List<Location>();
-            foreach(var location in locations)
+            foreach(Location location in locations.Values)
             {
-                if(location.Value.item != null)
+                if(location.item != null)
                 {
-                    placedLocations.Add(location.Value);
+                    placedLocations.Add(location);
                 }
             }
 
@@ -352,64 +230,44 @@ namespace LM2Randomiser
 
         public List<Location> GetUnplacedLocations()
         {
-            List<Location> placedLocations = new List<Location>();
-            foreach (var location in locations)
+            List<Location> unplacedLocations = new List<Location>();
+            foreach (Location location in locations.Values)
             {
-                if (location.Value.item == null && !location.Value.isLocked)
+                if (location.item == null && !location.isLocked)
                 {
-                    placedLocations.Add(location.Value);
+                    unplacedLocations.Add(location);
                 }
             }
 
-            return placedLocations;
+            return unplacedLocations;
         }
 
         public List<Location> GetUnplacedShopLocations()
         {
-            List<Location> placedLocations = new List<Location>();
-            foreach (var location in locations)
+            List<Location> unplacedLocations = new List<Location>();
+            foreach (Location location in locations.Values)
             {
-                if (location.Value.item == null && !location.Value.isLocked && location.Value.locationType == LocationType.Shop)
+                if (location.item == null && !location.isLocked && location.locationType == LocationType.Shop)
                 {
-                    placedLocations.Add(location.Value);
+                    unplacedLocations.Add(location);
                 }
             }
 
-            return placedLocations;
+            return unplacedLocations;
         }
 
         public List<Location> GetPlacedRequiredItemLocations()
         {
             List<Location> placedLocations = new List<Location>();
-            foreach (var location in locations)
+            foreach (Location location in locations.Values)
             {
-                if (location.Value.item != null && location.Value.item.isRequired)
+                if (location.item != null && location.item.isRequired)
                 {
-                    placedLocations.Add(location.Value);
+                    placedLocations.Add(location);
                 }
             }
 
             return placedLocations;
-        }
-        
-        private void RemoveItemFromList(string name, List<string[]> list)
-        {
-            string[] itemToRemove = null;
-            foreach(var item in list)
-            {
-                if(item[0].Equals(name))
-                {
-                    itemToRemove = item;
-                }
-            }
-            list.Remove(itemToRemove);
-        }
-
-        private class AreaRuleInfo
-        {
-            public string areaName;
-            public List<string> locations = new List<string>();
-            public List<string> exits = new List<string>();
         }
     }
 }

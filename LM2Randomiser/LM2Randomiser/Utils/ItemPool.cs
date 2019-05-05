@@ -12,7 +12,7 @@ namespace LM2Randomiser
         public static Item GetAndRemove(ItemID id, List<Item> itemPool)
         {
             Item result = null;
-            foreach(var item in itemPool)
+            foreach(Item item in itemPool)
             {
                 if(id == item.id)
                 {

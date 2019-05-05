@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using LM2Randomiser.RuleParsing;
 using ExtensionMethods;
 
@@ -9,26 +11,33 @@ namespace LM2Randomiser
 {
     public class Location
     {
-        //TODO?? maybe have a location id enum like the items 
-
         public string name;
-        public Area parentArea;
-        public BinaryNode ruleTree;
-        public Item item;
-        public LocationType locationType;
-        public LocationID id;
-        public bool isLocked;
 
-        public Location(string name, Area parent, LocationType locationType)
+        [JsonConverter(typeof(StringEnumConverter))]
+        public LocationType locationType;
+
+        public string ruleString;
+        public Item item;
+        
+        [JsonIgnore]
+        public LocationID id;
+        
+        [JsonIgnore]
+        public Area parentArea;
+
+        [JsonIgnore]
+        public BinaryNode ruleTree;
+
+        [JsonIgnore]
+        public bool isLocked = false;
+        
+        [JsonConstructor]
+        public Location(string name)
         {
             this.name = name;
-            this.parentArea = parent;
-            this.locationType = locationType;
-
             Enum.TryParse(name.RemoveWhitespace(), out id);
-            isLocked = false;
         }
-
+        
         public bool CanReach(PlayerState state)
         {
             return ruleTree.Evaluate(state) && state.CanReach(parentArea);
@@ -37,8 +46,12 @@ namespace LM2Randomiser
 
     public enum LocationType
     {
+        Default,
+        Chest,
+        FreeStanding,
         Shop,
-        Default
+        Dialogue,
+        Mural
     }
 
     //the item chests and free standing items map directly too their enums in the lm2 item database
@@ -53,7 +66,7 @@ namespace LM2Randomiser
         PochetteKeyChest = 6,
         PyramidCrystalChest = 7,
         VesselChest = 9,
-        EggofCreation = 11,
+        EggofCreationChest = 11,
         GiantsFlutesChest = 12,
         CogofAntiquityChest = 13,
         
@@ -81,7 +94,7 @@ namespace LM2Randomiser
         MaatsFeatherChest = 38,
         RingChest = 39,
         FeatherChest = 41,
-        Scriptures = 42,
+        ScripturesChest = 42,
         FreyShip = 43,
         BookoftheDeadChest = 47,
         DestinyTabletChest = 49,
@@ -110,7 +123,7 @@ namespace LM2Randomiser
         DeathVillageChest = 91,
         MiracleWitchChest = 97,
         LaMulanaChest = 99,
-        LaMulana2 = 100,
+        LaMulana2Chest = 100,
         
 
         SacredOrbVoD = 101,

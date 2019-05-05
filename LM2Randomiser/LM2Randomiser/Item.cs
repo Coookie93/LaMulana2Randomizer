@@ -2,24 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace LM2Randomiser
 {
     public class Item
     {
         public string name;
-        public ItemID id;
         public bool isRequired;
 
-        public Item() { }
-
-        public Item(string name, int id, bool isRequired = true)
-        {
-            this.name = name;
-            this.id = (ItemID)id;
-            this.isRequired = isRequired;
-        }
-
+        [JsonIgnore]
+        public ItemID id;
+        
+        [JsonConstructor]
         public Item(string name, ItemID id, bool isRequired = true)
         {
             this.name = name;

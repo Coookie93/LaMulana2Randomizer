@@ -10,11 +10,9 @@ namespace LM2Randomiser.RuleParsing
         public static BinaryNode ParseAndBuildRules(string ruleString)
         {
             //NOTE:maybe validate these afterwards
-            var tokens = new Tokeniser(ruleString).Tokenise();
-
-            var polish = ShuntingYard.Sort(tokens);
-
-            var enumerator = polish.GetEnumerator();
+            IList<Token> tokens = new Tokeniser(ruleString).Tokenise();
+            IList<Token> polish = ShuntingYard.Sort(tokens);
+            IEnumerator<Token> enumerator = polish.GetEnumerator();
             enumerator.MoveNext();
             
             return RuleTree.BuildRuleTree(enumerator);

@@ -22,7 +22,7 @@ namespace LM2Randomiser
                 state = PlayerState.GetStateWithItems(randomiser, currentItems);
 
                 Location locationToPlaceAt = null;
-                foreach(var location in locations)
+                foreach(Location location in locations)
                 {
                     if (location.CanReach(state))
                     {
@@ -58,7 +58,7 @@ namespace LM2Randomiser
                 state = PlayerState.GetStateWithItems(world, itemsToPlace);
 
                 Location locationToPlaceAt = null;
-                foreach (var location in locations)
+                foreach (Location location in locations)
                 {
                     if (location.CanReach(state))
                     {

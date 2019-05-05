@@ -7,7 +7,7 @@ namespace LM2Randomiser
 {
     public partial class LM2Randomiser : Form
     {
-        Settings settings;
+        private Settings settings;
 
         public LM2Randomiser()
         {
@@ -19,9 +19,14 @@ namespace LM2Randomiser
         private void GenerateButton_Click(object sender, EventArgs e)
         {
             bool canBeatGame = false;
+            int attemptCount = 0;
+            
             Randomiser randomiser = new Randomiser(settings, SeedInput.Text);
 
             OutputText.AppendText("Starting seed generation.");
+            OutputText.AppendText(Environment.NewLine);
+
+            OutputText.AppendText("Setting up world.");
             OutputText.AppendText(Environment.NewLine);
 
             if (!randomiser.SetupWorld())
@@ -30,20 +35,10 @@ namespace LM2Randomiser
                 OutputText.AppendText(Environment.NewLine);
                 return;
             }
-
+            
             do
             {
                 randomiser.ClearItemsAndState();
-                
-                OutputText.AppendText("Placing non random items.");
-                OutputText.AppendText(Environment.NewLine);
-
-                if (!randomiser.PlaceNonRandomItems())
-                {
-                    OutputText.AppendText("Failed to read data for non random item placement.");
-                    OutputText.AppendText(Environment.NewLine);
-                    return;
-                }
                 
                 OutputText.AppendText("Placing random items.");
                 OutputText.AppendText(Environment.NewLine);
@@ -54,7 +49,7 @@ namespace LM2Randomiser
                     return;
                 }
 
-
+                attemptCount++;
                 canBeatGame = randomiser.CanBeatGame();
                 if(!canBeatGame)
                 {
@@ -63,7 +58,7 @@ namespace LM2Randomiser
                     OutputText.AppendText(Environment.NewLine);
                 }
 
-            } while (!canBeatGame);
+            } while (!canBeatGame && attemptCount < 10);
 
             if (!FileUtils.WriteSpoilers(randomiser))
             {
@@ -78,8 +73,8 @@ namespace LM2Randomiser
             }
 
 
-            Logger.GetLogger.Log("Succesfully generated seed {0}", randomiser.Seed);
-            OutputText.AppendText("Succesfully generated seed: " + randomiser.Seed);
+            Logger.GetLogger.Log("Successfully generated seed {0}", randomiser.Seed);
+            OutputText.AppendText("Successfully generated seed");
             OutputText.AppendText(Environment.NewLine);
         }
 
@@ -93,10 +88,9 @@ namespace LM2Randomiser
             settings.randomiseScanner = ScannerCheck.Checked;
         }
 
-        private void LM2Randomiser_Load(object sender, EventArgs e)
+        private void MiraiCheck_CheckedChanged(object sender, EventArgs e)
         {
-
+            settings.requireMirai = MiraiCheck.Checked;
         }
-        
     }
 }

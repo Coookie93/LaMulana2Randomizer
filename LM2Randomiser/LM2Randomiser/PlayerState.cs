@@ -34,7 +34,7 @@ namespace LM2Randomiser
 
             if (currentItems != null)
             {
-                foreach (var item in currentItems)
+                foreach (Item item in currentItems)
                 {
                     state.CollectItem(item);
                 }
@@ -47,7 +47,7 @@ namespace LM2Randomiser
             do
             {
                 reachableLocations = state.GetReachableLocations(requiredLocations);
-                foreach (var location in reachableLocations)
+                foreach (Location location in reachableLocations)
                 {
                     state.CollectItem(location.item);
                     state.collectedLocations.Add(location.name, true);
@@ -66,7 +66,7 @@ namespace LM2Randomiser
             do
             {
                 reachableLocations = GetReachableLocations(requiredLocations);
-                foreach (var location in reachableLocations)
+                foreach (Location location in reachableLocations)
                 {
                     CollectItem(location.item);
                     collectedLocations.Add(location.name, true);
@@ -236,7 +236,7 @@ namespace LM2Randomiser
         {
             List<Location> locations = new List<Location>();
 
-            foreach(var location in requiredLocations)
+            foreach(Location location in requiredLocations)
             {
                 if(!collectedLocations.ContainsKey(location.name) && location.CanReach(this))
                 {
