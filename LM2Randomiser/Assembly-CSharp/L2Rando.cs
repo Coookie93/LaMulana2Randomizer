@@ -469,12 +469,8 @@ namespace LM2RandomiserMod
             talkDataBase.cellData[3][3][1][0] = ChangeTalkFlagCheck(LocationID.FuneralItem, "[@iff,5,62,=,7,giltoriyo,9th]\n[@iff,2,{0},&gt;,{1},giltoriyo,8th]\n" +
                 "[@iff,5,62,=,6,giltoriyo,7th]\n[@iff,5,62,=,5,giltoriyo,6th]\n[@iff,5,62,=,4,giltoriyo,5th]\n[@iff,5,62,=,3,giltoriyo,4th]\n[@iff,5,62,=,2,giltoriyo,2nd]\n" +
                 "[@exit]\n[@anim,talk,1]\n[@p,1st]");
-
-            //if you are mean and never visited a dying man, this also isnt in logic
-            talkDataBase.cellData[3][7][1][0] = ChangeTalkString(LocationID.AlsedanaItem,
-                "[@iff,2,3,&gt;,0,giltoriyo,2nd]\n[@exit]\n{0}[@anim,talk,1]\n[@p,1st-5]");
-
-            //check for above
+            
+            //didnt talk to alsedana after vritra
             talkDataBase.cellData[3][7][1][0] = ChangeTalkStringAndFlagCheck(LocationID.AlsedanaItem,
                 "[@iff,2,{0},&gt;,{1},giltoriyo,2nd]\n[@exit]\n{2}[@anim,talk,1]\n[@p,1st-5]");
 
@@ -668,6 +664,9 @@ namespace LM2RandomiserMod
             //changes to Nebur's scripts so that she stays until you take her item or leave the surface
             shopDataBase.cellData[2][4][1][0] = "[@anim,smile,1]\n[@setf,5,27,+,1]";
             talkDataBase.cellData[0][10][1][0] = "[@anim,nejiru,1]\n[@out]";
+
+            //chnage Fairy King to set flag to open endless even if you have the pendant
+            talkDataBase.cellData[8][10][1][0] = "[@exit]\n[@anim,talk,1]\n[@setf,3,34,=,2]\n[@setf,5,12,=,1]\n[@p,2nd-2]";
         }
     }
 
