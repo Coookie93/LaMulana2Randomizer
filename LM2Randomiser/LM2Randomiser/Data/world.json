@@ -223,7 +223,7 @@
       {
         "name": "Ankh Chest RoY",
         "locationType": "Chest",
-        "ruleString": "Has(Feather) or CanUse(Bomb) or CanUse(Shuriken) or CanUse(Chakram) or CanUse(Earth Spear) or CanUse(Flare)"
+        "ruleString": "Has(Feather) or Has(Katana) or CanUse(Bomb) or CanUse(Shuriken) or CanUse(Chakram) or CanUse(Earth Spear) or CanUse(Flare)"
       },
       {
         "name": "Pyramid Crystal Chest",
@@ -2371,7 +2371,7 @@
       {
         "name": "Statue Lady Puzzle",
         "locationType": "Default",
-        "ruleString": "Has(Harp) and Has(Enga Musica)",
+        "ruleString": "Has(Enga Musica)",
         "item": {
           "name": "Statue Lady",
           "isRequired": true

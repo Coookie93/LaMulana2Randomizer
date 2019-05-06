@@ -92,9 +92,6 @@
     <None Include="Data\reqitems.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Data\rules.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Data\shopitems.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

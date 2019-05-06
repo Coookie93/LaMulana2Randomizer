@@ -165,11 +165,6 @@
     "isRequired": true
   },
   {
-    "name": "Harp",
-    "id": 47,
-    "isRequired": true
-  },
-  {
     "name": "Light Scythe",
     "id": 49,
     "isRequired": true

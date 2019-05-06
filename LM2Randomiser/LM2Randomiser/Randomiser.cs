@@ -133,7 +133,7 @@ namespace LM2Randomiser
             //Places weights at a starting shop since they are needed for alot of early items
             //this means that player will not have to rely on drops or weights from pots
             PlaceItem("Nebur Shop 1", ItemPool.GetAndRemove(ItemID.Weights, shopItems));
-            
+
             //ammo can't be placed here since there is an second item that takes this slot after 
             //the first is purchased 
             GetLocation("Hiner Shop 3").isLocked = true;

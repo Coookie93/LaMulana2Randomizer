@@ -65,6 +65,11 @@
     "isRequired": false
   },
   {
+    "name": "Harp",
+    "id": 47,
+    "isRequired": false
+  },
+  {
     "name": "Book of the Dead",
     "id": 48,
     "isRequired": false
