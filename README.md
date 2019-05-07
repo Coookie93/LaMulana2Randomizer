@@ -25,6 +25,9 @@ Unistall:
 Use Steam's file verification and it will redownload the original Assembly-CSharp.dll
 3. Remove Assembley-CSharp.mm.dll and all monomod related files from the LaMulana2_Data/Managed folder
 
+Compiling:
+The randomisation application should compile fine, for the dll you will have to correct the missing references to the Unity dlls, TextMeshPro dll and the games Assembly-CSharp dll as these can't be distributed with the source code.
+
 Notes currently only options are choosing to randomise the grail and scanner, current items in the randomisation pool are all the treasure box items, free standing items, shop items and npc items. Currently the the item you get after the funeral and mulbruks item will not contain an item required to beat the game. 
 
 Make sure to talk to nebur when she is outside at the beginning, she has an item
