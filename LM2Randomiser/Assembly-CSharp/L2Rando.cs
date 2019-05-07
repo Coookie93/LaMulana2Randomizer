@@ -486,7 +486,7 @@ namespace LM2RandomiserMod
             talkDataBase.cellData[7][7][1][0] = ChangeTalkString(LocationID.FreyasItem,
                 "[@anim,talk,1]\n{0}[@setf,5,67,=,1]\n[@p,lastC]");
 
-            //Freta item give dialogue checks
+            //add check too Freya's starting mojiscript so she gives the item if you havent got it yet
             talkDataBase.cellData[7][3][1][0] = ChangeTalkFlagCheck(LocationID.FreyasItem, COMPARISON.Less,"[@anifla,mfanim,wait2]\n[@iff,2,{0},&lt;,{1},freyja,1st-1]\n[@iff,3,95,&gt;,0,freyja,escape]\n" +
                 "[@anifla,mfanim,wait]\n[@iff,3,35,&gt;,7,freyja,8th]\n[@iff,3,35,=,6,freyja,7th3]\n[@iff,3,35,&gt;,3,freyja,7th2]\n[@iff,3,35,=,3,freyja,ragna]\n[@iff,3,35,=,2,freyja,4th]\n" +
                 "[@iff,3,35,=,1,freyja,3rd]\n[@iff,5,67,=,1,freyja,2nd]\n[@exit]\n[@anim,talk,1]\n[@p,1st-1]");

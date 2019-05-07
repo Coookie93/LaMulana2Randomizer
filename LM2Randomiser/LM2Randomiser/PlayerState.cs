@@ -263,7 +263,8 @@ namespace LM2Randomiser
 
         private bool CanUse(string subWeapon)
         {
-            string[] subWeaponNames = { "Shuriken", "Rolling Shuriken", "Caltrops", "Chakram", "Earth Spear", "Flare", "Bomb", "Pistol", "Buckler", "Silver Shield", "Angel Shield", "Ankh Jewel"};
+            string[] subWeaponNames = { "Shuriken", "Rolling Shuriken", "Caltrops", "Chakram", "Earth Spear", "Flare", "Bomb", "Pistol",
+                                            "Buckler", "Silver Shield", "Angel Shield", "Ankh Jewel"};
 
             if (subWeapon.Equals("Claydoll Suit"))
             {

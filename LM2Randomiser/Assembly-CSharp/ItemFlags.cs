@@ -279,7 +279,7 @@ namespace LM2RandomiserMod
             {ItemID.Vessel,                       new ItemInfo("Vessel",           "Vessel",            "item",     50, 1)},
             {ItemID.Pepper,                       new ItemInfo("Pepper",           "Pepper",            "item",     50, 1)},
             {ItemID.EggofCreation,                new ItemInfo("Egg",              "Egg",               "item",     50, 1)},
-            {ItemID.GiantsFlute,                  new ItemInfo("G Pipe",           "G Pipe",            "item",     120, 1)},
+            {ItemID.GiantsFlute,                  new ItemInfo("G Pipe",           "G Pipe",            "item",     50, 1)},
             {ItemID.CogofAntiquity,               new ItemInfo("Gear",             "Gear",              "item",     50, 1)},
             {ItemID.MulanaTalisman,               new ItemInfo("M Talisman",       "M Talisman",        "item",     80, 1)},
                                                                                                                     
@@ -314,7 +314,7 @@ namespace LM2RandomiserMod
             {ItemID.FreysShip,                    new ItemInfo("F Ship",           "F Ship",            "item",     50, 1)},
             {ItemID.Codices,                      new ItemInfo("Pandora Box",      "Pandora Box",       "item",     80, 1)},
             {ItemID.SnowShoes,                    new ItemInfo("Snow Shoes",       "Snow Shoes",        "item",     50, 1)},
-            {ItemID.Harp,                         new ItemInfo("Harp",             "Harp",              "item",     150, 1)},
+            {ItemID.Harp,                         new ItemInfo("Harp",             "Harp",              "item",     10, 1)},
             {ItemID.BookoftheDead,                new ItemInfo("Book",             "Book",              "item",     100, 1)},
             {ItemID.LightScythe,                  new ItemInfo("L Scythe",         "L Scythe",          "item",     50, 1)},
             {ItemID.DestinyTablet,                new ItemInfo("Destiny Tablet",   "Destiny Tablet",    "item",     150, 1)},
