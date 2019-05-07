@@ -25,7 +25,7 @@ namespace LM2RandomiserMod
         private bool randomising = false;
         private Dictionary<int, int> locationToItemMap;
 
-        private bool showText = true;
+        private bool showText = false;
         private string error;
 
         private TreasureBoxScript[] cachedBoxes;
@@ -466,7 +466,7 @@ namespace LM2RandomiserMod
                 "{0}[@setf,1,54,=,1]\n[@anim,talk,1]\n[@p,1st-3]");
 
             //check to see if you can get the funeral item
-            talkDataBase.cellData[3][3][1][0] = ChangeTalkFlagCheck(LocationID.FuneralItem, "[@iff,5,62,=,7,giltoriyo,9th]\n[@iff,2,{0},&gt;,{1},giltoriyo,8th]\n" +
+            talkDataBase.cellData[3][3][1][0] = ChangeTalkFlagCheck(LocationID.FuneralItem, COMPARISON.Greater, "[@iff,5,62,=,7,giltoriyo,9th]\n[@iff,2,{0},&gt;,{1},giltoriyo,8th]\n" +
                 "[@iff,5,62,=,6,giltoriyo,7th]\n[@iff,5,62,=,5,giltoriyo,6th]\n[@iff,5,62,=,4,giltoriyo,5th]\n[@iff,5,62,=,3,giltoriyo,4th]\n[@iff,5,62,=,2,giltoriyo,2nd]\n" +
                 "[@exit]\n[@anim,talk,1]\n[@p,1st]");
             
@@ -485,6 +485,11 @@ namespace LM2RandomiserMod
             //Freya item
             talkDataBase.cellData[7][7][1][0] = ChangeTalkString(LocationID.FreyasItem,
                 "[@anim,talk,1]\n{0}[@setf,5,67,=,1]\n[@p,lastC]");
+
+            //Freta item give dialogue checks
+            talkDataBase.cellData[7][3][1][0] = ChangeTalkFlagCheck(LocationID.FreyasItem, COMPARISON.Less,"[@anifla,mfanim,wait2]\n[@iff,2,{0},&lt;,{1},freyja,1st-1]\n[@iff,3,95,&gt;,0,freyja,escape]\n" +
+                "[@anifla,mfanim,wait]\n[@iff,3,35,&gt;,7,freyja,8th]\n[@iff,3,35,=,6,freyja,7th3]\n[@iff,3,35,&gt;,3,freyja,7th2]\n[@iff,3,35,=,3,freyja,ragna]\n[@iff,3,35,=,2,freyja,4th]\n" +
+                "[@iff,3,35,=,1,freyja,3rd]\n[@iff,5,67,=,1,freyja,2nd]\n[@exit]\n[@anim,talk,1]\n[@p,1st-1]");
 
             //Mulbruk item
             talkDataBase.cellData[10][42][1][0] = ChangeTalkString(LocationID.MulbrukItem,
@@ -577,7 +582,7 @@ namespace LM2RandomiserMod
             return flagString;
         }
 
-        private string ChangeTalkFlagCheck(LocationID locationID, string original)
+        private string ChangeTalkFlagCheck(LocationID locationID, COMPARISON comp, string original)
         {
             int id;
             if (locationToItemMap.TryGetValue((int)locationID, out id))
@@ -588,13 +593,29 @@ namespace LM2RandomiserMod
 
                 int flagValue = 0;
 
-                if (newItemID == ItemID.ChainWhip || newItemID == ItemID.SilverShield || newItemID == ItemID.MobileSuperx3P)
+                if (comp == COMPARISON.Greater)
+                {
+                    if (newItemID == ItemID.ChainWhip || newItemID == ItemID.SilverShield || newItemID == ItemID.MobileSuperx3P)
+                    {
+                        flagValue = 1;
+                    }
+                    else if (newItemID == ItemID.FlailWhip || newItemID == ItemID.AngelShield)
+                    {
+                        flagValue = 2;
+                    }
+                }
+                else if(comp == COMPARISON.Less)
                 {
                     flagValue = 1;
-                }
-                else if (newItemID == ItemID.FlailWhip || newItemID == ItemID.AngelShield)
-                {
-                    flagValue = 2;
+
+                    if (newItemID == ItemID.ChainWhip || newItemID == ItemID.SilverShield || newItemID == ItemID.MobileSuperx3P)
+                    {
+                        flagValue = 2;
+                    }
+                    else if (newItemID == ItemID.FlailWhip || newItemID == ItemID.AngelShield)
+                    {
+                        flagValue = 3;
+                    }
                 }
 
                 return String.Format(original, (int)newItemData.getItemName(), flagValue);
