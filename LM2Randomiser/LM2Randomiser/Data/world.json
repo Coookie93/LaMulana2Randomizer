@@ -223,7 +223,7 @@
       {
         "name": "Ankh Chest RoY",
         "locationType": "Chest",
-        "ruleString": "Has(Feather) or Has(Katana) or CanUse(Bomb) or CanUse(Shuriken) or CanUse(Chakram) or CanUse(Earth Spear) or CanUse(Flare)"
+        "ruleString": "Has(Feather) or Has(Katana) or CanUse(Bomb) or CanUse(Shuriken) or CanUse(Chakram) or CanUse(Earth Spear) or CanUse(Flare) or CanUse(Claydoll Suit)"
       },
       {
         "name": "Pyramid Crystal Chest",
@@ -281,7 +281,7 @@
       {
         "name": "Nidhogg",
         "locationType": "Default",
-        "ruleString": "(CanUse(Flare) or CanUse(Shuriken)) and OrbCount(2)",
+        "ruleString": "(CanUse(Flare) or CanUse(Shuriken) or CanUse(Claydoll Suit)) and OrbCount(2)",
         "item": {
           "name": "Nidhogg",
           "isRequired": true
@@ -332,7 +332,7 @@
       {
         "name": "Divine Fortress Entrance to Divine Fortress Right",
         "connectingAreaName": "Divine Fortress Right",
-        "ruleString": "CanUse(Shuriken) or CanUse(Chakram)"
+        "ruleString": "CanUse(Shuriken) or CanUse(Chakram) or CanUse(Claydoll Suit)"
       }
     ]
   },
@@ -377,7 +377,7 @@
       {
         "name": "Divine Fortress Right to Divine Fortress Main",
         "connectingAreaName": "Divine Fortress Main",
-        "ruleString": "CanUse(Shuriken)"
+        "ruleString": "CanUse(Shuriken) or CanUse(Claydoll Suit)"
       }
     ]
   },
@@ -968,7 +968,7 @@
       {
         "name": "Ice Cloak Chest",
         "locationType": "Chest",
-        "ruleString": "Has(Life Sigil) and (Has(Feather) or CanUse(Chakram) or CanUse(Shuriken) or CanUse(Bomb))"
+        "ruleString": "Has(Life Sigil) and (Has(Feather) or CanUse(Chakram) or CanUse(Shuriken) or CanUse(Bomb) or CanUse(Claydoll Suit))"
       },
       {
         "name": "Totem Pole Chest",
@@ -1762,7 +1762,7 @@
       {
         "name": "Flare Puzzle Reward",
         "locationType": "FreeStanding",
-        "ruleString": "IsDead(Raijin and Fujin) and Has(Birth Sigil) and Has(Gale Fibula) and (Has(Grapple Claw) or Has(Shuriken))"
+        "ruleString": "IsDead(Raijin and Fujin) and Has(Birth Sigil) and Has(Gale Fibula) and (Has(Grapple Claw) or CanUse(Shuriken) or CanUse(Claydoll Suit))"
       },
       {
         "name": "Ash Geen Shop 1",
@@ -1919,7 +1919,7 @@
       {
         "name": "Anzu",
         "locationType": "Default",
-        "ruleString": "Has(Lamp of Time) and Has(Claydoll Suit) and OrbCount(5) and (CanUse(Flare) or CanUse(Caltrops) or CanUse(Shuriken) or CanUse(Earth Spear))",
+        "ruleString": "Has(Lamp of Time) and Has(Claydoll Suit) and OrbCount(5) and (CanUse(Flare) or CanUse(Caltrops) or CanUse(Shuriken) or CanUse(Earth Spear) or CanUse(Claydoll Suit))",
         "item": {
           "name": "Anzu",
           "isRequired": true

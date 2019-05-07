@@ -263,7 +263,29 @@ namespace LM2Randomiser
 
         private bool CanUse(string subWeapon)
         {
-            return HasItem(subWeapon) && HasItem(subWeapon + " Ammo");
+            string[] subWeaponNames = { "Shuriken", "Rolling Shuriken", "Caltrops", "Chakram", "Earth Spear", "Flare", "Bomb", "Pistol", "Buckler", "Silver Shield", "Angel Shield", "Ankh Jewel"};
+
+            if (subWeapon.Equals("Claydoll Suit"))
+            {
+                if (!HasItem(subWeapon))
+                {
+                    return false;
+                }
+                
+                foreach(string subWeaponName in subWeaponNames)
+                {
+                    if (HasItem(subWeaponName))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+            else
+            {
+                return HasItem(subWeapon) && HasItem(subWeapon + " Ammo");
+            }
         }
         
         private bool CanSpinCorridor()
