@@ -1438,7 +1438,7 @@
       {
         "name": "Katana Puzzle Reward",
         "locationType": "FreeStanding",
-        "ruleString": "Has(Life Sigil) and Has(Feather)"
+        "ruleString": "Has(Life Sigil)"
       },
       {
         "name": "Aytum Shop 1",
@@ -1458,7 +1458,7 @@
       {
         "name": "White Pedestals",
         "locationType": "Default",
-        "ruleString": "Has(Pepper) and Has(Feather) and Has(Birth Sigil) and CanChant(Sun) and IsDead(Unicorn)",
+        "ruleString": "Has(Pepper) and Has(Birth Sigil) and CanChant(Sun) and IsDead(Unicorn)",
         "item": {
           "name": "White Pedestals",
           "isRequired": true
@@ -1969,7 +1969,7 @@
       {
         "name": "Map Chest HoM",
         "locationType": "Chest",
-        "ruleString": "True"
+        "ruleString": "IsDead(Griffin) and IsDead(Arachne) and IsDead(Scylla)"
       },
       {
         "name": "FairyLan Shop 1",
@@ -1991,7 +1991,7 @@
       {
         "name": "Hall of Malice to Hall of Malice Awoken",
         "connectingAreaName": "Hall of Malice Awoken",
-        "ruleString": "Has(Cog of Antiquity) and OrbCount(7)"
+        "ruleString": "Has(Cog of Antiquity) and IsDead(Griffin) and IsDead(Arachne) and IsDead(Scylla)"
       },
       {
         "name": "Hall of Malice to Ancient Chaos Blood",
@@ -2036,7 +2036,7 @@
       {
         "name": "Delphyne",
         "locationType": "Default",
-        "ruleString": "Has(Shuriken) or Has(Chakram)",
+        "ruleString": "OrbCount(7) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana))",
         "item": {
           "name": "Delphyne",
           "isRequired": true
@@ -2045,7 +2045,7 @@
       {
         "name": "Hydra",
         "locationType": "Default",
-        "ruleString": "IsDead(Delphyne) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana))",
+        "ruleString": "IsDead(Delphyne)",
         "item": {
           "name": "Hydra",
           "isRequired": true
@@ -2063,7 +2063,7 @@
       {
         "name": "Sphynx",
         "locationType": "Default",
-        "ruleString": "(Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana))",
+        "ruleString": "OrbCount(7) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana))",
         "item": {
           "name": "Sphynx",
           "isRequired": true
@@ -2117,7 +2117,7 @@
       {
         "name": "Cerberus",
         "locationType": "Default",
-        "ruleString": "IsDead(Colchian Dragon) and (CanUse(Shuriken) or CanUse(Chakram))",
+        "ruleString": "IsDead(Colchian Dragon)",
         "item": {
           "name": "Cerberus",
           "isRequired": true
@@ -2135,7 +2135,7 @@
       {
         "name": "Echidna",
         "locationType": "Default",
-        "ruleString": "AnkhCount(9) and IsDead(Orthrus) and IsDead(Karkinos) and IsDead(Nemean Lion) and OrbCount(10) and Has(Flail Whip) and (CanUse(Flare) or CanUse(Bomb))",
+        "ruleString": "AnkhCount(9) and IsDead(Orthrus) and IsDead(Karkinos) and IsDead(Nemean Lion) and OrbCount(9) and Has(Flail Whip) and (CanUse(Flare) or CanUse(Bomb))",
         "item": {
           "name": "Echidna",
           "isRequired": true
@@ -2203,7 +2203,7 @@
       {
         "name": "Axe Puzzle Reward",
         "locationType": "FreeStanding",
-        "ruleString": "Has(Gloves) and IsDead(Griffin)"
+        "ruleString": "Has(Gloves) and IsDead(Glasya-Labolas)"
       },
       {
         "name": "Mobile Super X3 Item",
