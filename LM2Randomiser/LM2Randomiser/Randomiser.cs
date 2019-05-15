@@ -97,6 +97,12 @@ namespace LM2Randomiser
                 return false;
             }
 
+            //get mantras
+            if (!FileUtils.GetItemsFromJson("Data\\mantras.json", out List<Item> mantras))
+            {
+
+                return false;
+            }
             //get skulls
             if (!FileUtils.GetItemsFromJson("Data\\skulls.json", out List<Item> skulls))
             {
@@ -124,6 +130,28 @@ namespace LM2Randomiser
             {
                 PlaceItem("Sidro Shop 1", ItemPool.GetAndRemove(ItemID.HandScanner, requiredItems));
             }
+
+            if (!settings.randomMantras)
+            {
+                //just put the mantras where they belong if they arent randomised
+                PlaceItem("Heaven Mantra Mural", ItemPool.GetAndRemove(ItemID.Heaven, mantras));
+                PlaceItem("Earth Mantra Mural", ItemPool.GetAndRemove(ItemID.Earth, mantras));
+                PlaceItem("Sun Mantra Mural", ItemPool.GetAndRemove(ItemID.Sun, mantras));
+                PlaceItem("Moon Mantra Mural", ItemPool.GetAndRemove(ItemID.Moon, mantras));
+                PlaceItem("Sea Mantra Mural", ItemPool.GetAndRemove(ItemID.Sea, mantras));
+                PlaceItem("Fire Mantra Mural", ItemPool.GetAndRemove(ItemID.Fire, mantras));
+                PlaceItem("Wind Mantra Mural", ItemPool.GetAndRemove(ItemID.Wind, mantras));
+                PlaceItem("Mother Mantra Mural", ItemPool.GetAndRemove(ItemID.Mother, mantras));
+                PlaceItem("Child Mantra Mural", ItemPool.GetAndRemove(ItemID.Child, mantras));
+                PlaceItem("Night Mantra Mural", ItemPool.GetAndRemove(ItemID.Night, mantras));
+            }
+            else
+            {
+                //if they are randomised add them to the required items pool
+                requiredItems.AddRange(mantras);
+            }
+
+            PlaceItem("Mantra Mural", ItemPool.GetAndRemove(ItemID.Caltrops, requiredItems));
 
             //Shuffle all the item pools once
             shopItems = Shuffle.FisherYates(shopItems, this);
