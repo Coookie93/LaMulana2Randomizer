@@ -204,12 +204,6 @@ namespace LM2RandomiserMod
             {
                 this.showText = !this.showText;
             }
-
-            if (Input.GetKeyDown(KeyCode.F10))
-            {
-                sys.setItem("Snapshots", 1, false, false, true);
-                sys.setItem("Shuriken", 1, false, false, true);
-            }
         }
         
         public void Initialise(L2ShopDataBase shopDataBase, L2TalkDataBase talkDataBase, patched_L2System system)

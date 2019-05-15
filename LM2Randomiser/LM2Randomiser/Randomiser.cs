@@ -150,9 +150,7 @@ namespace LM2Randomiser
                 //if they are randomised add them to the required items pool
                 requiredItems.AddRange(mantras);
             }
-
-            PlaceItem("Mantra Mural", ItemPool.GetAndRemove(ItemID.Caltrops, requiredItems));
-
+            
             //Shuffle all the item pools once
             shopItems = Shuffle.FisherYates(shopItems, this);
             requiredItems = Shuffle.FisherYates(requiredItems, this);
