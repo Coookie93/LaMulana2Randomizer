@@ -1,0 +1,52 @@
+﻿[
+  {
+    "name": "Heaven",
+    "id": 155,
+    "isRequired": true
+  },
+  {
+    "name": "Earth",
+    "id": 156,
+    "isRequired": true
+  },
+  {
+    "name": "Sun",
+    "id": 157,
+    "isRequired": true
+  },
+  {
+    "name": "Moon",
+    "id": 158,
+    "isRequired": true
+  },
+  {
+    "name": "Sea",
+    "id": 159,
+    "isRequired": true
+  },
+  {
+    "name": "Fire",
+    "id": 160,
+    "isRequired": true
+  },
+  {
+    "name": "Wind",
+    "id": 161,
+    "isRequired": true
+  },
+  {
+    "name": "Mother",
+    "id": 162,
+    "isRequired": true
+  },
+  {
+    "name": "Child",
+    "id": 163,
+    "isRequired": true
+  },
+  {
+    "name": "Night",
+    "id": 164,
+    "isRequired": true
+  }
+]
