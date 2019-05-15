@@ -75,7 +75,7 @@ namespace LM2RandomiserMod.Patches
             {
                 if (this.sys.isMap(name))
                 {
-                    this.icon[this.item_copunter] = L2SystemCore.getMenuIconSprite(L2SystemCore.getItemData("Map"));
+                    this.icon[this.item_copunter] = L2SystemCore.getMapIconSprite(L2SystemCore.getItemData("Map"));
                 }
                 else if (name.Equals("MSX"))
                 {
