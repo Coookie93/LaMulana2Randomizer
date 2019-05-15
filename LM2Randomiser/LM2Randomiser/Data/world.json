@@ -92,11 +92,7 @@
       {
         "name": "Child Mantra Mural",
         "locationType": "Mural",
-        "ruleString": "CanWarp and Has(Snapshot) and CanChant(Mother) and CanChant(Wind)",
-        "item": {
-          "name": "Child",
-          "isRequired": true
-        }
+        "ruleString": "CanWarp and Has(Snapshot) and CanChant(Mother) and CanChant(Wind)"
       }
     ],
     "exits": []
@@ -248,11 +244,7 @@
       {
         "name": "Mantra Mural",
         "locationType": "Mural",
-        "ruleString": "Has(Snapshot)",
-        "item": {
-          "name": "Mantra",
-          "isRequired": true
-        }
+        "ruleString": "Has(Snapshot)"
       },
       {
         "name": "Korobok Shop 1",
@@ -357,11 +349,7 @@
       {
         "name": "Heaven Mantra Mural",
         "locationType": "Mural",
-        "ruleString": "Has(Snapshot)",
-        "item": {
-          "name": "Heaven",
-          "isRequired": true
-        }
+        "ruleString": "Has(Snapshot)"
       },
       {
         "name": "Hugin and Munin",
@@ -475,11 +463,7 @@
       {
         "name": "Earth Mantra Mural",
         "locationType": "Mural",
-        "ruleString": "Has(Birth Sigil) and Has(Snapshot)",
-        "item": {
-          "name": "Earth",
-          "isRequired": true
-        }
+        "ruleString": "Has(Birth Sigil) and Has(Snapshot)"
       },
       {
         "name": "Kaliya",
@@ -593,7 +577,7 @@
       {
         "name": "Ankh Chest IT",
         "locationType": "Chest",
-        "ruleString": "((Has(Ice Cloak) and OrbCount(2)) or OrbCount(4) or Has(Claydoll Suit)) and IsDead(Vedfolnir)"
+        "ruleString": "(Has(Ice Cloak) or OrbCount(2) or Has(Claydoll Suit)) and IsDead(Vedfolnir)"
       },
       {
         "name": "Grapple Claw Chest",
@@ -858,11 +842,7 @@
       {
         "name": "Fire Mantra Mural",
         "locationType": "Mural",
-        "ruleString": "Has(Birth Sigil) and Has(Snapshot)",
-        "item": {
-          "name": "Fire",
-          "isRequired": true
-        }
+        "ruleString": "Has(Birth Sigil) and Has(Snapshot)"
       },
       {
         "name": "Flail Whip Puzzle Reward",
@@ -1142,11 +1122,7 @@
       {
         "name": "Moon Mantra Mural",
         "locationType": "Mural",
-        "ruleString": "CanChant(Sun) and Has(Snapshot)",
-        "item": {
-          "name": "Moon",
-          "isRequired": true
-        }
+        "ruleString": "CanChant(Sun) and Has(Snapshot)"
       }
     ],
     "exits": [
@@ -1174,11 +1150,7 @@
       {
         "name": "Sun Mantra Mural",
         "locationType": "Mural",
-        "ruleString": "Has(Snapshot)",
-        "item": {
-          "name": "Sun",
-          "isRequired": true
-        }
+        "ruleString": "Has(Snapshot)"
       }
     ],
     "exits": []
@@ -1245,11 +1217,7 @@
       {
         "name": "Sea Mantra Mural",
         "locationType": "Mural",
-        "ruleString": "Has(Snapshot) and Has(Birth Sigil)",
-        "item": {
-          "name": "Sea",
-          "isRequired": true
-        }
+        "ruleString": "Has(Snapshot) and Has(Birth Sigil)"
       }
     ],
     "exits": [
@@ -1713,11 +1681,7 @@
       {
         "name": "Night Mantra Mural",
         "locationType": "Mural",
-        "ruleString": "Has(Death Sigil) and Has(Snapshot)",
-        "item": {
-          "name": "Night",
-          "isRequired": true
-        }
+        "ruleString": "Has(Death Sigil) and Has(Snapshot)"
       },
       {
         "name": "Dissonance (Nibiru)",
@@ -1910,11 +1874,7 @@
       {
         "name": "Wind Mantra Mural",
         "locationType": "Mural",
-        "ruleString": "Has(Snapshot)",
-        "item": {
-          "name": "Wind",
-          "isRequired": true
-        }
+        "ruleString": "Has(Snapshot)"
       },
       {
         "name": "Anzu",
@@ -2364,6 +2324,11 @@
         "ruleString": "Has(Life Sigil)"
       },
       {
+        "name": "Beo Eglana Mural",
+        "locationType": "Mural",
+        "ruleString": "CanUse(Bomb) and Has(Snapshot)"
+      },
+      {
         "name": "Death Sigil Chest",
         "locationType": "Chest",
         "ruleString": "Has(Mjolnir) and Has(Power Band) and Has(Life Sigil) and Has(Death Sigil)"
@@ -2380,11 +2345,7 @@
       {
         "name": "Mother Mantra Mural",
         "locationType": "Mural",
-        "ruleString": "CanUse(Bomb) and Has(Snapshot) and PuzzleFinished(Statue Lady)",
-        "item": {
-          "name": "Mother",
-          "isRequired": true
-        }
+        "ruleString": "CanUse(Bomb) and Has(Snapshot) and PuzzleFinished(Statue Lady)"
       },
       {
         "name": "Garm Statue Puzzle",
