@@ -10,6 +10,7 @@ using System.Xml.Serialization;
 using MonoMod;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using LM2RandomiserMod.Patches;
 using L2Word;
 using L2Flag;
 using L2Base;
@@ -20,7 +21,7 @@ namespace LM2RandomiserMod
     public class L2Rando : MonoBehaviour
     {
         //number of items being randomised
-        private const int ITEM_COUNT = 174;
+        private const int ITEM_COUNT = 186;
 
         private bool randomising = false;
         private Dictionary<int, int> locationToItemMap;
@@ -41,13 +42,72 @@ namespace LM2RandomiserMod
             return (ItemID)id;
         }
 
-        public ItemData GetItemDataForItemID(ItemID itemID)
+        public LocationID GetLocationIDForMural(SnapShotTargetScript snapTarget)
         {
-            ItemInfo newItemInfo = ItemFlags.GetItemInfo(itemID);
-            return GetNewItemData(newItemInfo);
+            if (snapTarget.itemName == ItemDatabaseSystem.ItemNames.BeoEgLana)
+            {
+                return (LocationID)snapTarget.itemName;
+            }
+            else if (snapTarget.itemName == ItemDatabaseSystem.ItemNames.Mantra)
+            {
+                if (snapTarget.cellName.Equals(""))
+                {
+                    return (LocationID)snapTarget.itemName;
+                }
+                else
+                {
+                    try
+                    {
+                        return (LocationID)Enum.Parse(typeof(LocationID), snapTarget.cellName, true);
+                    }
+                    catch
+                    {
+                        return LocationID.None;
+                    }
+                }
+            }
+
+            return LocationID.None;
         }
 
-        private void OnGUI()
+        public L2FlagBoxEnd[] CreateGetFlags(ItemID itemID, ItemInfo itemInfo)
+        {
+            ItemID[] storyItems = {ItemID.DjedPillar,  ItemID.Mjolnir, ItemID.AncientBattery, ItemID.LampofTime, ItemID.PochetteKey,
+                ItemID.PyramidCrystal, ItemID.Vessel, ItemID.EggofCreation, ItemID.GiantsFlute, ItemID.CogofAntiquity, ItemID.MulanaTalisman,
+                ItemID.HolyGrail, ItemID.Gloves, ItemID.DinosaurFigure, ItemID.GaleFibula, ItemID.FlameTorc, ItemID.PowerBand, ItemID.GrappleClaw,
+                ItemID.GaneshaTalisman, ItemID.MaatsFeather, ItemID.Feather, ItemID.FreysShip, ItemID.Harp, ItemID.DestinyTablet, ItemID.SecretTreasureofLife,
+                ItemID.OriginSigil, ItemID.BirthSigil, ItemID.LifeSigil, ItemID.DeathSigil, ItemID.ClaydollSuit};
+
+            L2FlagBoxEnd[] getFlags = null;
+            if (itemID >= ItemID.SacredOrb0 && itemID <= ItemID.SacredOrb9)
+            {
+                getFlags = new L2FlagBoxEnd[2];
+                getFlags[0] = new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = itemInfo.itemFlag, data = 1 };
+                getFlags[1] = new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 0, flag_no1 = 2, data = 1 };
+            }
+            else if(itemID >= ItemID.CrystalSkull1 && itemID <= ItemID.CrystalSkull12)
+            {
+                getFlags = new L2FlagBoxEnd[3];
+                getFlags[0] = new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = itemInfo.itemFlag, data = 1 };
+                getFlags[1] = new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 0, flag_no1 = 32, data = 1 };
+                getFlags[2] = new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 3, flag_no1 = 30, data = 4 };
+            }
+            else if ((itemID >= ItemID.AnkhJewel1 && itemID <= ItemID.AnkhJewel9) || Array.IndexOf(storyItems, itemID) > -1)
+            {
+                getFlags = new L2FlagBoxEnd[2];
+                getFlags[0] = new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = itemInfo.itemFlag, data = 1 };
+                getFlags[1] = new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 3, flag_no1 = 30, data = 4 };
+            }
+            else
+            {
+                getFlags = new L2FlagBoxEnd[1];
+                getFlags[0] = new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = itemInfo.itemFlag, data = 1 };
+            }
+
+            return getFlags;
+        }
+
+        void OnGUI()
         {
             if (this.showText)
             {
@@ -72,7 +132,7 @@ namespace LM2RandomiserMod
                 GUI.Label(new Rect(0, Screen.height - 25f, 50f, 25f), randomising.ToString());
             }
         }
-        
+
         void OnEnable()
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -85,11 +145,19 @@ namespace LM2RandomiserMod
 
         void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
+            if (scene.name.Equals("fieldLast"))
+            {
+                GameObject gameObject = new GameObject();
+                gameObject.transform.position = new Vector3(960, 400, 0);
+                BoxCollider boxCollider = gameObject.AddComponent<BoxCollider>();
+                boxCollider.size = new Vector3(10, 60, 0);
+            }
+
             if (randomising)
             {
-                cachedBoxes = UnityEngine.Object.FindObjectsOfType<TreasureBoxScript>();
-                cachedItems = UnityEngine.Object.FindObjectsOfType<EventItemScript>();
-
+                cachedBoxes = GameObject.FindObjectsOfType<TreasureBoxScript>();
+                cachedItems = GameObject.FindObjectsOfType<EventItemScript>();
+               
                 if (cachedBoxes != null)
                 {
                     //loop over all the boxes in the current scene and change their item and flags
@@ -107,6 +175,26 @@ namespace LM2RandomiserMod
                         ChangeEventItem(eventItem);
                     }
                 }
+
+                //these cause the message to popup when you record a mantra for the first time, so just deactivate
+                //the gameobject so they don't appear
+                foreach (FlagDialogueScript flagDialogue in GameObject.FindObjectsOfType<FlagDialogueScript>())
+                {
+                    if (flagDialogue.cellName.Contains("mantraDialog"))
+                    {
+                        flagDialogue.gameObject.SetActive(false);
+                    }
+                }
+
+                //Change the snapshot type
+                foreach (SnapShotTargetScript snapTarget in GameObject.FindObjectsOfType<SnapShotTargetScript>())
+                {
+                    LocationID locationID = GetLocationIDForMural(snapTarget);
+                    if (locationID != LocationID.None)
+                    {
+                        snapTarget.mode = SnapShotTargetScript.SnapShotMode.SOFTWARE;
+                    }
+                }
             }
         }
         
@@ -115,6 +203,12 @@ namespace LM2RandomiserMod
             if (Input.GetKeyDown(KeyCode.F11))
             {
                 this.showText = !this.showText;
+            }
+
+            if (Input.GetKeyDown(KeyCode.F10))
+            {
+                sys.setItem("Snapshots", 1, false, false, true);
+                sys.setItem("Shuriken", 1, false, false, true);
             }
         }
         
@@ -188,7 +282,6 @@ namespace LM2RandomiserMod
                 ItemID newItemID = (ItemID)id;
 
                 ItemInfo newItemInfo = ItemFlags.GetItemInfo(newItemID);
-                ItemData newItemData = GetNewItemData(newItemInfo);
 
                 AbstractItemBase item = box.itemObj.GetComponent<AbstractItemBase>();
 
@@ -202,7 +295,7 @@ namespace LM2RandomiserMod
                     {
                         if (flagBox.seet_no1 == 2)
                         {
-                            flagBox.flag_no1 = (int)newItemData.getItemName();
+                            flagBox.flag_no1 = newItemInfo.itemFlag;
                             flagBox.flag_no2 = 1;
 
                             //the whips and shields use the same flag just increment higher with each upgrade cant just use the same as other items
@@ -228,7 +321,7 @@ namespace LM2RandomiserMod
                     {
                         if (flagBox.seet_no1 == 2)
                         {
-                            flagBox.flag_no1 = (int)newItemData.getItemName();
+                            flagBox.flag_no1 = newItemInfo.itemFlag;
                             flagBox.comp = COMPARISON.Equal;
                             flagBox.flag_no2 = 0;
 
@@ -253,13 +346,21 @@ namespace LM2RandomiserMod
                 //flags that the item sets when you collect it, important to change otherwise the original item will also be collected
                 //when you pick up the item because by default it sets the original items flags again, also other flags can be set here
                 //usually items that add to flags that are used as a type of counter eg.Sacred Orbs orb count
-                item.itemGetFlags = ItemFlags.GetItemGetFlags(newItemID);
+                item.itemGetFlags = CreateGetFlags(newItemID, newItemInfo);
 
                 //name used when calling setitem
                 item.itemLabel = newItemInfo.boxName;
 
                 //change the sprite to match the new item
-                Sprite sprite = L2SystemCore.getMapIconSprite(L2SystemCore.getItemData(newItemInfo.boxName));
+                Sprite sprite;
+                if (newItemID >= ItemID.Heaven && newItemID <= ItemID.Night)
+                {
+                    sprite = L2SystemCore.getMapIconSprite(L2SystemCore.getItemData("Mantra"));
+                }
+                else
+                {
+                    sprite = L2SystemCore.getMapIconSprite(L2SystemCore.getItemData(newItemInfo.boxName));
+                }
                 item.gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
             }
         }
@@ -274,7 +375,6 @@ namespace LM2RandomiserMod
 
                 //get the item data for the new item, only really need the names here
                 ItemInfo newItemInfo = ItemFlags.GetItemInfo(newItemID);
-                ItemData newItemData = GetNewItemData(newItemInfo);
                 
                 //flags the item uses to check to see if it should be active and visible to the user, important that these are
                 //changed because if you only change the label the it will use the original items flags to check. This means that 
@@ -286,7 +386,7 @@ namespace LM2RandomiserMod
                     {
                         if (flagBox.seet_no1 == 2)
                         {
-                            flagBox.flag_no1 = (int)newItemData.getItemName();
+                            flagBox.flag_no1 = newItemInfo.itemFlag;
                             flagBox.comp = COMPARISON.Equal;
                             flagBox.flag_no2 = 0;
 
@@ -312,13 +412,21 @@ namespace LM2RandomiserMod
                 //flags that the item sets when you collect it, important to change otherwise the original item will also be collected
                 //when you pick up the item because by default it sets the original items flags again, also other flags can be set here
                 //usually items that add to flags that are used as a type of counter eg.Sacred Orbs orb count
-                eventItem.itemGetFlags = ItemFlags.GetItemGetFlags(newItemID);
+                eventItem.itemGetFlags = CreateGetFlags(newItemID, newItemInfo);
 
                 //name used when calling setitem
                 eventItem.itemLabel = newItemInfo.boxName;
 
-                //change the sprite to match the new item
-                Sprite sprite = L2SystemCore.getMapIconSprite(L2SystemCore.getItemData(newItemInfo.boxName));
+                //change the sprite to match the new itemSprite sprite;
+                Sprite sprite;
+                if (newItemID >= ItemID.Heaven && newItemID <= ItemID.Night)
+                {
+                    sprite = L2SystemCore.getMapIconSprite(L2SystemCore.getItemData("Mantra"));
+                }
+                else
+                {
+                    sprite = L2SystemCore.getMapIconSprite(L2SystemCore.getItemData(newItemInfo.boxName));
+                }
                 eventItem.gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
             }
         }
@@ -341,28 +449,7 @@ namespace LM2RandomiserMod
             }
             return null;
         }
-
-        private ItemData GetNewItemData(ItemInfo itemInfo)
-        {
-
-            if (itemInfo.shopName.Contains("Whip"))
-            {
-                return L2SystemCore.getItemData("Whip");
-            }
-            else if (itemInfo.shopName.Contains("Shield"))
-            {
-                return L2SystemCore.getItemData("Shield");
-            }
-            else if (itemInfo.shopName.Equals("MSX3p"))
-            {
-                return L2SystemCore.getItemData("MSX");
-            }
-            else
-            {
-                return L2SystemCore.getItemData(itemInfo.shopName);
-            }
-        }
-
+        
         private void ChangeShopItems()
         {
             shopDataBase.cellData[0][25][1][0] = CreateShopItemsString(LocationID.SidroShop1, LocationID.SidroShop2, LocationID.SidroShop3);
@@ -521,7 +608,7 @@ namespace LM2RandomiserMod
                 }
 
                 //if the item has more than just its set flags add the flags to the mojiscript string
-                L2FlagBoxEnd[] getFLags = ItemFlags.GetItemGetFlags(newItemID);
+                L2FlagBoxEnd[] getFLags = CreateGetFlags(newItemID, newItemInfo);
                 if (getFLags != null)
                 {
                     for (int i = 0; i < getFLags.Length; i++)
@@ -554,14 +641,14 @@ namespace LM2RandomiserMod
                 
                 ItemID newItemID = (ItemID)id;
 
-                ItemInfo newItemData = ItemFlags.GetItemInfo(newItemID);
+                ItemInfo newItemInfo = ItemFlags.GetItemInfo(newItemID);
 
-                if (newItemData.boxName.Equals("Crystal S"))
+                if (newItemInfo.boxName.Equals("Crystal S"))
                 {
                     flagString = "\n[@take,Crystal S,02item,1]";
                 }
 
-                L2FlagBoxEnd[] getFLags = ItemFlags.GetItemGetFlags(newItemID);
+                L2FlagBoxEnd[] getFLags = CreateGetFlags(newItemID, newItemInfo);
                 if (getFLags != null)
                 {
                     for (int i = 0; i < getFLags.Length; i++)
@@ -589,7 +676,6 @@ namespace LM2RandomiserMod
             {
                 ItemID newItemID = (ItemID)id;
                 ItemInfo newItemInfo = ItemFlags.GetItemInfo(newItemID);
-                ItemData newItemData = GetNewItemData(newItemInfo);
 
                 int flagValue = 0;
 
@@ -618,7 +704,7 @@ namespace LM2RandomiserMod
                     }
                 }
 
-                return String.Format(original, (int)newItemData.getItemName(), flagValue);
+                return String.Format(original, newItemInfo.itemFlag, flagValue);
             }
 
             return original;
@@ -632,7 +718,6 @@ namespace LM2RandomiserMod
             {
                 ItemID newItemID = (ItemID)id;
                 ItemInfo newItemInfo = ItemFlags.GetItemInfo(newItemID);
-                ItemData newItemData = GetNewItemData(newItemInfo);
 
                 int flagValue = 0;
 
@@ -657,7 +742,7 @@ namespace LM2RandomiserMod
                 }
 
                 //if the item has more than just its set flags add the flags to the mojiscript string
-                L2FlagBoxEnd[] getFLags = ItemFlags.GetItemGetFlags(newItemID);
+                L2FlagBoxEnd[] getFLags = CreateGetFlags(newItemID, newItemInfo);
                 if (getFLags != null)
                 {
                     for (int i = 0; i < getFLags.Length; i++)
@@ -674,7 +759,7 @@ namespace LM2RandomiserMod
                     }
                 }
 
-                return String.Format(original, (int)newItemData.getItemName(), flagValue, takeString);
+                return String.Format(original, newItemInfo.itemFlag, flagValue, takeString);
             }
 
             return original;
@@ -695,7 +780,7 @@ namespace LM2RandomiserMod
     public enum LocationID
     {
         None = 0,
-        NeburShop1 = 256,
+        NeburShop1 =256,
         NeburShop2,
         NeburShop3,
         ModroShop1,
@@ -761,6 +846,16 @@ namespace LM2RandomiserMod
         FobosItem,
         FobosSkullItem,
         MulbrukItem,
-        LightScytheItem
+        LightScytheItem,
+        Mantra1,
+        Mantra2,
+        Mantra3,
+        Mantra4,
+        Mantra5,
+        Mantra6,
+        Mantra7,
+        Mantra8,
+        Mantra9,
+        Mantra10
     }
 }
