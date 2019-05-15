@@ -120,6 +120,8 @@ namespace LM2Randomiser
         CaltropPuzzleReward = 73,
 
         YagooMapStreetChest = 79,
+        MantraMural = 82,
+        BeoEglanaMural = 86,
         DeathVillageChest = 91,
         MiracleWitchChest = 97,
         LaMulanaChest = 99,
@@ -244,6 +246,16 @@ namespace LM2Randomiser
         FobosItem,
         FobosSkullItem,
         MulbrukItem,
-        LightScytheItem
+        LightScytheItem,
+        HeavenMantraMural,
+        EarthMantraMural,
+        SunMantraMural,
+        MoonMantraMural,
+        SeaMantraMural,
+        FireMantraMural,
+        WindMantraMural,
+        MotherMantraMural,
+        ChildMantraMural,
+        NightMantraMural
     }
 }
