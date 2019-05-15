@@ -23,15 +23,15 @@ namespace LM2RandomiserMod.Patches
                 {
                     if (flagBox.seet_no1 == 3 && flagBox.flag_no1 == 30 && flagBox.flag_no2 == 80)
                     {
+                        L2Rando rando = GameObject.FindObjectOfType<L2Rando>();
+                        ItemID itemID = rando.GetItemIDForLocation(LocationID.FreyasItem);
+                        ItemInfo itemInfo = ItemFlags.GetItemInfo(itemID);
+
                         flagBoxParent.BOX = new L2FlagBox[2];
 
                         flagBoxParent.BOX[0] = flagBox;
                         flagBoxParent.BOX[0].logic = LOGIC.OR;
-
-                        L2Rando rando = GameObject.FindObjectOfType<L2Rando>();
-                        ItemID itemID = rando.GetItemIDForLocation(LocationID.FreyasItem);
-                        ItemData itemData = rando.GetItemDataForItemID(itemID);
-
+                        
                         flagBoxParent.BOX[1] = new L2FlagBox();
                         flagBoxParent.BOX[1].logic = LOGIC.OR;
                         flagBoxParent.BOX[1].comp = COMPARISON.Less;
@@ -39,7 +39,7 @@ namespace LM2RandomiserMod.Patches
                         flagBoxParent.BOX[1].seet_no1 = 2;
                         flagBoxParent.BOX[1].seet_no2 = -1;
 
-                        flagBoxParent.BOX[1].flag_no1 = (int)itemData.getItemName();
+                        flagBoxParent.BOX[1].flag_no1 = itemInfo.itemFlag;
                         flagBoxParent.BOX[1].flag_no2 = 1;
                         
                         if (itemID == ItemID.ChainWhip || itemID == ItemID.SilverShield || itemID == ItemID.MobileSuperx3P)
