@@ -101,7 +101,17 @@ namespace LM2RandomiserMod
             else
             {
                 getFlags = new L2FlagBoxEnd[1];
-                getFlags[0] = new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = itemInfo.itemFlag, data = 1 };
+                short flagValue = 1;
+                if(itemID == ItemID.ChainWhip || itemID == ItemID.SilverShield || itemID == ItemID.MobileSuperx3P)
+                {
+                    flagValue = 2;
+                }
+                else if (itemID == ItemID.FlailWhip || itemID == ItemID.AngelShield)
+                {
+                    flagValue = 3;
+                }
+
+                getFlags[0] = new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = itemInfo.itemFlag, data = flagValue };
             }
 
             return getFlags;
