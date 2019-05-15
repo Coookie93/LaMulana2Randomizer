@@ -92,7 +92,7 @@ namespace LM2Randomiser.Utils
                         {
                             playthrough.CollectItem(location.item);
                             playthrough.collectedLocations.Add(location.name, true);
-                            if ((int)location.item.id < 155)
+                            if (location.item.id < ItemID.Weights)
                             {
                                 sr.WriteLine("  {0} -> {1}", location.name, location.item.name);
                             }
