@@ -60,6 +60,15 @@ namespace LM2Randomiser
 
             } while (!canBeatGame && attemptCount < 10);
 
+            if(attemptCount == 10)
+            {
+                Logger.GetLogger.Log("Failed to  generated seed {0}", randomiser.Seed);
+                OutputText.AppendText("Failed to generated seed");
+                OutputText.AppendText(Environment.NewLine);
+                return;
+            }
+
+
             if (!FileUtils.WriteSpoilers(randomiser))
             {
                 OutputText.AppendText("Failed to write spoiler log.");
@@ -91,6 +100,11 @@ namespace LM2Randomiser
         private void MiraiCheck_CheckedChanged(object sender, EventArgs e)
         {
             settings.requireMirai = MiraiCheck.Checked;
+        }
+
+        private void MantraCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            settings.randomMantras = MantraCheck.Checked;
         }
     }
 }

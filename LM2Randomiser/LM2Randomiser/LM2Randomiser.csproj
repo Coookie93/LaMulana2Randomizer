@@ -89,6 +89,9 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
+    <None Include="Data\mantras.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Data\reqitems.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

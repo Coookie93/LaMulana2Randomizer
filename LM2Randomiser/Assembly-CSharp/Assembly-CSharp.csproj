@@ -7,7 +7,7 @@
     <ProjectGuid>{34400CB6-0827-46B4-801D-CA281FFACD2E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>L2RandomiserMod</RootNamespace>
+    <RootNamespace>LM2RandomiserMod</RootNamespace>
     <AssemblyName>Assembly-CSharp.mm</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -73,21 +73,40 @@
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIElementsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\UnityEngine.UIElementsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\UnityEngine.UIModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ItemFlags.cs" />
     <Compile Include="L2Rando.cs" />
+    <Compile Include="Patches\EventItemScript.cs" />
+    <Compile Include="Patches\ItemDialog.cs" />
     <Compile Include="Patches\L2System.cs" />
     <Compile Include="Patches\L2TaskShadow.cs" />
+    <Compile Include="Patches\SnapMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Patches\ShopScript.cs" />
   </ItemGroup>

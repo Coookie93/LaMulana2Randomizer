@@ -37,6 +37,7 @@
             this.SeedInput = new System.Windows.Forms.TextBox();
             this.MiraiCheck = new System.Windows.Forms.CheckBox();
             this.SettingsToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.MantraCheck = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // GenerateButton
@@ -106,7 +107,7 @@
             // 
             this.MiraiCheck.AutoSize = true;
             this.MiraiCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MiraiCheck.Location = new System.Drawing.Point(279, 80);
+            this.MiraiCheck.Location = new System.Drawing.Point(279, 107);
             this.MiraiCheck.Name = "MiraiCheck";
             this.MiraiCheck.Size = new System.Drawing.Size(200, 21);
             this.MiraiCheck.TabIndex = 7;
@@ -117,11 +118,25 @@
             this.MiraiCheck.UseVisualStyleBackColor = true;
             this.MiraiCheck.CheckedChanged += new System.EventHandler(this.MiraiCheck_CheckedChanged);
             // 
+            // MantraCheck
+            // 
+            this.MantraCheck.AutoSize = true;
+            this.MantraCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MantraCheck.Location = new System.Drawing.Point(279, 80);
+            this.MantraCheck.Name = "MantraCheck";
+            this.MantraCheck.Size = new System.Drawing.Size(153, 21);
+            this.MantraCheck.TabIndex = 8;
+            this.MantraCheck.Text = "Randomise Mantras";
+            this.SettingsToolTip.SetToolTip(this.MantraCheck, "Adds the mantras the the item pool to be randomised");
+            this.MantraCheck.UseVisualStyleBackColor = true;
+            this.MantraCheck.CheckedChanged += new System.EventHandler(this.MantraCheck_CheckedChanged);
+            // 
             // LM2Randomiser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(474, 227);
+            this.Controls.Add(this.MantraCheck);
             this.Controls.Add(this.MiraiCheck);
             this.Controls.Add(this.SeedInput);
             this.Controls.Add(this.SeedLabel);
@@ -147,6 +162,7 @@
         private System.Windows.Forms.TextBox SeedInput;
         private System.Windows.Forms.CheckBox MiraiCheck;
         private System.Windows.Forms.ToolTip SettingsToolTip;
+        private System.Windows.Forms.CheckBox MantraCheck;
     }
 }
 
