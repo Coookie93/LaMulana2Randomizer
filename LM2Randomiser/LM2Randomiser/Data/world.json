@@ -1018,7 +1018,7 @@
       {
         "name": "Mulbruk Item",
         "locationType": "Dialogue",
-        "ruleString": "True"
+        "ruleString": "CanReach(Annwfn Main)"
       },
       {
         "name": "Ratatoskr 2",
@@ -2292,7 +2292,7 @@
       {
         "name": "Eternal Prison Doom to Eternal Prison Gloom",
         "connectingAreaName": "Eternal Prison Gloom",
-        "ruleString": "(Has(Gale Fibula) and Has(Claydoll Suit)) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Entrance)))"
+        "ruleString": "Has(Gale Fibula) and Has(Claydoll Suit) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Entrance)))"
       }
     ]
   },
@@ -2408,7 +2408,7 @@
       {
         "name": "Eternal Prison Gloom to Eternal Prison Doom",
         "connectingAreaName": "Eternal Prison Doom",
-        "ruleString": "Has(Feather) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Entrance)))"
+        "ruleString": "Has(Feather) and Has(Claydoll Suit) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Entrance)))"
       },
       {
         "name": "Eternal Prison Gloom to Icefire Treetop Vidofnir",
