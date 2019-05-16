@@ -858,7 +858,7 @@
       },
       {
         "name": "Valhalla Top to Valhalla Top Right",
-        "connectingAreaName": "Valhalla Main",
+        "connectingAreaName": "Valhalla Top Right",
         "ruleString": "Has(Claydoll Suit) and CanUse(Rolling Shuriken)"
       }
     ]
@@ -879,7 +879,7 @@
       },
       {
         "name": "Valhalla Top Right to Shrine of the Frost Giants Balor",
-        "connectingAreaName": "Valhalla Main",
+        "connectingAreaName": "Shrine of the Frost Giants Balor",
         "ruleString": "Has(Claydoll Suit) and GuardianKills(5)"
       }
     ]
