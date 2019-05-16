@@ -155,14 +155,6 @@ namespace LM2RandomiserMod
 
         void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            if (scene.name.Equals("fieldLast"))
-            {
-                GameObject gameObject = new GameObject();
-                gameObject.transform.position = new Vector3(960, 400, 0);
-                BoxCollider boxCollider = gameObject.AddComponent<BoxCollider>();
-                boxCollider.size = new Vector3(10, 60, 0);
-            }
-
             if (randomising)
             {
                 cachedBoxes = GameObject.FindObjectsOfType<TreasureBoxScript>();
@@ -585,6 +577,14 @@ namespace LM2RandomiserMod
             //Mulbruk item
             talkDataBase.cellData[10][42][1][0] = ChangeTalkString(LocationID.MulbrukItem,
                 "{0}[@setf,5,101,=,2]\n[@anim,talk,1]\n[@p,3rd-2]");
+
+            //add check too Mulbruk so she just gives you the item
+            talkDataBase.cellData[10][3][1][0] = ChangeTalkFlagCheck(LocationID.MulbrukItem, COMPARISON.Less, "[@iff,2,{0},&lt;,{1},mulbruk2,3rd]\n[@iff,5,61,=,1,mulbruk2,mirror]\n[@iff,5,86,=,1,mulbruk2,hint2]\n[@iff,5,87,=,1,mulbruk2,hint3]\n[@iff,5,88,=,1,mulbruk2,hint4]\n" +
+                "[@iff,5,89,=,1,mulbruk2,hint5]\n[@iff,5,90,=,1,mulbruk2,hint6]\n[@iff,5,91,=,1,mulbruk2,hint7]\n[@iff,5,92,=,1,mulbruk2,hint8]\n[@iff,5,93,=,1,mulbruk2,hint9]\n[@iff,5,94,=,1,mulbruk2,hint10]\n" +
+                "[@iff,5,95,=,1,mulbruk2,hint11]\n[@iff,3,33,&gt;,10,mulbruk2,5th]\n[@iff,5,0,=,2,mulbruk2,4th]\n[@anifla,mfanim,wait]\n[@iff,5,78,=,5,mulbruk2,hint1]\n[@anifla,mfanim,wait4]\n" +
+                "[@iff,3,33,=,10,mulbruk2,3rdRnd]\n[@anifla,mfanim,wait]\n[@iff,5,78,=,5,mulbruk2,hint1]\n[@anifla,mfanim,wait3]\n[@iff,3,33,=,6,mulbruk2,rTalk2]\n[@anifla,mfanim,wait2]\n" +
+                "[@iff,3,33,=,5,mulbruk2,rTalk1]\n[@anifla,mfanim,nochar]\n[@iff,3,33,=,4,mulbruk2,1st-8]\n[@iff,3,33,=,8,mulbruk2,1st-8]\n[@anifla,mfanim,wait]\n[@iff,3,33,&lt;,7,mulbruk2,1st]\n" +
+                "[@iff,3,33,=,7,mulbruk2,2nd]\n");
 
             //Osiris L scythe
             talkDataBase.cellData[78][7][1][0] = ChangeTalkStringAndFlagCheck(LocationID.LightScytheItem,
