@@ -83,7 +83,7 @@ namespace LM2Randomiser
         BronzeMirrorSpot = 25,
         PerfumeChest = 26,
         IceCloakChest = 27,
-        NemeanFur = 28,
+        NemeanFurChest = 28,
         GauntletChest = 29,
         AnchorChest = 30,
         TotemPoleChest = 32,
