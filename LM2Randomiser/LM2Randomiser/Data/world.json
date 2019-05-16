@@ -354,7 +354,7 @@
       {
         "name": "Hugin and Munin",
         "locationType": "Default",
-        "ruleString": "OrbCount(2)",
+        "ruleString": "OrbCount(2) and (CanWarp or Has(Origin Sigil))",
         "item": {
           "name": "Hugin and Munin",
           "isRequired": true
@@ -484,7 +484,7 @@
       {
         "name": "Annwfn Main to Immortal Battlefield Top",
         "connectingAreaName": "Immortal Battlefield Top",
-        "ruleString": "CanWarp or CanReach(Immortal Battlefield Main)"
+        "ruleString": "CanWarp or CanReach(Immortal Battlefield Main) or (CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Rolling Shuriken) or CanUse(Caltrops))"
       }
     ]
   },
@@ -504,7 +504,7 @@
       {
         "name": "Ixtab",
         "locationType": "Default",
-        "ruleString": "OrbCount(3) and (CanUse(Shuriken) or CanUse(Flare) or CanUse(Earth Spear) or CanUse(Chakram) or Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana))",
+        "ruleString": "OrbCount(1) and (CanUse(Shuriken) or CanUse(Flare) or CanUse(Earth Spear) or CanUse(Chakram) or Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana))",
         "item": {
           "name": "Ixtab",
           "isRequired": true
@@ -520,7 +520,7 @@
       {
         "name": "Annwfn Right Entrance to Annwfn Right",
         "connectingAreaName": "Annwfn Right",
-        "ruleString": "IsDead(Ixtab)"
+        "ruleString": "IsDead(Ixtab) or Has(Feather)"
       }
     ]
   },
@@ -855,6 +855,11 @@
         "name": "Valhalla Top to Valhalla Main",
         "connectingAreaName": "Valhalla Main",
         "ruleString": "Has(Feather) or CanChant(Heaven)"
+      },
+      {
+        "name": "Valhalla Top to Valhalla Top Right",
+        "connectingAreaName": "Valhalla Main",
+        "ruleString": "Has(Claydoll Suit) and CanUse(Rolling Shuriken)"
       }
     ]
   },
@@ -871,6 +876,11 @@
         "name": "Valhalla Top Right to Valhalla Main",
         "connectingAreaName": "Valhalla Main",
         "ruleString": "True"
+      },
+      {
+        "name": "Valhalla Top Right to Shrine of the Frost Giants Balor",
+        "connectingAreaName": "Valhalla Main",
+        "ruleString": "Has(Claydoll Suit) and GuardianKills(5)"
       }
     ]
   },
@@ -973,7 +983,7 @@
       {
         "name": "Chain Whip Puzzle Reward",
         "locationType": "FreeStanding",
-        "ruleString": "Has(Gloves) and (Has(Claydoll Suit) or OrbCount(2) or Has(Ice Cloak))"
+        "ruleString": "Has(Gloves) and (Has(Claydoll Suit) or OrbCount(1) or Has(Ice Cloak))"
       },
       {
         "name": "Chakram Puzzle Reward",
@@ -1311,17 +1321,17 @@
       {
         "name": "Hydlit Shop 1",
         "locationType": "Shop",
-        "ruleString": "Has(Gale Fibula) and Has(Snow Shoes)"
+        "ruleString": "Has(Gale Fibula) and Has(Snow Shoes) and PuzzleFinished(Bergelmir)"
       },
       {
         "name": "Hydlit Shop 2",
         "locationType": "Shop",
-        "ruleString": "Has(Gale Fibula) and Has(Snow Shoes)"
+        "ruleString": "Has(Gale Fibula) and Has(Snow Shoes) and PuzzleFinished(Bergelmir)"
       },
       {
         "name": "Hydlit Shop 3",
         "locationType": "Shop",
-        "ruleString": "Has(Gale Fibula) and Has(Snow Shoes)"
+        "ruleString": "Has(Gale Fibula) and Has(Snow Shoes) and PuzzleFinished(Bergelmir)"
       },
       {
         "name": "Bergelmir",
@@ -1337,7 +1347,7 @@
       {
         "name": "Shrine of the Frost Giants Left to Shrine of the Frost Giants Main",
         "connectingAreaName": "Shrine of the Frost Giants Main",
-        "ruleString": "Has(Feather) and PuzzleFinished(Bergelmir)"
+        "ruleString": "True"
       },
       {
         "name": "Shrine of the Frost Giants Left to Shrine of the Frost Giants Fenrir",
@@ -1352,7 +1362,7 @@
       {
         "name": "Fenrir",
         "locationType": "Default",
-        "ruleString": "Has(Flame Torc) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana)) and Has(Silver Shield) and OrbCount(7)",
+        "ruleString": "Has(Flame Torc) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana)) and (Has(Silver Shield) or Has(Angel Shield)) and OrbCount(7)",
         "item": {
           "name": "Fenrir",
           "isRequired": true
@@ -1615,7 +1625,7 @@
       {
         "name": "Annit",
         "locationType": "Default",
-        "ruleString": "Has(Pyramid Crystal) and Has(Silver Shield) and OrbCount(4)",
+        "ruleString": "Has(Pyramid Crystal) and (Has(Silver Shield) or Has(Angel Shield)) and OrbCount(4)",
         "item": {
           "name": "Annit",
           "isRequired": true
@@ -1974,8 +1984,8 @@
     "name": "Hall of Malice Awoken",
     "locations": [
       {
-        "name": "Nemean Fur",
-        "locationType": "Default",
+        "name": "Nemean Fur Chest",
+        "locationType": "Chest",
         "ruleString": "IsDead(Nemean Lion) and Has(Feather)"
       },
       {
@@ -2059,7 +2069,7 @@
       {
         "name": "Chimera",
         "locationType": "Default",
-        "ruleString": "IsDead(Sphynx) and Has(Silver Shield)",
+        "ruleString": "IsDead(Sphynx) and (Has(Silver Shield) or Has(Angel Shield))",
         "item": {
           "name": "Chimera",
           "isRequired": true
@@ -2282,7 +2292,7 @@
       {
         "name": "Eternal Prison Doom to Eternal Prison Gloom",
         "connectingAreaName": "Eternal Prison Gloom",
-        "ruleString": "Has(Gale Fibula) and Has(Claydoll Suit)"
+        "ruleString": "(Has(Gale Fibula) and Has(Claydoll Suit)) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Entrance)))"
       }
     ]
   },
@@ -2331,7 +2341,7 @@
       {
         "name": "Death Sigil Chest",
         "locationType": "Chest",
-        "ruleString": "Has(Mjolnir) and Has(Power Band) and Has(Life Sigil) and Has(Death Sigil)"
+        "ruleString": "Has(Mjolnir) and Has(Life Sigil) and Has(Death Sigil)"
       },
       {
         "name": "Statue Lady Puzzle",
@@ -2358,13 +2368,13 @@
       },
       {
         "name": "Bomb Puzzle Reward",
-        "locationType": "Default",
+        "locationType": "FreeStanding",
         "ruleString": "Has(Key Fairy) and Has(Life Sigil) and PuzzleFinished(Garm)"
       },
       {
         "name": "Ratatoskr 4",
         "locationType": "Default",
-        "ruleString": "PuzzleFinished(Garm) and OrbCount(8) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana))",
+        "ruleString": "OrbCount(8) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana))",
         "item": {
           "name": "Ratatoskr 4",
           "isRequired": true
@@ -2398,7 +2408,7 @@
       {
         "name": "Eternal Prison Gloom to Eternal Prison Doom",
         "connectingAreaName": "Eternal Prison Doom",
-        "ruleString": "Has(Feather) and Has(Claydoll Suit)"
+        "ruleString": "Has(Feather) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Entrance)))"
       },
       {
         "name": "Eternal Prison Gloom to Icefire Treetop Vidofnir",
