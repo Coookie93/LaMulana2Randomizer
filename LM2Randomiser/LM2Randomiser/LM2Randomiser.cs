@@ -106,5 +106,10 @@ namespace LM2Randomiser
         {
             settings.randomMantras = MantraCheck.Checked;
         }
+
+        private void HardRequirements_CheckedChanged(object sender, EventArgs e)
+        {
+            settings.hardRequirements = HardRequirements.Checked;
+        }
     }
 }
