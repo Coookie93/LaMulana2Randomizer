@@ -52,15 +52,31 @@ namespace LM2Randomiser
                 return false;
             }
 
+            if (!FileUtils.GetHardRequirementsFromJson(out List<Location> hardreqs))
+            {
+                return false;
+            }
+            
+
             foreach (Area area in areas.Values)
             {
                 foreach (Location location in area.locations)
                 {
                     location.parentArea = area;
+
+                    if (settings.hardRequirements)
+                    {
+                        foreach(Location newRules in hardreqs)
+                        {
+                            if (location.name.Equals(newRules.name)) {
+                                location.ruleString = newRules.ruleString;
+                            }
+                        }
+                    }
+
                     location.ruleTree = RuleTree.ParseAndBuildRules(location.ruleString);
                     locations.Add(location.name, location);
                 }
-
                 foreach (Connection exit in area.exits)
                 {
                     exit.parentArea = area;
@@ -172,11 +188,11 @@ namespace LM2Randomiser
             //items can be placed here now
             GetLocation("Hiner Shop 3").isLocked = false;
 
-            //lock locations that currently can't be randomised
+            //lock/place at locations that currently can't be randomised with required items
             GetLocation("Funeral Item").isLocked = true;
-            GetLocation("Mulbruk Item").isLocked = true;
-            GetLocation("Hiner Shop 4").isLocked = true;
-            GetLocation("Fobos Skull Item").isLocked = true;
+            PlaceItem("Mulbruk Item", ItemPool.GetAndRemove(ItemID.Map1, unrequiredItems));
+            PlaceItem("Hiner Shop 4", ItemPool.GetAndRemove(ItemID.Map2, unrequiredItems));
+            PlaceItem("Fobos Skull Item", ItemPool.GetAndRemove(ItemID.Map3, unrequiredItems));
             
             //Get all unplaced locations as required items can go anywhere aslong as it can be reached
             List<Location> unplacedLocations = GetUnplacedLocations();
@@ -185,16 +201,11 @@ namespace LM2Randomiser
 
             //unlock the locked locations now since any item that is not required can go there
             GetLocation("Funeral Item").isLocked = false;
-            GetLocation("Mulbruk Item").isLocked = false;
 
             //randomise all skulls bar one seperately since its seem better for generation, needs testing 
             unplacedLocations = GetUnplacedLocations();
             ItemRandomisation.RandomiseSpecificItems(this, unplacedLocations, skulls, null);
-
-            //anything left can go here
-            GetLocation("Hiner Shop 4").isLocked = false;
-            GetLocation("Fobos Skull Item").isLocked = false;
-
+            
             //Get unplaced locations after the required items have been placed
             unplacedLocations = GetUnplacedLocations();
             //places no requires items

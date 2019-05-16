@@ -54,6 +54,27 @@ namespace LM2Randomiser.Utils
             return true;
         }
 
+        public static bool GetHardRequirementsFromJson(out List<Location> hardreqs)
+        {
+            string currentDir = Directory.GetCurrentDirectory();
+            try
+            {
+                using (StreamReader sr = File.OpenText(Path.Combine(currentDir, "Data\\hardreqs.json")))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    hardreqs = (List<Location>)serializer.Deserialize(sr, typeof(List<Location>));
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.GetLogger.Log("Error: {0}", ex.Message);
+                hardreqs = null;
+                return false;
+            }
+
+            return true;
+        }
+
         public static bool WriteSpoilers(Randomiser randomiser)
         {
             string currentDir = Directory.GetCurrentDirectory();
@@ -98,6 +119,12 @@ namespace LM2Randomiser.Utils
                             }
                         }
                         sr.WriteLine("}");
+
+                        if (playthrough.CanBeatGame(reachableLocations))
+                        {
+                            break;
+                        }
+
                         playthrough.ResetCheckedAreasAndEntrances();
                         
                     } while (reachableLocations.Count > 0);

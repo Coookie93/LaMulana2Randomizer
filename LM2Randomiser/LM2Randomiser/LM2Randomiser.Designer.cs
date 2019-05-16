@@ -38,6 +38,7 @@
             this.MiraiCheck = new System.Windows.Forms.CheckBox();
             this.SettingsToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.MantraCheck = new System.Windows.Forms.CheckBox();
+            this.HardRequirements = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // GenerateButton
@@ -131,11 +132,26 @@
             this.MantraCheck.UseVisualStyleBackColor = true;
             this.MantraCheck.CheckedChanged += new System.EventHandler(this.MantraCheck_CheckedChanged);
             // 
+            // HardRequirements
+            // 
+            this.HardRequirements.AutoSize = true;
+            this.HardRequirements.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HardRequirements.Location = new System.Drawing.Point(279, 134);
+            this.HardRequirements.Name = "HardRequirements";
+            this.HardRequirements.Size = new System.Drawing.Size(197, 21);
+            this.HardRequirements.TabIndex = 9;
+            this.HardRequirements.Text = "Hard Enemy Requirements";
+            this.SettingsToolTip.SetToolTip(this.HardRequirements, "Removes all Sacred Orb and Weapon requirements\r\n(unless absolutely needed) from B" +
+        "osses and \r\nMini-Bosses.\r\n\r\n");
+            this.HardRequirements.UseVisualStyleBackColor = true;
+            this.HardRequirements.CheckedChanged += new System.EventHandler(this.HardRequirements_CheckedChanged);
+            // 
             // LM2Randomiser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(474, 227);
+            this.Controls.Add(this.HardRequirements);
             this.Controls.Add(this.MantraCheck);
             this.Controls.Add(this.MiraiCheck);
             this.Controls.Add(this.SeedInput);
@@ -163,6 +179,7 @@
         private System.Windows.Forms.CheckBox MiraiCheck;
         private System.Windows.Forms.ToolTip SettingsToolTip;
         private System.Windows.Forms.CheckBox MantraCheck;
+        private System.Windows.Forms.CheckBox HardRequirements;
     }
 }
 

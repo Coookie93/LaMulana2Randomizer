@@ -12,5 +12,6 @@ namespace LM2Randomiser
         public bool randomiseScanner;
         public bool requireMirai;
         public bool randomMantras;
+        public bool hardRequirements;
     }
 }

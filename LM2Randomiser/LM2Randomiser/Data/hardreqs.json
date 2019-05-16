@@ -1,0 +1,257 @@
+[
+  {
+    "name": "Ratatoskr 1",
+    "locationType": "Default",
+    "ruleString": "True"
+  },
+  {
+    "name": "Nidhogg",
+    "locationType": "Default",
+    "ruleString": "CanUse(Flare) or CanUse(Shuriken) or CanUse(Claydoll Suit)"
+  },
+  {
+    "name": "Fafnir",
+    "locationType": "Default",
+    "ruleString": "AnkhCount(4)"
+  },
+  {
+    "name": "Hugin and Munin",
+    "locationType": "Default",
+    "ruleString": "CanWarp or Has(Origin Sigil)"
+  },
+  {
+    "name": "Kaliya",
+    "locationType": "Default",
+    "ruleString": "CanUse(Rolling Shuriken)"
+  },
+  {
+    "name": "Ixtab",
+    "locationType": "Default",
+    "ruleString": "True"
+  },
+  {
+    "name": "Kujata",
+    "locationType": "Default",
+    "ruleString": "Has(Freys Ship) and AnkhCount(4)"
+  },
+  {
+    "name": "Vedfolnir",
+    "locationType": "Default",
+    "ruleString": "True"
+  },
+  {
+    "name": "Surtr",
+    "locationType": "Default",
+    "ruleString": "Has(Light Scythe) and AnkhCount(4)"
+  },
+  {
+    "name": "Ratatoskr 3",
+    "locationType": "Default",
+    "ruleString": "IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2)"
+  },
+  {
+    "name": "Vidofnir",
+    "locationType": "Default",
+    "ruleString": "Has(Flame Torc)"
+  },
+  {
+    "name": "Vucub-Caquiz",
+    "locationType": "Default",
+    "ruleString": "Has(Origin Sigil)"
+  },
+  {
+    "name": "Jalandhara",
+    "locationType": "Default",
+    "ruleString": "Has(Life Sigil) and Has(Feather)"
+  },
+  {
+    "name": "Vritra",
+    "locationType": "Default",
+    "ruleString": "AnkhCount(6) and IsDead(Vucub-Caquiz)"
+  },
+  {
+    "name": "Cetus",
+    "locationType": "Default",
+    "ruleString": "CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Rolling Shuriken) or CanUse(Caltrops)"
+  },
+  {
+    "name": "Ratatoskr 2",
+    "locationType": "Default",
+    "ruleString": "True"
+  },
+  {
+    "name": "Svipdagr",
+    "locationType": "Default",
+    "ruleString": "True"
+  },
+  {
+    "name": "Jormangund",
+    "locationType": "Default",
+    "ruleString": "IsDead(Cetus) and Has(Dinosaur Figure) and Has(Pochette Key) and AnkhCount(4)"
+  },
+  {
+    "name": "Balor",
+    "locationType": "Default",
+    "ruleString": "True"
+  },
+  {
+    "name": "Tezcatlipoca",
+    "locationType": "Default",
+    "ruleString": "Has(Gloves)"
+  },
+  {
+    "name": "Fenrir",
+    "locationType": "Default",
+    "ruleString": "Has(Flame Torc)"
+  },
+  {
+    "name": "Unicorn",
+    "locationType": "Default",
+    "ruleString": "True"
+  },
+  {
+    "name": "Sekhmet",
+    "locationType": "Default",
+    "ruleString": "PuzzleFinished(Footstep Puzzle)"
+  },
+  {
+    "name": "Angra Mainyu",
+    "locationType": "Default",
+    "ruleString": "Has(Mjolnir) and (Has(Feather) or CanWarp)"
+  },
+  {
+    "name": "Annit",
+    "locationType": "Default",
+    "ruleString": "Has(Pyramid Crystal)"
+  },
+  {
+    "name": "Aten-Ra",
+    "locationType": "Default",
+    "ruleString": "PuzzleFinished(White Pedestals) and AnkhCount(6)"
+  },
+  {
+    "name": "Raijin and Fujin",
+    "locationType": "Default",
+    "ruleString": "Has(Mjolnir)"
+  },
+  {
+    "name": "Daji",
+    "locationType": "Default",
+    "ruleString": "True"
+  },
+  {
+    "name": "Belial",
+    "locationType": "Default",
+    "ruleString": "Has(Cog of Antiquity) and Has(Egg of Creation) and ((Has(Ice Cloak) and OrbCount(5)) or Has(Claydoll Suit))"
+  },
+  {
+    "name": "Ki-sikil-lil-la-ke",
+    "locationType": "Default",
+    "ruleString": "True"
+  },
+  {
+    "name": "Anzu",
+    "locationType": "Default",
+    "ruleString": "Has(Lamp of Time) and Has(Claydoll Suit)"
+  },
+  {
+    "name": "Anu",
+    "locationType": "Default",
+    "ruleString": "Has(Gloves) and AnkhCount(9)"
+  },
+  {
+    "name": "Delphyne",
+    "locationType": "Default",
+    "ruleString": "True"
+  },
+  {
+    "name": "Hydra",
+    "locationType": "Default",
+    "ruleString": "IsDead(Delphyne)"
+  },
+  {
+    "name": "Nemean Lion",
+    "locationType": "Default",
+    "ruleString": "IsDead(Hydra)"
+  },
+  {
+    "name": "Sphynx",
+    "locationType": "Default",
+    "ruleString": "True"
+  },
+  {
+    "name": "Ladon",
+    "locationType": "Default",
+    "ruleString": "IsDead(Sphynx)"
+  },
+  {
+    "name": "Phaia",
+    "locationType": "Default",
+    "ruleString": "IsDead(Ladon)"
+  },
+  {
+    "name": "Karkinos",
+    "locationType": "Default",
+    "ruleString": "IsDead(Phaia)"
+  },
+  {
+    "name": "Chimera",
+    "locationType": "Default",
+    "ruleString": "IsDead(Sphynx)"
+  },
+  {
+    "name": "Colchian Dragon",
+    "locationType": "Default",
+    "ruleString": "IsDead(Chimera)"
+  },
+  {
+    "name": "Cerberus",
+    "locationType": "Default",
+    "ruleString": "IsDead(Colchian Dragon)"
+  },
+  {
+    "name": "Orthrus",
+    "locationType": "Default",
+    "ruleString": "IsDead(Cerberus)"
+  },
+  {
+    "name": "Echidna",
+    "locationType": "Default",
+    "ruleString": "AnkhCount(9) and IsDead(Orthrus) and IsDead(Karkinos) and IsDead(Nemean Lion)"
+  },
+  {
+    "name": "Arachne",
+    "locationType": "Default",
+    "ruleString": "CanWarp"
+  },
+  {
+    "name": "Scylla",
+    "locationType": "Default",
+    "ruleString": "CanWarp"
+  },
+  {
+    "name": "Glasya-Labolas",
+    "locationType": "Default",
+    "ruleString": "CanWarp"
+  },
+  {
+    "name": "Griffin",
+    "locationType": "Default",
+    "ruleString": "Has(Gale Fibula) and Has(Gloves) and Has(Life Sigil) and IsDead(Glasya-Labolas)"
+  },
+  {
+    "name": "Hraesvelgr",
+    "locationType": "Default",
+    "ruleString": "IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2) and IsDead(Ratatoskr 3) and IsDead(Ratatoskr 4) and CanChant(Moon)"
+  },
+  {
+    "name": "Hel",
+    "locationType": "Default",
+    "ruleString": "AnkhCount(9)"
+  },
+  {
+    "name": "Ratatoskr 4",
+    "locationType": "Default",
+    "ruleString": "True"
+  }
+]
