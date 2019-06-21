@@ -191,7 +191,6 @@ namespace LM2Randomiser
             //lock/place at locations that currently can't be randomised with required items
             GetLocation("Funeral Item").isLocked = true;
             PlaceItem("Mulbruk Item", ItemPool.GetAndRemove(ItemID.Map1, unrequiredItems));
-            PlaceItem("Hiner Shop 4", ItemPool.GetAndRemove(ItemID.Map2, unrequiredItems));
             PlaceItem("Fobos Skull Item", ItemPool.GetAndRemove(ItemID.Map3, unrequiredItems));
             
             //Get all unplaced locations as required items can go anywhere aslong as it can be reached
