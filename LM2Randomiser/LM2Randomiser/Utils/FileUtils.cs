@@ -155,7 +155,7 @@ namespace LM2Randomiser.Utils
                     }
                 }
             }
-                
+            Logger.GetLogger.Log("Total items randomised, {0}", itemLocation.Count);
             FileStream fs = new FileStream(Path.Combine(currentDir, "Seed\\seed.lm2"), FileMode.Create);
             BinaryFormatter formatter = new BinaryFormatter();
             try
