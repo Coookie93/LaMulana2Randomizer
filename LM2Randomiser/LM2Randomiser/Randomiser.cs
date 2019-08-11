@@ -189,17 +189,12 @@ namespace LM2Randomiser
             GetLocation("Hiner Shop 3").isLocked = false;
 
             //lock/place at locations that currently can't be randomised with required items
-            GetLocation("Funeral Item").isLocked = true;
-            PlaceItem("Mulbruk Item", ItemPool.GetAndRemove(ItemID.Map1, unrequiredItems));
-            PlaceItem("Fobos Skull Item", ItemPool.GetAndRemove(ItemID.Map3, unrequiredItems));
+            PlaceItem("Fobos Skull Item", ItemPool.GetAndRemove(ItemID.Map16, unrequiredItems));
             
             //Get all unplaced locations as required items can go anywhere aslong as it can be reached
             List<Location> unplacedLocations = GetUnplacedLocations();
             //place required items
             ItemRandomisation.RandomiseRequiredItems(this, unplacedLocations, requiredItems);
-
-            //unlock the locked locations now since any item that is not required can go there
-            GetLocation("Funeral Item").isLocked = false;
 
             //randomise all skulls bar one seperately since its seem better for generation, needs testing 
             unplacedLocations = GetUnplacedLocations();
