@@ -20,7 +20,7 @@
       {
         "name": "Funeral Item",
         "locationType": "Dialogue",
-        "ruleString": "True"
+        "ruleString": "GuardianKills(6)"
       },
       {
         "name": "Nebur Shop 1",
@@ -724,7 +724,7 @@
       {
         "name": "Icefire Treetop Vidofnir to Eternal Prison Gloom",
         "connectingAreaName": "Eternal Prison Gloom",
-        "ruleString": "IsDead(Vidofnir) and GuardianKills(5) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Entrance)))"
+        "ruleString": "IsDead(Vidofnir) and GuardianKills(5) and CanWarp"
       }
     ]
   },
@@ -832,7 +832,7 @@
       {
         "name": "Valhalla Main to Eternal Prison Doom",
         "connectingAreaName": "Eternal Prison Doom",
-        "ruleString": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Entrance)))"
+        "ruleString": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and CanWarp"
       }
     ]
   },
@@ -1018,7 +1018,7 @@
       {
         "name": "Mulbruk Item",
         "locationType": "Dialogue",
-        "ruleString": "CanReach(Annwfn Main)"
+        "ruleString": "CanReach(Annwfn Main) and GuardianKills(4)"
       },
       {
         "name": "Ratatoskr 2",
@@ -1306,7 +1306,7 @@
       {
         "name": "Shrine of the Frost Giants Blood to Eternal Prison Doom",
         "connectingAreaName": "Eternal Prison Doom",
-        "ruleString": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Entrance)))"
+        "ruleString": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and CanWarp"
       }
     ]
   },
@@ -1406,7 +1406,7 @@
       {
         "name": "Anchor Chest",
         "locationType": "Chest",
-        "ruleString": "CanReach(Divine Fortress Main) and Has(Gloves)"
+        "ruleString": "CanReach(Divine Fortress Main) and Has(Gloves) and CanReach(Annwfn Right) and Has(Hand Scanner)"
       },
       {
         "name": "Crystal Skull Chest GotD",
@@ -1610,7 +1610,7 @@
       {
         "name": "Dark Lords Mausoleum Mid to Eternal Prison Doom",
         "connectingAreaName": "Eternal Prison Doom",
-        "ruleString": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Entrance)))"
+        "ruleString": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and CanWarp"
       }
     ]
   },
@@ -1929,7 +1929,7 @@
       {
         "name": "Ancient Chaos Blood to Eternal Prison Doom",
         "connectingAreaName": "Eternal Prison Doom",
-        "ruleString": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Entrance)))"
+        "ruleString": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and CanWarp"
       }
     ]
   },
@@ -1976,7 +1976,7 @@
       {
         "name": "Hall of Malice to Eternal Prison Doom",
         "connectingAreaName": "Eternal Prison Doom",
-        "ruleString": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Entrance)))"
+        "ruleString": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and CanWarp"
       }
     ]
   },
@@ -2276,7 +2276,7 @@
       {
         "name": "Hraesvelgr",
         "locationType": "Default",
-        "ruleString": "IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2) and IsDead(Ratatoskr 3) and IsDead(Ratatoskr 4) and CanChant(Moon) and OrbCount(7) and (CanUse(Flare) or (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana)))",
+        "ruleString": "IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2) and IsDead(Ratatoskr 3) and IsDead(Ratatoskr 4) and IsDead(Nidhogg) and CanChant(Moon) and OrbCount(7) and (CanUse(Flare) or (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana)))",
         "item": {
           "name": "Hraesvelgr",
           "isRequired": true
@@ -2292,7 +2292,7 @@
       {
         "name": "Eternal Prison Doom to Eternal Prison Gloom",
         "connectingAreaName": "Eternal Prison Gloom",
-        "ruleString": "Has(Gale Fibula) and Has(Claydoll Suit) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Entrance)))"
+        "ruleString": "Has(Gale Fibula) and Has(Claydoll Suit)"
       }
     ]
   },
@@ -2408,7 +2408,7 @@
       {
         "name": "Eternal Prison Gloom to Eternal Prison Doom",
         "connectingAreaName": "Eternal Prison Doom",
-        "ruleString": "Has(Feather) and Has(Claydoll Suit) and (CanWarp or (CanReach(Divine Fortress Right) and CanReach(Takamagahara Shrine) and CanReach(Icefire Treetop Entrance)))"
+        "ruleString": "Has(Feather) and (Has(Claydoll Suit) or Has(Grapple Claw))"
       },
       {
         "name": "Eternal Prison Gloom to Icefire Treetop Vidofnir",
