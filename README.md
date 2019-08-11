@@ -6,7 +6,7 @@
 3. Now in the LaMulana2_Data/Managed folde, drag the Assembly-CSharp.dll onto monomod.exe
 4. Make a backup of Assembly-CSharp.ddl eg. rename to Assembly-CSharp.ddl.backup
 5. Rename the MONOMODDED_Assembly-CSharp.dll file to Assembly-CSharp.dll
-6. Now just create a seed using the randomiser and you're good to go
+6. Now open the LM2Randomiser.exe create a seed and you're good to go
 
 ## Updating:
 1. If new version supports older seeds copy current seed if you want it.
