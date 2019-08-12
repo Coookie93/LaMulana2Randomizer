@@ -100,6 +100,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DevUI.cs" />
     <Compile Include="ItemFlags.cs" />
     <Compile Include="L2Rando.cs" />
     <Compile Include="Patches\EventItemScript.cs" />

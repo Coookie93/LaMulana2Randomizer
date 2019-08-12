@@ -121,23 +121,6 @@ namespace LM2RandomiserMod
         {
             if (this.showText)
             {
-                //GUI.Label(new Rect(100f, 0f, 100f, 22f), "Treasure Chests");
-                //if (cachedBoxes != null)
-                //{
-                //    for (int i = 0; i < cachedBoxes.Length; i++)
-                //    {
-                //        EventItemScript es = cachedBoxes[i].itemObj.GetComponent<EventItemScript>();
-                //        GUI.Label(new Rect(100f, 22f + (float)i * 22f, 100f, 22f), es.itemLabel);
-                //    }
-                //}
-                //GUI.Label(new Rect(0f, 0f, 100f, 22f), "Free Items");
-                //if (cachedItems != null)
-                //{
-                //    for (int i = 0; i < cachedItems.Length; i++)
-                //    {
-                //        GUI.Label(new Rect(0f, 25f + (float)i * 22f, 200f, 22f), cachedItems[i].itemLabel);
-                //    }
-                //}
                 GUI.Label(new Rect(0, Screen.height - 75f, 500f, 50f), error);
                 GUI.Label(new Rect(0, Screen.height - 25f, 50f, 25f), randomising.ToString());
             }
@@ -234,7 +217,8 @@ namespace LM2RandomiserMod
             this.shopDataBase = shopDataBase;
             this.talkDataBase = talkDataBase;
             this.sys = system;
-
+            //DevUI devUI = this.gameObject.AddComponent<DevUI>() as DevUI;
+            //devUI.Initialise(sys);
             StartCoroutine(Setup());
         }
 

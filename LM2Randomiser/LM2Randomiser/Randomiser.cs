@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.IO;
-using Newtonsoft.Json;
 using LM2Randomiser.RuleParsing;
 using LM2Randomiser.Utils;
-using LM2Randomiser.Logging;
 
 namespace LM2Randomiser
 {
@@ -190,7 +186,7 @@ namespace LM2Randomiser
 
             //lock/place at locations that currently can't be randomised with required items
             PlaceItem("Fobos Skull Item", ItemPool.GetAndRemove(ItemID.Map16, unrequiredItems));
-            
+
             //Get all unplaced locations as required items can go anywhere aslong as it can be reached
             List<Location> unplacedLocations = GetUnplacedLocations();
             //place required items
