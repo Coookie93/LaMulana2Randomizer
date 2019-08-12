@@ -115,13 +115,26 @@ namespace LM2RandomiserMod.Patches
                         {
                             //Note: maybe turn this stuff into static methods instead or look into ways of doing this in L2Rando on scene load.
                             L2Rando rando = GameObject.FindObjectOfType<L2Rando>();
+                            if(rando == null)
+                            {
+                                this.sta = 0;
+                                break;
+                            }
+
                             LocationID locationID = rando.GetLocationIDForMural(SnapShotTargetSc);
                             ItemID itemID = rando.GetItemIDForLocation(locationID);
                             ItemInfo itemInfo = ItemFlags.GetItemInfo(itemID);
                             
                             this.sys.setKeyBlock(true);
                             this.GetItemID = itemInfo.boxName;
-                            if (this.sys.isHaveItem(itemInfo.shopName) > 0)
+
+                            int flagValue = 0;
+                            if (itemID == ItemID.MobileSuperx3P)
+                            {
+                                flagValue = 1;
+                            }
+
+                            if (this.sys.isHaveItem(itemInfo.shopName) > flagValue)
                             {
                                 this.HaveItems = true;
                             }
