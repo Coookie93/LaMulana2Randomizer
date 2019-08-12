@@ -1857,7 +1857,7 @@
       {
         "name": "Crystal Skull Chest AC",
         "locationType": "Chest",
-        "ruleString": "CanUse(Shuriken) or CanUse(Earth Spear)"
+        "ruleString": "CanUse(Shuriken) or CanUse(Rolling Shuriken) or CanUse(Earth Spear) or CanUse(Chakram) or CanUse(Bomb) or CanUse(Claydoll Suit)"
       }
     ],
     "exits": [
