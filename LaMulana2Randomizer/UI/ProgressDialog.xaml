@@ -1,0 +1,18 @@
+﻿<Window x:Class="LM2Randomizer.UI.ProgressDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LM2Randomizer.UI"
+        mc:Ignorable="d" Name="DialogWindow" Title="Generating Seed" SizeToContent="WidthAndHeight" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Loaded="Window_Loaded">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+    </Window.Resources>
+    <Grid Width="300">
+        <StackPanel Margin="10">
+            <TextBlock Name="Label" Margin="0,0,0,5" Text="{Binding Label}" TextAlignment="Center" TextWrapping="Wrap"/>
+            <ProgressBar Name="ProgressBar" Margin="0,0,0,5" Height="20" IsIndeterminate="{Binding IsIndeterminate}" Value="{Binding ProgressValue}"/>
+            <Button Content="OK" Width="40" Visibility="{Binding TaskComplete, Converter={StaticResource BoolToVisibility}}" Command="{Binding CloseCommand}" CommandParameter="{Binding ElementName=DialogWindow}"/>
+        </StackPanel>
+    </Grid>
+</Window>

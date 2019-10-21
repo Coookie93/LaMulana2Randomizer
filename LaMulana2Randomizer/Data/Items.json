@@ -1,0 +1,712 @@
+[
+  {
+    "name": "Hand Scanner",
+    "id": 1,
+    "isRequired": true
+  },
+  {
+    "name": "Djed Pillar",
+    "id": 2,
+    "isRequired": true
+  },
+  {
+    "name": "Mjolnir",
+    "id": 3,
+    "isRequired": true
+  },
+  {
+    "name": "Beherit",
+    "id": 4,
+    "isRequired": true
+  },
+  {
+    "name": "Ancient Battery",
+    "id": 5,
+    "isRequired": true
+  },
+  {
+    "name": "Lamp of Time",
+    "id": 6,
+    "isRequired": true
+  },
+  {
+    "name": "Pochette Key",
+    "id": 7,
+    "isRequired": true
+  },
+  {
+    "name": "Pyramid Crystal",
+    "id": 8,
+    "isRequired": true
+  },
+  {
+    "name": "Vessel",
+    "id": 10,
+    "isRequired": true
+  },
+  {
+    "name": "Pepper",
+    "id": 11,
+    "isRequired": true
+  },
+  {
+    "name": "Egg of Creation",
+    "id": 12,
+    "isRequired": true
+  },
+  {
+    "name": "Giants Flute",
+    "id": 13,
+    "isRequired": true
+  },
+  {
+    "name": "Cog of Antiquity",
+    "id": 14,
+    "isRequired": true
+  },
+  {
+    "name": "Mulana Talisman",
+    "id": 15,
+    "isRequired": true
+  },
+  {
+    "name": "Mobile Super x3+",
+    "id": 16,
+    "isRequired": false
+  },
+  {
+    "name": "Shell Horn",
+    "id": 17,
+    "isRequired": false
+  },
+  {
+    "name": "Holy Grail",
+    "id": 18,
+    "isRequired": true
+  },
+  {
+    "name": "Fairy Pass",
+    "id": 19,
+    "isRequired": true
+  },
+  {
+    "name": "Gloves",
+    "id": 20,
+    "isRequired": true
+  },
+  {
+    "name": "Dinosaur Figure",
+    "id": 21,
+    "isRequired": true
+  },
+  {
+    "name": "Gale Fibula",
+    "id": 22,
+    "isRequired": true
+  },
+  {
+    "name": "Flame Torc",
+    "id": 23,
+    "isRequired": true
+  },
+  {
+    "name": "Vajra",
+    "id": 24,
+    "isRequired": true
+  },
+  {
+    "name": "Power Band",
+    "id": 25,
+    "isRequired": true
+  },
+  {
+    "name": "Bronze Mirror",
+    "id": 26,
+    "isRequired": false
+  },
+  {
+    "name": "Perfume",
+    "id": 27,
+    "isRequired": false
+  },
+  {
+    "name": "Ice Cloak",
+    "id": 28,
+    "isRequired": true
+  },
+  {
+    "name": "Nemean Fur",
+    "id": 29,
+    "isRequired": false
+  },
+  {
+    "name": "Gauntlet",
+    "id": 30,
+    "isRequired": true
+  },
+  {
+    "name": "Anchor",
+    "id": 31,
+    "isRequired": true
+  },
+  {
+    "name": "Freyas Pendant",
+    "id": 32,
+    "isRequired": true
+  },
+  {
+    "name": "Totem Pole",
+    "id": 33,
+    "isRequired": false
+  },
+  {
+    "name": "Grapple Claw",
+    "id": 34,
+    "isRequired": true
+  },
+  {
+    "name": "Spaulder",
+    "id": 35,
+    "isRequired": true
+  },
+  {
+    "name": "Scalesphere",
+    "id": 36,
+    "isRequired": true
+  },
+  {
+    "name": "Crucifix",
+    "id": 37,
+    "isRequired": false
+  },
+  {
+    "name": "Ganesha Talisman",
+    "id": 38,
+    "isRequired": false
+  },
+  {
+    "name": "Maats Feather",
+    "id": 39,
+    "isRequired": true
+  },
+  {
+    "name": "Ring",
+    "id": 40,
+    "isRequired": false
+  },
+  {
+    "name": "Bracelet",
+    "id": 41,
+    "isRequired": false
+  },
+  {
+    "name": "Feather",
+    "id": 42,
+    "isRequired": true
+  },
+  {
+    "name": "Scriptures",
+    "id": 43,
+    "isRequired": false
+  },
+  {
+    "name": "Freys Ship",
+    "id": 44,
+    "isRequired": true
+  },
+  {
+    "name": "Codices",
+    "id": 45,
+    "isRequired": false
+  },
+  {
+    "name": "Snow Shoes",
+    "id": 46,
+    "isRequired": true
+  },
+  {
+    "name": "Harp",
+    "id": 47,
+    "isRequired": false
+  },
+  {
+    "name": "Book of the Dead",
+    "id": 48,
+    "isRequired": false
+  },
+  {
+    "name": "Light Scythe",
+    "id": 49,
+    "isRequired": true
+  },
+  {
+    "name": "Destiny Tablet",
+    "id": 50,
+    "isRequired": true
+  },
+  {
+    "name": "Secret Treasure of Life",
+    "id": 51,
+    "isRequired": true
+  },
+  {
+    "name": "Origin Sigil",
+    "id": 52,
+    "isRequired": true
+  },
+  {
+    "name": "Birth Sigil",
+    "id": 53,
+    "isRequired": true
+  },
+  {
+    "name": "Life Sigil",
+    "id": 54,
+    "isRequired": true
+  },
+  {
+    "name": "Death Sigil",
+    "id": 55,
+    "isRequired": true
+  },
+  {
+    "name": "Claydoll Suit",
+    "id": 56,
+    "isRequired": true
+  },
+  {
+    "name": "Chain Whip",
+    "id": 62,
+    "isRequired": true
+  },
+  {
+    "name": "Flail Whip",
+    "id": 63,
+    "isRequired": true
+  },
+  {
+    "name": "Knife",
+    "id": 64,
+    "isRequired": true
+  },
+  {
+    "name": "Rapier",
+    "id": 65,
+    "isRequired": true
+  },
+  {
+    "name": "Axe",
+    "id": 66,
+    "isRequired": true
+  },
+  {
+    "name": "Katana",
+    "id": 67,
+    "isRequired": true
+  },
+  {
+    "name": "Shuriken",
+    "id": 68,
+    "isRequired": true
+  },
+  {
+    "name": "Rolling Shuriken",
+    "id": 69,
+    "isRequired": true
+  },
+  {
+    "name": "Earth Spear",
+    "id": 70,
+    "isRequired": true
+  },
+  {
+    "name": "Flare",
+    "id": 71,
+    "isRequired": true
+  },
+  {
+    "name": "Bomb",
+    "id": 72,
+    "isRequired": true
+  },
+  {
+    "name": "Chakram",
+    "id": 73,
+    "isRequired": true
+  },
+  {
+    "name": "Caltrops",
+    "id": 74,
+    "isRequired": true
+  },
+  {
+    "name": "Pistol",
+    "id": 75,
+    "isRequired": false
+  },
+  {
+    "name": "Buckler",
+    "id": 76,
+    "isRequired": true
+  },
+  {
+    "name": "Silver Shield",
+    "id": 77,
+    "isRequired": true
+  },
+  {
+    "name": "Angel Shield",
+    "id": 78,
+    "isRequired": true
+  },
+  {
+    "name": "Xelputter",
+    "id": 80,
+    "isRequired": false
+  },
+  {
+    "name": "Yagoo Map Reader",
+    "id": 81,
+    "isRequired": false
+  },
+  {
+    "name": "Yagoo Map Street",
+    "id": 82,
+    "isRequired": false
+  },
+  {
+    "name": "TextTrax",
+    "id": 83,
+    "isRequired": false
+  },
+  {
+    "name": "Ruins Encylopedia",
+    "id": 84,
+    "isRequired": false
+  },
+  {
+    "name": "Mantra",
+    "id": 85,
+    "isRequired": true
+  },
+  {
+    "name": "Guild",
+    "id": 86,
+    "isRequired": false
+  },
+  {
+    "name": "Enga Musica",
+    "id": 88,
+    "isRequired": true
+  },
+  {
+    "name": "Beo Eglana",
+    "id": 89,
+    "isRequired": false
+  },
+  {
+    "name": "Alert",
+    "id": 90,
+    "isRequired": false
+  },
+  {
+    "name": "Snapshot",
+    "id": 91,
+    "isRequired": true
+  },
+  {
+    "name": "Skull Reader",
+    "id": 92,
+    "isRequired": false
+  },
+  {
+    "name": "Race Scanner",
+    "id": 93,
+    "isRequired": false
+  },
+  {
+    "name": "Death Village",
+    "id": 94,
+    "isRequired": false
+  },
+  {
+    "name": "Rose and Camelia",
+    "id": 95,
+    "isRequired": false
+  },
+  {
+    "name": "Space Capstar II",
+    "id": 96,
+    "isRequired": false
+  },
+  {
+    "name": "Lonely House Moving",
+    "id": 97,
+    "isRequired": false
+  },
+  {
+    "name": "Mekuri Master",
+    "id": 98,
+    "isRequired": false
+  },
+  {
+    "name": "Bounce Shot",
+    "id": 99,
+    "isRequired": false
+  },
+  {
+    "name": "Miracle Witch",
+    "id": 100,
+    "isRequired": false
+  },
+  {
+    "name": "Future Development Company",
+    "id": 101,
+    "isRequired": false
+  },
+  {
+    "name": "La-Mulana",
+    "id": 102,
+    "isRequired": false
+  },
+  {
+    "name": "La-Mulana 2",
+    "id": 103,
+    "isRequired": false
+  },
+  {
+    "name": "Sacred Orb",
+    "id": 104,
+    "isRequired": true
+  },
+  {
+    "name": "Sacred Orb",
+    "id": 105,
+    "isRequired": true
+  },
+  {
+    "name": "Sacred Orb",
+    "id": 106,
+    "isRequired": true
+  },
+  {
+    "name": "Sacred Orb",
+    "id": 107,
+    "isRequired": true
+  },
+  {
+    "name": "Sacred Orb",
+    "id": 108,
+    "isRequired": true
+  },
+  {
+    "name": "Sacred Orb",
+    "id": 109,
+    "isRequired": true
+  },
+  {
+    "name": "Sacred Orb",
+    "id": 110,
+    "isRequired": true
+  },
+  {
+    "name": "Sacred Orb",
+    "id": 111,
+    "isRequired": true
+  },
+  {
+    "name": "Sacred Orb",
+    "id": 112,
+    "isRequired": true
+  },
+  {
+    "name": "Sacred Orb",
+    "id": 113,
+    "isRequired": true
+  },
+  {
+    "name": "Map",
+    "id": 114,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 115,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 116,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 117,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 118,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 119,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 120,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 121,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 122,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 123,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 124,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 125,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 126,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 127,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 128,
+    "isRequired": false
+  },
+  {
+    "name": "Map",
+    "id": 129,
+    "isRequired": false
+  },
+  {
+    "name": "Ankh Jewel",
+    "id": 134,
+    "isRequired": true
+  },
+  {
+    "name": "Ankh Jewel",
+    "id": 135,
+    "isRequired": true
+  },
+  {
+    "name": "Ankh Jewel",
+    "id": 136,
+    "isRequired": true
+  },
+  {
+    "name": "Ankh Jewel",
+    "id": 137,
+    "isRequired": true
+  },
+  {
+    "name": "Ankh Jewel",
+    "id": 138,
+    "isRequired": true
+  },
+  {
+    "name": "Ankh Jewel",
+    "id": 139,
+    "isRequired": true
+  },
+  {
+    "name": "Ankh Jewel",
+    "id": 140,
+    "isRequired": true
+  },
+  {
+    "name": "Ankh Jewel",
+    "id": 141,
+    "isRequired": true
+  },
+  {
+    "name": "Ankh Jewel",
+    "id": 142,
+    "isRequired": true
+  },
+  {
+    "name": "Crystal Skull",
+    "id": 143,
+    "isRequired": true
+  },
+  {
+    "name": "Crystal Skull",
+    "id": 144,
+    "isRequired": true
+  },
+  {
+    "name": "Crystal Skull",
+    "id": 145,
+    "isRequired": true
+  },
+  {
+    "name": "Crystal Skull",
+    "id": 146,
+    "isRequired": true
+  },
+  {
+    "name": "Crystal Skull",
+    "id": 147,
+    "isRequired": true
+  },
+  {
+    "name": "Crystal Skull",
+    "id": 148,
+    "isRequired": true
+  },
+  {
+    "name": "Crystal Skull",
+    "id": 149,
+    "isRequired": true
+  },
+  {
+    "name": "Crystal Skull",
+    "id": 150,
+    "isRequired": true
+  },
+  {
+    "name": "Crystal Skull",
+    "id": 151,
+    "isRequired": true
+  },
+  {
+    "name": "Crystal Skull",
+    "id": 152,
+    "isRequired": true
+  },
+  {
+    "name": "Crystal Skull",
+    "id": 153,
+    "isRequired": true
+  },
+  {
+    "name": "Crystal Skull",
+    "id": 154,
+    "isRequired": true
+  }
+]
