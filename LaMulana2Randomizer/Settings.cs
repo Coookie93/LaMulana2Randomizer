@@ -54,6 +54,12 @@ namespace LM2Randomizer
             set=>Set(ref _hardBosses, value); 
         }
 
+        private bool _autScanTablets;
+        public bool AutScanTablets {
+            get => _autScanTablets;
+            set => Set(ref _autScanTablets, value);
+        }
+
         private MantraPlacement _mantraPlacement;
         public MantraPlacement MantraPlacement { 
             get=>_mantraPlacement; 
@@ -83,6 +89,7 @@ namespace LM2Randomizer
             RandomCodices = true;
             FDCForBacksides = false;
             HardBosses = false;
+            AutScanTablets = false;
             MantraPlacement = MantraPlacement.Original;
             ShopPlacement = ShopPlacement.Original;
         }
