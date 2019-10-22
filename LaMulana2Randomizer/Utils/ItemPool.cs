@@ -8,12 +8,12 @@ namespace LM2Randomizer
     {
         public static Item Get(ItemID id, List<Item> itemPool)
         {
-            return itemPool.First(i => i.id == id);
+            return itemPool.First(i => i.Id == id);
         }
 
         public static Item GetAndRemove(ItemID id, List<Item> itemPool)
         {
-            Item item = itemPool.First(i => i.id == id);
+            Item item = itemPool.First(i => i.Id == id);
             itemPool.Remove(item);
             return item;
         }
