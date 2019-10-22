@@ -259,6 +259,7 @@
         "name": "Ratatoskr 1",
         "locationType": "Miniboss",
         "ruleString": "OrbCount(1)",
+        "hardString": "True",
         "item": {
           "name": "Ratatoskr 1",
           "isRequired": true
@@ -268,6 +269,7 @@
         "name": "Nidhogg",
         "locationType": "Miniboss",
         "ruleString": "(CanUse(Flare) or CanUse(Shuriken) or CanUse(Claydoll Suit)) and OrbCount(2)",
+        "hardString": "CanUse(Flare) or CanUse(Shuriken) or CanUse(Claydoll Suit)",
         "item": {
           "name": "Nidhogg",
           "isRequired": true
@@ -277,6 +279,7 @@
         "name": "Fafnir",
         "locationType": "Guardian",
         "ruleString": "AnkhCount(4) and OrbCount(1)",
+        "hardString": "AnkhCount(4)",
         "item": {
           "name": "Fafnir",
           "isRequired": true
@@ -343,6 +346,7 @@
         "name": "Hugin and Munin",
         "locationType": "Miniboss",
         "ruleString": "(CanWarp or Has(Origin Sigil)) and OrbCount(1)",
+        "hardString": "CanWarp or Has(Origin Sigil)",
         "item": {
           "name": "Hugin and Munin",
           "isRequired": true
@@ -445,6 +449,7 @@
         "name": "Kaliya",
         "locationType": "Miniboss",
         "ruleString": "CanUse(Rolling Shuriken) and OrbCount(2)",
+        "hardString": "CanUse(Rolling Shuriken)",
         "item": {
           "name": "Kaliya",
           "isRequired": true
@@ -484,6 +489,7 @@
         "name": "Ixtab",
         "locationType": "Miniboss",
         "ruleString": "OrbCount(1) and (CanUse(Shuriken) or CanUse(Flare) or CanUse(Earth Spear) or CanUse(Chakram))",
+        "hardString": "True",
         "item": {
           "name": "Ixtab",
           "isRequired": true
@@ -493,6 +499,7 @@
         "name": "Kujata",
         "locationType": "Guardian",
         "ruleString": "AnkhCount(4) and Has(Freys Ship) and (IsDead(Ixtab) or Has(Feather)) and OrbCount(3) and HasWeaponUpgrade",
+        "hardString": "AnkhCount(4) and Has(Freys Ship) and (IsDead(Ixtab) or Has(Feather))",
         "item": {
           "name": "Kujata",
           "isRequired": true
@@ -568,6 +575,7 @@
         "name": "Vedfolnir",
         "locationType": "Miniboss",
         "ruleString": " OrbCount(2)",
+        "hardString": "True",
         "item": {
           "name": "Vedfolnir",
           "isRequired": true
@@ -592,6 +600,7 @@
         "name": "Surtr",
         "locationType": "Guardian",
         "ruleString": "AnkhCount(4) and Has(Light Scythe) and HasWeaponUpgrade and ((Has(Ice Cloak) and OrbCount(5)) or OrbCount(7))",
+        "hardString": "AnkhCount(4) and Has(Light Scythe) and (Has(Ice Cloak) or OrbCount(2))",
         "item": {
           "name": "Surtr",
           "isRequired": true
@@ -631,6 +640,7 @@
         "name": "Ratatoskr 3",
         "locationType": "Miniboss",
         "ruleString": "IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2) and OrbCount(4) and HasWeaponUpgrade",
+        "hardString": "IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2)",
         "item": {
           "name": "Ratatoskr 3",
           "isRequired": true
@@ -663,6 +673,7 @@
         "name": "Vidofnir",
         "locationType": "Miniboss",
         "ruleString": "Has(Flame Torc) and Has(Ice Cloak) and OrbCount(7) and HasWeaponUpgrade",
+        "hardString": "Has(Flame Torc) and Has(Ice Cloak) and OrbCount(2)",
         "item": {
           "name": "Vidofnir",
           "isRequired": true
@@ -719,6 +730,7 @@
         "name": "Vucub-Caquiz",
         "locationType": "Miniboss",
         "ruleString": "Has(Origin Sigil)",
+        "hardString": "Has(Origin Sigil)",
         "item": {
           "name": "Vucub-Caquiz",
           "isRequired": true
@@ -728,6 +740,7 @@
         "name": "Jalandhara",
         "locationType": "Miniboss",
         "ruleString": "Has(Life Sigil) and Has(Feather) and OrbCount(4) and HasWeaponUpgrade",
+        "hardString": "Has(Life Sigil) and Has(Feather)",
         "item": {
           "name": "Jalandhara",
           "isRequired": true
@@ -737,6 +750,7 @@
         "name": "Vritra",
         "locationType": "Guardian",
         "ruleString": "AnkhCount(6) and IsDead(Vucub-Caquiz) and OrbCount(3) and (CanUse(Shuriken) or CanUse(Earth Spear) or CanUse(Chakram))",
+        "hardString": "AnkhCount(6) and IsDead(Vucub-Caquiz)",
         "item": {
           "name": "Vritra",
           "isRequired": true
@@ -848,6 +862,7 @@
         "name": "Cetus",
         "locationType": "Miniboss",
         "ruleString": "CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Rolling Shuriken) or CanUse(Caltrops) or CanUse(Claydoll Suit)",
+        "hardString": "CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Rolling Shuriken) or CanUse(Caltrops) or CanUse(Claydoll Suit)",
         "item": {
           "name": "Cetus",
           "isRequired": true
@@ -967,6 +982,7 @@
         "name": "Ratatoskr 2",
         "locationType": "Miniboss",
         "ruleString": "OrbCount(2)",
+        "hardString": "True",
         "item": {
           "name": "Ratatoskr 2",
           "isRequired": true
@@ -976,6 +992,7 @@
         "name": "Svipdagr",
         "locationType": "Miniboss",
         "ruleString": "OrbCount(2)",
+        "hardString": "True",
         "item": {
           "name": "Svipdagr",
           "isRequired": true
@@ -985,6 +1002,7 @@
         "name": "Jormangund",
         "locationType": "Guardian",
         "ruleString": "AnkhCount(4) and IsDead(Cetus) and Has(Dinosaur Figure) and Has(Pochette Key) and OrbCount(6) and HasWeaponUpgrade and (CanUse(Shuriken) or CanUse(Earth Spear) or CanUse(Flare))",
+        "hardString": "AnkhCount(4) and IsDead(Cetus) and Has(Dinosaur Figure) and Has(Pochette Key) and OrbCount(1)",
         "item": {
           "name": "Jormangund",
           "isRequired": true
@@ -1138,6 +1156,7 @@
         "name": "Badhbh Cath",
         "locationType": "Miniboss",
         "ruleString": "OrbCount(2)",
+        "hardString": "True",
         "item": {
           "name": "Badhbh Cath",
           "isRequired": true
@@ -1188,6 +1207,7 @@
         "name": "Balor",
         "locationType": "Miniboss",
         "ruleString": "HasWeaponUpgrade and OrbCount(5)",
+        "hardString": "True",
         "item": {
           "name": "Balor",
           "isRequired": true
@@ -1209,6 +1229,7 @@
         "name": "Tezcatlipoca",
         "locationType": "Miniboss",
         "ruleString": "Has(Gloves) and OrbCount(3)",
+        "hardString": "Has(Gloves)",
         "item": {
           "name": "Tezcatlipoca",
           "isRequired": true
@@ -1283,6 +1304,7 @@
         "name": "Fenrir",
         "locationType": "Miniboss",
         "ruleString": "PuzzleFinished(Bergelmir) and Has(Flame Torc) and HasWeaponUpgrade and (Has(Silver Shield) or Has(Angel Shield)) and OrbCount(7)",
+        "hardString": "PuzzleFinished(Bergelmir) and Has(Flame Torc) and (Has(Silver Shield) or Has(Angel Shield)) and OrbCount(2)",
         "item": {
           "name": "Fenrir",
           "isRequired": true
@@ -1371,6 +1393,7 @@
         "name": "Unicorn",
         "locationType": "Miniboss",
         "ruleString": "OrbCount(3)",
+        "hardString": "True",
         "item": {
           "name": "Unicorn",
           "isRequired": true
@@ -1459,6 +1482,7 @@
         "name": "Sekhmet",
         "locationType": "Miniboss",
         "ruleString": "PuzzleFinished(Footstep Puzzle) and OrbCount(3)",
+        "hardString": "PuzzleFinished(Footstep Puzzle)",
         "item": {
           "name": "Sekhmet",
           "isRequired": true
@@ -1468,6 +1492,7 @@
         "name": "Aten-Ra",
         "locationType": "Guardian",
         "ruleString": "AnkhCount(6) and IsDead(Sekhmet) and PuzzleFinished(White Pedestals) and OrbCount(5) and HasWeaponUpgrade",
+        "hardString": "AnkhCount(6) and IsDead(Sekhmet) and PuzzleFinished(White Pedestals)",
         "item": {
           "name": "Aten-Ra",
           "isRequired": true
@@ -1516,6 +1541,7 @@
         "name": "Angra Mainyu",
         "locationType": "Miniboss",
         "ruleString": "Has(Mjolnir) and OrbCount(3) and (Has(Feather) or CanWarp or CanReach(Dark Lords Mausoleum Main))",
+        "hardString": "Has(Mjolnir) and (Has(Feather) or CanWarp or CanReach(Dark Lords Mausoleum Main))",
         "item": {
           "name": "Angra Mainyu",
           "isRequired": true
@@ -1525,6 +1551,7 @@
         "name": "Annit",
         "locationType": "Miniboss",
         "ruleString": "Has(Feather) and Has(Pyramid Crystal) and (Has(Silver Shield) or Has(Angel Shield)) and OrbCount(4)",
+        "hardString": "Has(Feather) and Has(Pyramid Crystal) and (Has(Silver Shield) or Has(Angel Shield))",
         "item": {
           "name": "Annit",
           "isRequired": true
@@ -1634,6 +1661,7 @@
         "name": "Raijin and Fujin",
         "locationType": "Miniboss",
         "ruleString": "OrbCount(3) and HasWeaponUpgrade",
+        "hardString": "True",
         "item": {
           "name": "Raijin and Fujin",
           "isRequired": true
@@ -1643,6 +1671,7 @@
         "name": "Daji",
         "locationType": "Miniboss",
         "ruleString": "(Has(Katana) or CanUse(Earth Spear) or CanUse(Bomb)) and HasWeaponUpgrade and OrbCount(3)",
+        "hardString": "Has(Katana) or CanUse(Earth Spear) or CanUse(Bomb)",
         "item": {
           "name": "Daji",
           "isRequired": true
@@ -1673,6 +1702,7 @@
         "name": "Belial",
         "locationType": "Miniboss",
         "ruleString": "Has(Cog of Antiquity) and Has(Egg of Creation) and OrbCount(6) and HasWeaponUpgrade",
+        "hardString": "Has(Cog of Antiquity) and Has(Egg of Creation) and OrbCount(1)",
         "item": {
           "name": "Belial",
           "isRequired": true
@@ -1708,6 +1738,7 @@
         "name": "Ki-sikil-lil-la-ke",
         "locationType": "Miniboss",
         "ruleString": "OrbCount(4)",
+        "hardString": "True",
         "item": {
           "name": "Ki-sikil-lil-la-ke",
           "isRequired": true
@@ -1779,6 +1810,7 @@
         "name": "Anzu",
         "locationType": "Miniboss",
         "ruleString": "Has(Lamp of Time) and Has(Claydoll Suit) and OrbCount(5) and (CanUse(Flare) or CanUse(Caltrops) or CanUse(Shuriken) or CanUse(Earth Spear) or CanUse(Claydoll Suit))",
+        "hardString": "Has(Lamp of Time) and Has(Claydoll Suit)",
         "item": {
           "name": "Anzu",
           "isRequired": true
@@ -1788,6 +1820,7 @@
         "name": "Anu",
         "locationType": "Guardian",
         "ruleString": "AnkhCount(9) and Has(Gloves) and IsDead(Ki-sikil-lil-la-ke) and OrbCount(5) and HasWeaponUpgrade",
+        "hardString": "AnkhCount(9) and Has(Gloves) and IsDead(Ki-sikil-lil-la-ke)",
         "item": {
           "name": "Anu",
           "isRequired": true
@@ -1898,6 +1931,7 @@
         "name": "Arachne",
         "locationType": "Miniboss",
         "ruleString": "CanWarp",
+        "hardString": "CanWarp",
         "item": {
           "name": "Arachne",
           "isRequired": true
@@ -1907,6 +1941,7 @@
         "name": "Scylla",
         "locationType": "Miniboss",
         "ruleString": "CanWarp",
+        "hardString": "CanWarp",
         "item": {
           "name": "Scylla",
           "isRequired": true
@@ -1916,6 +1951,7 @@
         "name": "Glasya-Labolas",
         "locationType": "Miniboss",
         "ruleString": "CanWarp",
+        "hardString": "CanWarp",
         "item": {
           "name": "Glasya-Labolas",
           "isRequired": true
@@ -1925,6 +1961,7 @@
         "name": "Griffin",
         "locationType": "Miniboss",
         "ruleString": "(Has(Gale Fibula) or Has(Lamp of Time)) and Has(Gloves) and Has(Life Sigil) and IsDead(Glasya-Labolas)",
+        "hardString": "(Has(Gale Fibula) or Has(Lamp of Time)) and Has(Gloves) and Has(Life Sigil) and IsDead(Glasya-Labolas)",
         "item": {
           "name": "Griffin",
           "isRequired": true
@@ -2031,6 +2068,7 @@
         "name": "Delphyne",
         "locationType": "Miniboss",
         "ruleString": "OrbCount(7) and HasWeaponUpgrade",
+        "hardString": "OrbCount(2)",
         "item": {
           "name": "Delphyne",
           "isRequired": true
@@ -2040,6 +2078,7 @@
         "name": "Hydra",
         "locationType": "Miniboss",
         "ruleString": "IsDead(Delphyne)",
+        "hardString": "IsDead(Delphyne)",
         "item": {
           "name": "Hydra",
           "isRequired": true
@@ -2049,6 +2088,7 @@
         "name": "Nemean Lion",
         "locationType": "Miniboss",
         "ruleString": "IsDead(Hydra)",
+        "hardString": "IsDead(Hydra)",
         "item": {
           "name": "Nemean Lion",
           "isRequired": true
@@ -2058,6 +2098,7 @@
         "name": "Sphynx",
         "locationType": "Miniboss",
         "ruleString": "OrbCount(7) and HasWeaponUpgrade",
+        "hardString": "OrbCount(2)",
         "item": {
           "name": "Sphynx",
           "isRequired": true
@@ -2067,6 +2108,7 @@
         "name": "Ladon",
         "locationType": "Miniboss",
         "ruleString": "IsDead(Sphynx)",
+        "hardString": "IsDead(Sphynx)",
         "item": {
           "name": "Ladon",
           "isRequired": true
@@ -2076,6 +2118,7 @@
         "name": "Phaia",
         "locationType": "Miniboss",
         "ruleString": "IsDead(Ladon)",
+        "hardString": "IsDead(Ladon)",
         "item": {
           "name": "Phaia",
           "isRequired": true
@@ -2085,6 +2128,7 @@
         "name": "Karkinos",
         "locationType": "Miniboss",
         "ruleString": "IsDead(Phaia) and (CanUse(Earth Spear) or CanUse(Caltrops) or CanUse(Bomb))",
+        "hardString": "IsDead(Phaia)",
         "item": {
           "name": "Karkinos",
           "isRequired": true
@@ -2094,6 +2138,7 @@
         "name": "Chimera",
         "locationType": "Miniboss",
         "ruleString": "IsDead(Sphynx) and (Has(Silver Shield) or Has(Angel Shield))",
+        "hardString": "IsDead(Sphynx) and (Has(Silver Shield) or Has(Angel Shield))",
         "item": {
           "name": "Chimera",
           "isRequired": true
@@ -2103,6 +2148,7 @@
         "name": "Colchian Dragon",
         "locationType": "Miniboss",
         "ruleString": "IsDead(Chimera)",
+        "hardString": "IsDead(Chimera)",
         "item": {
           "name": "Colchian Dragon",
           "isRequired": true
@@ -2112,6 +2158,7 @@
         "name": "Cerberus",
         "locationType": "Miniboss",
         "ruleString": "IsDead(Colchian Dragon)",
+        "hardString": "IsDead(Colchian Dragon)",
         "item": {
           "name": "Cerberus",
           "isRequired": true
@@ -2121,6 +2168,7 @@
         "name": "Orthrus",
         "locationType": "Miniboss",
         "ruleString": "IsDead(Cerberus)",
+        "hardString": "IsDead(Cerberus)",
         "item": {
           "name": "Orthrus",
           "isRequired": true
@@ -2129,7 +2177,8 @@
       {
         "name": "Echidna",
         "locationType": "Guardian",
-        "ruleString": "AnkhCount(9) and IsDead(Orthrus) and IsDead(Karkinos) and IsDead(Nemean Lion) and OrbCount(9) and Has(Flail Whip)",
+        "ruleString": "AnkhCount(9) and IsDead(Orthrus) and IsDead(Karkinos) and IsDead(Nemean Lion) and Has(Feather) and OrbCount(9) and Has(Flail Whip)",
+        "hardString": "AnkhCount(9) and IsDead(Orthrus) and IsDead(Karkinos) and IsDead(Nemean Lion) and Has(Feather) and OrbCount(4) and HasWeaponUpgrade",
         "item": {
           "name": "Echidna",
           "isRequired": true
@@ -2155,7 +2204,7 @@
     "exits": [
       {
         "connectingAreaName": "Eternal Prison Doom Main",
-        "ruleString": "True",
+        "ruleString": "True"
       }
     ]
   },
@@ -2186,6 +2235,7 @@
         "name": "Hraesvelgr",
         "locationType": "Miniboss",
         "ruleString": "IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2) and IsDead(Ratatoskr 3) and IsDead(Ratatoskr 4) and IsDead(Nidhogg) and CanChant(Moon) and OrbCount(7) and HasWeaponUpgrade",
+        "hardString": "IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2) and IsDead(Ratatoskr 3) and IsDead(Ratatoskr 4) and IsDead(Nidhogg) and CanChant(Moon) and OrbCount(2)",
         "item": {
           "name": "Hraesvelgr",
           "isRequired": true
@@ -2214,6 +2264,7 @@
         "name": "Hel",
         "locationType": "Guardian",
         "ruleString": "AnkhCount(9) and OrbCount(9) and Has(Flail Whip)",
+        "hardString": "AnkhCount(9) and OrbCount(4) and HasWeaponUpgrade",
         "item": {
           "name": "Hel",
           "isRequired": true
@@ -2309,6 +2360,7 @@
         "name": "Ratatoskr 4",
         "locationType": "Miniboss",
         "ruleString": "PuzzleFinished(Statue Lady) and Has(Feather) and IsDead(Ratatoskr 3) and OrbCount(7) and HasWeaponUpgrade",
+        "hardString": "PuzzleFinished(Statue Lady) and Has(Feather) and IsDead(Ratatoskr 3) and OrbCount(2)",
         "item": {
           "name": "Ratatoskr 4",
           "isRequired": true
@@ -2333,6 +2385,7 @@
         "name": "9th Child",
         "locationType": "Guardian",
         "ruleString": "True",
+        "hardString": "True",
         "item": {
           "name": "Winner",
           "isRequired": true
