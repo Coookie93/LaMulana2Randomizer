@@ -113,11 +113,10 @@ namespace LM2Randomizer
                 //this means that player will not have to rely on drops or weights from pots
                 GetLocation("Nebur Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Weights, shopOnlyItems));
 
-                //ammo can't be placed here since there is an second item that takes this slot after 
-                //the first is purchased 
-                GetLocation("Hiner Shop 3").IsLocked = true;
+                //these locations cant be included properly atm since the reason the shop switches is unknown
+                GetLocation("Hiner Shop 3").PlaceItem(ItemPool.GetAndRemove(ItemID.Map1, items));
+                GetLocation("Hiner Shop 4").PlaceItem(ItemPool.GetAndRemove(ItemID.Map2, items));
 
-                //shuffle shop items
                 shopOnlyItems = Shuffle.FisherYates(shopOnlyItems, random);
                 //place the weights and ammo in shops first since they can only be in shops
                 FillShops(shopOnlyItems, items);
@@ -133,15 +132,12 @@ namespace LM2Randomizer
                 //split the remaining item it required/non required
                 List<Item> requiredItems = ItemPool.GetRequiredItems(items);
                 List<Item> nonRequiredItems = ItemPool.GetNonRequiredItems(items);
-                //Shuffle item pools
+
                 requiredItems = Shuffle.FisherYates(requiredItems, random);
                 nonRequiredItems = Shuffle.FisherYates(nonRequiredItems, random);
 
-                //items can be placed here now
-                GetLocation("Hiner Shop 3").IsLocked = false;
-
-                //place mantras if they are not fully randomised
                 mantras = Shuffle.FisherYates(mantras, random);
+                //place mantras if they are not fully randomised
                 PlaceMantras(mantras, requiredItems);
 
                 //place required items
@@ -287,7 +283,7 @@ namespace LM2Randomizer
                 GetLocation("Hiner Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Weights, shopItems));
                 GetLocation("Hiner Shop 2").PlaceItem(ItemPool.GetAndRemove(ItemID.Codices, items));
                 GetLocation("Hiner Shop 3").PlaceItem(ItemPool.GetAndRemove(ItemID.AnkhJewel1, items));
-                GetLocation("Hiner Shop 4").PlaceItem(ItemPool.GetAndRemove(ItemID.AnkhJewel2, items));
+                GetLocation("Hiner Shop 4").PlaceItem(ItemPool.GetAndRemove(ItemID.AnkhJewel8, items));
 
                 GetLocation("Korobok Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Weights, shopItems));
                 GetLocation("Korobok Shop 2").PlaceItem(ItemPool.GetAndRemove(ItemID.ShurikenAmmo, shopItems));
