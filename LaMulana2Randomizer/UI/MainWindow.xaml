@@ -22,7 +22,7 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
-    <Grid Width="350" Height="420">
+    <Grid Width="350" Height="500">
         <Grid.Resources>
             <Style TargetType="GroupBox">
                 <Setter Property="FontSize" Value="14"/>
@@ -44,6 +44,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <GroupBox Header="Items" Grid.Row="0">
                         <StackPanel>
@@ -59,6 +60,17 @@
                                 <TextBlock Text="Codices" FontSize="16"/>
                                 <CheckBox Name="CodicesCheck" Content="Randomised" IsChecked="{Binding Settings.RandomCodices}" Style="{StaticResource OriginalShopCheck}"/>
                             </StackPanel>
+                            <StackPanel.ToolTip>
+                                <StackPanel>
+                                    <TextBlock>
+                                        Randomised will fully randomise the item otherwise
+                                        <LineBreak/>
+                                        the item will be placed somewhere available from the
+                                        <LineBreak/>
+                                        start.
+                                    </TextBlock>
+                                </StackPanel>
+                            </StackPanel.ToolTip>
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Header="Mantras" Grid.Row="1">
@@ -66,18 +78,38 @@
                             <RadioButton x:Name="MantraRandom" Content="Randomised" IsChecked="{Binding Settings.MantraPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:MantraPlacement.Random}}"/>
                             <RadioButton x:Name="MantraMural" Content="Only at murals" IsChecked="{Binding Settings.MantraPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:MantraPlacement.OnlyMurals}}"/>
                             <RadioButton Name="MantraOriginal" Content="Original Placement" IsChecked="{Binding Settings.MantraPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:MantraPlacement.Original}}"/>
+                            <StackPanel.ToolTip>
+                                <StackPanel>
+                                    <TextBlock Text="Randomised"  FontWeight="Bold"/>
+                                    <TextBlock Text="Fully randomises mantra placement"/>
+                                    <TextBlock Text="Only Murals"  FontWeight="Bold"/>
+                                    <TextBlock Text="Mantras only placed at locations that need snapshots"/>
+                                    <TextBlock Text="Original"  FontWeight="Bold"/>
+                                    <TextBlock Text="Mantras are placed at original locations"/>
+                                </StackPanel>
+                            </StackPanel.ToolTip>
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Header="Shops" Grid.Row="2">
+                        <StackPanel Margin="5">
+                            <RadioButton x:Name="ShopRandom" Content="Randomised" IsChecked="{Binding Settings.ShopPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ShopPlacement.Random}}"/>
+                            <RadioButton x:Name="ShopAtleastOne" Content="At least one item" IsChecked="{Binding Settings.ShopPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ShopPlacement.AtLeastOne}}"/>
+                            <RadioButton Name="ShopOriginal" Content="Original Items" IsChecked="{Binding Settings.ShopPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ShopPlacement.Original}}"/>
+                            <StackPanel.ToolTip>
+                                <StackPanel>
+                                    <TextBlock Text="Randomised"  FontWeight="Bold"/>
+                                    <TextBlock Text="Fully randomises shop contents"/>
+                                    <TextBlock Text="At least one"  FontWeight="Bold"/>
+                                    <TextBlock Text="Ensure every shops has atleast one item"/>
+                                    <TextBlock Text="Original"  FontWeight="Bold"/>
+                                    <TextBlock Text="Shops have their orginal contents"/>
+                                </StackPanel>
+                            </StackPanel.ToolTip>
                         </StackPanel>
                     </GroupBox>
                 </Grid>
             </TabItem>
-            <TabItem Header="Shops">
-                <StackPanel Margin="5">
-                    <RadioButton x:Name="ShopRandom" Content="Randomised" IsChecked="{Binding Settings.ShopPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ShopPlacement.Random}}"/>
-                    <RadioButton x:Name="ShopOnlyOne" Content="At least one item" IsChecked="{Binding Settings.ShopPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ShopPlacement.AtLeastOne}}"/>
-                    <RadioButton Name="ShopOriginal" Content="Original Items" IsChecked="{Binding Settings.ShopPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ShopPlacement.Original}}"/>
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="Logic" Height="26" VerticalAlignment="Bottom">
+            <TabItem Header="Logic" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="-2,0" Width="49">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -90,17 +122,45 @@
                                 <LineBreak/>
                                 <Run Text="backsides."/>
                             </TextBlock>
+                            <CheckBox.ToolTip>
+                                <TextBlock>
+                                    Makes Future Development company required
+                                    <LineBreak/>
+                                    to logically enter Valhalla, Dark Lord's
+                                    <LineBreak/>
+                                    Mauseleum, Ancient Chaos, Hall of Malice
+                                    <LineBreak/>
+                                    and Eternal Prison.
+                                </TextBlock>
+                            </CheckBox.ToolTip>
                         </CheckBox>
                     </GroupBox>
                     <GroupBox Header="Bosses" Grid.Row="1">
                         <StackPanel Margin="2">
-                            <CheckBox Name="DifficultyCheck" Content="Hard Guardian/Miniboss requirements" IsChecked="{Binding Settings.HardBosses}"/>
+                            <CheckBox Name="DifficultyCheck" Content="Hard Guardian/Miniboss requirements" IsChecked="{Binding Settings.HardBosses}">
+                                <CheckBox.ToolTip>
+                                    <TextBlock>
+                                        Greatly reduces the requirements to fight 
+                                        <LineBreak/>
+                                        Guardians/Minibosses, warning this can be 
+                                        <LineBreak/>
+                                        really hard.
+                                    </TextBlock>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
                         </StackPanel>
                     </GroupBox>
                 </Grid>
             </TabItem>
             <TabItem Header="Other">
-                
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <GroupBox Header="Qaulity of Life" Grid.Row="0">
+                        <CheckBox Name="AutoScanCheck" IsChecked="{Binding Settings.AutScanTablets}" Content="Autoscan Holy Tablets" Margin="2"/>
+                    </GroupBox>
+                </Grid>
             </TabItem>
         </TabControl>
         <GroupBox Header="Seed" VerticalAlignment="Bottom" Height="80">
