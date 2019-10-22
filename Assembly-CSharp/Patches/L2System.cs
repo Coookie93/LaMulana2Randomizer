@@ -1,7 +1,6 @@
 ﻿using MonoMod;
 using UnityEngine;
 using L2Word;
-using LM2RandomiserShared;
 
 #pragma warning disable 0649, 0414, 0108
 namespace LM2RandomiserMod

@@ -42,7 +42,6 @@
     <Compile Include="ItemID.cs" />
     <Compile Include="LocationID.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RandomiserFile.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -6,6 +6,7 @@ namespace LM2RandomiserMod
 {
     public class DevUI : MonoBehaviour
     {
+        private L2Rando rando;
         private L2System sys;
 
         bool showUI = true;
@@ -26,8 +27,9 @@ namespace LM2RandomiserMod
         private string getFlagString;
         private string getValueString;
 
-        public void Initialise(L2System l2System)
+        public void Initialise(L2Rando l2rando, L2System l2System)
         {
+            rando = l2rando;
             sys = l2System;
             Cursor.visible = true;
         }
@@ -77,7 +79,10 @@ namespace LM2RandomiserMod
             {
                 showUI = !showUI;
             }
-
+            if (Input.GetKeyDown(KeyCode.F9))
+            {
+                StartCoroutine(rando.Setup());
+            }
             UpdateBGSys();
         }
 

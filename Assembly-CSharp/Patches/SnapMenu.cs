@@ -3,7 +3,7 @@ using UnityEngine;
 using L2Base;
 using L2Menu;
 using L2Word;
-using LM2RandomiserShared;
+using LM2RandomizerShared;
 
 #pragma warning disable 0626, 0649, 0414, 0108
 namespace LM2RandomiserMod.Patches

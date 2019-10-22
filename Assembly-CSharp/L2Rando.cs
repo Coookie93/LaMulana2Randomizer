@@ -2,21 +2,19 @@
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using L2Word;
 using L2Flag;
 using L2Base;
-using LM2RandomiserShared;
+using LM2RandomizerShared;
 
 namespace LM2RandomiserMod
 {
     public class L2Rando : MonoBehaviour
     {
-        //number of items being randomised
-        private const int ITEM_COUNT = 186;
-        private RandomiserFile seed;
+        private bool autoScanTablets;
+        private Dictionary<LocationID,ItemID> locationToItemMap;
 
         private bool showText = false;
         private string error;
@@ -116,7 +114,7 @@ namespace LM2RandomiserMod
         
         public ItemID GetItemIDForLocation(LocationID locationID)
         {
-            seed.ItemLocationMap.TryGetValue((int)locationID, out ItemID id);
+            locationToItemMap.TryGetValue(locationID, out ItemID id);
             return id;
         }
 
@@ -128,23 +126,22 @@ namespace LM2RandomiserMod
             }
             else if (snapTarget.itemName == ItemDatabaseSystem.ItemNames.Mantra)
             {
-                if (snapTarget.cellName.Equals(""))
+                switch (snapTarget.cellName)
                 {
-                    return (LocationID)snapTarget.itemName;
-                }
-                else
-                {
-                    try
-                    {
-                        return (LocationID)Enum.Parse(typeof(LocationID), snapTarget.cellName, true);
-                    }
-                    catch
-                    {
-                        return LocationID.None;
-                    }
+                    case "": return LocationID.MantraMural;
+                    case "mantra1": return LocationID.HeavenMantraMural;
+                    case "mantra2": return LocationID.EarthMantraMural;
+                    case "mantra3": return LocationID.SunMantraMural;
+                    case "mantra4": return LocationID.MoonMantraMural;
+                    case "mantra5": return LocationID.SeaMantraMural;
+                    case "mantra6": return LocationID.FireMantraMural;
+                    case "mantra7": return LocationID.WindMantraMural;
+                    case "mantra8": return LocationID.MotherMantraMural;
+                    case "mantra9": return LocationID.ChildMantraMural;
+                    case "mantra10": return LocationID.NightMantraMural;
+                    default: return LocationID.None;
                 }
             }
-
             return LocationID.None;
         }
 
@@ -195,6 +192,10 @@ namespace LM2RandomiserMod
             return getFlags;
         }
 
+        public bool AutoScanTablets()
+        {
+            return autoScanTablets;
+        }
 
         public void Initialise(L2ShopDataBase shopDataBase, L2TalkDataBase talkDataBase, patched_L2System system)
         {
@@ -203,41 +204,48 @@ namespace LM2RandomiserMod
             sys = system;
 #if DEV
             DevUI devUI = gameObject.AddComponent<DevUI>() as DevUI;
-            devUI.Initialise(sys);
+            devUI.Initialise(this, sys);
 #endif
             StartCoroutine(Setup());
         }
 
-        private RandomiserFile LoadSeedFile()
+        bool LoadSeed()
         {
-            RandomiserFile seed = null;
-            BinaryFormatter formatter;
+            locationToItemMap = new Dictionary<LocationID, ItemID>();
             try
             {
-                using (FileStream fs = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "LM2Randomiser\\Seed\\seed.lm2r"), FileMode.Open))
+                using (BinaryReader br = new BinaryReader(File.Open(Path.Combine(Directory.GetCurrentDirectory(),
+                    "LaMulana2Randomizer\\Seed\\seed.lm2r"), FileMode.Open)))
                 {
-                    formatter = new BinaryFormatter();
-                    seed = (RandomiserFile)formatter.Deserialize(fs);
+                    autoScanTablets = br.ReadBoolean();
+                    int itemCount = br.ReadInt32();
+                    for (int i = 0; i < itemCount; i++)
+                    {
+                        locationToItemMap.Add((LocationID)br.ReadInt32(), (ItemID)br.ReadInt32());
+                    }
+
+                    if(itemCount != locationToItemMap.Count)
+                    {
+                        return false;
+                    }
                 }
             }
             catch (Exception ex)
             {
                 error = ex.Message;
+                return false;
             }
 
-            return seed;
+            return true;
         }
 
-        private IEnumerator Setup()
+        public IEnumerator Setup()
         {
-            //Load the locationToItemMap from seed.lm2
-            seed = LoadSeedFile();
-
             //Need to wait to ensure that the game has setup all its systems
             yield return new WaitForSeconds(1f);
 
             //Check to seed is seed was successfully loaded
-            if (seed != null)
+            if (LoadSeed())
             {
                 Randomising = true;
                 ChangeShopItems();
@@ -251,7 +259,7 @@ namespace LM2RandomiserMod
         {
             ItemData oldItemData = GetItemDataFromName(box.itemObj.name);
 
-            if (oldItemData != null && seed.ItemLocationMap.TryGetValue((int)(LocationID)oldItemData.getItemName(), out ItemID newItemID))
+            if (oldItemData != null && locationToItemMap.TryGetValue((LocationID)oldItemData.getItemName(), out ItemID newItemID))
             {
                 ItemInfo newItemInfo = ItemDB.GetItemInfo(newItemID);
                 
@@ -337,7 +345,7 @@ namespace LM2RandomiserMod
         {
             ItemData oldItemData = GetItemDataFromName(item.name);
 
-            if (oldItemData != null && seed.ItemLocationMap.TryGetValue((int)(LocationID)oldItemData.getItemName(), out ItemID newItemID))
+            if (oldItemData != null && locationToItemMap.TryGetValue((LocationID)oldItemData.getItemName(), out ItemID newItemID))
             {
                 ItemInfo newItemInfo = ItemDB.GetItemInfo(newItemID);
 
@@ -444,7 +452,7 @@ namespace LM2RandomiserMod
 
         private string CreateSetItemString(LocationID locationID)
         {
-            if (seed.ItemLocationMap.TryGetValue((int)locationID, out ItemID newItemID))
+            if (locationToItemMap.TryGetValue(locationID, out ItemID newItemID))
             {
                 ItemInfo newItemInfo = ItemDB.GetItemInfo(newItemID);
                 return string.Format("[@sitm,{0},{1},{2},{3}]", newItemInfo.shopType, newItemInfo.shopName, newItemInfo.shopPrice, newItemInfo.shopAmount);
@@ -515,13 +523,20 @@ namespace LM2RandomiserMod
             talkDataBase.cellData[3][7][1][0] = ChangeTalkStringAndFlagCheck(LocationID.AlsedanaItem,
                 "[@iff,2,{0},&gt;,{1},giltoriyo,2nd]\n[@exit]\n{2}[@anim,talk,1]\n[@p,1st-5]");
 
-            //Fobo's 1st item
+            //Fobos' 1st item
             talkDataBase.cellData[6][9][1][0] = ChangeTalkString(LocationID.FobosItem,
                 "[@setf,5,16,=,5]\n[@anim,talk,1]\n{0}[@p,3rd-2]");
 
-            //Fobo's 2nd item
+            //Fobo' 2nd item
             talkDataBase.cellData[5][24][1][0] = ChangeTalkString(LocationID.FobosItem2, 
                 "[@exit]\n[@anim,talk,1]\n[@setf,23,15,=,4]\n{0}[@p,lastC]");
+
+            //Fobos' 2nd item check to see if you don't have the item
+            talkDataBase.cellData[5][3][1][0] = ChangeTalkFlagCheck(LocationID.FobosItem2, COMPARISON.Less, "[@iff,5,16,=,0,fobos,1st]\n[@iff,2,{0},&lt;,{1},fobos,gS2]\n[@anifla,mfanim,wait]\n" +
+                "[@iff,23,15,=,1,fobos,getSkull]\n[@iff,5,68,=,1,fobos,skullFull]\n[@iff,5,69,=,1,fobos,mirror]\n[@iff,5,78,=,4,fobos,hint1]\n[@iff,5,79,=,1,fobos,hint2]\n[@iff,5,80,=,1,fobos,hint3]\n" +
+                "[@iff,5,81,=,1,fobos,hint4]\n[@iff,5,82,=,1,fobos,hint5]\n[@iff,5,83,=,1,fobos,hint6]\n[@iff,5,84,=,1,fobos,hint7]\n[@iff,5,85,=,1,fobos,hint8]\n[@iff,5,16,&gt;,12,fobos,8th]\n" +
+                "[@iff,5,16,=,12,fobos,7th]\n[@iff,5,16,=,10,fobos,6th]\n[@iff,5,16,=,9,fobos,5th]\n[@iff,5,16,=,8,fobos,4th]\n[@iff,5,16,=,7,fobos,3rd]\n[@iff,5,16,=,6,fobos,2nd]\n[@iff,5,16,=,5,fobos,2nd]\n" +
+                "[@anifla,mfanim,nochar]\n[@nochar]");
 
             //Freya's item
             talkDataBase.cellData[7][7][1][0] = ChangeTalkString(LocationID.FreyasItem,
@@ -552,7 +567,7 @@ namespace LM2RandomiserMod
 
         private string ChangeTalkString(LocationID locationID, string original)
         {
-            if (seed.ItemLocationMap.TryGetValue((int)locationID, out ItemID newItemID))
+            if (locationToItemMap.TryGetValue(locationID, out ItemID newItemID))
             {
                 ItemInfo newItemInfo = ItemDB.GetItemInfo(newItemID);
                 
@@ -593,7 +608,7 @@ namespace LM2RandomiserMod
         {
             string flagString = string.Empty;
 
-            if (seed.ItemLocationMap.TryGetValue((int)locationID, out ItemID newItemID))
+            if (locationToItemMap.TryGetValue(locationID, out ItemID newItemID))
             {
                 ItemInfo newItemInfo = ItemDB.GetItemInfo(newItemID);
 
@@ -624,7 +639,7 @@ namespace LM2RandomiserMod
 
         private string ChangeTalkFlagCheck(LocationID locationID, COMPARISON comp, string original)
         {
-            if (seed.ItemLocationMap.TryGetValue((int)locationID, out ItemID newItemID))
+            if (locationToItemMap.TryGetValue(locationID, out ItemID newItemID))
             {
                 ItemInfo newItemInfo = ItemDB.GetItemInfo(newItemID);
 
@@ -662,7 +677,7 @@ namespace LM2RandomiserMod
 
         private string ChangeTalkStringAndFlagCheck(LocationID locationID, string original)
         {
-            if (seed.ItemLocationMap.TryGetValue((int)locationID, out ItemID newItemID))
+            if (locationToItemMap.TryGetValue(locationID, out ItemID newItemID))
             {
                 ItemInfo newItemInfo = ItemDB.GetItemInfo(newItemID);
 
@@ -716,6 +731,9 @@ namespace LM2RandomiserMod
             //Changes to Nebur's scripts so that she stays until you take her item or leave the surface
             shopDataBase.cellData[2][4][1][0] = "[@anim,smile,1]\n[@setf,5,27,+,1]";
             talkDataBase.cellData[0][10][1][0] = "[@anim,nejiru,1]\n[@out]";
+
+            //Fobos's 2nd item check if you have a skull
+            talkDataBase.cellData[5][23][1][0] = "[@iff,0,32,&gt;,0,fobos,gS3]\n[@anim,stalk,1]\n[@anifla,mnext,swait]";
 
             //Change Fairy King to set flag to open endless even if you have the pendant
             talkDataBase.cellData[8][10][1][0] = "[@exit]\n[@anim,talk,1]\n[@setf,3,34,=,2]\n[@setf,5,12,=,1]\n[@p,2nd-2]";

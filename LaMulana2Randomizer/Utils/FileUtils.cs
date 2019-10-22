@@ -54,8 +54,8 @@ namespace LM2Randomizer.Utils
             {
                 using (StreamWriter sr = File.CreateText("Seed\\spoilers.txt"))
                 {
-                    //TODO
-                    //sr.WriteLine($"Seed: {randomiser.Settings.Seed}");
+
+                    sr.WriteLine($"Seed: {randomiser.Settings.Seed}");
                     sr.WriteLine();
 
                     foreach (LocationID id in Enum.GetValues(typeof(LocationID)))
@@ -105,25 +105,30 @@ namespace LM2Randomizer.Utils
         }
         public static bool WriteSeedFile(Randomiser randomiser)
         {
-            RandomiserFile randomiserFile = new RandomiserFile();
+            List<Tuple<LocationID, ItemID>> temp = new List<Tuple<LocationID, ItemID>>();
             foreach (LocationID id in Enum.GetValues(typeof(LocationID)))
             {
                 foreach (Location location in randomiser.GetPlacedLocations())
                 {
                     if (id != LocationID.None && id == location.Id)
                     {
-                        randomiserFile.ItemLocationMap.Add((int)location.Id, location.Item.id);
+                        temp.Add(new Tuple<LocationID, ItemID>(location.Id, location.Item.Id));
                     }
                 }
             }
-            Logger.Log($"Total items randomised {randomiserFile.ItemLocationMap.Count}");
 
             try
-            {   using (FileStream fs = new FileStream("Seed\\seed.lm2r", FileMode.Create))
+            {   using (BinaryWriter br = new BinaryWriter(File.Open("Seed\\seed.lm2r", FileMode.Create)))
                 {
-                    BinaryFormatter formatter = new BinaryFormatter();
-                    formatter.Serialize(fs, randomiserFile);
+                    br.Write(randomiser.Settings.AutScanTablets);
+                    br.Write(temp.Count);
+                    foreach(var p in temp)
+                    {
+                        br.Write((int)p.Item1);
+                        br.Write((int)p.Item2);
+                    }
                 }
+                Logger.Log($"Total items randomised {temp.Count}");
             }
             catch (Exception ex)
             {
