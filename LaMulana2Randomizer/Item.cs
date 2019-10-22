@@ -9,13 +9,13 @@ namespace LM2Randomizer
         public bool isRequired;
 
         [JsonIgnore]
-        public ItemID id;
+        public ItemID Id;
         
         [JsonConstructor]
         public Item(string name, ItemID id, bool isRequired = true)
         {
             this.name = name;
-            this.id = id;
+            this.Id = id;
             this.isRequired = isRequired;
         }
     }
