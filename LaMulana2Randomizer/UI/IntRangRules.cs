@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Controls;
 
-namespace LM2Randomizer.UI
+namespace LaMulana2Randomizer.UI
 {
     public class IntRangeRule : ValidationRule
     {

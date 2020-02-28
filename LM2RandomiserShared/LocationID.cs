@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LM2RandomizerShared
+namespace LaMulana2RandomizerShared
 {
     [Serializable]
     public enum LocationID
@@ -161,9 +161,9 @@ namespace LM2RandomizerShared
         VenomShop1,
         VenomShop2,
         VenomShop3,
-        PiebalusaShop1,
-        PiebalusaShop2,
-        PiebalusaShop3,
+        PeibalusaShop1,
+        PeibalusaShop2,
+        PeibalusaShop3,
         HiroRoderickShop1,
         HiroRoderickShop2,
         HiroRoderickShop3,

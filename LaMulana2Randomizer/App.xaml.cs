@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace LM2Randomizer
+namespace LaMulana2Randomizer
 {
     /// <summary>
     /// Interaction logic for App.xaml

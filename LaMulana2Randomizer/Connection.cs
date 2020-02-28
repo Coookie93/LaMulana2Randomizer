@@ -1,10 +1,10 @@
-﻿using LM2Randomizer.RuleParsing;
+﻿using LaMulana2Randomizer.LogicParsing;
 
-namespace LM2Randomizer
+namespace LaMulana2Randomizer
 {
     public class JsonConnection
     {
-        public string RuleString;
+        public string Logic;
         public string ConnectingAreaName;
         public bool IsBackSide;
     }
@@ -13,17 +13,17 @@ namespace LM2Randomizer
     {
         public string Name { get; private set; }
         public bool IsBackside { get; private set; }
-        public BinaryNode Rules { get; private set; }
+        public BinaryNode LogicTree { get; private set; }
 
         public string ParentAreaName;
         public string ConnectingAreaName;
         public bool Checking = false;
 
-        private string ruleString;
+        private string logicString;
 
         public Connection(JsonConnection jsonConnection, string parentAreaName) 
         {
-            ruleString = jsonConnection.RuleString;
+            logicString = jsonConnection.Logic;
             ConnectingAreaName = jsonConnection.ConnectingAreaName;
             IsBackside = jsonConnection.IsBackSide;
             ParentAreaName = parentAreaName;
@@ -32,17 +32,17 @@ namespace LM2Randomizer
 
         public bool CanReach(PlayerState state)
         {
-            return Rules.Evaluate(state) && state.CanReach(ParentAreaName);
+            return LogicTree.Evaluate(state) && state.CanReach(ParentAreaName);
         }
 
         public void AppendRuleString(string append)
         {
-            ruleString += append;
+            logicString = string.Format($"({logicString}){append}");
         }
 
-        public void BuildRuleTree()
+        public void BuildLogicTree()
         {
-            Rules = RuleTree.ParseAndBuildRules(ruleString);
+            LogicTree = LogicParsing.LogicTree.ParseAndBuildLogic(logicString);
         }
     }
 

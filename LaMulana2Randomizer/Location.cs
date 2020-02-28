@@ -1,11 +1,11 @@
 ﻿using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using LM2Randomizer.RuleParsing;
-using LM2Randomizer.ExtensionMethods;
-using LM2RandomizerShared;
+using LaMulana2Randomizer.LogicParsing;
+using LaMulana2Randomizer.ExtensionMethods;
+using LaMulana2RandomizerShared;
 
-namespace LM2Randomizer
+namespace LaMulana2Randomizer
 {
     public class JsonLocation
     {
@@ -14,8 +14,9 @@ namespace LM2Randomizer
         [JsonConverter(typeof(StringEnumConverter))]
         public LocationType LocationType;
 
-        public string RuleString;
-        public string HardString;
+        public bool IsGuardianChest;
+        public string Logic;
+        public string HardLogic;
         public Item Item;
     }
 
@@ -23,22 +24,24 @@ namespace LM2Randomizer
     {
         public string Name { get; private set; }
         public LocationType LocationType { get; private set; }
+        public bool IsGuardianChest { get; private set; }
         public Item Item { get; private set; }
         public LocationID Id { get; private set; }
 
-        public BinaryNode Rules;
+        public BinaryNode LogicTree;
         public string ParentAreaName;
         public bool IsLocked = false;
 
-        private string ruleString;
-        private readonly string hardRuleString;
+        private string logicString;
+        private readonly string hardLogicString;
 
         public Location(JsonLocation jsonLocation)
         {
             Name = jsonLocation.Name;
             LocationType = jsonLocation.LocationType;
-            ruleString = jsonLocation.RuleString;
-            hardRuleString = jsonLocation.HardString;
+            IsGuardianChest = jsonLocation.IsGuardianChest;
+            logicString = jsonLocation.Logic;
+            hardLogicString = jsonLocation.HardLogic;
             Item = jsonLocation.Item;
             Enum.TryParse(Name.RemoveWhitespace(), out LocationID temp);
             Id = temp;
@@ -46,21 +49,21 @@ namespace LM2Randomizer
         
         public bool CanReach(PlayerState state)
         {
-            return Rules.Evaluate(state) && state.CanReach(ParentAreaName);
+            return LogicTree.Evaluate(state) && state.CanReach(ParentAreaName);
         }
 
         public void UseHardRules()
         {
-            ruleString = hardRuleString;
+            logicString = hardLogicString;
         }
 
         public void PlaceItem(Item item)
         {
             Item = item;
         }
-        public void BuildRuleTree()
+        public void BuildLogicTree()
         {
-            Rules = RuleTree.ParseAndBuildRules(ruleString);
+            LogicTree = LogicParsing.LogicTree.ParseAndBuildLogic(logicString);
         }
     }
 
@@ -73,6 +76,7 @@ namespace LM2Randomizer
         Mural,
         Miniboss,
         Guardian,
+        FinalBoss,
         Puzzle,
         Dissonance,
         Fairy

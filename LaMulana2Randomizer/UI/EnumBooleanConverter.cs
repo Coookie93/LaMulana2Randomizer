@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Data;
 
-namespace LM2Randomizer.UI
+namespace LaMulana2Randomizer.UI
 {
     [ValueConversion(typeof(Enum), typeof(bool))]
     public class EnumBooleanConverter : IValueConverter

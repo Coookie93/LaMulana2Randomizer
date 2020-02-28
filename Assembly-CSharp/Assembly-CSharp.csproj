@@ -103,6 +103,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\UnityEngine.UI.dll</HintPath>
     </Reference>
@@ -122,8 +126,10 @@
     <Compile Include="Patches\EventItemScript.cs" />
     <Compile Include="Patches\HolyTabretScript.cs" />
     <Compile Include="Patches\ItemDialog.cs" />
+    <Compile Include="Patches\ItemPotScript.cs" />
+    <Compile Include="Patches\L2FlagSystem.cs" />
     <Compile Include="Patches\L2System.cs" />
-    <Compile Include="Patches\L2TaskShadow.cs" />
+    <Compile Include="Patches\MenuSystem.cs" />
     <Compile Include="Patches\SnapMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Patches\ShopScript.cs" />

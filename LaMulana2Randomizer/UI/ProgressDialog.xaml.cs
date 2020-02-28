@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 
-namespace LM2Randomizer.UI
+namespace LaMulana2Randomizer.UI
 {
     public partial class ProgressDialog : Window
     {

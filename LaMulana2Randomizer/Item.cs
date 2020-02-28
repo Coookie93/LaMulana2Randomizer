@@ -1,7 +1,7 @@
-﻿using LM2RandomizerShared;
+﻿using LaMulana2RandomizerShared;
 using Newtonsoft.Json;
 
-namespace LM2Randomizer
+namespace LaMulana2Randomizer
 {
     public class Item
     {

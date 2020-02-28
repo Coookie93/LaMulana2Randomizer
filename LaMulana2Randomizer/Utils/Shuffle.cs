@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace LM2Randomizer.Utils
+namespace LaMulana2Randomizer.Utils
 {
     public abstract class Shuffle
     {

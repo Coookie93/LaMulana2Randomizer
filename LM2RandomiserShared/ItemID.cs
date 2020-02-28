@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LM2RandomizerShared
+namespace LaMulana2RandomizerShared
 {
     [Serializable]
     public enum ItemID

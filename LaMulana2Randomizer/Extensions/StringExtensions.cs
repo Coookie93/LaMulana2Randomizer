@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LM2Randomizer.ExtensionMethods
+namespace LaMulana2Randomizer.ExtensionMethods
 {
     public static class StringExtensions
     {

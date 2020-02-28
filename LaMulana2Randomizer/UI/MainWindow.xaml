@@ -1,11 +1,11 @@
-﻿<Window x:Class="LM2Randomizer.UI.MainWindow"
+﻿<Window x:Class="LaMulana2Randomizer.UI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:LM2Randomizer.UI"
-        xmlns:main="clr-namespace:LM2Randomizer"
-        xmlns:vm="clr-namespace:LM2Randomizer.ViewModels"
+        xmlns:local="clr-namespace:LaMulana2Randomizer.UI"
+        xmlns:main="clr-namespace:LaMulana2Randomizer"
+        xmlns:vm="clr-namespace:LaMulana2Randomizer.ViewModels"
         mc:Ignorable="d"
         Title="La-Mulana 2 Randomizer" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
     <Window.DataContext>
@@ -59,6 +59,10 @@
                             <StackPanel Margin="2">
                                 <TextBlock Text="Codices" FontSize="16"/>
                                 <CheckBox Name="CodicesCheck" Content="Randomised" IsChecked="{Binding Settings.RandomCodices}" Style="{StaticResource OriginalShopCheck}"/>
+                            </StackPanel>
+                            <StackPanel Margin="2">
+                                <TextBlock Text="Future Development Company" FontSize="16"/>
+                                <CheckBox Name="FDCCheck" Content="Randomised" IsChecked="{Binding Settings.RandomFDC}" Style="{StaticResource OriginalShopCheck}"/>
                             </StackPanel>
                             <StackPanel.ToolTip>
                                 <StackPanel>
@@ -116,7 +120,7 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <GroupBox Header="Logic" Grid.Row="0">
-                        <CheckBox Name="FDCCheck" IsChecked="{Binding Settings.FDCForBacksides}" Style="{StaticResource OriginalShopCheck}">
+                        <CheckBox Name="FDCBacksideCheck" IsChecked="{Binding Settings.FDCForBacksides}" Style="{StaticResource OriginalShopCheck}">
                             <TextBlock>
                                 <Run Text="Require Future Development Company for"/>
                                 <LineBreak/>
@@ -137,14 +141,16 @@
                     </GroupBox>
                     <GroupBox Header="Bosses" Grid.Row="1">
                         <StackPanel Margin="2">
-                            <CheckBox Name="DifficultyCheck" Content="Hard Guardian/Miniboss requirements" IsChecked="{Binding Settings.HardBosses}">
+                            <CheckBox Name="DifficultyCheck" Content="Hard Guardian/Room Guarders requirements" IsChecked="{Binding Settings.HardBosses}">
                                 <CheckBox.ToolTip>
                                     <TextBlock>
-                                        Greatly reduces the requirements to fight 
+                                        Reduces the requirements to fight 
                                         <LineBreak/>
-                                        Guardians/Minibosses, warning this can be 
+                                        Guardians/Room Guarders to basically
                                         <LineBreak/>
-                                        really hard.
+                                        only what is need to start the fight, 
+                                        <LineBreak/>
+                                        warning this can be really hard.
                                     </TextBlock>
                                 </CheckBox.ToolTip>
                             </CheckBox>

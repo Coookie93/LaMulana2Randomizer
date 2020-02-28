@@ -72,7 +72,7 @@ namespace LM2RandomiserMod.Patches
             }
             else
             {
-                if (this.sys.isMap(name))
+                if (name.Equals("Map"))
                 {
                     this.icon[this.item_copunter] = L2SystemCore.getMapIconSprite(L2SystemCore.getItemData("Map"));
                 }

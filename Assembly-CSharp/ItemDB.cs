@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using LM2RandomizerShared;
+using LaMulana2RandomizerShared;
 
 namespace LM2RandomiserMod
 {

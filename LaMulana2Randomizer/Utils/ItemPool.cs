@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using LM2RandomizerShared;
+using LaMulana2RandomizerShared;
 
-namespace LM2Randomizer
+namespace LaMulana2Randomizer
 {
     public class ItemPool
     {

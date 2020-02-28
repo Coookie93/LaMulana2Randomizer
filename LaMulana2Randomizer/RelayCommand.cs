@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace LM2Randomizer
+namespace LaMulana2Randomizer
 {
     public class RelayCommand : ICommand
     {

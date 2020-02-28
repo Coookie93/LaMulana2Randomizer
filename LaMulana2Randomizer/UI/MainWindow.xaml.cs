@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace LM2Randomizer.UI
+namespace LaMulana2Randomizer.UI
 {
     public partial class MainWindow : Window
     {

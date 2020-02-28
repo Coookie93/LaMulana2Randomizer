@@ -35,7 +35,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="LaMulana2RandomizerShared">
+    <Reference Include="LaMulana2RandomizerShared, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\LM2RandomiserShared\bin\Release\LaMulana2RandomizerShared.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -67,14 +68,15 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="Location.cs" />
-    <Compile Include="Logging\Logger.cs" />
+    <Compile Include="Utils\Logger.cs" />
     <Compile Include="PlayerState.cs" />
     <Compile Include="Randomiser.cs" />
+    <Compile Include="RandomiserException.cs" />
     <Compile Include="RelayCommand.cs" />
-    <Compile Include="RuleParsing\Rule.cs" />
-    <Compile Include="RuleParsing\RuleTree.cs" />
-    <Compile Include="RuleParsing\ShuntingYard.cs" />
-    <Compile Include="RuleParsing\Tokeniser.cs" />
+    <Compile Include="LogicParsing\Logic.cs" />
+    <Compile Include="LogicParsing\LogicTree.cs" />
+    <Compile Include="LogicParsing\ShuntingYard.cs" />
+    <Compile Include="LogicParsing\Tokeniser.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="UI\EnumBooleanConverter.cs" />
     <Compile Include="UI\IntRangRules.cs" />

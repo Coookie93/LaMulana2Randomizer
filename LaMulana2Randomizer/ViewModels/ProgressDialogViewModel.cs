@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 
-namespace LM2Randomizer.ViewModels
+namespace LaMulana2Randomizer.ViewModels
 {
     public struct ProgressInfo
     {

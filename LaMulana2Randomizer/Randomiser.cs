@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using LM2RandomizerShared;
-using LM2Randomizer.Utils;
-using LM2Randomizer.Logging;
+using System.Collections.Generic;
+using LaMulana2Randomizer.Utils;
+using LaMulana2RandomizerShared;
 
-namespace LM2Randomizer
+namespace LaMulana2Randomizer
 {
     public class Randomiser
     {
@@ -21,159 +20,130 @@ namespace LM2Randomizer
             random = new Random(settings.Seed);
         }
         
-        public bool Setup()
+        public void Setup()
         {
             areas = new Dictionary<string, Area>();
             locations = new Dictionary<string, Location>();
 
-            if (!FileUtils.GetWorldData(out List<JsonArea> worldData))
+            FileUtils.GetWorldData(out List<JsonArea> worldData);
+
+            foreach (JsonArea areaData in worldData)
             {
-                return false;
+                Area area = new Area(areaData.Name);
+
+                foreach (JsonLocation locationData in areaData.Locations)
+                {
+                    Location location = new Location(locationData)
+                    {
+                        ParentAreaName = area.Name
+                    };
+
+                    if (Settings.HardBosses && (location.LocationType == LocationType.Guardian 
+                        || location.LocationType == LocationType.Miniboss))
+                    {
+                        location.UseHardRules();
+                    }
+
+                    location.BuildLogicTree();
+                    locations.Add(location.Name, location);
+                }
+                foreach (JsonConnection exitData in areaData.Exits)
+                {
+                    Connection exit = new Connection(exitData, area.Name);
+
+                    if (Settings.FDCForBacksides && exit.IsBackside)
+                    {
+                        exit.AppendRuleString(" and Has(Future Development Company)");
+                    }
+
+                    exit.BuildLogicTree();
+                    area.Exits.Add(exit);
+                }
+                areas.Add(area.Name, area);
             }
 
-            try
+            foreach(Area area in areas.Values)
             {
-                foreach (JsonArea areaData in worldData)
+                foreach(Connection exit in area.Exits)
                 {
-                    Area area = new Area(areaData.Name);
-
-                    foreach (JsonLocation locationData in areaData.Locations)
-                    {
-                        Location location = new Location(locationData)
-                        {
-                            ParentAreaName = area.Name
-                        };
-
-                        if (Settings.HardBosses && (location.LocationType == LocationType.Guardian 
-                            || location.LocationType == LocationType.Miniboss))
-                        {
-                            location.UseHardRules();
-                        }
-
-                        location.BuildRuleTree();
-                        locations.Add(location.Name, location);
-                    }
-                    foreach (JsonConnection exitData in areaData.Exits)
-                    {
-                        Connection exit = new Connection(exitData, area.Name);
-
-                        if (Settings.FDCForBacksides && exit.IsBackside)
-                        {
-                            exit.AppendRuleString(" and Has(Future Development Company)");
-                        }
-
-                        exit.BuildRuleTree();
-                        area.Exits.Add(exit);
-                    }
-                    areas.Add(area.Name, area);
-                }
-
-                foreach(Area area in areas.Values)
-                {
-                    foreach(Connection exit in area.Exits)
-                    {
-                        Area connectingArea = GetArea(exit.ConnectingAreaName);
-                        connectingArea.Entrances.Add(exit);
-                    }
+                    Area connectingArea = GetArea(exit.ConnectingAreaName);
+                    connectingArea.Entrances.Add(exit);
                 }
             }
-            catch(Exception ex)
-            {
-                Logger.LogAndFlush(ex.Message);
-                return false;
-            }
-            return true;
         }
         
-        public bool PlaceItems()
+        public void PlaceItems()
         {
-            if (!FileUtils.GetItemsFromJson("Data//Items.json",out List<Item> items))
-            {
-                return false;
-            }
+            FileUtils.GetItemsFromJson("Data//Items.json", out List<Item> items);
+            FileUtils.GetItemsFromJson("Data//Mantras.json", out List<Item> mantras);
+            FileUtils.GetItemsFromJson("Data//ShopOnlyItems.json", out List<Item> shopOnlyItems);
 
-            if (!FileUtils.GetItemsFromJson("Data//ShopOnlyItems.json", out List<Item> shopOnlyItems))
-            {
-                return false;
-            }
+            //Places weights at a starting shop since they are needed for alot of early items
+            //this means that player will not have to rely on drops or weights from pots
+            GetLocation("Nebur Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Weights, shopOnlyItems));
 
-            if (!FileUtils.GetItemsFromJson("Data//Mantras.json", out List<Item> mantras))
+            if (Settings.ShopPlacement != ShopPlacement.Original)
             {
-                return false;
-            }
-
-            if (Settings.FDCForBacksides)
-            {
-                ItemPool.Get(ItemID.FutureDevelopmentCompany, items).isRequired = true;
-            }
-
-            try
-            {
-                //Places weights at a starting shop since they are needed for alot of early items
-                //this means that player will not have to rely on drops or weights from pots
-                GetLocation("Nebur Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Weights, shopOnlyItems));
-
                 //these locations cant be included properly atm since the reason the shop switches is unknown
                 GetLocation("Hiner Shop 3").PlaceItem(ItemPool.GetAndRemove(ItemID.Map1, items));
                 GetLocation("Hiner Shop 4").PlaceItem(ItemPool.GetAndRemove(ItemID.Map2, items));
-
-                shopOnlyItems = Shuffle.FisherYates(shopOnlyItems, random);
-                //place the weights and ammo in shops first since they can only be in shops
-                FillShops(shopOnlyItems, items);
-
-                //create a list of the items we want to place that are accessible from the start
-                List<Item> temp = new List<Item>();
-                if (!Settings.RandomGrail) temp.Add(ItemPool.GetAndRemove(ItemID.HolyGrail, items));
-                if (!Settings.RandomScanner) temp.Add(ItemPool.GetAndRemove(ItemID.HandScanner, items));
-                if (!Settings.RandomCodices) temp.Add(ItemPool.GetAndRemove(ItemID.Codices, items));
-
-                RandomiseWithChecks(GetUnplacedLocations(), temp, new List<Item>());
-
-                //split the remaining item it required/non required
-                List<Item> requiredItems = ItemPool.GetRequiredItems(items);
-                List<Item> nonRequiredItems = ItemPool.GetNonRequiredItems(items);
-
-                requiredItems = Shuffle.FisherYates(requiredItems, random);
-                nonRequiredItems = Shuffle.FisherYates(nonRequiredItems, random);
-
-                mantras = Shuffle.FisherYates(mantras, random);
-                //place mantras if they are not fully randomised
-                PlaceMantras(mantras, requiredItems);
-
-                //place required items
-                RandomiseAssumedFill(GetUnplacedLocations(), requiredItems);
-
-                //place non requires items
-                RandomiseWithoutChecks(GetUnplacedLocations(), nonRequiredItems);
             }
-            catch(Exception ex)
-            {
-                Logger.LogAndFlush(ex.Message);
-                return false;
-            }
-            return true;
+
+            shopOnlyItems = Shuffle.FisherYates(shopOnlyItems, random);
+            //place the weights and ammo in shops first since they can only be in shops
+            PlaceShopItems(shopOnlyItems, items);
+
+            //create a list of the items we want to place that are accessible from the start
+            List<Item> earlyItems = new List<Item>();
+            if (!Settings.RandomGrail) earlyItems.Add(ItemPool.GetAndRemove(ItemID.HolyGrail, items));
+            if (!Settings.RandomScanner) earlyItems.Add(ItemPool.GetAndRemove(ItemID.HandScanner, items));
+            if (!Settings.RandomCodices) earlyItems.Add(ItemPool.GetAndRemove(ItemID.Codices, items));
+            if (!Settings.RandomFDC) earlyItems.Add(ItemPool.GetAndRemove(ItemID.FutureDevelopmentCompany, items));
+
+            earlyItems = Shuffle.FisherYates(earlyItems, random);
+            RandomiseWithChecks(GetUnplacedLocations(), earlyItems, new List<Item>());
+
+            //split the remaining item it required/non required
+            List<Item> requiredItems = ItemPool.GetRequiredItems(items);
+            List<Item> nonRequiredItems = ItemPool.GetNonRequiredItems(items);
+
+            requiredItems = Shuffle.FisherYates(requiredItems, random);
+            nonRequiredItems = Shuffle.FisherYates(nonRequiredItems, random);
+
+            mantras = Shuffle.FisherYates(mantras, random);
+            //place mantras if they are not fully randomised
+            PlaceMantras(mantras, requiredItems);
+
+            //place required items
+            RandomiseAssumedFill(GetUnplacedLocations(), requiredItems);
+
+            //place non requires items
+            RandomiseWithoutChecks(GetUnplacedLocations(), nonRequiredItems);
         }
 
         public bool CanBeatGame()
         {
+            foreach (Location guardian in GetPlacedLocationsOfType(LocationType.Guardian))
+            {
+                if (!new PlayerState(this, true).SoftlockCheck(GetPlacedRequiredItemLocations(), guardian))
+                    return false;
+            }
             return new PlayerState(this).CanBeatGame(GetPlacedRequiredItemLocations());
         }
         
         public Area GetArea(string areaName)
         {
             if(!areas.TryGetValue(areaName, out Area area))
-            {
-                throw new Exception($"Area does not exist: {areaName}");
-            }
+                throw new InvalidAreaException($"Area does not exist: {areaName}");
+
             return area;
         }
 
         public Location GetLocation(string locationName)
         {
             if (!locations.TryGetValue(locationName, out Location location))
-            {
-                throw new Exception($"Location does not exist: {locationName}");
-            }
+                throw new InvalidLocationException($"Location does not exist: {locationName}");
+
             return location;
         }
         
@@ -182,6 +152,15 @@ namespace LM2Randomizer
             var placedLocations = from location in locations.Values
                                   where location.Item != null
                                   select location;
+
+            return placedLocations.ToList();
+        }
+
+        public List<Location> GetPlacedLocationsOfType(LocationType type)
+        {
+            var placedLocations = from location in locations.Values
+                                    where location.Item != null && location.LocationType == type
+                                    select location;
 
             return placedLocations.ToList();
         }
@@ -214,7 +193,7 @@ namespace LM2Randomizer
             return placedLocations.ToList();
         }
 
-        private void FillShops(List<Item> shopItems, List<Item> items)
+        private void PlaceShopItems(List<Item> shopItems, List<Item> items)
         {
             if(Settings.ShopPlacement == ShopPlacement.Random)
             {
@@ -223,7 +202,7 @@ namespace LM2Randomizer
             else if(Settings.ShopPlacement == ShopPlacement.AtLeastOne)
             {
                 //lock the first slot of each shop so there will be atleast one item in to buy in each shop
-                GetLocation("Nebur Shop 1").IsLocked = true;
+                GetLocation("Nebur Shop 2").IsLocked = true;
                 GetLocation("Modro Shop 1").IsLocked = true;
                 GetLocation("Sidro Shop 1").IsLocked = true;
                 GetLocation("Hiner Shop 1").IsLocked = true;
@@ -233,7 +212,7 @@ namespace LM2Randomizer
                 GetLocation("Btk Shop 1").IsLocked = true;
                 GetLocation("Mino Shop 1").IsLocked = true;
                 GetLocation("Bargain Duck Shop 1").IsLocked = true;
-                GetLocation("Piebalusa Shop 1").IsLocked = true;
+                GetLocation("Peibalusa Shop 1").IsLocked = true;
                 GetLocation("Hiro Roderick Shop 1").IsLocked = true;
                 GetLocation("Hydlit Shop 1").IsLocked = true;
                 GetLocation("Aytum Shop 1").IsLocked = true;
@@ -245,8 +224,8 @@ namespace LM2Randomizer
 
                 RandomiseWithChecks(GetUnplacedLocationsOfType(LocationType.Shop), shopItems, items);
 
-                //now unlock all the shop slots 
-                GetLocation("Nebur Shop 1").IsLocked = false;
+                //now unlock all the shop slots that were locked
+                GetLocation("Nebur Shop 2").IsLocked = false;
                 GetLocation("Modro Shop 1").IsLocked = false;
                 GetLocation("Sidro Shop 1").IsLocked = false;
                 GetLocation("Hiner Shop 1").IsLocked = false;
@@ -256,7 +235,7 @@ namespace LM2Randomizer
                 GetLocation("Btk Shop 1").IsLocked = false;
                 GetLocation("Mino Shop 1").IsLocked = false;
                 GetLocation("Bargain Duck Shop 1").IsLocked = false;
-                GetLocation("Piebalusa Shop 1").IsLocked = false;
+                GetLocation("Peibalusa Shop 1").IsLocked = false;
                 GetLocation("Hiro Roderick Shop 1").IsLocked = false;
                 GetLocation("Hydlit Shop 1").IsLocked = false;
                 GetLocation("Aytum Shop 1").IsLocked = false;
@@ -309,9 +288,9 @@ namespace LM2Randomizer
                 GetLocation("Bargain Duck Shop 2").PlaceItem(ItemPool.GetAndRemove(ItemID.CaltropsAmmo, shopItems));
                 GetLocation("Bargain Duck Shop 3").PlaceItem(ItemPool.GetAndRemove(ItemID.FutureDevelopmentCompany, items));
 
-                GetLocation("Piebalusa Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Weights, shopItems));
-                GetLocation("Piebalusa Shop 2").PlaceItem(ItemPool.GetAndRemove(ItemID.EarthSpearAmmo, shopItems));
-                GetLocation("Piebalusa Shop 3").PlaceItem(ItemPool.GetAndRemove(ItemID.RaceScanner, items));
+                GetLocation("Peibalusa Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Weights, shopItems));
+                GetLocation("Peibalusa Shop 2").PlaceItem(ItemPool.GetAndRemove(ItemID.EarthSpearAmmo, shopItems));
+                GetLocation("Peibalusa Shop 3").PlaceItem(ItemPool.GetAndRemove(ItemID.RaceScanner, items));
 
                 GetLocation("Hiro Roderick Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Weights, shopItems));
                 GetLocation("Hiro Roderick Shop 2").PlaceItem(ItemPool.GetAndRemove(ItemID.FlareAmmo, shopItems));
@@ -349,11 +328,7 @@ namespace LM2Randomizer
 
         private void PlaceMantras(List<Item> mantras, List<Item> requiredItems)
         {
-            if(Settings.MantraPlacement== MantraPlacement.OnlyMurals)
-            {
-                RandomiseWithChecks(GetUnplacedLocationsOfType(LocationType.Mural), mantras, requiredItems);
-            }
-            else if(Settings.MantraPlacement == MantraPlacement.Original)
+            if(Settings.MantraPlacement == MantraPlacement.Original)
             {
                 //put the mantras where they are originally if they arent randomised
                 GetLocation("Heaven Mantra Mural").PlaceItem(ItemPool.GetAndRemove(ItemID.Heaven, mantras));
@@ -366,6 +341,10 @@ namespace LM2Randomizer
                 GetLocation("Mother Mantra Mural").PlaceItem(ItemPool.GetAndRemove(ItemID.Mother, mantras));
                 GetLocation("Child Mantra Mural").PlaceItem(ItemPool.GetAndRemove(ItemID.Child, mantras));
                 GetLocation("Night Mantra Mural").PlaceItem(ItemPool.GetAndRemove(ItemID.Night, mantras));
+            }
+            else if(Settings.MantraPlacement== MantraPlacement.OnlyMurals)
+            {
+                RandomiseWithChecks(GetUnplacedLocationsOfType(LocationType.Mural), mantras, requiredItems);
             }
             else {
                 //if they are fully random they will get randomised with the rest of the items

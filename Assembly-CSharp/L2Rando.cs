@@ -6,40 +6,40 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using L2Word;
 using L2Flag;
-using L2Base;
-using LM2RandomizerShared;
+using LM2RandomiserMod.Patches;
+using LaMulana2RandomizerShared;
 
 namespace LM2RandomiserMod
 {
     public class L2Rando : MonoBehaviour
     {
-        private bool autoScanTablets;
-        private Dictionary<LocationID,ItemID> locationToItemMap;
-
         private bool showText = false;
-        private string error;
+        private string message;
 
         private L2ShopDataBase shopDataBase;
         private L2TalkDataBase talkDataBase;
-        private L2System sys;
+        private patched_L2System sys;
+
+        private Dictionary<LocationID,ItemID> locationToItemMap;
 
         public bool Randomising { get; private set; } = false;
+        public bool AutoScanTablets { get; private set; } = false;
 
-        void OnGUI()
+        public void OnGUI()
         {
             if (showText)
             {
-                GUI.Label(new Rect(0, Screen.height - 125f, 500f, 100f), error);
+                GUI.Label(new Rect(0, Screen.height - 125f, 500f, 100f), message);
                 GUI.Label(new Rect(0, Screen.height - 25f, 50f, 25f), Randomising.ToString());
             }
         }
 
-        void OnEnable()
+        public void OnEnable()
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
-        void OnDisable()
+        public void OnDisable()
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
         }
@@ -48,15 +48,8 @@ namespace LM2RandomiserMod
         {
             if (Randomising)
             {
-                foreach (TreasureBoxScript box in FindObjectsOfType<TreasureBoxScript>())
-                {
-                    ChangeBox(box);
-                }
-
-                foreach (EventItemScript eventItem in FindObjectsOfType<EventItemScript>())
-                {
-                    ChangeEventItem(eventItem);
-                }
+                ChangeTreasureBoxes();
+                ChangeEventItems();
 
                 //these cause the message to popup when you record a mantra for the first time, so just deactivate
                 //the gameobject so they don't appear
@@ -68,7 +61,7 @@ namespace LM2RandomiserMod
                     }
                 }
 
-                //Change the snapshot type to software so as this behaves like getting an item
+                //Change the snapshot type to software so as this behaves like getting an item instead of a mantra
                 foreach (SnapShotTargetScript snapTarget in FindObjectsOfType<SnapShotTargetScript>())
                 {
                     LocationID locationID = GetLocationIDForMural(snapTarget);
@@ -78,11 +71,14 @@ namespace LM2RandomiserMod
                     }
                 }
 
-                //Change funeral event start conditions
                 foreach (FlagWatcherScript flagWatcher in FindObjectsOfType<FlagWatcherScript>())
                 {
+                    //Change funeral event start conditions so they can reliably be in logic
                     if (flagWatcher.name.Equals("sougiOn"))
                     {
+                        //Change the timer so don't have to wait 2 minutes for the funeral event flags to be set
+                        flagWatcher.actionWaitFrames = 60;
+
                         foreach (L2FlagBoxParent flagBoxParent in flagWatcher.CheckFlags)
                         {
                             foreach (L2FlagBox flagBox in flagBoxParent.BOX)
@@ -93,18 +89,37 @@ namespace LM2RandomiserMod
                                     flagBox.flag_no1 = 0;
                                     flagBox.flag_no2 = 6;
                                     flagBox.comp = COMPARISON.GreaterEq;
-
-                                    //Change the timer so don't have to wait 2 minutes for the funeral event flags to be set
-                                    flagWatcher.actionWaitFrames = 60;
                                 }
                             }
+                        }
+                    }
+                    //add a check to avoid soflock of triggering the rescue event without first summoning Jormangund's Ankh
+                    else if (flagWatcher.name.Equals("ragnarok"))
+                    {
+                        foreach (L2FlagBoxParent flagBoxParent in flagWatcher.CheckFlags)
+                        {
+                            L2FlagBox[] flagBoxes = new L2FlagBox[3];
+                            flagBoxes[0] = flagBoxParent.BOX[0];
+                            flagBoxes[1] = flagBoxParent.BOX[1];
+
+                            //this checks to see if Jormangund's Ankh has atleast been summoned
+                            flagBoxes[2] = new L2FlagBox()
+                            {
+                                seet_no1 = 3,
+                                flag_no1 = 14,
+                                seet_no2 = -1,
+                                flag_no2 = 2,
+                                comp = COMPARISON.GreaterEq,
+                                logic = LOGIC.AND
+                            };
+                            flagBoxParent.BOX = flagBoxes;
                         }
                     }
                 }
             }
         }
-        
-        void Update()
+
+        public void Update()
         {
             if (Input.GetKeyDown(KeyCode.F11))
             {
@@ -192,11 +207,6 @@ namespace LM2RandomiserMod
             return getFlags;
         }
 
-        public bool AutoScanTablets()
-        {
-            return autoScanTablets;
-        }
-
         public void Initialise(L2ShopDataBase shopDataBase, L2TalkDataBase talkDataBase, patched_L2System system)
         {
             this.shopDataBase = shopDataBase;
@@ -217,7 +227,7 @@ namespace LM2RandomiserMod
                 using (BinaryReader br = new BinaryReader(File.Open(Path.Combine(Directory.GetCurrentDirectory(),
                     "LaMulana2Randomizer\\Seed\\seed.lm2r"), FileMode.Open)))
                 {
-                    autoScanTablets = br.ReadBoolean();
+                    AutoScanTablets = br.ReadBoolean();
                     int itemCount = br.ReadInt32();
                     for (int i = 0; i < itemCount; i++)
                     {
@@ -226,13 +236,14 @@ namespace LM2RandomiserMod
 
                     if(itemCount != locationToItemMap.Count)
                     {
+                        message = "Seed Failed to load, mismatch between the expected and actual item count.";
                         return false;
                     }
                 }
             }
             catch (Exception ex)
             {
-                error = ex.Message;
+                message = ex.Message;
                 return false;
             }
 
@@ -242,7 +253,7 @@ namespace LM2RandomiserMod
         public IEnumerator Setup()
         {
             //Need to wait to ensure that the game has setup all its systems
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(5f);
 
             //Check to seed is seed was successfully loaded
             if (LoadSeed())
@@ -254,150 +265,156 @@ namespace LM2RandomiserMod
                 MojiScriptFixes();
             }
         }
-        
-        private void ChangeBox(TreasureBoxScript box)
+
+        private void ChangeTreasureBoxes()
         {
-            ItemData oldItemData = GetItemDataFromName(box.itemObj.name);
-
-            if (oldItemData != null && locationToItemMap.TryGetValue((LocationID)oldItemData.getItemName(), out ItemID newItemID))
+            foreach (TreasureBoxScript box in FindObjectsOfType<TreasureBoxScript>())
             {
-                ItemInfo newItemInfo = ItemDB.GetItemInfo(newItemID);
-                
-                //Change the Treasure Boxs open flags to correspond to the new item
-                //These flags are used to so the chest stays open after you get the item
-                foreach (L2FlagBoxParent flagBoxParent in box.openFlags)
+                ItemData oldItemData = GetItemDataFromName(box.itemObj.name);
+
+                if (oldItemData != null && locationToItemMap.TryGetValue((LocationID)oldItemData.getItemName(), out ItemID newItemID))
                 {
-                    foreach(L2FlagBox flagBox in flagBoxParent.BOX)
+                    ItemInfo newItemInfo = ItemDB.GetItemInfo(newItemID);
+
+                    //Change the Treasure Boxs open flags to correspond to the new item
+                    //These flags are used to so the chest stays open after you get the item
+                    foreach (L2FlagBoxParent flagBoxParent in box.openFlags)
                     {
-                        if (flagBox.seet_no1 == 2)
+                        foreach (L2FlagBox flagBox in flagBoxParent.BOX)
                         {
-                            flagBox.flag_no1 = newItemInfo.itemFlag;
-                            flagBox.flag_no2 = 1;
-
-                            //the whips and shields use the same flag just increment higher with each upgrade cant just use the same as other items
-                            if (newItemID == ItemID.ChainWhip || newItemID == ItemID.SilverShield || newItemID == ItemID.MobileSuperx3P)
+                            if (flagBox.seet_no1 == 2)
                             {
-                                flagBox.flag_no2 = 2;
-                            }
-                            else if (newItemID == ItemID.FlailWhip || newItemID == ItemID.AngelShield)
-                            {
-                                flagBox.flag_no2 = 3;
-                            }
-                        }
-                    }
-                }
-
-                EventItemScript item = box.itemObj.GetComponent<EventItemScript>();
-
-                //Change the Event Items active flags to correspond to the new item
-                //These flags are used to set the item inactive after you have got it
-                foreach (L2FlagBoxParent flagBoxParent in item.itemActiveFlag)
-                {
-                    foreach (L2FlagBox flagBox in flagBoxParent.BOX)
-                    {
-                        if (flagBox.seet_no1 == 2)
-                        {
-                            flagBox.flag_no1 = newItemInfo.itemFlag;
-                            flagBox.comp = COMPARISON.Equal;
-                            flagBox.flag_no2 = 0;
-
-                            //the whips and shields use the same flag just increment higher with each upgrade cant just use the same as other items
-                            if (newItemID == ItemID.ChainWhip || newItemID == ItemID.SilverShield || newItemID == ItemID.MobileSuperx3P)
-                            {
+                                flagBox.flag_no1 = newItemInfo.itemFlag;
                                 flagBox.flag_no2 = 1;
-                                flagBox.comp = COMPARISON.LessEq;
-                            }
-                            else if (newItemID == ItemID.FlailWhip || newItemID == ItemID.AngelShield)
-                            {
-                                flagBox.flag_no2 = 2;
-                                flagBox.comp = COMPARISON.LessEq;
-                            }
-                            else if (newItemID == ItemID.Buckler)
-                            {
-                                flagBox.comp = COMPARISON.LessEq;
+
+                                //the whips and shields use the same flag just increment higher with each upgrade cant just use the same as other items
+                                if (newItemID == ItemID.ChainWhip || newItemID == ItemID.SilverShield || newItemID == ItemID.MobileSuperx3P)
+                                {
+                                    flagBox.flag_no2 = 2;
+                                }
+                                else if (newItemID == ItemID.FlailWhip || newItemID == ItemID.AngelShield)
+                                {
+                                    flagBox.flag_no2 = 3;
+                                }
                             }
                         }
                     }
-                }
-                //Change the Event Items get flags to correspond to the new item
-                //These are flags that are set when the item is gotten
-                item.itemGetFlags = CreateGetFlags(newItemID, newItemInfo);
 
-                //Change the name used when calling setitem to correspond to new item
-                item.itemLabel = newItemInfo.boxName;
+                    EventItemScript item = box.itemObj.GetComponent<EventItemScript>();
 
-                //Change the sprite to correspond to new item
-                Sprite sprite;
-                //Mantras don't have an icon so use the Mantra software icon
-                if (newItemID >= ItemID.Heaven && newItemID <= ItemID.Night)
-                {
-                    sprite = L2SystemCore.getMapIconSprite(L2SystemCore.getItemData("Mantra"));
+                    //Change the Event Items active flags to correspond to the new item
+                    //These flags are used to set the item inactive after you have got it
+                    foreach (L2FlagBoxParent flagBoxParent in item.itemActiveFlag)
+                    {
+                        foreach (L2FlagBox flagBox in flagBoxParent.BOX)
+                        {
+                            if (flagBox.seet_no1 == 2)
+                            {
+                                flagBox.flag_no1 = newItemInfo.itemFlag;
+                                flagBox.comp = COMPARISON.Equal;
+                                flagBox.flag_no2 = 0;
+
+                                //the whips and shields use the same flag just increment higher with each upgrade cant just use the same as other items
+                                if (newItemID == ItemID.ChainWhip || newItemID == ItemID.SilverShield || newItemID == ItemID.MobileSuperx3P)
+                                {
+                                    flagBox.flag_no2 = 1;
+                                    flagBox.comp = COMPARISON.LessEq;
+                                }
+                                else if (newItemID == ItemID.FlailWhip || newItemID == ItemID.AngelShield)
+                                {
+                                    flagBox.flag_no2 = 2;
+                                    flagBox.comp = COMPARISON.LessEq;
+                                }
+                                else if (newItemID == ItemID.Buckler)
+                                {
+                                    flagBox.comp = COMPARISON.LessEq;
+                                }
+                            }
+                        }
+                    }
+                    //Change the Event Items get flags to correspond to the new item
+                    //These are flags that are set when the item is gotten
+                    item.itemGetFlags = CreateGetFlags(newItemID, newItemInfo);
+
+                    //Change the name used when calling setitem to correspond to new item
+                    item.itemLabel = newItemInfo.boxName;
+
+                    //Change the sprite to correspond to new item
+                    Sprite sprite;
+                    //Mantras don't have an icon so use the Mantra software icon
+                    if (newItemID >= ItemID.Heaven && newItemID <= ItemID.Night)
+                    {
+                        sprite = L2SystemCore.getMapIconSprite(L2SystemCore.getItemData("Mantra"));
+                    }
+                    else
+                    {
+                        sprite = L2SystemCore.getMapIconSprite(L2SystemCore.getItemData(newItemInfo.boxName));
+                    }
+                    item.gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
                 }
-                else
-                {
-                    sprite = L2SystemCore.getMapIconSprite(L2SystemCore.getItemData(newItemInfo.boxName));
-                }
-                item.gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
             }
         }
-        
-        private void ChangeEventItem(EventItemScript item)
+
+        private void ChangeEventItems()
         {
-            ItemData oldItemData = GetItemDataFromName(item.name);
-
-            if (oldItemData != null && locationToItemMap.TryGetValue((LocationID)oldItemData.getItemName(), out ItemID newItemID))
+            foreach (EventItemScript item in FindObjectsOfType<EventItemScript>())
             {
-                ItemInfo newItemInfo = ItemDB.GetItemInfo(newItemID);
+                ItemData oldItemData = GetItemDataFromName(item.name);
 
-                //Change the Event Items active flags to correspond to the new item
-                //These flags are used to set the item inactive after you have got it
-                foreach (L2FlagBoxParent flagBoxParent in item.itemActiveFlag)
+                if (oldItemData != null && locationToItemMap.TryGetValue((LocationID)oldItemData.getItemName(), out ItemID newItemID))
                 {
-                    foreach (L2FlagBox flagBox in flagBoxParent.BOX)
-                    {
-                        if (flagBox.seet_no1 == 2)
-                        {
-                            flagBox.flag_no1 = newItemInfo.itemFlag;
-                            flagBox.comp = COMPARISON.Equal;
-                            flagBox.flag_no2 = 0;
+                    ItemInfo newItemInfo = ItemDB.GetItemInfo(newItemID);
 
-                            //the whips and shields use the same flag just increment higher with each upgrade cant just use the same as other items
-                            if (newItemID == ItemID.ChainWhip || newItemID == ItemID.SilverShield || newItemID == ItemID.MobileSuperx3P)
+                    //Change the Event Items active flags to correspond to the new item
+                    //These flags are used to set the item inactive after you have got it
+                    foreach (L2FlagBoxParent flagBoxParent in item.itemActiveFlag)
+                    {
+                        foreach (L2FlagBox flagBox in flagBoxParent.BOX)
+                        {
+                            if (flagBox.seet_no1 == 2)
                             {
-                                flagBox.flag_no2 = 1;
-                                flagBox.comp = COMPARISON.LessEq;
-                            }
-                            else if (newItemID == ItemID.FlailWhip || newItemID == ItemID.AngelShield)
-                            {
-                                flagBox.flag_no2 = 2;
-                                flagBox.comp = COMPARISON.LessEq;
-                            }
-                            else if (newItemID == ItemID.Buckler)
-                            {
-                                flagBox.comp = COMPARISON.LessEq;
+                                flagBox.flag_no1 = newItemInfo.itemFlag;
+                                flagBox.comp = COMPARISON.Equal;
+                                flagBox.flag_no2 = 0;
+
+                                //the whips and shields use the same flag just increment higher with each upgrade cant just use the same as other items
+                                if (newItemID == ItemID.ChainWhip || newItemID == ItemID.SilverShield || newItemID == ItemID.MobileSuperx3P)
+                                {
+                                    flagBox.flag_no2 = 1;
+                                    flagBox.comp = COMPARISON.LessEq;
+                                }
+                                else if (newItemID == ItemID.FlailWhip || newItemID == ItemID.AngelShield)
+                                {
+                                    flagBox.flag_no2 = 2;
+                                    flagBox.comp = COMPARISON.LessEq;
+                                }
+                                else if (newItemID == ItemID.Buckler)
+                                {
+                                    flagBox.comp = COMPARISON.LessEq;
+                                }
                             }
                         }
                     }
-                }
-                //Change the Event Items get flags to correspond to the new item
-                //These are flags that are set when the item is gotten
-                item.itemGetFlags = CreateGetFlags(newItemID, newItemInfo);
+                    //Change the Event Items get flags to correspond to the new item
+                    //These are flags that are set when the item is gotten
+                    item.itemGetFlags = CreateGetFlags(newItemID, newItemInfo);
 
-                //Change the name used when calling setitem to correspond to new item
-                item.itemLabel = newItemInfo.boxName;
+                    //Change the name used when calling setitem to correspond to new item
+                    item.itemLabel = newItemInfo.boxName;
 
-                //Change the sprite to correspond to new item
-                Sprite sprite;
-                //Mantras don't have an icon so use the Mantra software icon
-                if (newItemID >= ItemID.Heaven && newItemID <= ItemID.Night)
-                {
-                    sprite = L2SystemCore.getMapIconSprite(L2SystemCore.getItemData("Mantra"));
+                    //Change the sprite to correspond to new item
+                    Sprite sprite;
+                    //Mantras don't have an icon so use the Mantra software icon
+                    if (newItemID >= ItemID.Heaven && newItemID <= ItemID.Night)
+                    {
+                        sprite = L2SystemCore.getMapIconSprite(L2SystemCore.getItemData("Mantra"));
+                    }
+                    else
+                    {
+                        sprite = L2SystemCore.getMapIconSprite(L2SystemCore.getItemData(newItemInfo.boxName));
+                    }
+                    item.gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
                 }
-                else
-                {
-                    sprite = L2SystemCore.getMapIconSprite(L2SystemCore.getItemData(newItemInfo.boxName));
-                }
-                item.gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
             }
         }
 
@@ -429,7 +446,7 @@ namespace LM2RandomiserMod
             shopDataBase.cellData[4][24][1][0] = CreateShopItemsString(LocationID.HinerShop1, LocationID.HinerShop2, LocationID.HinerShop4);
             shopDataBase.cellData[5][24][1][0] = CreateShopItemsString(LocationID.KorobokShop1, LocationID.KorobokShop2, LocationID.KorobokShop3);
             shopDataBase.cellData[6][24][1][0] = CreateShopItemsString(LocationID.PymShop1, LocationID.PymShop2, LocationID.PymShop3);
-            shopDataBase.cellData[7][24][1][0] = CreateShopItemsString(LocationID.PiebalusaShop1, LocationID.PiebalusaShop2, LocationID.PiebalusaShop3);
+            shopDataBase.cellData[7][24][1][0] = CreateShopItemsString(LocationID.PeibalusaShop1, LocationID.PeibalusaShop2, LocationID.PeibalusaShop3);
             shopDataBase.cellData[8][24][1][0] = CreateShopItemsString(LocationID.HiroRoderickShop1, LocationID.HiroRoderickShop2, LocationID.HiroRoderickShop3);
             shopDataBase.cellData[9][24][1][0] = CreateShopItemsString(LocationID.BtkShop1, LocationID.BtkShop2, LocationID.BtkShop3);
             shopDataBase.cellData[10][24][1][0] = CreateShopItemsString(LocationID.BtkShop1, LocationID.BtkShop2, LocationID.BtkShop3);
@@ -469,7 +486,7 @@ namespace LM2RandomiserMod
             ChangeThanksStrings(LocationID.HinerShop1, LocationID.HinerShop2, LocationID.HinerShop4,4,8);
             ChangeThanksStrings(LocationID.KorobokShop1, LocationID.KorobokShop2, LocationID.KorobokShop3,5,8);
             ChangeThanksStrings(LocationID.PymShop1, LocationID.PymShop2, LocationID.PymShop3,6,8);
-            ChangeThanksStrings(LocationID.PiebalusaShop1, LocationID.PiebalusaShop2, LocationID.PiebalusaShop3,7,8);
+            ChangeThanksStrings(LocationID.PeibalusaShop1, LocationID.PeibalusaShop2, LocationID.PeibalusaShop3,7,8);
             ChangeThanksStrings(LocationID.HiroRoderickShop1, LocationID.HiroRoderickShop2, LocationID.HiroRoderickShop3,8,8);
             ChangeThanksStrings(LocationID.BtkShop1, LocationID.BtkShop2, LocationID.BtkShop3,9,8);
             ChangeThanksStrings(LocationID.BtkShop1, LocationID.BtkShop2, LocationID.BtkShop3,10,8);
@@ -490,6 +507,39 @@ namespace LM2RandomiserMod
             shopDataBase.cellData[seet][first][1][0] += CreateGetFlagString(firstSpot);
             shopDataBase.cellData[seet][first + secondOffset][1][0] += CreateGetFlagString(secondSpot);
             shopDataBase.cellData[seet][first + thirdOffset][1][0] += CreateGetFlagString(thirdSpot);
+        }
+
+        private string CreateGetFlagString(LocationID locationID)
+        {
+            string flagString = string.Empty;
+
+            if (locationToItemMap.TryGetValue(locationID, out ItemID newItemID))
+            {
+                ItemInfo newItemInfo = ItemDB.GetItemInfo(newItemID);
+
+                if (newItemInfo.boxName.Equals("Crystal S"))
+                {
+                    flagString = "\n[@take,Crystal S,02item,1]";
+                }
+
+                L2FlagBoxEnd[] getFLags = CreateGetFlags(newItemID, newItemInfo);
+                if (getFLags != null)
+                {
+                    for (int i = 0; i < getFLags.Length; i++)
+                    {
+                        L2FlagBoxEnd flag = getFLags[i];
+                        if (flag.calcu == CALCU.ADD)
+                        {
+                            flagString += string.Format("\n[@setf,{0},{1},+,{2}]", flag.seet_no1, flag.flag_no1, flag.data);
+                        }
+                        else if (flag.calcu == CALCU.EQR)
+                        {
+                            flagString += string.Format("\n[@setf,{0},{1},=,{2}]", flag.seet_no1, flag.flag_no1, flag.data);
+                        }
+                    }
+                }
+            }
+            return flagString;
         }
 
         private void ChangeDialogueItems()
@@ -604,39 +654,6 @@ namespace LM2RandomiserMod
             return string.Empty;
         }
 
-        private string CreateGetFlagString(LocationID locationID)
-        {
-            string flagString = string.Empty;
-
-            if (locationToItemMap.TryGetValue(locationID, out ItemID newItemID))
-            {
-                ItemInfo newItemInfo = ItemDB.GetItemInfo(newItemID);
-
-                if (newItemInfo.boxName.Equals("Crystal S"))
-                {
-                    flagString = "\n[@take,Crystal S,02item,1]";
-                }
-
-                L2FlagBoxEnd[] getFLags = CreateGetFlags(newItemID, newItemInfo);
-                if (getFLags != null)
-                {
-                    for (int i = 0; i < getFLags.Length; i++)
-                    {
-                        L2FlagBoxEnd flag = getFLags[i];
-                        if (flag.calcu == CALCU.ADD)
-                        {
-                            flagString += string.Format("\n[@setf,{0},{1},+,{2}]", flag.seet_no1, flag.flag_no1, flag.data);
-                        }
-                        else if (flag.calcu == CALCU.EQR)
-                        {
-                            flagString += string.Format("\n[@setf,{0},{1},=,{2}]", flag.seet_no1, flag.flag_no1, flag.data);
-                        }
-                    }
-                }
-            }
-            return flagString;
-        }
-
         private string ChangeTalkFlagCheck(LocationID locationID, COMPARISON comp, string original)
         {
             if (locationToItemMap.TryGetValue(locationID, out ItemID newItemID))
@@ -740,6 +757,9 @@ namespace LM2RandomiserMod
 
             //Add check to see if you have beaten 4 guardians so mulbruuk can give you the item
             talkDataBase.cellData[10][41][1][0] = "[@exit]\n[@anim,talk,1]\n[@setf,3,33,=,10]\n[@iff,3,0,&gt;,3,mulbruk2,3rd-1]\n[@p,lastC]";
+
+            //fix giltoriyo early dialogue exit
+            talkDataBase.cellData[3][6][1][0] = "[@setf,5,62,=,2]\n[@setf,1,7,=,0]\n[@anim,talk,1]\n[@p,1st-4]";
         }
     }
 }

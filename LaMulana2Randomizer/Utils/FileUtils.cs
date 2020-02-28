@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
-using LM2Randomizer.Logging;
-using LM2RandomizerShared;
+using LaMulana2RandomizerShared;
 
-namespace LM2Randomizer.Utils
+namespace LaMulana2Randomizer.Utils
 {
     public abstract class FileUtils
     {
-        public static bool GetWorldData(out List<JsonArea> areas)
+        public static void GetWorldData(out List<JsonArea> areas)
         {
             try
             {
@@ -18,18 +16,16 @@ namespace LM2Randomizer.Utils
                 {
                     JsonSerializer serializer = new JsonSerializer();
                     areas = (List<JsonArea>)serializer.Deserialize(sr, typeof(List<JsonArea>));
-                    return true;
                 }
             }
             catch (Exception ex)
             {
-                Logger.Log($"Failed to deserialise World.json, {ex.Message}");
-                areas = null;
-                return false;
+                Logger.Log($"Failed to deserialise World.json.\n{ex.Message}");
+                throw new RandomiserException("Failed to parse World.json.");
             }
         }
 
-        public static bool GetItemsFromJson(string filePath, out List<Item> itemPool)
+        public static void GetItemsFromJson(string filePath, out List<Item> itemPool)
         {
             try
             {
@@ -37,14 +33,12 @@ namespace LM2Randomizer.Utils
                 {
                     JsonSerializer serializer = new JsonSerializer();
                     itemPool = (List<Item>)serializer.Deserialize(sr, typeof(List<Item>));
-                    return true;
                 }
             }
             catch (Exception ex)
             {
-                Logger.Log($"Failed to deserialise {filePath}, {ex.Message}");
-                itemPool = null;
-                return false;
+                Logger.Log($"Failed to deserialise {filePath}.\n{ex.Message}");
+                throw new RandomiserException($"Failed to parse {filePath}.");
             }
         }
         
@@ -99,7 +93,7 @@ namespace LM2Randomizer.Utils
             }
             catch (Exception ex)
             {
-                Logger.Log($"Failed to write spoiler log, {ex.Message}");
+                Logger.Log($"Failed to write spoiler log.\n {ex.Message}");
                 return false;
             }
         }
@@ -132,7 +126,7 @@ namespace LM2Randomizer.Utils
             }
             catch (Exception ex)
             {
-                Logger.Log($"Failed to write seed file, {ex.Message}");
+                Logger.Log($"Failed to write seed file.\n {ex.Message}");
                 return false;
             }
             return true;

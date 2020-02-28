@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace LM2Randomizer.UI
+namespace LaMulana2Randomizer.UI
 {
     [ValueConversion(typeof(ValidationError), typeof(bool))]
     public class TextErrorBooleanConverter : IValueConverter

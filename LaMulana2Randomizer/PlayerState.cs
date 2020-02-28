@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using LM2RandomizerShared;
-using LM2Randomizer.RuleParsing;
+using LaMulana2RandomizerShared;
+using LaMulana2Randomizer.LogicParsing;
 
-namespace LM2Randomizer
+namespace LaMulana2Randomizer
 {
     public class PlayerState
     {
@@ -15,13 +15,16 @@ namespace LM2Randomizer
         public Dictionary<string, int> collectedItems;
         public Randomiser Randomiser;
 
-        public PlayerState(Randomiser randomiser)
+        private bool soflocktest = false;
+
+        public PlayerState(Randomiser randomiser, bool softlock = false)
         {
             Randomiser = randomiser;
             areaChecks =  new Dictionary<string, bool>();
             entraceChecks = new Dictionary<string, bool>();
             collectedLocations = new Dictionary<string, bool>();
             collectedItems = new Dictionary<string, int>();
+            soflocktest = softlock;
         }
         
         public static PlayerState GetStateWithItems(Randomiser randomiser, List<Item> currentItems)
@@ -51,6 +54,32 @@ namespace LM2Randomizer
             return state;
         }
 
+        public bool SoftlockCheck(List<Location> requiredLocations, Location locationToSkip)
+        {
+            List<Location> reachableLocations;
+            do
+            {
+                reachableLocations = GetReachableLocations(requiredLocations);
+                foreach (Location location in reachableLocations)
+                {
+                    collectedLocations.Add(location.Name, true);
+                    if (location.Equals(locationToSkip))
+                        continue;
+
+                    CollectItem(location.Item);
+                }
+
+                ResetCheckedAreasAndEntrances();
+
+            } while (reachableLocations.Count > 0);
+
+
+            if (GuardianKills(8) && !AnkhCountSoftLock())
+                return false;
+
+            return true;
+        }
+
         public bool CanBeatGame(List<Location> requiredLocations)
         {
             List<Location> reachableLocations;
@@ -73,7 +102,7 @@ namespace LM2Randomizer
         public bool CanReach(string areaName)
         {
             Area area = Randomiser.GetArea(areaName);
-            if (area.Name.Equals("Village of Departure"))
+            if (area.Equals(Randomiser.GetArea("Village of Departure")))
             {
                 return true;
             }
@@ -142,53 +171,53 @@ namespace LM2Randomizer
             }
         }
 
-        public bool Evaluate(Rule rule)
+        public bool Evaluate(Logic rule)
         {
-            switch (rule.ruleType)
+            switch (rule.logicType)
             {
-                case RuleType.CanReach:
+                case LogicType.CanReach:
                     return CanReach(rule.value);
 
-                case RuleType.CanChant:
+                case LogicType.CanChant:
                     return CanChant(rule.value);
 
-                case RuleType.CanWarp:
+                case LogicType.CanWarp:
                     return HasItem("Holy Grail");
 
-                case RuleType.CanSpinCorridor:
+                case LogicType.CanSpinCorridor:
                     return CanSpinCorridor(); 
 
-                case RuleType.Has:
+                case LogicType.Has:
                     return HasItem(rule.value);
 
-                case RuleType.CanUse:
+                case LogicType.CanUse:
                     return CanUse(rule.value);
 
-                case RuleType.IsDead:
+                case LogicType.IsDead:
                     return HasItem(rule.value);
 
-                case RuleType.OrbCount:
+                case LogicType.OrbCount:
                     return OrbCount(int.Parse(rule.value));
 
-                case RuleType.GuardianKills:
+                case LogicType.GuardianKills:
                     return GuardianKills(int.Parse(rule.value));
 
-                case RuleType.PuzzleFinished:
+                case LogicType.PuzzleFinished:
                     return HasItem(rule.value);
 
-                case RuleType.AnkhCount:
-                    return AnkhCount(int.Parse(rule.value));
+                case LogicType.AnkhCount:
+                    return soflocktest ? AnkhCountSoftLock() : AnkhCount(int.Parse(rule.value));
 
-                case RuleType.Dissonance:
+                case LogicType.Dissonance:
                     return Dissonance(int.Parse(rule.value));
 
-                case RuleType.SkullCount:
+                case LogicType.SkullCount:
                     return SkullCount(int.Parse(rule.value));
 
-                case RuleType.HasWeaponUpgrade:
+                case LogicType.HasWeaponUpgrade:
                     return HasItem("Chain Whip") || HasItem("Flail Whip") || HasItem("Axe") || HasItem("Axe");
 
-                case RuleType.True:
+                case LogicType.True:
                     return true;
 
                 default:
@@ -253,16 +282,12 @@ namespace LM2Randomizer
             if (subWeapon.Equals("Claydoll Suit"))
             {
                 if (!HasItem(subWeapon))
-                {
                     return false;
-                }
                 
                 foreach(string subWeaponName in subWeaponNames)
                 {
                     if (HasItem(subWeaponName))
-                    {
                         return true;
-                    }
                 }
 
                 return false;
@@ -281,26 +306,35 @@ namespace LM2Randomizer
         private bool GuardianKills(int count)
         {
             if (collectedItems.TryGetValue("Guardians", out int num))
-            {
                 return num >= count;
-            }
+            
             return false;
         }
 
         private bool OrbCount(int count)
         {
             if (collectedItems.TryGetValue("Sacred Orb", out int num))
-            {
                 return num >= count;
-            }
+            
             return false;
         }
 
         private bool AnkhCount(int count)
         {
             if (collectedItems.TryGetValue("Ankh Jewel", out int num))
-            {
                 return num >= count;
+            
+            return false;
+        }
+
+        private bool AnkhCountSoftLock()
+        {
+            if (collectedItems.TryGetValue("Ankh Jewel", out int ankhs))
+            {
+                if (collectedItems.TryGetValue("Guardians", out int guardians))
+                    return ankhs > guardians;
+
+                return true;
             }
             return false;
         }
@@ -308,18 +342,16 @@ namespace LM2Randomizer
         private bool SkullCount(int count)
         {
             if (collectedItems.TryGetValue("Crystal Skull", out int num))
-            {
                 return num >= count;
-            }
+            
             return false;
         }
 
         private bool Dissonance(int count)
         {
             if (collectedItems.TryGetValue("Dissonance", out int num))
-            {
                 return num >= count;
-            }
+            
             return false;
         }
     }

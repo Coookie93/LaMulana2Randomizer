@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace LM2Randomizer
+namespace LaMulana2Randomizer
 {
     public abstract class BindableBase : INotifyPropertyChanged
     {
