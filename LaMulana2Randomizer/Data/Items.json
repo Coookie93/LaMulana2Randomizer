@@ -462,7 +462,7 @@
   {
     "name": "Future Development Company",
     "id": 101,
-    "isRequired": false
+    "isRequired": true
   },
   {
     "name": "La-Mulana",
