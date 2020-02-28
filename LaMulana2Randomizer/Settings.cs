@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LM2Randomizer
+namespace LaMulana2Randomizer
 {
     public enum ShopPlacement
     {
@@ -42,6 +42,12 @@ namespace LM2Randomizer
             set=>Set(ref _randomCodices, value); 
         }
 
+        private bool _randomFDC;
+        public bool RandomFDC {
+            get => _randomFDC;
+            set => Set(ref _randomFDC, value);
+        }
+
         private bool _fDCForBacksides;
         public bool FDCForBacksides { 
             get=>_fDCForBacksides; 
@@ -74,8 +80,9 @@ namespace LM2Randomizer
                 Set(ref _shopPlacement, value);
                 if(value == ShopPlacement.Original)
                 {
-                    RandomScanner = true;
-                    RandomCodices = true;
+                    RandomScanner = false;
+                    RandomCodices = false;
+                    RandomFDC = false;
                     FDCForBacksides = false;
                 }
              }
@@ -87,6 +94,7 @@ namespace LM2Randomizer
             RandomGrail = false;
             RandomScanner = false;
             RandomCodices = true;
+            RandomFDC = true;
             FDCForBacksides = false;
             HardBosses = false;
             AutScanTablets = false;
