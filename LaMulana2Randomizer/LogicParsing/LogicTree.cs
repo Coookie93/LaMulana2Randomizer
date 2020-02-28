@@ -1,52 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
+using LaMulana2Randomizer;
+using LaMulana2Randomizer.Utils;
 
-namespace LM2Randomizer.RuleParsing
+namespace LaMulana2Randomizer.LogicParsing
 {
-    public abstract class RuleTree
+    public abstract class LogicTree
     {
-        public static BinaryNode ParseAndBuildRules(string ruleString)
+        public static BinaryNode ParseAndBuildLogic(string logicString)
         {
             try
             {
-                IList<Token> tokens = new Tokeniser(ruleString).Tokenise();
+                IList<Token> tokens = new Tokeniser(logicString).Tokenise();
                 IList<Token> polish = ShuntingYard.Sort(tokens);
                 IEnumerator<Token> enumerator = polish.GetEnumerator();
                 enumerator.MoveNext();
 
-                return BuildRuleTree(enumerator);
+                return BuildLogicTree(enumerator);
             }
-            catch(Exception)
+            catch(Exception ex)
             {
-                throw new Exception($"Failed to parse or build rule string, {ruleString}.");
+                Logger.Log($"Failed to parse or build logic string, {logicString}.");
+                Logger.LogAndFlush(ex.Message);
+                throw new LogicParsingExcpetion("Failed to parse logic.");
             }
         }
 
-        private static BinaryNode BuildRuleTree(IEnumerator<Token> tokens)
+        private static BinaryNode BuildLogicTree(IEnumerator<Token> tokens)
         {
-            if (tokens.Current.type == TokenType.RuleToken)
+            if (tokens.Current.Type == TokenType.RuleToken)
             {
-                RuleNode node = new RuleNode(tokens.Current.rule, tokens.Current.value);
+                LogicNode node = new LogicNode(tokens.Current.Logic, tokens.Current.Value);
                 tokens.MoveNext();
                 return node;
             }
-            else if (tokens.Current.type == TokenType.AndOperator)
+            else if (tokens.Current.Type == TokenType.AndOperator)
             {
                 tokens.MoveNext();
                 AndNode node = new AndNode
                 {
-                    left = BuildRuleTree(tokens),
-                    right = BuildRuleTree(tokens)
+                    left = BuildLogicTree(tokens),
+                    right = BuildLogicTree(tokens)
                 };
                 return node;
             }
-            else if (tokens.Current.type == TokenType.OrOperator)
+            else if (tokens.Current.Type == TokenType.OrOperator)
             {
                 tokens.MoveNext();
                 OrNode node = new OrNode
                 {
-                    left = BuildRuleTree(tokens),
-                    right = BuildRuleTree(tokens)
+                    left = BuildLogicTree(tokens),
+                    right = BuildLogicTree(tokens)
                 };
                 return node;
             }
@@ -79,18 +83,18 @@ namespace LM2Randomizer.RuleParsing
         }
     }
 
-    public class RuleNode : BinaryNode
+    public class LogicNode : BinaryNode
     {
-        public Rule rule;
+        public Logic logic;
 
-        public RuleNode(string ruleType, string value = null)
+        public LogicNode(string logicType, string value = null)
         {
-            rule = new Rule(ruleType, value);
+            logic = new Logic(logicType, value);
         }
 
         public override bool Evaluate(PlayerState state)
         {
-            return state.Evaluate(rule);
+            return state.Evaluate(logic);
         }
     }
 }

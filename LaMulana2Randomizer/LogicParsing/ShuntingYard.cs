@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 
-namespace LM2Randomizer.RuleParsing
+namespace LaMulana2Randomizer.LogicParsing
 {
     public abstract class ShuntingYard
     {
@@ -17,14 +17,14 @@ namespace LM2Randomizer.RuleParsing
             {
                 Token token = tokens[index];
 
-                switch (token.type)
+                switch (token.Type)
                 {
                     case TokenType.RuleToken:
                         outputQueue.Enqueue(token);
                         break;
 
                     case TokenType.AndOperator:
-                        while (stack.Count > 0 && stack.Peek().type == TokenType.AndOperator)
+                        while (stack.Count > 0 && stack.Peek().Type == TokenType.AndOperator)
                         {
                             outputQueue.Enqueue(stack.Pop());
                         }
@@ -32,7 +32,7 @@ namespace LM2Randomizer.RuleParsing
                         break;
 
                     case TokenType.OrOperator:
-                        while (stack.Count > 0 && (stack.Peek().type == TokenType.AndOperator || stack.Peek().type == TokenType.OrOperator))
+                        while (stack.Count > 0 && (stack.Peek().Type == TokenType.AndOperator || stack.Peek().Type == TokenType.OrOperator))
                         {
                             outputQueue.Enqueue(stack.Pop());
                         }
@@ -44,11 +44,11 @@ namespace LM2Randomizer.RuleParsing
                         break;
 
                     case TokenType.ClosedParentheses:
-                        while (stack.Count > 0 && stack.Peek().type != TokenType.OpenParentheses)
+                        while (stack.Count > 0 && stack.Peek().Type != TokenType.OpenParentheses)
                         {
                             outputQueue.Enqueue(stack.Pop());
                         }
-                        if (stack.Count == 0 || stack.Peek().type != TokenType.OpenParentheses)
+                        if (stack.Count == 0 || stack.Peek().Type != TokenType.OpenParentheses)
                         {
                             //NOTE:Should never hit this is theory
                             throw new Exception("Mismatched parentheses.");

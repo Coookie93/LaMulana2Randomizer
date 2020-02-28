@@ -2,7 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 
-namespace LM2Randomizer.RuleParsing
+namespace LaMulana2Randomizer.LogicParsing
 {
     public enum TokenType
     {
@@ -15,17 +15,16 @@ namespace LM2Randomizer.RuleParsing
 
     public class Token
     {
-        public Token(TokenType type, string rule = null, string value = null)
+        public Token(TokenType type, string logic = null, string value = null)
         {
-            this.type = type;
-            this.rule = rule;
-            this.value = value;
-
+            Type = type;
+            Logic = logic;
+            Value = value;
         }
 
-        public TokenType type;
-        public string rule;
-        public string value;
+        public TokenType Type;
+        public string Logic;
+        public string Value;
     }
 
     public class Tokeniser
@@ -52,9 +51,9 @@ namespace LM2Randomizer.RuleParsing
                     if (tokens.Count != 0)
                     {
                         Token previousToken = tokens[tokens.Count - 1];
-                        if (previousToken.type == TokenType.ClosedParentheses || previousToken.type == TokenType.RuleToken)
+                        if (previousToken.Type == TokenType.ClosedParentheses || previousToken.Type == TokenType.RuleToken)
                         {
-                            throw new Exception("An opne parentheses can only follow an \"and\" expression, an \"or\" expression or an parenthesis.");
+                            throw new TokeniserException("An open parentheses can only follow an \"and\" expression, an \"or\" expression or an parenthesis.");
                         }
                     }
 
@@ -66,14 +65,14 @@ namespace LM2Randomizer.RuleParsing
                 {
                     if (tokens.Count == 0)
                     {
-                        throw new Exception("Rule string can't start with a closed parentheses.");
+                        throw new TokeniserException("Logic string can't start with a closed parentheses.");
                     }
                     else
                     {
                         Token previousToken = tokens[tokens.Count - 1];
-                        if (previousToken.type == TokenType.OpenParentheses || previousToken.type == TokenType.AndOperator || previousToken.type == TokenType.OrOperator)
+                        if (previousToken.Type == TokenType.OpenParentheses || previousToken.Type == TokenType.AndOperator || previousToken.Type == TokenType.OrOperator)
                         {
-                            throw new Exception("A closed parentheses can only follow a rule expression or a closed parenthesis.");
+                            throw new TokeniserException("A closed parentheses can only follow a logic expression or a closed parenthesis.");
                         }
                     }
 
@@ -91,13 +90,13 @@ namespace LM2Randomizer.RuleParsing
                 }
                 else
                 {
-                    throw new Exception($"Failed to parse character \"{next}\" when tokenising rule string.");
+                    throw new TokeniserException($"Failed to parse character \"{next}\" when tokenising logic string.");
                 }
             }
 
             if(parenthesCheck != 0)
             {
-                throw new Exception("Mismatched amount of open and closed parentheses in rule string.");
+                throw new TokeniserException("Mismatched amount of open and closed parentheses in logic string.");
             }
 
             return tokens;
@@ -111,34 +110,34 @@ namespace LM2Randomizer.RuleParsing
             {
                 if (tokens.Count == 0)
                 {
-                    throw new Exception("Rule string can't start with \"or\" expression.");
+                    throw new TokeniserException("Logic string can't start with \"or\" expression.");
                 }
 
                 Token previousToken = tokens[tokens.Count - 1];
-                if (previousToken.type == TokenType.ClosedParentheses || previousToken.type == TokenType.RuleToken)
+                if (previousToken.Type == TokenType.ClosedParentheses || previousToken.Type == TokenType.RuleToken)
                 {
                     tokens.Add(new Token(TokenType.OrOperator));
                 }
                 else
                 {
-                    throw new Exception("An \"or\" expression can only follow a closed parentheses or a rule in a rule string.");
+                    throw new TokeniserException("An \"or\" expression can only follow a closed parentheses or logic expression in a logic string.");
                 }
             }
             else if (s.Equals("and"))
             {
                 if (tokens.Count == 0)
                 {
-                    throw new Exception("Rule string can't start with \"and\" expression.");
+                    throw new TokeniserException("Rule string can't start with \"and\" expression.");
                 }
 
                 Token previousToken = tokens[tokens.Count - 1];
-                if (previousToken.type == TokenType.ClosedParentheses || previousToken.type == TokenType.RuleToken)
+                if (previousToken.Type == TokenType.ClosedParentheses || previousToken.Type == TokenType.RuleToken)
                 {
                     tokens.Add(new Token(TokenType.AndOperator));
                 }
                 else
                 {
-                    throw new Exception("An \"and\" expression can only follow a closed parentheses or a rule expression in a rule string.");
+                    throw new TokeniserException("An \"and\" expression can only follow a closed parentheses or a logic expression in a logic string.");
                 }
             }
             else
@@ -146,9 +145,9 @@ namespace LM2Randomizer.RuleParsing
                 if (tokens.Count != 0)
                 {
                     Token previousToken = tokens[tokens.Count - 1];
-                    if (previousToken.type == TokenType.ClosedParentheses || previousToken.type == TokenType.RuleToken)
+                    if (previousToken.Type == TokenType.ClosedParentheses || previousToken.Type == TokenType.RuleToken)
                     {
-                        throw new Exception("A rule expression can only follow and open parentheses, an \"and\" expression or an \"or\" expression in a rule string.");
+                        throw new TokeniserException("A rule expression can only follow and open parentheses, an \"and\" expression or an \"or\" expression in a logic string.");
                     }
                 }
 
@@ -195,4 +194,8 @@ namespace LM2Randomizer.RuleParsing
         }
     }
 
+    public class TokeniserException : Exception
+    {
+        public TokeniserException(string message) : base(message) { }
+    }
 }

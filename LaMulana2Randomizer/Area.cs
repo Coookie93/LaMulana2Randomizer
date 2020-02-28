@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace LM2Randomizer
+namespace LaMulana2Randomizer
 {
     public class JsonArea
     {

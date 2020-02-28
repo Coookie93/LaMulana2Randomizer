@@ -2,7 +2,7 @@
 using System.IO;
 using System.Windows;
 
-namespace LM2Randomizer.Logging
+namespace LaMulana2Randomizer.Utils
 {
     public static class Logger
     {
