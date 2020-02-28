@@ -1,15 +1,21 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using L2Base;
 using L2Flag;
+using LM2RandomiserMod.Patches;
 
 namespace LM2RandomiserMod
 {
     public class DevUI : MonoBehaviour
     {
+        private Font currentFont = null;
+
         private L2Rando rando;
         private L2System sys;
 
-        bool showUI = true;
+        private bool showUI = true;
+        private bool showFlagWatch = true;
+
 
         private string areaString;
         private string screenXString;
@@ -34,7 +40,7 @@ namespace LM2RandomiserMod
             Cursor.visible = true;
         }
 
-        void OnGUI() {
+        public void OnGUI() {
 
             if (showUI && sys.getPlayer() != null)
             {
@@ -70,19 +76,66 @@ namespace LM2RandomiserMod
                 sys.setPandaModeHP(GUI.Toggle(new Rect(300, 0, 120, 25), sys.getPandaModeHP(), "Panda Mode"));
                 sys.setPandaModeHit(GUI.Toggle(new Rect(300, 25, 120, 25), sys.getPandaModeHit(), "Panda Hit Mode"));
             }
+
+            if (showFlagWatch)
+            {
+                if (currentFont == null)
+                {
+                    currentFont = Font.CreateDynamicFontFromOSFont("Consolas", 14);
+                }
+
+                GUIStyle guistyle = new GUIStyle(GUI.skin.label);
+                guistyle.normal.textColor = Color.white;
+                guistyle.fontStyle = FontStyle.Bold;
+                guistyle.font = currentFont;
+                guistyle.fontSize = 14;
+
+                var flagWatch = ((patched_L2FlagSystem)sys.getFlagSys()).GetFlagWatches();
+
+                if (flagWatch == null || flagWatch.Count < 1)
+                    return;
+
+                guistyle.fontSize = 10;
+                GUIContent flw1 = new GUIContent(flagWatch[flagWatch.Count - 1] + "\r\n" + flagWatch[flagWatch.Count - 2] +
+                                                 "\r\n" + flagWatch[flagWatch.Count - 3]);
+                Vector2 flw1Size = guistyle.CalcSize(flw1);
+                GUI.Label(new Rect(0, Screen.height - flw1Size.y, flw1Size.x, flw1Size.y), flw1, guistyle);
+
+                try
+                {
+                    GUIContent flw2 = new GUIContent(flagWatch[flagWatch.Count - 4] + "\r\n" +
+                                                     flagWatch[flagWatch.Count - 5] + "\r\n" +
+                                                     flagWatch[flagWatch.Count - 6]);
+                    Vector2 flw2Size = guistyle.CalcSize(flw2);
+                    GUI.contentColor = Color.grey;
+                    GUI.Label(new Rect(flw1Size.x + 20, Screen.height - flw1Size.y, flw2Size.x, flw2Size.y), flw2,
+                        guistyle);
+
+                    GUIContent flw3 = new GUIContent(flagWatch[flagWatch.Count - 7] + "\r\n" +
+                                                     flagWatch[flagWatch.Count - 8] + "\r\n" +
+                                                     flagWatch[flagWatch.Count - 9]);
+                    Vector2 flw3Size = guistyle.CalcSize(flw3);
+                    GUI.contentColor = Color.grey;
+                    GUI.Label(new Rect(flw1Size.x + flw2Size.x + 40, Screen.height - flw2Size.y, flw3Size.x, flw3Size.y), flw3,
+                        guistyle);
+                }
+                catch (Exception)
+                {
+                }
+            }
         }
 
-        
-        void Update()
+        public void Update()
         {
             if(Input.GetKeyDown(KeyCode.F10))
-            {
                 showUI = !showUI;
-            }
+
             if (Input.GetKeyDown(KeyCode.F9))
-            {
+                showFlagWatch = !showFlagWatch;
+
+            if (Input.GetKeyDown(KeyCode.F5))
                 StartCoroutine(rando.Setup());
-            }
+
             UpdateBGSys();
         }
 
@@ -150,38 +203,43 @@ namespace LM2RandomiserMod
 
         private void DoDebugWarp()
         {
-            int area = int.Parse(areaString);
-            int screenX = int.Parse(screenXString);
-            int screenY = int.Parse(screenYString);
-            int posX = int.Parse(posXString);
-            int posY = int.Parse(posYString);
-
-            L2SystemCore sysCore = sys.getL2SystemCore();
-
-            sysCore.setJumpPosition(screenX, screenY, posX, posY, 0f);
-            if (sysCore.SceaneNo != area)
+            try
             {
-                sysCore.gameScreenFadeOut(10);
-                sysCore.setFadeInFlag(true);
-                sysCore.changeFieldSceane(area, true, false);
-                sceneJump = true;
+                int area = int.Parse(areaString);
+                int screenX = int.Parse(screenXString);
+                int screenY = int.Parse(screenYString);
+                int posX = int.Parse(posXString);
+                int posY = int.Parse(posYString);
+
+                L2SystemCore sysCore = sys.getL2SystemCore();
+
+                sysCore.setJumpPosition(screenX, screenY, posX, posY, 0f);
+                if (sysCore.SceaneNo != area)
+                {
+                    sysCore.gameScreenFadeOut(10);
+                    sysCore.setFadeInFlag(true);
+                    sysCore.changeFieldSceane(area, true, false);
+                    sceneJump = true;
+                }
+                else
+                {
+                    JumpPosition();
+                    UpdatePositionInfo();
+                }
             }
-            else
+            catch (Exception)
             {
-                JumpPosition();
-                UpdatePositionInfo();
+                return;
             }
         }
 
         private void JumpPosition()
         {
             if (this.sceneJump)
-            {
                 return;
-            }
-            Vector3 vector = default(Vector3);
+
             L2SystemCore sysCore = sys.getL2SystemCore();
-            if (sysCore.getJumpPosition(out vector))
+            if (sysCore.getJumpPosition(out Vector3 vector))
             {
                 sysCore.L2Sys.movePlayer(vector);
                 currentBGSys.setPlayerPosition(vector, false);
