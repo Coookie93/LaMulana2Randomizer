@@ -16,9 +16,12 @@ namespace LM2RandomiserMod.Patches
             //Mantras don't have an icon so just use the mantra software icon
             if (this.itemLabel.Contains("Mantra"))
             {
-                this.itemLabel = "Mantra";
+                this.pl.setGetItemIcon(L2SystemCore.getItemData("Mantra"));
             }
-            this.pl.setGetItemIcon(L2SystemCore.getItemData(this.itemLabel));
+            else
+            {
+                this.pl.setGetItemIcon(L2SystemCore.getItemData(this.itemLabel));
+            }
         }
     }
 }
