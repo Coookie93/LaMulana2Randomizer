@@ -1,5 +1,5 @@
 # La Mulana 2 Randomizer
-Before playing a run it is best to head over to https://github.com/Coookie93/LaMulana2Randomizer/wiki to check out the for more      information about the randomizer.
+Before playing a run it is best to head over to https://github.com/Coookie93/LaMulana2Randomizer/wiki for more information about the randomizer.
 
 ## Installing:
 0. Get the lastest version from https://github.com/Coookie93/LaMulana2Randomizer/releases
