@@ -7,7 +7,7 @@
         xmlns:main="clr-namespace:LaMulana2Randomizer"
         xmlns:vm="clr-namespace:LaMulana2Randomizer.ViewModels"
         mc:Ignorable="d"
-        Title="La-Mulana 2 Randomizer" SizeToContent="WidthAndHeight">
+        Title="La-Mulana 2 Randomizer"  Width="350" Height="550">
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>

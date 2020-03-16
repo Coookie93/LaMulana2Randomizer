@@ -99,13 +99,10 @@ namespace LaMulana2Randomizer
             List<Item> earlyItems = new List<Item>();
             if (!Settings.RandomGrail) 
                 earlyItems.Add(ItemPool.GetAndRemove(ItemID.HolyGrail, items));
-
             if (!Settings.RandomScanner && Settings.ShopPlacement != ShopPlacement.Original) 
                 earlyItems.Add(ItemPool.GetAndRemove(ItemID.HandScanner, items));
-
             if (!Settings.RandomCodices && Settings.ShopPlacement != ShopPlacement.Original) 
                 earlyItems.Add(ItemPool.GetAndRemove(ItemID.Codices, items));
-
             if (!Settings.RandomFDC && Settings.ShopPlacement != ShopPlacement.Original) 
                 earlyItems.Add(ItemPool.GetAndRemove(ItemID.FutureDevelopmentCompany, items));
 
