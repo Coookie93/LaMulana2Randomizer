@@ -7,7 +7,7 @@
         xmlns:main="clr-namespace:LaMulana2Randomizer"
         xmlns:vm="clr-namespace:LaMulana2Randomizer.ViewModels"
         mc:Ignorable="d"
-        Title="La-Mulana 2 Randomizer" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
+        Title="La-Mulana 2 Randomizer" SizeToContent="WidthAndHeight">
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
@@ -22,7 +22,7 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
-    <Grid Width="350" Height="500">
+    <Grid>
         <Grid.Resources>
             <Style TargetType="GroupBox">
                 <Setter Property="FontSize" Value="14"/>
@@ -120,24 +120,36 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <GroupBox Header="Logic" Grid.Row="0">
-                        <CheckBox Name="FDCBacksideCheck" IsChecked="{Binding Settings.FDCForBacksides}" Style="{StaticResource OriginalShopCheck}">
-                            <TextBlock>
-                                <Run Text="Require Future Development Company for"/>
-                                <LineBreak/>
-                                <Run Text="backsides."/>
-                            </TextBlock>
-                            <CheckBox.ToolTip>
+                        <StackPanel>
+                            <CheckBox Name="FDCBacksideCheck" IsChecked="{Binding Settings.FDCForBacksides}" Style="{StaticResource OriginalShopCheck}" Margin="0,2">
                                 <TextBlock>
-                                    Makes Future Development company required
+                                    <Run Text="Require Future Development Company for"/>
                                     <LineBreak/>
-                                    to logically enter Valhalla, Dark Lord's
-                                    <LineBreak/>
-                                    Mauseleum, Ancient Chaos, Hall of Malice
-                                    <LineBreak/>
-                                    and Eternal Prison.
+                                    <Run Text="backsides."/>
                                 </TextBlock>
-                            </CheckBox.ToolTip>
-                        </CheckBox>
+                                <CheckBox.ToolTip>
+                                    <TextBlock>
+                                        Makes Future Development company required
+                                        <LineBreak/>
+                                        to logically enter Valhalla, Dark Lord's
+                                        <LineBreak/>
+                                        Mauseleum, Ancient Chaos, Hall of Malice
+                                        <LineBreak/>
+                                        and Eternal Prison.
+                                    </TextBlock>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <CheckBox Name="RandomCurseCheck" IsChecked="{Binding Settings.RandomCurses}" Margin="0,2">
+                                <TextBlock Text="Randomise Curses"/>
+                                <CheckBox.ToolTip>
+                                    <TextBlock>
+                                        Randomises which chests will have the curse
+                                        <LineBreak/>
+                                        the Mulana Talsiman is needed to break.
+                                    </TextBlock>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                        </StackPanel>
                     </GroupBox>
                     <GroupBox Header="Bosses" Grid.Row="1">
                         <StackPanel Margin="2">

@@ -9,28 +9,46 @@ using L2Flag;
 using LM2RandomiserMod.Patches;
 using LaMulana2RandomizerShared;
 
+using Version = LM2RandomizerShared.Version;
+
 namespace LM2RandomiserMod
 {
     public class L2Rando : MonoBehaviour
     {
-        private bool showText = false;
-        private string message;
-
+        private patched_L2System sys;
         private L2ShopDataBase shopDataBase;
         private L2TalkDataBase talkDataBase;
-        private patched_L2System sys;
 
-        private Dictionary<LocationID,ItemID> locationToItemMap;
+        private GameObject cursedChest;
 
         public bool Randomising { get; private set; } = false;
         public bool AutoScanTablets { get; private set; } = false;
+        private Dictionary<LocationID,ItemID> locationToItemMap;
+        private List<LocationID> cursedChests;
+
+        private Font currentFont = null;
+        private bool showText = false;
+        private string message;
 
         public void OnGUI()
         {
             if (showText)
             {
-                GUI.Label(new Rect(0, Screen.height - 125f, 500f, 100f), message);
-                GUI.Label(new Rect(0, Screen.height - 25f, 50f, 25f), Randomising.ToString());
+                if (currentFont == null)
+                    currentFont = Font.CreateDynamicFontFromOSFont("Consolas", 14);
+
+                GUIStyle guistyle = new GUIStyle(GUI.skin.label);
+                guistyle.normal.textColor = Color.white;
+                guistyle.font = currentFont;
+                guistyle.fontStyle = FontStyle.Bold;
+                guistyle.fontSize = 14;
+
+                GUIContent verContent = new GUIContent(Version.version);
+                Vector2 verSize = guistyle.CalcSize(verContent);
+                GUI.Label(new Rect(0, 0, verSize.x, verSize.y), verContent, guistyle);
+
+                guistyle.fontSize = 10;
+                GUI.Label(new Rect(0, verSize.y, 500, 50), message, guistyle);
             }
         }
 
@@ -46,9 +64,11 @@ namespace LM2RandomiserMod
 
         void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
+            showText = scene.name.Equals("title");
+            
             if (Randomising)
             {
-                ChangeTreasureBoxes();
+                StartCoroutine(ChangeTreasureBoxes());
                 ChangeEventItems();
 
                 //these cause the message to popup when you record a mantra for the first time, so just deactivate
@@ -56,9 +76,7 @@ namespace LM2RandomiserMod
                 foreach (FlagDialogueScript flagDialogue in FindObjectsOfType<FlagDialogueScript>())
                 {
                     if (flagDialogue.cellName.Contains("mantraDialog"))
-                    {
                         flagDialogue.gameObject.SetActive(false);
-                    }
                 }
 
                 //Change the snapshot type to software so as this behaves like getting an item instead of a mantra
@@ -66,9 +84,7 @@ namespace LM2RandomiserMod
                 {
                     LocationID locationID = GetLocationIDForMural(snapTarget);
                     if (locationID != LocationID.None)
-                    {
                         snapTarget.mode = SnapShotTargetScript.SnapShotMode.SOFTWARE;
-                    }
                 }
 
                 foreach (FlagWatcherScript flagWatcher in FindObjectsOfType<FlagWatcherScript>())
@@ -115,18 +131,22 @@ namespace LM2RandomiserMod
                             flagBoxParent.BOX = flagBoxes;
                         }
                     }
+
+                    foreach (L2FlagBoxParent flagBoxParent in flagWatcher.CheckFlags)
+                    {
+                        foreach (L2FlagBox flagBox in flagBoxParent.BOX)
+                        {
+                            if (flagBox.seet_no1 == 5 && flagBox.flag_no1 == 3 && flagBox.flag_no2 == 2)
+                            {
+                                flagBox.flag_no2 = 1;
+                                flagBox.comp = COMPARISON.GreaterEq;
+                            }
+                        }
+                    }
                 }
             }
         }
 
-        public void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.F11))
-            {
-                showText = !showText;
-            }
-        }
-        
         public ItemID GetItemIDForLocation(LocationID locationID)
         {
             locationToItemMap.TryGetValue(locationID, out ItemID id);
@@ -222,6 +242,7 @@ namespace LM2RandomiserMod
         bool LoadSeed()
         {
             locationToItemMap = new Dictionary<LocationID, ItemID>();
+            cursedChests = new List<LocationID>();
             try
             {
                 using (BinaryReader br = new BinaryReader(File.Open(Path.Combine(Directory.GetCurrentDirectory(),
@@ -233,8 +254,11 @@ namespace LM2RandomiserMod
                     {
                         locationToItemMap.Add((LocationID)br.ReadInt32(), (ItemID)br.ReadInt32());
                     }
-
-                    if(itemCount != locationToItemMap.Count)
+                    for(int i = 0; i < 4; i++)
+                    {
+                        cursedChests.Add((LocationID)br.ReadInt32());
+                    }
+                    if (itemCount != locationToItemMap.Count)
                     {
                         message = "Seed Failed to load, mismatch between the expected and actual item count.";
                         return false;
@@ -246,39 +270,86 @@ namespace LM2RandomiserMod
                 message = ex.Message;
                 return false;
             }
-
+            message = "Successfully loaded seed.";
             return true;
         }
 
         public IEnumerator Setup()
         {
-            //Need to wait to ensure that the game has setup all its systems
+            yield return new WaitForSeconds(0.1f);
+            sys.setKeyBlock(true);
             yield return new WaitForSeconds(5f);
-
             //Check to seed is seed was successfully loaded
             if (LoadSeed())
             {
-                Randomising = true;
                 ChangeShopItems();
                 ChangeShopThanks();
                 ChangeDialogueItems();
                 MojiScriptFixes();
+                yield return StartCoroutine(GetCursedChest());
+                Randomising = true;
             }
+            sys.setKeyBlock(false);
         }
 
-        private void ChangeTreasureBoxes()
+        private IEnumerator GetCursedChest()
         {
+            var ao = SceneManager.LoadSceneAsync("field04");
+            while (!ao.isDone)
+                yield return null;
+
+            foreach (TreasureBoxScript box in FindObjectsOfType<TreasureBoxScript>())
+            {
+                if (box.curseMode && cursedChest == null)
+                {
+                    cursedChest = Instantiate(box.gameObject);
+                    cursedChest.name = "Cursed Chest Prefab";
+                    DontDestroyOnLoad(cursedChest);
+                    cursedChest.SetActive(false);
+                }
+            }
+            sys.reInitSystem();
+        }
+
+        private IEnumerator ChangeTreasureBoxes()
+        {
+            List<TreasureBoxScript> oldboxes = new List<TreasureBoxScript>();
             foreach (TreasureBoxScript box in FindObjectsOfType<TreasureBoxScript>())
             {
                 ItemData oldItemData = GetItemDataFromName(box.itemObj.name);
+                if (oldItemData == null)
+                    continue;
 
-                if (oldItemData != null && locationToItemMap.TryGetValue((LocationID)oldItemData.getItemName(), out ItemID newItemID))
+                LocationID locationID = (LocationID)oldItemData.getItemName();
+
+                if (oldItemData != null && locationToItemMap.TryGetValue(locationID, out ItemID newItemID))
                 {
                     ItemInfo newItemInfo = ItemDB.GetItemInfo(newItemID);
+                    TreasureBoxScript newBox;
+                    if (IsLocationCursed(locationID))
+                    {
+                        GameObject obj = Instantiate(cursedChest, box.transform.position, box.transform.rotation);
+                        newBox = obj.GetComponent<TreasureBoxScript>();
+                        newBox.curseMode = true;
+                        newBox.forceOpenFlags = box.forceOpenFlags;
+                        newBox.itemFlags = box.itemFlags;
+                        newBox.openActionFlags = box.openActionFlags;
+                        newBox.openFlags = box.openFlags;
+                        newBox.unlockFlags = box.unlockFlags;
+                        newBox.itemObj = box.itemObj;
+                        obj.SetActive(true);
+                        obj.transform.SetParent(box.transform.parent);
+                        oldboxes.Add(box);
+                    }
+                    else
+                    {
+                        newBox = box;
+                        newBox.curseMode = false;
+                    }
 
                     //Change the Treasure Boxs open flags to correspond to the new item
                     //These flags are used to so the chest stays open after you get the item
-                    foreach (L2FlagBoxParent flagBoxParent in box.openFlags)
+                    foreach (L2FlagBoxParent flagBoxParent in newBox.openFlags)
                     {
                         foreach (L2FlagBox flagBox in flagBoxParent.BOX)
                         {
@@ -300,7 +371,7 @@ namespace LM2RandomiserMod
                         }
                     }
 
-                    EventItemScript item = box.itemObj.GetComponent<EventItemScript>();
+                    EventItemScript item = newBox.itemObj.GetComponent<EventItemScript>();
 
                     //Change the Event Items active flags to correspond to the new item
                     //These flags are used to set the item inactive after you have got it
@@ -353,6 +424,9 @@ namespace LM2RandomiserMod
                     item.gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
                 }
             }
+            yield return new WaitForEndOfFrame();
+            foreach(var box in oldboxes)
+                box.gameObject.SetActive(false);
         }
 
         private void ChangeEventItems()
@@ -360,6 +434,8 @@ namespace LM2RandomiserMod
             foreach (EventItemScript item in FindObjectsOfType<EventItemScript>())
             {
                 ItemData oldItemData = GetItemDataFromName(item.name);
+                if (oldItemData == null)
+                    continue;
 
                 if (oldItemData != null && locationToItemMap.TryGetValue((LocationID)oldItemData.getItemName(), out ItemID newItemID))
                 {
@@ -437,6 +513,16 @@ namespace LM2RandomiserMod
             return null;
         }
         
+        private bool IsLocationCursed(LocationID locationID)
+        {
+            foreach(LocationID cursedID in cursedChests)
+            {
+                if(locationID == cursedID)
+                    return true;
+            }
+            return false;
+        }
+
         private void ChangeShopItems()
         {
             shopDataBase.cellData[0][25][1][0] = CreateShopItemsString(LocationID.SidroShop1, LocationID.SidroShop2, LocationID.SidroShop3);
@@ -754,6 +840,9 @@ namespace LM2RandomiserMod
 
             //Change Fairy King to set flag to open endless even if you have the pendant
             talkDataBase.cellData[8][10][1][0] = "[@exit]\n[@anim,talk,1]\n[@setf,3,34,=,2]\n[@setf,5,12,=,1]\n[@p,2nd-2]";
+
+            //Change the Fairy King check on Freya's Pendant
+            talkDataBase.cellData[8][3][1][0] = "[@iff,3,34,&gt;,3,freyr,5th]\n[@iff,3,34,=,3,freyr,4th]\n[@iff,3,34,=,2,freyr,3rd]\n[@iff,2,31,&gt;,0,freyr,2nd]\n[@iff,3,34,=,1,freyr,1stEnd]\n[@iff,3,34,=,0,freyr,1st]";
 
             //Add check to see if you have beaten 4 guardians so mulbruuk can give you the item
             talkDataBase.cellData[10][41][1][0] = "[@exit]\n[@anim,talk,1]\n[@setf,3,33,=,10]\n[@iff,3,0,&gt;,3,mulbruk2,3rd-1]\n[@p,lastC]";

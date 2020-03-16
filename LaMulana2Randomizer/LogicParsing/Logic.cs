@@ -33,6 +33,7 @@ namespace LaMulana2Randomizer.LogicParsing
         Dissonance,
         SkullCount,
         HasWeaponUpgrade,
+        Setting,
         True
     }
 

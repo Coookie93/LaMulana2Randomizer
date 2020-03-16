@@ -48,9 +48,18 @@ namespace LaMulana2Randomizer.Utils
             {
                 using (StreamWriter sr = File.CreateText("Seed\\spoilers.txt"))
                 {
-
                     sr.WriteLine($"Seed: {randomiser.Settings.Seed}");
                     sr.WriteLine();
+
+                    if (randomiser.Settings.RandomCurses)
+                    {
+                        sr.WriteLine("Curse Locations");
+                        foreach(Location location in randomiser.cursedLocations)
+                        {
+                            sr.WriteLine($"  {location.Name}");
+                        }
+                        sr.WriteLine();
+                    }
 
                     foreach (LocationID id in Enum.GetValues(typeof(LocationID)))
                     {
@@ -120,6 +129,10 @@ namespace LaMulana2Randomizer.Utils
                     {
                         br.Write((int)p.Item1);
                         br.Write((int)p.Item2);
+                    }
+                    foreach(Location location in randomiser.cursedLocations)
+                    {
+                        br.Write((int)location.Id);
                     }
                 }
                 Logger.Log($"Total items randomised {temp.Count}");

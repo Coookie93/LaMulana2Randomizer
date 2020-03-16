@@ -15,7 +15,7 @@
       {
         "name": "Alsedana Item",
         "locationType": "Dialogue",
-        "Logic": "IsDead(Vritra)"
+        "Logic": "IsDead(Vritra) or GuardianKills(6)"
       },
       {
         "name": "Giltoriyo Item",
@@ -213,12 +213,12 @@
       {
         "name": "Ankh Chest RoY",
         "locationType": "Chest",
-        "Logic": "Has(Feather) or Has(Katana) or Has(Axe) or CanUse(Bomb) or CanUse(Shuriken) or CanUse(Chakram) or CanUse(Earth Spear) or CanUse(Flare) or CanUse(Claydoll Suit)"
+        "Logic": "Has(Feather) or Has(Katana) or Has(Axe) or CanUse(Bomb) or CanUse(Shuriken) or CanUse(Chakram) or CanUse(Earth Spear) or CanUse(Flare) or Has(Claydoll Suit)"
       },
       {
         "name": "Pyramid Crystal Chest",
         "locationType": "Chest",
-        "Logic": "Has(Life Sigil) and (Has(Knife) or Has(Spaulder) or Has(Gauntlet))"
+        "Logic": "Has(Life Sigil) and (Has(Knife) or Has(Spaulder) or Has(Gauntlet) or Has(Mjolnir) or (Has(Earth Spear) and Has(Ring)))"
       },
       {
         "name": "Crystal Skull Chest RoY",
@@ -269,8 +269,8 @@
       {
         "name": "Nidhogg",
         "locationType": "Miniboss",
-        "Logic": "(CanUse(Flare) or CanUse(Shuriken) or CanUse(Claydoll Suit)) and OrbCount(2)",
-        "HardLogic": "CanUse(Flare) or CanUse(Shuriken) or CanUse(Claydoll Suit)",
+        "Logic": "(CanUse(Flare) or CanUse(Shuriken) or Has(Claydoll Suit)) and OrbCount(2)",
+        "HardLogic": "True",
         "item": {
           "name": "Nidhogg",
           "isRequired": true
@@ -316,7 +316,7 @@
     "exits": [
       {
         "connectingAreaName": "Divine Fortress Right",
-        "Logic": "CanUse(Shuriken) or CanUse(Chakram) or CanUse(Claydoll Suit)"
+        "Logic": "CanUse(Shuriken) or CanUse(Chakram) or Has(Claydoll Suit)"
       }
     ]
   },
@@ -357,7 +357,11 @@
     "exits": [
       {
         "connectingAreaName": "Divine Fortress Main",
-        "Logic": "CanUse(Shuriken) or CanUse(Claydoll Suit) or (CanUse(Earth Spear) and Has(Ring))"
+        "Logic": "CanUse(Shuriken) or CanUse(Chakram) or Has(Claydoll Suit) or (CanUse(Earth Spear) and Has(Ring))"
+      },
+      {
+        "connectingAreaName": "Divine Fortress Entrance",
+        "Logic" : "True"
       }
     ]
   },
@@ -396,6 +400,10 @@
         "Logic": "Has(Feather) or Has(Grapple Claw)"
       },
       {
+        "connectingAreaName": "Divine Fortress Right",
+        "Logic": "True"
+      },
+      {
         "connectingAreaName": "Valhalla Main",
         "Logic": "True",
         "isBackSide": true
@@ -411,7 +419,16 @@
         "Logic": "True"
       }
     ],
-    "exits": []
+    "exits": [
+      {
+        "connectingAreaName": "Divine Fortress Main",
+        "Logic": "True"
+      },
+      {
+        "connectingAreaName": "Divine Fortress Right",
+        "Logic": "True"
+      }
+    ]
   },
   {
     "name": "Annwfn Main",
@@ -474,7 +491,7 @@
       },
       {
         "connectingAreaName": "Immortal Battlefield Top",
-        "Logic": "CanWarp or (CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Rolling Shuriken) or CanUse(Caltrops) or CanUse(Claydoll Suit)) or CanReach(Immortal Battlefield Main)"
+        "Logic": "CanWarp or (CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Rolling Shuriken) or CanUse(Caltrops) or Has(Claydoll Suit)) or CanReach(Immortal Battlefield Main)"
       }
     ]
   },
@@ -532,7 +549,7 @@
     "exits": [
       {
         "connectingAreaName": "Icefire Treetop Left",
-        "Logic": "CanWarp or Has(Claydoll Suit) or Has(Ice Cloak) or OrbCount(3) or (Has(Feather) and CanReach(Icefire Treetop Right))"
+        "Logic": "CanWarp or Has(Claydoll Suit) or Has(Ice Cloak) or OrbCount(3) or ((Has(Feather) or Has(Gale Fibula)) and CanReach(Icefire Treetop Right))"
       },
       {
         "connectingAreaName": "Icefire Treetop Right",
@@ -551,7 +568,7 @@
       {
         "name": "Ankh Chest IT",
         "locationType": "Chest",
-        "Logic": "(Has(Ice Cloak) or OrbCount(1) or Has(Claydoll Suit)) and IsDead(Vedfolnir)"
+        "Logic": "(Has(Claydoll Suit) or Has(Ice Cloak) or OrbCount(1)) and IsDead(Vedfolnir)"
       },
       {
         "name": "Grapple Claw Chest",
@@ -567,7 +584,7 @@
         "name": "Flame Torc Chest",
         "locationType": "Chest",
         "IsGuardianChest": true,
-        "Logic": "IsDead(Surtr) and Has(Mulana Talisman)"
+        "Logic": "IsDead(Surtr)"
       },
       {
         "name": "Btk Shop 1",
@@ -613,7 +630,7 @@
         "name": "Surtr",
         "locationType": "Guardian",
         "Logic": "AnkhCount(4) and Has(Light Scythe) and HasWeaponUpgrade and ((Has(Ice Cloak) and OrbCount(5)) or OrbCount(7))",
-        "HardLogic": "AnkhCount(4) and Has(Light Scythe) and (Has(Ice Cloak) or OrbCount(2))",
+        "HardLogic": "AnkhCount(4) and Has(Light Scythe) and (Has(Feather) or Has(Ice Cloak))",
         "item": {
           "name": "Surtr",
           "isRequired": true
@@ -623,7 +640,7 @@
     "exits": [
       {
         "connectingAreaName": "Icefire Treetop Right",
-        "Logic": "Has(Feather)"
+        "Logic": "Has(Feather) or Has(Gale Fibula)"
       },
       {
         "connectingAreaName": "Icefire Treetop Vidofnir",
@@ -686,7 +703,7 @@
         "name": "Vidofnir",
         "locationType": "Miniboss",
         "Logic": "Has(Flame Torc) and Has(Ice Cloak) and OrbCount(7) and HasWeaponUpgrade",
-        "HardLogic": "Has(Flame Torc) and Has(Ice Cloak) and OrbCount(2)",
+        "HardLogic": "Has(Flame Torc)",
         "item": {
           "name": "Vidofnir",
           "isRequired": true
@@ -786,6 +803,10 @@
         "Logic": "Has(Feather) or CanChant(Heaven)"
       },
       {
+        "connectingAreaName": "Divine Fortress Main",
+        "Logic": "True"
+      },
+      {
         "connectingAreaName": "Shrine of the Frost Giants Blood",
         "Logic": "CanWarp or CanSpinCorridor or (CanReach(Shrine of the Frost Giants Main) and Has(Gloves) and OrbCount(3))"
       },
@@ -845,6 +866,10 @@
         "Logic": "Has(Feather)"
       },
       {
+        "connectingAreaName": "Valhalla Main",
+        "Logic": "CanWarp or Has(Feather) or (Has(Claydoll Suit) and CanChant(Heaven))"
+      },
+      {
         "connectingAreaName": "Shrine of the Frost Giants Balor",
         "Logic": "Has(Claydoll Suit) and GuardianKills(5)"
       }
@@ -871,8 +896,8 @@
       {
         "name": "Cetus",
         "locationType": "Miniboss",
-        "Logic": "CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Rolling Shuriken) or CanUse(Caltrops) or CanUse(Claydoll Suit)",
-        "HardLogic": "CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Rolling Shuriken) or CanUse(Caltrops) or CanUse(Claydoll Suit)",
+        "Logic": "CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Rolling Shuriken) or CanUse(Caltrops) or Has(Claydoll Suit)",
+        "HardLogic": "CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Rolling Shuriken) or CanUse(Caltrops) or Has(Claydoll Suit)",
         "item": {
           "name": "Cetus",
           "isRequired": true
@@ -900,7 +925,7 @@
       {
         "name": "Gale Fibula Chest",
         "locationType": "Chest",
-        "Logic": "(CanUse(Earth Spear) or CanUse(Flare)) and Has(Gloves)"
+        "Logic": "(CanUse(Earth Spear) or CanUse(Flare) or (CanUse(Bomb) and Has(Ring))) and Has(Gloves)"
       },
       {
         "name": "Earth Spear Puzzle Reward",
@@ -926,7 +951,7 @@
       {
         "name": "Ice Cloak Chest",
         "locationType": "Chest",
-        "Logic": "Has(Life Sigil) and (Has(Feather) or CanUse(Shuriken) or CanUse(Rolling Shuriken) or CanUse(Flare)  or CanUse(Chakram) or CanUse(Bomb) or CanUse(Claydoll Suit))"
+        "Logic": "Has(Life Sigil) and (Has(Feather) or CanUse(Shuriken) or CanUse(Rolling Shuriken) or CanUse(Flare)  or CanUse(Chakram) or CanUse(Bomb) or Has(Claydoll Suit))"
       },
       {
         "name": "Totem Pole Chest",
@@ -967,7 +992,7 @@
       {
         "name": "Secret Treasure of Life Item",
         "locationType": "FreeStanding",
-        "Logic": "Has(Dinosaur Figure) and Dissonance(6) and CanChant(Night) and CanReach(Immortal Battlefield Spiral Boat)"
+        "Logic": "IsDead(Jormangund) and Dissonance(6) and CanChant(Night)"
       },
       {
         "name": "Hiro Roderick Shop 1",
@@ -1013,7 +1038,7 @@
         "name": "Jormangund",
         "locationType": "Guardian",
         "Logic": "AnkhCount(4) and IsDead(Cetus) and Has(Dinosaur Figure) and Has(Pochette Key) and OrbCount(5) and HasWeaponUpgrade",
-        "HardLogic": "AnkhCount(4) and IsDead(Cetus) and Has(Dinosaur Figure) and Has(Pochette Key) and OrbCount(1)",
+        "HardLogic": "AnkhCount(4) and IsDead(Cetus) and Has(Dinosaur Figure) and Has(Pochette Key)",
         "item": {
           "name": "Jormangund",
           "isRequired": true
@@ -1027,7 +1052,7 @@
       },
       {
         "connectingAreaName": "Immortal Battlefield Dinosaur",
-        "Logic": "(Has(Anchor) or Has(Claydoll Suit)) and IsDead(Cetus)"
+        "Logic": "(Has(Anchor) or Has(Claydoll Suit)) and (IsDead(Cetus) or Has(Feather) or CanWarp)"
       },
       {
         "connectingAreaName": "Cavern",
@@ -1063,7 +1088,7 @@
       {
         "name": "Battery Chest",
         "locationType": "Chest",
-        "Logic": "IsDead(Svipdagr) and Has(Life Sigil) and Has(Feather) and CanChant(Wind) and CanChant(Sea) and CanChant(Fire) and CanChant(Earth)"
+        "Logic": "IsDead(Svipdagr) and CanWarp and Has(Life Sigil) and Has(Feather) and CanChant(Wind) and CanChant(Sea) and CanChant(Fire) and CanChant(Earth)"
       }
     ],
     "exits": [
@@ -1181,7 +1206,7 @@
         "name": "Fenrir",
         "locationType": "Miniboss",
         "Logic": "PuzzleFinished(Bergelmir) and Has(Flame Torc) and HasWeaponUpgrade and (Has(Silver Shield) or Has(Angel Shield)) and OrbCount(7)",
-        "HardLogic": "PuzzleFinished(Bergelmir) and Has(Flame Torc) and (Has(Silver Shield) or Has(Angel Shield)) and OrbCount(2)",
+        "HardLogic": "PuzzleFinished(Bergelmir) and Has(Flame Torc) and (Has(Silver Shield) or Has(Angel Shield))",
         "item": {
           "name": "Fenrir",
           "isRequired": true
@@ -1200,7 +1225,7 @@
     "exits": [
       {
         "connectingAreaName": "Annwfn Main",
-        "Logic": "GuardianKills(2)"
+        "Logic": "GuardianKills(2) and (Has(Feather) or Has(Gloves) or CanWarp)"
       },
       {
         "connectingAreaName": "Shrine of the Frost Giants Top",
@@ -1722,13 +1747,13 @@
       {
         "name": "Power Band Chest",
         "locationType": "Chest",
-        "Logic": "IsDead(Belial) and Has(Mulana Talisman)"
+        "Logic": "IsDead(Belial)"
       },
       {
         "name": "Belial",
         "locationType": "Miniboss",
         "Logic": "Has(Cog of Antiquity) and Has(Egg of Creation) and OrbCount(6) and HasWeaponUpgrade",
-        "HardLogic": "Has(Cog of Antiquity) and Has(Egg of Creation) and OrbCount(1)",
+        "HardLogic": "Has(Cog of Antiquity) and Has(Egg of Creation)",
         "item": {
           "name": "Belial",
           "isRequired": true
@@ -1809,7 +1834,7 @@
       {
         "name": "Crystal Skull Chest AC",
         "locationType": "Chest",
-        "Logic": "CanUse(Shuriken) or CanUse(Rolling Shuriken) or CanUse(Earth Spear) or CanUse(Chakram) or CanUse(Bomb) or CanUse(Claydoll Suit)"
+        "Logic": "CanUse(Shuriken) or CanUse(Rolling Shuriken) or CanUse(Earth Spear) or CanUse(Chakram) or CanUse(Bomb) or Has(Claydoll Suit)"
       }
     ],
     "exits": [
@@ -1825,7 +1850,7 @@
       {
         "name": "Destiny Tablet Chest",
         "locationType": "Chest",
-        "Logic": "IsDead(Anzu) and Has(Mulana Talisman)"
+        "Logic": "IsDead(Anzu)"
       },
       {
         "name": "Scriptures Chest",
@@ -1836,7 +1861,7 @@
       {
         "name": "Anzu",
         "locationType": "Miniboss",
-        "Logic": "Has(Lamp of Time) and Has(Claydoll Suit) and OrbCount(5) and (CanUse(Flare) or CanUse(Caltrops) or CanUse(Shuriken) or CanUse(Earth Spear) or CanUse(Claydoll Suit))",
+        "Logic": "Has(Lamp of Time) and Has(Claydoll Suit) and OrbCount(5) and (CanUse(Flare) or CanUse(Caltrops) or CanUse(Shuriken) or CanUse(Earth Spear) or Has(Claydoll Suit))",
         "HardLogic": "Has(Lamp of Time) and Has(Claydoll Suit)",
         "item": {
           "name": "Anzu",
@@ -1932,7 +1957,7 @@
       {
         "name": "Sacred Orb Chest HL",
         "locationType": "Chest",
-        "Logic": "Has(Feather) and IsDead(Glasya-Labolas)"
+        "Logic": "(Has(Feather) or Has(Grapple Claw)) and IsDead(Glasya-Labolas)"
       },
       {
         "name": "Perfume Chest",
@@ -1942,12 +1967,12 @@
       {
         "name": "Axe Puzzle Reward",
         "locationType": "FreeStanding",
-        "Logic": "Has(Feather) and Has(Gloves) and IsDead(Glasya-Labolas)"
+        "Logic": "(Has(Feather) or Has(Grapple Claw)) and Has(Gloves) and IsDead(Glasya-Labolas)"
       },
       {
         "name": "Mobile Super X3 Item",
         "locationType": "FreeStanding",
-        "Logic": "Has(Feather) and IsDead(Griffin) and IsDead(Arachne) and IsDead(Scylla)"
+        "Logic": "(Has(Feather) or Has(Grapple Claw)) and IsDead(Griffin) and IsDead(Arachne) and IsDead(Scylla)"
       },
       {
         "name": "Arachne",
@@ -2002,7 +2027,7 @@
     "exits": [
       {
         "connectingAreaName": "Hall of Malice Top",
-        "Logic": "Has(Feather) and IsDead(Griffin) and IsDead(Arachne) and IsDead(Scylla)",
+        "Logic": "(Has(Feather) or Has(Grapple Claw)) and IsDead(Griffin) and IsDead(Arachne) and IsDead(Scylla)",
         "isBackside": true
       }
     ]
@@ -2013,7 +2038,7 @@
       {
         "name": "Cog of Antiquity Chest",
         "locationType": "Chest",
-        "Logic": "Has(Ancient Battery) and CanReach(Heavens Labyrinth)"
+        "Logic": "Has(Ancient Battery) and CanReach(Heavens Labyrinth) and CanWarp"
       }
     ],
     "exits": []
@@ -2087,7 +2112,7 @@
         "name": "Giants Flutes Chest",
         "locationType": "Chest",
         "IsGuardianChest": true,
-        "Logic": "IsDead(Echidna) and Has(Mulana Talisman)"
+        "Logic": "IsDead(Echidna)"
       },
       {
         "name": "Miracle Witch Chest",
@@ -2098,7 +2123,7 @@
         "name": "Delphyne",
         "locationType": "Miniboss",
         "Logic": "OrbCount(7) and HasWeaponUpgrade",
-        "HardLogic": "OrbCount(2)",
+        "HardLogic": "True",
         "item": {
           "name": "Delphyne",
           "isRequired": true
@@ -2128,7 +2153,7 @@
         "name": "Sphynx",
         "locationType": "Miniboss",
         "Logic": "OrbCount(7) and HasWeaponUpgrade",
-        "HardLogic": "OrbCount(2)",
+        "HardLogic": "True",
         "item": {
           "name": "Sphynx",
           "isRequired": true
@@ -2157,7 +2182,7 @@
       {
         "name": "Karkinos",
         "locationType": "Miniboss",
-        "Logic": "IsDead(Phaia) and (CanUse(Earth Spear) or CanUse(Caltrops) or CanUse(Bomb))",
+        "Logic": "IsDead(Phaia)",
         "HardLogic": "IsDead(Phaia)",
         "item": {
           "name": "Karkinos",
@@ -2168,7 +2193,7 @@
         "name": "Chimera",
         "locationType": "Miniboss",
         "Logic": "IsDead(Sphynx) and (Has(Silver Shield) or Has(Angel Shield))",
-        "HardLogic": "IsDead(Sphynx) and (Has(Silver Shield) or Has(Angel Shield))",
+        "HardLogic": "IsDead(Sphynx)",
         "item": {
           "name": "Chimera",
           "isRequired": true
@@ -2207,8 +2232,8 @@
       {
         "name": "Echidna",
         "locationType": "Guardian",
-        "Logic": "AnkhCount(8) and IsDead(Orthrus) and IsDead(Karkinos) and IsDead(Nemean Lion) and OrbCount(9) and Has(Flail Whip)",
-        "HardLogic": "AnkhCount(8) and IsDead(Orthrus) and IsDead(Karkinos) and IsDead(Nemean Lion) and OrbCount(4) and HasWeaponUpgrade",
+        "Logic": "AnkhCount(8) and IsDead(Orthrus) and IsDead(Karkinos) and IsDead(Nemean Lion) and Has(Feather) and OrbCount(9) and Has(Flail Whip)",
+        "HardLogic": "AnkhCount(8) and IsDead(Orthrus) and IsDead(Karkinos) and IsDead(Nemean Lion) and Has(Feather)",
         "item": {
           "name": "Echidna",
           "isRequired": true
@@ -2249,12 +2274,7 @@
       {
         "name": "La Mulana 2 Chest",
         "locationType": "Chest",
-        "Logic": "Has(Mjolnir) and Has(Power Band)"
-      },
-      {
-        "name": "Spaulder Chest",
-        "locationType": "Chest",
-        "Logic": "Has(Gloves) and Has(Key Fairy) and Has(Feather)"
+        "Logic": "Has(Mjolnir) and Has(Power Band) and (Has(Feather) or (Has(Gale Fibula) and Has(Snow Shoes)))"
       },
       {
         "name": "Osiris Item",
@@ -2265,7 +2285,7 @@
         "name": "Hraesvelgr",
         "locationType": "Miniboss",
         "Logic": "IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2) and IsDead(Ratatoskr 3) and IsDead(Ratatoskr 4) and IsDead(Nidhogg) and CanChant(Moon) and OrbCount(7) and HasWeaponUpgrade",
-        "HardLogic": "IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2) and IsDead(Ratatoskr 3) and IsDead(Ratatoskr 4) and IsDead(Nidhogg) and CanChant(Moon) and OrbCount(2)",
+        "HardLogic": "IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2) and IsDead(Ratatoskr 3) and IsDead(Ratatoskr 4) and IsDead(Nidhogg) and CanChant(Moon)",
         "item": {
           "name": "Hraesvelgr",
           "isRequired": true
@@ -2278,12 +2298,28 @@
         "Logic": "IsDead(Hraesvelgr) and Has(Feather)"
       },
       {
-        "connectingAreaName": "Eternal Prison Doom Hel",
-        "Logic": "IsDead(Vidofnir) and IsDead(Hraesvelgr) and GuardianKills(5) and PuzzleFinished(Garm) and Has(Holy Grail) and Has(Grapple Claw) and Has(Gale Fibula) and Has(Claydoll Suit) and Has(Gloves) and Has(Anchor) and Has(Feather) and Has(Life Sigil)"
+        "connectingAreaName": "Eternal Prison Doom Top",
+        "Logic": "Has(Feather) and Has(Glove)"
       },
       {
         "connectingAreaName": "Eternal Prison Gloom",
-        "Logic": "Has(Grapple Claw) and (Has(Gale Fibula) or Has(Lamp of Time)) and (Has(Claydoll Suit) or (Has(Ice Cloak) and Has(Anchor)))"
+        "Logic": "Has(Grapple Claw) and (Has(Gale Fibula) or Has(Lamp of Time)) and (Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(1) and Has(Anchor)))"
+      }
+    ]
+  },
+  {
+    "name": "Eternal Prison Doom Top",
+    "locations": [
+      {
+        "name": "Spaulder Chest",
+        "locationType": "Chest",
+        "Logic": "Has(Key Fairy) and (Has(Feather) or (Has(Snow Shoes) and Has(Gale Fibula)))"
+      }
+    ],
+    "exits": [
+      {
+        "connectingAreaName": "Eternal Prison Doom Hel",
+        "Logic": "IsDead(Vidofnir) and IsDead(Hraesvelgr) and GuardianKills(5) and PuzzleFinished(Garm) and CanUse(Bomb) and Has(Holy Grail) and Has(Grapple Claw) and Has(Gale Fibula) and Has(Claydoll Suit) and Has(Gloves) and Has(Anchor) and Has(Feather) and Has(Life Sigil) and (Has(Hand Scanner) or Setting(Autoscan))"
       }
     ]
   },
@@ -2294,7 +2330,7 @@
         "name": "Hel",
         "locationType": "Guardian",
         "Logic": "AnkhCount(9) and OrbCount(9) and Has(Flail Whip)",
-        "HardLogic": "AnkhCount(9) and OrbCount(4) and HasWeaponUpgrade",
+        "HardLogic": "AnkhCount(9)",
         "item": {
           "name": "Hel",
           "isRequired": true
@@ -2334,7 +2370,7 @@
       {
         "name": "Death Sigil Chest",
         "locationType": "Chest",
-        "Logic": "Has(Mjolnir) and Has(Life Sigil) and Has(Death Sigil)"
+        "Logic": "Has(Mjolnir) and Has(Life Sigil) and (Has(Death Sigil) or ((Has(Hand Scanner) or Setting(AutoScan)) and Has(Future Development Company)))"
       },
       {
         "name": "Mother Mantra Mural",
@@ -2391,7 +2427,7 @@
         "name": "Ratatoskr 4",
         "locationType": "Miniboss",
         "Logic": "PuzzleFinished(Statue Lady) and Has(Feather) and IsDead(Ratatoskr 3) and OrbCount(7) and HasWeaponUpgrade",
-        "HardLogic": "PuzzleFinished(Statue Lady) and Has(Feather) and IsDead(Ratatoskr 3) and OrbCount(2)",
+        "HardLogic": "PuzzleFinished(Statue Lady) and Has(Feather) and IsDead(Ratatoskr 3)",
         "item": {
           "name": "Ratatoskr 4",
           "isRequired": true
@@ -2401,7 +2437,11 @@
     "exits": [
       {
         "connectingAreaName": "Eternal Prison Doom Main",
-        "Logic": "Has(Grapple Claw) and Has(Feather)"
+        "Logic": "(((Has(Hand Scanner) or Setting(Autoscan)) and Has(Future Development Company) and (Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(1)))) or Has(Grapple Claw)) and Has(Feather)"
+      },
+      {
+        "connectingAreaName": "Eternal Prison Doom Top",
+        "Logic": "Has(Death Sigil)"
       },
       {
         "connectingAreaName": "Icefire Treetop Vidofnir",

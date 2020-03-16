@@ -27,6 +27,9 @@ namespace LM2RandomiserMod.Patches
         private L2SystemCore L2Core;
 
         [MonoModIgnore]
+        private ItemData item;
+
+        [MonoModIgnore]
         private SnapShotTargetScript SnapShotTargetSc;
 
         [MonoModIgnore]
@@ -112,37 +115,46 @@ namespace LM2RandomiserMod.Patches
                         else if (this.SnapShotTargetSc.mode == SnapShotTargetScript.SnapShotMode.SOFTWARE)
                         {
 
-                            L2Rando rando = GameObject.FindObjectOfType<L2Rando>();
-                            if(rando == null)
-                            {
-                                this.sta = 0;
-                                break;
-                            }
-
-                            LocationID locationID = rando.GetLocationIDForMural(SnapShotTargetSc);
-                            ItemID itemID = rando.GetItemIDForLocation(locationID);
-                            ItemInfo itemInfo = ItemDB.GetItemInfo(itemID);
-                            
                             this.sys.setKeyBlock(true);
-                            this.GetItemID = itemInfo.boxName;
-
-                            int flagValue = 0;
-                            if (itemID == ItemID.MobileSuperx3P)
+                            L2Rando rando = GameObject.FindObjectOfType<L2Rando>();
+                            if(rando != null && rando.Randomising)
                             {
-                                flagValue = 1;
-                            }
+                                LocationID locationID = rando.GetLocationIDForMural(SnapShotTargetSc);
+                                ItemID itemID = rando.GetItemIDForLocation(locationID);
+                                ItemInfo itemInfo = ItemDB.GetItemInfo(itemID);
 
-                            if (this.sys.isHaveItem(itemInfo.shopName) > flagValue)
-                            {
-                                this.HaveItems = true;
+                                this.GetItemID = itemInfo.boxName;
+
+                                int flagValue = 0;
+                                if (itemID == ItemID.MobileSuperx3P)
+                                    flagValue = 1;
+
+                                if (this.sys.isHaveItem(itemInfo.shopName) > flagValue)
+                                {
+                                    this.HaveItems = true;
+                                }
+                                else
+                                {
+                                    this.HaveItems = false;
+                                    this.sys.setItem(this.GetItemID, 1, false, false, true);
+                                    this.sys.setEffectFlag(rando.CreateGetFlags(itemID, itemInfo));
+                                }
                             }
                             else
                             {
-                                this.HaveItems = false;
-                                this.sys.setItem(this.GetItemID, 1, false, false, true);
-                                //set the items flags
-                                this.sys.setEffectFlag(rando.CreateGetFlags(itemID, itemInfo));
+                                this.item = L2SystemCore.getItemData(this.SnapShotTargetSc.itemName);
+                                this.GetItemID = this.item.getItemId();
+                                if (this.sys.isHaveItem(this.GetItemID) > 0)
+                                {
+                                    this.HaveItems = true;
+                                }
+                                else
+                                {
+                                    this.HaveItems = false;
+                                    this.sys.setItem(this.GetItemID, 1, true, false, true);
+                                }
                             }
+
                             this.DrawBinalyCount = 0;
                             this.sta = 5;
                         }

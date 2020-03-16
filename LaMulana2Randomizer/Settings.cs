@@ -54,6 +54,12 @@ namespace LaMulana2Randomizer
             set=>Set(ref _fDCForBacksides, value); 
         }
 
+        private bool _randomCurses;
+        public bool RandomCurses {
+            get => _randomCurses;
+            set => Set(ref _randomCurses, value);
+        }
+
         private bool _hardBosses;
         public bool HardBosses { 
             get=>_hardBosses; 

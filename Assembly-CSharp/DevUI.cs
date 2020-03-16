@@ -133,8 +133,8 @@ namespace LM2RandomiserMod
             if (Input.GetKeyDown(KeyCode.F9))
                 showFlagWatch = !showFlagWatch;
 
-            if (Input.GetKeyDown(KeyCode.F5))
-                StartCoroutine(rando.Setup());
+            if (Input.GetKeyDown(KeyCode.F7))
+                sys.drawHitBox(!sys.drawHitBoxFlag);
 
             UpdateBGSys();
         }

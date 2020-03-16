@@ -60,7 +60,7 @@ namespace LaMulana2Randomizer.ViewModels
 
                 progress.Report(new ProgressInfo 
                 { 
-                    Label = $"Generating Seed, {i + 1}/1.", 
+                    Label = $"Generating Seed", 
                     ProgressValue = 0, 
                     IsIndeterminate = true 
                 });

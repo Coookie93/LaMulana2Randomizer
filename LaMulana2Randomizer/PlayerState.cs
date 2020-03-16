@@ -17,14 +17,13 @@ namespace LaMulana2Randomizer
 
         private bool soflocktest = false;
 
-        public PlayerState(Randomiser randomiser, bool softlock = false)
+        public PlayerState(Randomiser randomiser)
         {
             Randomiser = randomiser;
             areaChecks =  new Dictionary<string, bool>();
             entraceChecks = new Dictionary<string, bool>();
             collectedLocations = new Dictionary<string, bool>();
             collectedItems = new Dictionary<string, int>();
-            soflocktest = softlock;
         }
         
         public static PlayerState GetStateWithItems(Randomiser randomiser, List<Item> currentItems)
@@ -56,6 +55,7 @@ namespace LaMulana2Randomizer
 
         public bool SoftlockCheck(List<Location> requiredLocations, Location locationToSkip)
         {
+            soflocktest = true;
             List<Location> reachableLocations;
             do
             {
@@ -217,6 +217,9 @@ namespace LaMulana2Randomizer
                 case LogicType.HasWeaponUpgrade:
                     return HasItem("Chain Whip") || HasItem("Flail Whip") || HasItem("Axe") || HasItem("Axe");
 
+                case LogicType.Setting:
+                    return Settings(rule.value);
+
                 case LogicType.True:
                     return true;
 
@@ -276,26 +279,7 @@ namespace LaMulana2Randomizer
 
         private bool CanUse(string subWeapon)
         {
-            string[] subWeaponNames = { "Shuriken", "Rolling Shuriken", "Caltrops", "Chakram", "Earth Spear", "Flare", "Bomb", "Pistol",
-                                            "Buckler", "Silver Shield", "Angel Shield", "Ankh Jewel"};
-
-            if (subWeapon.Equals("Claydoll Suit"))
-            {
-                if (!HasItem(subWeapon))
-                    return false;
-                
-                foreach(string subWeaponName in subWeaponNames)
-                {
-                    if (HasItem(subWeaponName))
-                        return true;
-                }
-
-                return false;
-            }
-            else
-            {
-                return HasItem(subWeapon) && HasItem(subWeapon + " Ammo");
-            }
+            return HasItem(subWeapon) && HasItem(subWeapon + " Ammo");
         }
         
         private bool CanSpinCorridor()
@@ -353,6 +337,17 @@ namespace LaMulana2Randomizer
                 return num >= count;
             
             return false;
+        }
+
+        private bool Settings(string settingName)
+        {
+            switch (settingName)
+            {
+                case "AutoScan":
+                    return Randomiser.Settings.AutScanTablets;
+                default:
+                    return false;
+            }
         }
     }
 }

@@ -11,7 +11,8 @@ namespace LaMulana2Randomizer
         private readonly Random random;
         private Dictionary<string, Area> areas;
         private Dictionary<string, Location> locations;
-        
+        public List<Location> cursedLocations { get; private set; }
+
         public Settings Settings { get; }
 
         public Randomiser(Settings settings)
@@ -52,9 +53,7 @@ namespace LaMulana2Randomizer
                     Connection exit = new Connection(exitData, area.Name);
 
                     if (Settings.FDCForBacksides && exit.IsBackside)
-                    {
                         exit.AppendRuleString(" and Has(Future Development Company)");
-                    }
 
                     exit.BuildLogicTree();
                     area.Exits.Add(exit);
@@ -70,6 +69,8 @@ namespace LaMulana2Randomizer
                     connectingArea.Entrances.Add(exit);
                 }
             }
+
+            RandomiseCurses();
         }
         
         public void PlaceItems()
@@ -81,6 +82,7 @@ namespace LaMulana2Randomizer
             //Places weights at a starting shop since they are needed for alot of early items
             //this means that player will not have to rely on drops or weights from pots
             GetLocation("Nebur Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Weights, shopOnlyItems));
+            GetLocation("Nebur Item").PlaceItem(ItemPool.GetAndRemove(ItemID.AngelShield, items));
 
             if (Settings.ShopPlacement != ShopPlacement.Original)
             {
@@ -95,10 +97,17 @@ namespace LaMulana2Randomizer
 
             //create a list of the items we want to place that are accessible from the start
             List<Item> earlyItems = new List<Item>();
-            if (!Settings.RandomGrail) earlyItems.Add(ItemPool.GetAndRemove(ItemID.HolyGrail, items));
-            if (!Settings.RandomScanner) earlyItems.Add(ItemPool.GetAndRemove(ItemID.HandScanner, items));
-            if (!Settings.RandomCodices) earlyItems.Add(ItemPool.GetAndRemove(ItemID.Codices, items));
-            if (!Settings.RandomFDC) earlyItems.Add(ItemPool.GetAndRemove(ItemID.FutureDevelopmentCompany, items));
+            if (!Settings.RandomGrail) 
+                earlyItems.Add(ItemPool.GetAndRemove(ItemID.HolyGrail, items));
+
+            if (!Settings.RandomScanner && Settings.ShopPlacement != ShopPlacement.Original) 
+                earlyItems.Add(ItemPool.GetAndRemove(ItemID.HandScanner, items));
+
+            if (!Settings.RandomCodices && Settings.ShopPlacement != ShopPlacement.Original) 
+                earlyItems.Add(ItemPool.GetAndRemove(ItemID.Codices, items));
+
+            if (!Settings.RandomFDC && Settings.ShopPlacement != ShopPlacement.Original) 
+                earlyItems.Add(ItemPool.GetAndRemove(ItemID.FutureDevelopmentCompany, items));
 
             earlyItems = Shuffle.FisherYates(earlyItems, random);
             RandomiseWithChecks(GetUnplacedLocations(), earlyItems, new List<Item>());
@@ -123,12 +132,16 @@ namespace LaMulana2Randomizer
 
         public bool CanBeatGame()
         {
-            foreach (Location guardian in GetPlacedLocationsOfType(LocationType.Guardian))
+            if (new PlayerState(this).CanBeatGame(GetPlacedRequiredItemLocations()))
             {
-                if (!new PlayerState(this, true).SoftlockCheck(GetPlacedRequiredItemLocations(), guardian))
-                    return false;
+                foreach (Location guardian in GetPlacedLocationsOfType(LocationType.Guardian))
+                {
+                    if (!new PlayerState(this).SoftlockCheck(GetPlacedRequiredItemLocations(), guardian))
+                        return false;
+                }
+                return true;
             }
-            return new PlayerState(this).CanBeatGame(GetPlacedRequiredItemLocations());
+            return false;
         }
         
         public Area GetArea(string areaName)
@@ -191,6 +204,44 @@ namespace LaMulana2Randomizer
                                   select location;
 
             return placedLocations.ToList();
+        }
+
+        private void RandomiseCurses()
+        {
+            cursedLocations = new List<Location>();
+            if (Settings.RandomCurses)
+            {
+                var chestLocations = Shuffle.FisherYates(GetUnplacedLocationsOfType(LocationType.Chest), random);
+                for(int i = 0; i < 4; i++)
+                {
+                    Location location = chestLocations[i];
+                    location.AppendRuleString("and Has(Mulana Talisman)");
+                    location.BuildLogicTree();
+                    cursedLocations.Add(location);
+                }
+            }
+            else
+            {
+                Location location = GetLocation("Flame Torc Chest");
+                location.AppendRuleString("and Has(Mulana Talisman)");
+                location.BuildLogicTree();
+                cursedLocations.Add(location);
+
+                location = GetLocation("Giants Flutes Chest");
+                location.AppendRuleString("and Has(Mulana Talisman)");
+                location.BuildLogicTree();
+                cursedLocations.Add(location);
+
+                location = GetLocation("Destiny Tablet Chest");
+                location.AppendRuleString("and Has(Mulana Talisman)");
+                location.BuildLogicTree();
+                cursedLocations.Add(location);
+
+                location = GetLocation("Power Band Chest");
+                location.AppendRuleString("and Has(Mulana Talisman)");
+                location.BuildLogicTree();
+                cursedLocations.Add(location);
+            }
         }
 
         private void PlaceShopItems(List<Item> shopItems, List<Item> items)

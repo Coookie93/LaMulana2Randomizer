@@ -61,6 +61,12 @@ namespace LaMulana2Randomizer
         {
             Item = item;
         }
+
+        public void AppendRuleString(string append)
+        {
+            logicString = string.Format($"({logicString}){append}");
+        }
+
         public void BuildLogicTree()
         {
             LogicTree = LogicParsing.LogicTree.ParseAndBuildLogic(logicString);
