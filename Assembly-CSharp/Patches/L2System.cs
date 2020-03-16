@@ -77,7 +77,7 @@ namespace LM2RandomiserMod.Patches
             else if (name == "Shield2")
             {
                 this.getFlag(seet, "Shield", ref num);
-                if (num == 2)
+                if (num >= 2)
                 {
                     num = 1;
                 }

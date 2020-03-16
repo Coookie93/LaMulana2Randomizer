@@ -95,10 +95,14 @@ namespace LaMulana2Randomizer
 
             //create a list of the items we want to place that are accessible from the start
             List<Item> earlyItems = new List<Item>();
-            if (!Settings.RandomGrail) earlyItems.Add(ItemPool.GetAndRemove(ItemID.HolyGrail, items));
-            if (!Settings.RandomScanner) earlyItems.Add(ItemPool.GetAndRemove(ItemID.HandScanner, items));
-            if (!Settings.RandomCodices) earlyItems.Add(ItemPool.GetAndRemove(ItemID.Codices, items));
-            if (!Settings.RandomFDC) earlyItems.Add(ItemPool.GetAndRemove(ItemID.FutureDevelopmentCompany, items));
+            if (!Settings.RandomGrail) 
+                earlyItems.Add(ItemPool.GetAndRemove(ItemID.HolyGrail, items));
+            if (!Settings.RandomScanner && Settings.ShopPlacement != ShopPlacement.Original) 
+                earlyItems.Add(ItemPool.GetAndRemove(ItemID.HandScanner, items));
+            if (!Settings.RandomCodices && Settings.ShopPlacement != ShopPlacement.Original) 
+                earlyItems.Add(ItemPool.GetAndRemove(ItemID.Codices, items));
+            if (!Settings.RandomFDC && Settings.ShopPlacement != ShopPlacement.Original) 
+                earlyItems.Add(ItemPool.GetAndRemove(ItemID.FutureDevelopmentCompany, items));
 
             earlyItems = Shuffle.FisherYates(earlyItems, random);
             RandomiseWithChecks(GetUnplacedLocations(), earlyItems, new List<Item>());
