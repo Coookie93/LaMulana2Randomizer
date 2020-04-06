@@ -259,7 +259,7 @@
       {
         "name": "Ratatoskr 1",
         "locationType": "Miniboss",
-        "Logic": "OrbCount(1)",
+        "Logic": "True",
         "HardLogic": "True",
         "item": {
           "name": "Ratatoskr 1",
@@ -269,7 +269,7 @@
       {
         "name": "Nidhogg",
         "locationType": "Miniboss",
-        "Logic": "(CanUse(Flare) or CanUse(Shuriken) or Has(Claydoll Suit)) and OrbCount(2)",
+        "Logic": "CanUse(Flare) or ((CanUse(Shuriken) or Has(Claydoll Suit)) and OrbCount(1))",
         "HardLogic": "True",
         "item": {
           "name": "Nidhogg",
@@ -279,7 +279,7 @@
       {
         "name": "Fafnir",
         "locationType": "Guardian",
-        "Logic": "AnkhCount(4) and OrbCount(1)",
+        "Logic": "AnkhCount(4) and ((OrbCount(1) and (Has(Leather Whip) or Has(Knife))) or Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Axe) or Has(Katana))",
         "HardLogic": "AnkhCount(4)",
         "item": {
           "name": "Fafnir",
@@ -346,7 +346,7 @@
       {
         "name": "Hugin and Munin",
         "locationType": "Miniboss",
-        "Logic": "(CanWarp or Has(Origin Sigil)) and OrbCount(1)",
+        "Logic": "CanWarp or Has(Origin Sigil)",
         "HardLogic": "CanWarp or Has(Origin Sigil)",
         "item": {
           "name": "Hugin and Munin",
@@ -476,7 +476,7 @@
       {
         "name": "Kaliya",
         "locationType": "Miniboss",
-        "Logic": "CanUse(Rolling Shuriken) and OrbCount(2)",
+        "Logic": "CanUse(Rolling Shuriken)",
         "HardLogic": "CanUse(Rolling Shuriken)",
         "item": {
           "name": "Kaliya",
@@ -517,7 +517,7 @@
       {
         "name": "Ixtab",
         "locationType": "Miniboss",
-        "Logic": "CanUse(Flare) or (OrbCount(1) and (CanUse(Shuriken) or CanUse(Earth Spear) or CanUse(Chakram)))",
+        "Logic": "((Has(Leather Whip) or Has(Rapier)) and OrbCount(2)) or ((Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana) or Has(Claydol Suit)) and OrbCount(1))",
         "HardLogic": "True",
         "item": {
           "name": "Ixtab",
@@ -527,7 +527,7 @@
       {
         "name": "Kujata",
         "locationType": "Guardian",
-        "Logic": "AnkhCount(4) and Has(Freys Ship) and (IsDead(Ixtab) or Has(Feather)) and OrbCount(3) and HasWeaponUpgrade",
+        "Logic": "AnkhCount(4) and Has(Freys Ship) and (IsDead(Ixtab) or Has(Feather)) and (((Has(Flail Whip) or Has(Axe)) and OrbCount(2)) or ((Has(Chain Whip) or Has(Katana)) and OrbCount(3)) or ((Has(Knife) or Has(Rapier)) and OrbCount(3) and Has(Feather)))",
         "HardLogic": "AnkhCount(4) and Has(Freys Ship) and (IsDead(Ixtab) or Has(Feather))",
         "item": {
           "name": "Kujata",
@@ -619,7 +619,7 @@
       {
         "name": "Vedfolnir",
         "locationType": "Miniboss",
-        "Logic": " OrbCount(2)",
+        "Logic": " OrbCount(1)",
         "HardLogic": "True",
         "item": {
           "name": "Vedfolnir",
@@ -629,7 +629,7 @@
       {
         "name": "Surtr",
         "locationType": "Guardian",
-        "Logic": "AnkhCount(4) and Has(Light Scythe) and HasWeaponUpgrade and ((Has(Ice Cloak) and OrbCount(5)) or OrbCount(7))",
+        "Logic": "AnkhCount(4) and Has(Light Scythe) and Has(Feather) and (((Has(Knife) or Has(Rapier)) and OrbCount(7)) or (Has(Chain Whip) and OrbCount(6)) or ((Has(Flail Whip) or Has(Axe) or Has(Katana)) and OrbCount(5)))",
         "HardLogic": "AnkhCount(4) and Has(Light Scythe) and (Has(Feather) or Has(Ice Cloak))",
         "item": {
           "name": "Surtr",
@@ -669,7 +669,7 @@
       {
         "name": "Ratatoskr 3",
         "locationType": "Miniboss",
-        "Logic": "IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2) and OrbCount(4) and HasWeaponUpgrade",
+        "Logic": "IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2) and ((Has(Leather Whip) and OrbCount(2)) or ((Has(Chain Whip) or Has(Flail Whip) or Has(Knife) or Has(Rapier) or Has(Axe) or Has(Katana)) and OrbCount(1)))",
         "HardLogic": "IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2)",
         "item": {
           "name": "Ratatoskr 3",
@@ -702,7 +702,7 @@
       {
         "name": "Vidofnir",
         "locationType": "Miniboss",
-        "Logic": "Has(Flame Torc) and Has(Ice Cloak) and OrbCount(7) and HasWeaponUpgrade",
+        "Logic": "Has(Flame Torc) and Has(Ice Cloak) and (Has(Silver Shield) or Has(Angel Shield)) and ((Has(Chain Whip) and OrbCount(6)) or ((Has(Flail Whip) or Has(Axe) or Has(Katana)) and OrbCount(5)))",
         "HardLogic": "Has(Flame Torc)",
         "item": {
           "name": "Vidofnir",
@@ -760,7 +760,7 @@
       {
         "name": "Vucub-Caquiz",
         "locationType": "Miniboss",
-        "Logic": "Has(Origin Sigil)",
+        "Logic": "Has(Origin Sigil) and ((Has(Leather Whip) and OrbCount(1)) or (Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Axe) or Has(Katana) or Has(Claydoll Suit)))",
         "HardLogic": "Has(Origin Sigil)",
         "item": {
           "name": "Vucub-Caquiz",
@@ -770,7 +770,7 @@
       {
         "name": "Jalandhara",
         "locationType": "Miniboss",
-        "Logic": "Has(Life Sigil) and Has(Feather) and OrbCount(4) and HasWeaponUpgrade",
+        "Logic": "Has(Life Sigil) and Has(Feather) and OrbCount(4) and (Has(Chain Whip) or Has(Flail Whip) or Has(Knife) or Has(Rapier) or Has(Axe) or Has(Katana))",
         "HardLogic": "Has(Life Sigil) and Has(Feather)",
         "item": {
           "name": "Jalandhara",
@@ -780,7 +780,7 @@
       {
         "name": "Vritra",
         "locationType": "Guardian",
-        "Logic": "AnkhCount(5) and IsDead(Vucub-Caquiz) and OrbCount(3)",
+        "Logic": "AnkhCount(5) and IsDead(Vucub-Caquiz) and (((Has(Leather Whip) or Has(Knife) or Has(Rapier)) and OrbCount(2)) or ((Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana)) and OrbCount(1)))",
         "HardLogic": "AnkhCount(5) and IsDead(Vucub-Caquiz)",
         "item": {
           "name": "Vritra",
@@ -961,7 +961,7 @@
       {
         "name": "Sacred Orb Chest IB",
         "locationType": "Chest",
-        "Logic": "Has(Birth Sigil) and (IsDead(Cetus) or Has(Feather))"
+        "Logic": "Has(Birth Sigil)"
       },
       {
         "name": "Lamp of Time Chest",
@@ -1017,7 +1017,7 @@
       {
         "name": "Ratatoskr 2",
         "locationType": "Miniboss",
-        "Logic": "OrbCount(1)",
+        "Logic": "True",
         "HardLogic": "True",
         "item": {
           "name": "Ratatoskr 2",
@@ -1027,7 +1027,7 @@
       {
         "name": "Svipdagr",
         "locationType": "Miniboss",
-        "Logic": "OrbCount(2)",
+        "Logic": "OrbCount(1)",
         "HardLogic": "True",
         "item": {
           "name": "Svipdagr",
@@ -1037,7 +1037,7 @@
       {
         "name": "Jormangund",
         "locationType": "Guardian",
-        "Logic": "AnkhCount(4) and IsDead(Cetus) and Has(Dinosaur Figure) and Has(Pochette Key) and OrbCount(5) and HasWeaponUpgrade",
+        "Logic": "AnkhCount(4) and IsDead(Cetus) and Has(Dinosaur Figure) and Has(Pochette Key) and (((Has(Chain Whip) or Has(Rapier) or Has(Axe)) and OrbCount(5)) or ((Has(Flail Whip) or Has(Katana)) and OrbCount(4)))",
         "HardLogic": "AnkhCount(4) and IsDead(Cetus) and Has(Dinosaur Figure) and Has(Pochette Key)",
         "item": {
           "name": "Jormangund",
@@ -1186,7 +1186,7 @@
       {
         "name": "Weapon Fairy",
         "locationType": "Fairy",
-        "Logic": "Has(Fairy Pass) and Has(Freyas Pendant)",
+        "Logic": "Has(Fairy Pass) and Has(Freyas Pendant) and CanReach(Annwfn Right)",
         "item": {
           "name": "Weapon Fairy",
           "isRequired": true
@@ -1195,7 +1195,7 @@
       {
         "name": "Badhbh Cath",
         "locationType": "Miniboss",
-        "Logic": "OrbCount(2)",
+        "Logic": "((Has(Leather Whip) or Has(Knife) or Has(Rapier)) and OrbCount(1)) or (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana))",
         "HardLogic": "True",
         "item": {
           "name": "Badhbh Cath",
@@ -1205,7 +1205,7 @@
       {
         "name": "Fenrir",
         "locationType": "Miniboss",
-        "Logic": "PuzzleFinished(Bergelmir) and Has(Flame Torc) and HasWeaponUpgrade and (Has(Silver Shield) or Has(Angel Shield)) and OrbCount(7)",
+        "Logic": "PuzzleFinished(Bergelmir) and Has(Flame Torc) and (Has(Silver Shield) or Has(Angel Shield)) and OrbCount(7) and (Has(Flail Whip) or Has(Axe) or Has(Katana))",
         "HardLogic": "PuzzleFinished(Bergelmir) and Has(Flame Torc) and (Has(Silver Shield) or Has(Angel Shield))",
         "item": {
           "name": "Fenrir",
@@ -1265,7 +1265,7 @@
       {
         "name": "Balor",
         "locationType": "Miniboss",
-        "Logic": "HasWeaponUpgrade and OrbCount(5)",
+        "Logic": "((Has(Knife) or Has(Rapier) or Has(Katana)) and Has(Feather) and OrbCount(2)) or ((Has(Chain Whip) or Has(Flail Whip) or Has(Axe)) and OrbCount(2))",
         "HardLogic": "True",
         "item": {
           "name": "Balor",
@@ -1287,7 +1287,7 @@
       {
         "name": "Tezcatlipoca",
         "locationType": "Miniboss",
-        "Logic": "Has(Gloves) and OrbCount(3)",
+        "Logic": "Has(Gloves) and OrbCount(1)",
         "HardLogic": "Has(Gloves)",
         "item": {
           "name": "Tezcatlipoca",
@@ -1432,7 +1432,7 @@
       {
         "name": "Unicorn",
         "locationType": "Miniboss",
-        "Logic": "OrbCount(3)",
+        "Logic": "OrbCount(1) and ((Has(Katana) and Has(Vajra)) or Has(Leather Whip) or Has(Chain Whip) or Has(Flail Whip) or Has(Axe))",
         "HardLogic": "True",
         "item": {
           "name": "Unicorn",
@@ -1495,7 +1495,7 @@
       {
         "name": "Money Fairy",
         "locationType": "Fairy",
-        "Logic": "Has(Fairy Pass) and Has(Freyas Pendant) and (Has(Gale Fibula) or Has(Lamp of Time))",
+        "Logic": "Has(Fairy Pass) and Has(Freyas Pendant) and CanReach(Annwfn Main) and (Has(Gale Fibula) or Has(Lamp of Time))",
         "item": {
           "name": "Money Fairy",
           "isRequired": true
@@ -1522,7 +1522,7 @@
       {
         "name": "Sekhmet",
         "locationType": "Miniboss",
-        "Logic": "PuzzleFinished(Footstep Puzzle) and OrbCount(3)",
+        "Logic": "PuzzleFinished(Footstep Puzzle) and OrbCount(3) and (Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Axe) or Has(Katana))",
         "HardLogic": "PuzzleFinished(Footstep Puzzle)",
         "item": {
           "name": "Sekhmet",
@@ -1532,7 +1532,7 @@
       {
         "name": "Aten-Ra",
         "locationType": "Guardian",
-        "Logic": "AnkhCount(6) and IsDead(Sekhmet) and PuzzleFinished(White Pedestals) and OrbCount(5) and HasWeaponUpgrade",
+        "Logic": "AnkhCount(6) and IsDead(Sekhmet) and PuzzleFinished(White Pedestals) and (((Has(Chain Whip) or Has(Axe)) and OrbCount(6)) or ((Has(Flail Whip) or Has(Katana)) and OrbCount(5)))",
         "HardLogic": "AnkhCount(6) and IsDead(Sekhmet) and PuzzleFinished(White Pedestals)",
         "item": {
           "name": "Aten-Ra",
@@ -1581,7 +1581,7 @@
       {
         "name": "Angra Mainyu",
         "locationType": "Miniboss",
-        "Logic": "Has(Mjolnir) and OrbCount(2) and (Has(Feather) or CanWarp or CanReach(Dark Lords Mausoleum Main))",
+        "Logic": "Has(Mjolnir) and OrbCount(1) and (CanWarp or Has(Feather) or CanReach(Dark Lords Mausoleum Main))",
         "HardLogic": "Has(Mjolnir) and (Has(Feather) or CanWarp or CanReach(Dark Lords Mausoleum Main))",
         "item": {
           "name": "Angra Mainyu",
@@ -1591,8 +1591,8 @@
       {
         "name": "Annit",
         "locationType": "Miniboss",
-        "Logic": "Has(Feather) and Has(Pyramid Crystal) and (Has(Silver Shield) or Has(Angel Shield)) and OrbCount(4)",
-        "HardLogic": "Has(Feather) and Has(Pyramid Crystal) and (Has(Silver Shield) or Has(Angel Shield))",
+        "Logic": "Has(Feather) and Has(Pyramid Crystal) and (Has(Silver Shield) or Has(Angel Shield)) and OrbCount(2) and (Has(Chain Whip) or Has(Flail Whip) or Has(Knife) or Has(Rapier) or Has(Axe) or Has(Katana))",
+        "HardLogic": "Has(Feather) and Has(Pyramid Crystal)",
         "item": {
           "name": "Annit",
           "isRequired": true
@@ -1679,16 +1679,6 @@
         "Logic": "True"
       },
       {
-        "name": "Crystal Skull Chest TS",
-        "locationType": "Chest",
-        "Logic": "(Has(Katana) or CanUse(Earth Spear) or CanUse(Bomb)) and Has(Life Sigil) and (Has(Feather) or CanWarp)"
-      },
-      {
-        "name": "Egg of Creation Chest",
-        "locationType": "Chest",
-        "Logic": "IsDead(Daji) and Has(Feather)"
-      },
-      {
         "name": "Flare Puzzle Reward",
         "locationType": "FreeStanding",
         "Logic": "IsDead(Raijin and Fujin) and Has(Birth Sigil) and (Has(Lamp of Time) or Has(Gale Fibula))"
@@ -1711,18 +1701,47 @@
       {
         "name": "Raijin and Fujin",
         "locationType": "Miniboss",
-        "Logic": "Has(Mjolnir) and OrbCount(3) and HasWeaponUpgrade",
+        "Logic": "Has(Mjolnir) and OrbCount(1)",
         "HardLogic": "True",
         "item": {
           "name": "Raijin and Fujin",
           "isRequired": true
         }
+      }
+    ],
+    "exits": [
+      {
+        "connectingAreaName": "Takamagahara Shrine Bottom",
+        "Logic": "Has(Katana) or CanUse(Earth Spear) or CanUse(Bomb)"
+      },
+      {
+        "connectingAreaName": "Heavens Labyrinth Cog",
+        "Logic": "IsDead(Raijin and Fujin) and CanChant(Earth) and CanChant(Wind) and CanChant(Fire) and CanChant(Sea) and CanChant(Heaven) and CanWarp"
+      },
+      {
+        "connectingAreaName": "Immortal Battlefield Main",
+        "Logic": "Has(Feather) and GuardianKills(3)"
+      }
+    ]
+  },
+  {
+    "name": "Takamagahara Shrine Bottom",
+    "locations": [
+      {
+        "name": "Crystal Skull Chest TS",
+        "locationType": "Chest",
+        "Logic": "Has(Life Sigil) and (Has(Feather) or CanWarp)"
+      },
+      {
+        "name": "Egg of Creation Chest",
+        "locationType": "Chest",
+        "Logic": "IsDead(Daji) and Has(Feather)"
       },
       {
         "name": "Daji",
         "locationType": "Miniboss",
-        "Logic": "(Has(Katana) or CanUse(Earth Spear) or CanUse(Bomb)) and HasWeaponUpgrade and OrbCount(3)",
-        "HardLogic": "Has(Katana) or CanUse(Earth Spear) or CanUse(Bomb)",
+        "Logic": "OrbCount(2) and ((Has(Chain Whip) and (Has(Gauntlet) or Has(Spaulder))) or (Has(Knife) and Has(Spaulder) and Has(Feather)) or (Has(Rapier) and Has(Gauntlet) and Has(Spaulder) and Has(Feather)) or (Has(Flail Whip) or Has(Axe) or Has(Katana)))",
+        "HardLogic": "(Has(Chain Whip) and (Has(Gauntlet) or Has(Spaulder))) or (Has(Knife) and Has(Spaulder) and Has(Feather)) or (Has(Rapier) and Has(Gauntlet) and Has(Spaulder) and Has(Feather)) or (Has(Flail Whip) or Has(Axe) or Has(Katana))",
         "item": {
           "name": "Daji",
           "isRequired": true
@@ -1731,13 +1750,13 @@
     ],
     "exits": [
       {
-        "connectingAreaName": "Ancient Chaos Bottom",
-        "Logic": "Has(Katana) or CanUse(Earth Spear) or CanUse(Bomb)",
-        "isBackside": true
+        "connectingAreaName": "Takamagahara Shrine Main",
+        "Logic": "True"
       },
       {
-        "connectingAreaName": "Heavens Labyrinth Cog",
-        "Logic": "IsDead(Raijin and Fujin) and CanChant(Earth) and CanChant(Wind) and CanChant(Fire) and CanChant(Sea) and CanChant(Heaven) and CanWarp"
+        "connectingAreaName": "Ancient Chaos Bottom",
+        "Logic": "True",
+        "isBackside": true
       }
     ]
   },
@@ -1752,8 +1771,8 @@
       {
         "name": "Belial",
         "locationType": "Miniboss",
-        "Logic": "Has(Cog of Antiquity) and Has(Egg of Creation) and OrbCount(6) and HasWeaponUpgrade",
-        "HardLogic": "Has(Cog of Antiquity) and Has(Egg of Creation)",
+        "Logic": "Has(Cog of Antiquity) and (Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(6))) and ((Has(Egg of Creation) and OrbCount(6) and (CanUse(Earth Spear) or CanUse(Rolling Shuriken) or (Has(Katana) and Has(Feather)))) or (Has(Lamp of Time) and OrbCount(3) and ((Has(Axe) and (Has(Gauntlet) or Has(Spaulder))) or (Has(Katana) and (Has(Vajra) or Has(Spaulder))) or (Has(Rapier) and Has(Vajra)) or (Has(Knife) and (Has(Vajra) or Has(Spaulder))) or ((Has(Chain Whip) or Has(Flail Whip)) and (Has(Vajra) or Has(Gauntlet) or Has(Spaulder))))))",
+        "HardLogic": "Has(Cog of Antiquity) and (Has(Claydoll Suit) or Has(Ice Cloak)) and Has(Egg of Creation)",
         "item": {
           "name": "Belial",
           "isRequired": true
@@ -1788,7 +1807,7 @@
       {
         "name": "Ki-sikil-lil-la-ke",
         "locationType": "Miniboss",
-        "Logic": "OrbCount(4)",
+        "Logic": "OrbCount(2) and ((Has(Knife) and Has(Feather)) or Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Axe) or Has(Katana) or Has(Claydoll Suit))",
         "HardLogic": "True",
         "item": {
           "name": "Ki-sikil-lil-la-ke",
@@ -1861,7 +1880,7 @@
       {
         "name": "Anzu",
         "locationType": "Miniboss",
-        "Logic": "Has(Lamp of Time) and Has(Claydoll Suit) and OrbCount(5) and (CanUse(Flare) or CanUse(Caltrops) or CanUse(Shuriken) or CanUse(Earth Spear) or Has(Claydoll Suit))",
+        "Logic": "Has(Lamp of Time) and Has(Claydoll Suit) and (Has(Silver Shield) or Has(Angel Shield)) and OrbCount(6) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana))",
         "HardLogic": "Has(Lamp of Time) and Has(Claydoll Suit)",
         "item": {
           "name": "Anzu",
@@ -1871,7 +1890,7 @@
       {
         "name": "Anu",
         "locationType": "Guardian",
-        "Logic": "AnkhCount(8) and Has(Gloves) and IsDead(Ki-sikil-lil-la-ke) and OrbCount(5) and HasWeaponUpgrade",
+        "Logic": "AnkhCount(8) and Has(Gloves) and IsDead(Ki-sikil-lil-la-ke) and (((Has(Chain Whip) or Has(Rapier) or Has(Axe) or Has(Katana)) and OrbCount(6)) or (Has(Flail Whip) and OrbCount(5)))",
         "HardLogic": "AnkhCount(8) and Has(Gloves) and IsDead(Ki-sikil-lil-la-ke)",
         "item": {
           "name": "Anu",
@@ -1997,7 +2016,7 @@
       {
         "name": "Glasya-Labolas",
         "locationType": "Miniboss",
-        "Logic": "CanWarp",
+        "Logic": "CanWarp and OrbCount(1) and ((Has(Rapier) and (Has(Spaulder) or Has(Gauntlet) or Has(Vajra))) or Has(Chain Whip) or Has(Flail Whip) or Has(Knife) or Has(Axe) or Has(Katana))",
         "HardLogic": "CanWarp",
         "item": {
           "name": "Glasya-Labolas",
@@ -2007,7 +2026,7 @@
       {
         "name": "Griffin",
         "locationType": "Miniboss",
-        "Logic": "(Has(Gale Fibula) or Has(Lamp of Time)) and Has(Gloves) and Has(Life Sigil) and IsDead(Glasya-Labolas)",
+        "Logic": "(Has(Gale Fibula) or Has(Lamp of Time)) and Has(Gloves) and Has(Life Sigil) and IsDead(Glasya-Labolas) and OrbCount(2)",
         "HardLogic": "(Has(Gale Fibula) or Has(Lamp of Time)) and Has(Gloves) and Has(Life Sigil) and IsDead(Glasya-Labolas)",
         "item": {
           "name": "Griffin",
@@ -2101,12 +2120,12 @@
       {
         "name": "Nemean Fur Chest",
         "locationType": "Chest",
-        "Logic": "IsDead(Nemean Lion) and Has(Feather) and Has(Lamp of Time)"
+        "Logic": "IsDead(HoM Left Path) and Has(Feather) and Has(Lamp of Time)"
       },
       {
         "name": "Crystal Skull Chest HoM",
         "locationType": "Chest",
-        "Logic": "IsDead(Ladon) and Has(Death Sigil)"
+        "Logic": "IsDead(HoM Right Path) and Has(Death Sigil)"
       },
       {
         "name": "Giants Flutes Chest",
@@ -2117,113 +2136,43 @@
       {
         "name": "Miracle Witch Chest",
         "locationType": "Chest",
-        "Logic": "Has(Flame Torc) and IsDead(Cerberus)"
+        "Logic": "Has(Flame Torc) and IsDead(HoM Right Path)"
       },
       {
-        "name": "Delphyne",
+        "name": "HoM Left Path",
         "locationType": "Miniboss",
-        "Logic": "OrbCount(7) and HasWeaponUpgrade",
+        "Logic": "(Has(Silver Shield) or Has(Angel Shield)) and (Has(Chain Whip) and OrbCount(7)) or ((Has(Axe) or Has(Katana)) and OrbCount(6)) or (Has(Flail Whip) and OrbCount(5))",
         "HardLogic": "True",
         "item": {
-          "name": "Delphyne",
+          "name": "HoM Left Path",
           "isRequired": true
         }
       },
       {
-        "name": "Hydra",
+        "name": "HoM Middle Path",
         "locationType": "Miniboss",
-        "Logic": "IsDead(Delphyne)",
-        "HardLogic": "IsDead(Delphyne)",
-        "item": {
-          "name": "Hydra",
-          "isRequired": true
-        }
-      },
-      {
-        "name": "Nemean Lion",
-        "locationType": "Miniboss",
-        "Logic": "IsDead(Hydra)",
-        "HardLogic": "IsDead(Hydra)",
-        "item": {
-          "name": "Nemean Lion",
-          "isRequired": true
-        }
-      },
-      {
-        "name": "Sphynx",
-        "locationType": "Miniboss",
-        "Logic": "OrbCount(7) and HasWeaponUpgrade",
+        "Logic": "(Has(Silver Shield) or Has(Angel Shield)) and (Has(Chain Whip) and OrbCount(7)) or ((Has(Axe) or Has(Katana)) and OrbCount(6)) or (Has(Flail Whip) and OrbCount(5))",
         "HardLogic": "True",
         "item": {
-          "name": "Sphynx",
+          "name": "HoM Middle Path",
           "isRequired": true
         }
       },
       {
-        "name": "Ladon",
+        "name": "HoM Right Path",
         "locationType": "Miniboss",
-        "Logic": "IsDead(Sphynx)",
-        "HardLogic": "IsDead(Sphynx)",
+        "Logic": "(Has(Silver Shield) or Has(Angel Shield)) and (Has(Chain Whip) and OrbCount(7)) or ((Has(Flail Whip) or Has(Axe) or Has(Katana)) and OrbCount(6))",
+        "HardLogic": "True",
         "item": {
-          "name": "Ladon",
-          "isRequired": true
-        }
-      },
-      {
-        "name": "Phaia",
-        "locationType": "Miniboss",
-        "Logic": "IsDead(Ladon)",
-        "HardLogic": "IsDead(Ladon)",
-        "item": {
-          "name": "Phaia",
-          "isRequired": true
-        }
-      },
-      {
-        "name": "Karkinos",
-        "locationType": "Miniboss",
-        "Logic": "IsDead(Phaia)",
-        "HardLogic": "IsDead(Phaia)",
-        "item": {
-          "name": "Karkinos",
-          "isRequired": true
-        }
-      },
-      {
-        "name": "Chimera",
-        "locationType": "Miniboss",
-        "Logic": "IsDead(Sphynx) and (Has(Silver Shield) or Has(Angel Shield))",
-        "HardLogic": "IsDead(Sphynx)",
-        "item": {
-          "name": "Chimera",
-          "isRequired": true
-        }
-      },
-      {
-        "name": "Colchian Dragon",
-        "locationType": "Miniboss",
-        "Logic": "IsDead(Chimera)",
-        "HardLogic": "IsDead(Chimera)",
-        "item": {
-          "name": "Colchian Dragon",
-          "isRequired": true
-        }
-      },
-      {
-        "name": "Cerberus",
-        "locationType": "Miniboss",
-        "Logic": "IsDead(Colchian Dragon)",
-        "HardLogic": "IsDead(Colchian Dragon)",
-        "item": {
-          "name": "Cerberus",
+          "name": "HoM Right Path",
           "isRequired": true
         }
       },
       {
         "name": "Orthrus",
         "locationType": "Miniboss",
-        "Logic": "IsDead(Cerberus)",
-        "HardLogic": "IsDead(Cerberus)",
+        "Logic": "IsDead(HoM Right Path)",
+        "HardLogic": "IsDead(HoM Right Path)",
         "item": {
           "name": "Orthrus",
           "isRequired": true
@@ -2232,8 +2181,8 @@
       {
         "name": "Echidna",
         "locationType": "Guardian",
-        "Logic": "AnkhCount(8) and IsDead(Orthrus) and IsDead(Karkinos) and IsDead(Nemean Lion) and Has(Feather) and OrbCount(9) and Has(Flail Whip)",
-        "HardLogic": "AnkhCount(8) and IsDead(Orthrus) and IsDead(Karkinos) and IsDead(Nemean Lion) and Has(Feather)",
+        "Logic": "AnkhCount(8) and IsDead(Orthrus) and IsDead(HoM Left Path) and IsDead(HoM Middle Path) and Has(Feather) and OrbCount(8) and (Has(Flail Whip) or Has(Axe))",
+        "HardLogic": "AnkhCount(8) and IsDead(Orthrus) and IsDead(HoM Left Path) and IsDead(HoM Middle Path) and Has(Feather)",
         "item": {
           "name": "Echidna",
           "isRequired": true
@@ -2279,12 +2228,12 @@
       {
         "name": "Osiris Item",
         "locationType": "Dialogue",
-        "Logic": "Has(Maats Feather) and Has(Djed Pillar) and (Has(Claydoll Suit) or Has(Ice Cloak)) and Has(Feather) and ((Has(Gale Fibula) or Has(Lamp of Time)) or (CanReach(Eternal Prison Gloom) and Has(Grapple Claw)))"
+        "Logic": "Has(Maats Feather) and Has(Djed Pillar) and (Has(Claydoll Suit) or Has(Ice Cloak)) and Has(Feather) and ((Has(Gale Fibula) or Has(Lamp of Time)) or CanReach(Eternal Prison Gloom))"
       },
       {
         "name": "Hraesvelgr",
         "locationType": "Miniboss",
-        "Logic": "IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2) and IsDead(Ratatoskr 3) and IsDead(Ratatoskr 4) and IsDead(Nidhogg) and CanChant(Moon) and OrbCount(7) and HasWeaponUpgrade",
+        "Logic": "IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2) and IsDead(Ratatoskr 3) and IsDead(Ratatoskr 4) and IsDead(Nidhogg) and CanChant(Moon) and Has(Feather)",
         "HardLogic": "IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2) and IsDead(Ratatoskr 3) and IsDead(Ratatoskr 4) and IsDead(Nidhogg) and CanChant(Moon)",
         "item": {
           "name": "Hraesvelgr",
@@ -2304,6 +2253,18 @@
       {
         "connectingAreaName": "Eternal Prison Gloom",
         "Logic": "Has(Grapple Claw) and (Has(Gale Fibula) or Has(Lamp of Time)) and (Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(1) and Has(Anchor)))"
+      },
+      {
+        "connectingAreaName": "Divine Fortress Top",
+        "Logic": "True"
+      },
+      {
+        "connectingAreaName": "Icefire Treetop Right",
+        "Logic": "True"
+      },
+      {
+        "connectingAreaName": "Takamagahara Shrine Bottom",
+        "Logic": "True"
       }
     ]
   },
@@ -2329,7 +2290,7 @@
       {
         "name": "Hel",
         "locationType": "Guardian",
-        "Logic": "AnkhCount(9) and OrbCount(9) and Has(Flail Whip)",
+        "Logic": "AnkhCount(9) and OrbCount(8) and (Has(Flail Whip) or Has(Axe) or Has(Katana))",
         "HardLogic": "AnkhCount(9)",
         "item": {
           "name": "Hel",
@@ -2370,12 +2331,12 @@
       {
         "name": "Death Sigil Chest",
         "locationType": "Chest",
-        "Logic": "Has(Mjolnir) and Has(Life Sigil) and (Has(Death Sigil) or ((Has(Hand Scanner) or Setting(AutoScan)) and Has(Future Development Company)))"
+        "Logic": "Has(Mjolnir) and Has(Life Sigil) and (Has(Death Sigil) or ((Has(Hand Scanner) or Setting(AutoScan)) and Has(Future Development Company) and CanWarp))"
       },
       {
         "name": "Mother Mantra Mural",
         "locationType": "Mural",
-        "Logic": "CanUse(Bomb) and Has(Snapshot) and PuzzleFinished(Statue Lady)"
+        "Logic": "CanUse(Bomb) and Has(Snapshot) and Has(Enga Musica)"
       },
       {
         "name": "Ankh Jewel",
@@ -2385,25 +2346,16 @@
       {
         "name": "Key Fairy",
         "locationType": "Fairy",
-        "Logic": "Has(Fairy Pass) and Has(Freyas Pendant)",
+        "Logic": "Has(Fairy Pass) and Has(Freyas Pendant) and CanReach(Annwfn Right)",
         "item": {
           "name": "Key Fairy",
           "isRequired": true
         }
       },
       {
-        "name": "Statue Lady Puzzle",
-        "locationType": "Puzzle",
-        "Logic": "Has(Enga Musica)",
-        "item": {
-          "name": "Statue Lady",
-          "isRequired": true
-        }
-      },
-      {
         "name": "Garm Statue Puzzle",
         "locationType": "Puzzle",
-        "Logic": "PuzzleFinished(Statue Lady) and Has(Feather) and CanChant(Fire) and CanChant(Earth) and CanChant(Sun)",
+        "Logic": "Has(Enga Musica) and Has(Feather) and CanChant(Fire) and CanChant(Earth) and CanChant(Sun)",
         "item": {
           "name": "Garm",
           "isRequired": true
@@ -2417,7 +2369,7 @@
       {
         "name": "Sakit Puzzle",
         "locationType": "Puzzle",
-        "Logic": "PuzzleFinished(Statue Lady) and Has(Feather) and IsDead(Vidofnir) and CanChant(Moon) and Has(Giants Flute) and Has(Liquour) and Has(Hand Scanner)",
+        "Logic": "Has(Enga Musica) and Has(Feather) and IsDead(Vidofnir) and CanChant(Moon) and Has(Giants Flute) and Has(Liquour) and Has(Hand Scanner)",
         "item": {
           "name": "Sakit",
           "isRequired": true
@@ -2426,8 +2378,8 @@
       {
         "name": "Ratatoskr 4",
         "locationType": "Miniboss",
-        "Logic": "PuzzleFinished(Statue Lady) and Has(Feather) and IsDead(Ratatoskr 3) and OrbCount(7) and HasWeaponUpgrade",
-        "HardLogic": "PuzzleFinished(Statue Lady) and Has(Feather) and IsDead(Ratatoskr 3)",
+        "Logic": "Has(Enga Musica) and Has(Feather) and IsDead(Ratatoskr 3) and (((Has(Chain Whip) or Has(Axe)) and OrbCount(7)) or ((Has(Flail Whip) or Has(Katana)) and OrbCount(6)))",
+        "HardLogic": "Has(Enga Musica) and Has(Feather) and IsDead(Ratatoskr 3)",
         "item": {
           "name": "Ratatoskr 4",
           "isRequired": true
@@ -2437,7 +2389,7 @@
     "exits": [
       {
         "connectingAreaName": "Eternal Prison Doom Main",
-        "Logic": "(((Has(Hand Scanner) or Setting(Autoscan)) and Has(Future Development Company) and (Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(1)))) or Has(Grapple Claw)) and Has(Feather)"
+        "Logic": "((Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(1))) or Has(Grapple Claw)) and Has(Feather)"
       },
       {
         "connectingAreaName": "Eternal Prison Doom Top",
@@ -2446,6 +2398,18 @@
       {
         "connectingAreaName": "Icefire Treetop Vidofnir",
         "Logic": "GuardianKills(5)"
+      },
+      {
+        "connectingAreaName": "Divine Fortress Top",
+        "Logic": "True"
+      },
+      {
+        "connectingAreaName": "Icefire Treetop Right",
+        "Logic": "True"
+      },
+      {
+        "connectingAreaName": "Takamagahara Shrine Bottom",
+        "Logic": "True"
       }
     ]
   },
