@@ -275,6 +275,11 @@
     "isRequired": true
   },
   {
+    "name": "Leather Whip",
+    "id": 61,
+    "isRequired": true
+  },
+  {
     "name": "Chain Whip",
     "id": 62,
     "isRequired": true
