@@ -7,7 +7,7 @@
         xmlns:main="clr-namespace:LaMulana2Randomizer"
         xmlns:vm="clr-namespace:LaMulana2Randomizer.ViewModels"
         mc:Ignorable="d"
-        Title="La-Mulana 2 Randomizer"  Width="350" Height="550">
+        Title="La-Mulana 2 Randomizer"  Width="350" Height="550" MinWidth="350" MinHeight="550">
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
@@ -20,6 +20,14 @@
                     <Setter Property="IsEnabled" Value="False"/>
                 </DataTrigger>
             </Style.Triggers>
+        </Style>
+        <Style x:Key="TootltipStyle" TargetType="{x:Type ToolTip}">
+            <Style.Resources>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="TextWrapping" Value="Wrap" />
+                </Style>
+            </Style.Resources>
+            <Setter Property="MaxWidth" Value="300" />
         </Style>
     </Window.Resources>
     <Grid>
@@ -65,15 +73,9 @@
                                 <CheckBox Name="FDCCheck" Content="Randomised" IsChecked="{Binding Settings.RandomFDC}" Style="{StaticResource OriginalShopCheck}"/>
                             </StackPanel>
                             <StackPanel.ToolTip>
-                                <StackPanel>
-                                    <TextBlock>
-                                        Randomised will fully randomise the item otherwise
-                                        <LineBreak/>
-                                        the item will be placed somewhere available from the
-                                        <LineBreak/>
-                                        start.
-                                    </TextBlock>
-                                </StackPanel>
+                                <ToolTip Style="{StaticResource TootltipStyle}">
+                                    <TextBlock Text="Randomised will fully randomise the item otherwise the item will be placed somewhere available from the start."/>
+                                </ToolTip>
                             </StackPanel.ToolTip>
                         </StackPanel>
                     </GroupBox>
@@ -83,14 +85,16 @@
                             <RadioButton x:Name="MantraMural" Content="Only at murals" IsChecked="{Binding Settings.MantraPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:MantraPlacement.OnlyMurals}}"/>
                             <RadioButton Name="MantraOriginal" Content="Original Placement" IsChecked="{Binding Settings.MantraPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:MantraPlacement.Original}}"/>
                             <StackPanel.ToolTip>
-                                <StackPanel>
-                                    <TextBlock Text="Randomised"  FontWeight="Bold"/>
-                                    <TextBlock Text="Fully randomises mantra placement"/>
-                                    <TextBlock Text="Only Murals"  FontWeight="Bold"/>
-                                    <TextBlock Text="Mantras only placed at locations that need snapshots"/>
-                                    <TextBlock Text="Original"  FontWeight="Bold"/>
-                                    <TextBlock Text="Mantras are placed at original locations"/>
-                                </StackPanel>
+                                <ToolTip Style="{StaticResource TootltipStyle}">
+                                    <StackPanel>
+                                        <TextBlock Text="Randomised"  FontWeight="Bold"/>
+                                        <TextBlock Text="Fully randomises mantra placement."/>
+                                        <TextBlock Text="Only Murals"  FontWeight="Bold"/>
+                                        <TextBlock Text="Mantras only placed at mantra murals."/>
+                                        <TextBlock Text="Original"  FontWeight="Bold"/>
+                                        <TextBlock Text="Mantras are placed at original locations."/>
+                                    </StackPanel>
+                                </ToolTip>
                             </StackPanel.ToolTip>
                         </StackPanel>
                     </GroupBox>
@@ -100,14 +104,16 @@
                             <RadioButton x:Name="ShopAtleastOne" Content="At least one item" IsChecked="{Binding Settings.ShopPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ShopPlacement.AtLeastOne}}"/>
                             <RadioButton Name="ShopOriginal" Content="Original Items" IsChecked="{Binding Settings.ShopPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ShopPlacement.Original}}"/>
                             <StackPanel.ToolTip>
-                                <StackPanel>
-                                    <TextBlock Text="Randomised"  FontWeight="Bold"/>
-                                    <TextBlock Text="Fully randomises shop contents"/>
-                                    <TextBlock Text="At least one"  FontWeight="Bold"/>
-                                    <TextBlock Text="Ensure every shops has atleast one item"/>
-                                    <TextBlock Text="Original"  FontWeight="Bold"/>
-                                    <TextBlock Text="Shops have their orginal contents"/>
-                                </StackPanel>
+                                <ToolTip Style="{StaticResource TootltipStyle}">
+                                    <StackPanel>
+                                        <TextBlock Text="Randomised"  FontWeight="Bold"/>
+                                        <TextBlock Text="Fully randomises shop contents."/>
+                                        <TextBlock Text="At least one"  FontWeight="Bold"/>
+                                        <TextBlock Text="Ensure every shops has atleast one item."/>
+                                        <TextBlock Text="Original"  FontWeight="Bold"/>
+                                        <TextBlock Text="Shops have their orginal contents."/>
+                                    </StackPanel>
+                                </ToolTip>
                             </StackPanel.ToolTip>
                         </StackPanel>
                     </GroupBox>
@@ -122,31 +128,19 @@
                     <GroupBox Header="Logic" Grid.Row="0">
                         <StackPanel>
                             <CheckBox Name="FDCBacksideCheck" IsChecked="{Binding Settings.FDCForBacksides}" Style="{StaticResource OriginalShopCheck}" Margin="0,2">
-                                <TextBlock>
-                                    <Run Text="Require Future Development Company for"/>
-                                    <LineBreak/>
-                                    <Run Text="backsides."/>
-                                </TextBlock>
+                                <TextBlock Text="Require Future Development Company for backsides." TextWrapping="Wrap"/>
                                 <CheckBox.ToolTip>
-                                    <TextBlock>
-                                        Makes Future Development company required
-                                        <LineBreak/>
-                                        to logically enter Valhalla, Dark Lord's
-                                        <LineBreak/>
-                                        Mauseleum, Ancient Chaos, Hall of Malice
-                                        <LineBreak/>
-                                        and Eternal Prison.
-                                    </TextBlock>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="Makes Future Development company required to logically enter Valhalla, Dark Lord's Mauseleum, Ancient Chaos, Hall of Malice and Eternal Prison."/>
+                                    </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
                             <CheckBox Name="RandomCurseCheck" IsChecked="{Binding Settings.RandomCurses}" Margin="0,2">
                                 <TextBlock Text="Randomise Curses"/>
                                 <CheckBox.ToolTip>
-                                    <TextBlock>
-                                        Randomises which chests will have the curse
-                                        <LineBreak/>
-                                        the Mulana Talsiman is needed to break.
-                                    </TextBlock>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="Randomises which chests will have the curse the Mulana Talsiman is needed to break."/>
+                                    </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
                         </StackPanel>
@@ -155,15 +149,9 @@
                         <StackPanel Margin="2">
                             <CheckBox Name="DifficultyCheck" Content="Hard Guardian/Room Guarders requirements" IsChecked="{Binding Settings.HardBosses}">
                                 <CheckBox.ToolTip>
-                                    <TextBlock>
-                                        Reduces the requirements to fight 
-                                        <LineBreak/>
-                                        Guardians/Room Guarders to basically
-                                        <LineBreak/>
-                                        only what is need to start the fight, 
-                                        <LineBreak/>
-                                        warning this can be really hard.
-                                    </TextBlock>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="Reduces the requirements to fight Guardians/Room Guarders to basically only what is need to start the fight. WARNING this can be really hard." />
+                                    </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
                         </StackPanel>
@@ -176,23 +164,33 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <GroupBox Header="Qaulity of Life" Grid.Row="0">
-                        <CheckBox Name="AutoScanCheck" IsChecked="{Binding Settings.AutScanTablets}" Content="Autoscan Holy Tablets" Margin="2"/>
+                        <CheckBox Name="AutoScanCheck" IsChecked="{Binding Settings.AutScanTablets}" Content="Autoscan Holy Tablets" Margin="2">
+                            <CheckBox.ToolTip>
+                                <ToolTip Style="{StaticResource TootltipStyle}">
+                                    <TextBlock Text="Walking in front of Holy Tablets will add them to the list of warp locations automatically." />
+                                </ToolTip>
+                            </CheckBox.ToolTip>
+                        </CheckBox>
                     </GroupBox>
                 </Grid>
             </TabItem>
         </TabControl>
-        <GroupBox Header="Seed" VerticalAlignment="Bottom" Height="80">
+        <GroupBox Header="Seed" VerticalAlignment="Bottom" Height="80" Margin="5,0,5,5">
             <StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Seed:"/>
-                    <TextBox x:Name="InputTextBox" Width="283" Margin="0,5">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="Seed:"/>
+                    <TextBox Grid.Column="1" x:Name="InputTextBox" HorizontalAlignment="Stretch" Margin="0,5,5,5">
                         <Binding Path="Settings.Seed" UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
                                 <local:IntRangeRule Min="-2147483648" Max="2147483647"/>
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox>
-                </StackPanel>
+                </Grid>
                 <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="100" Content="Generate" Command="{Binding GenerateCommand}" IsEnabled="{Binding ElementName=InputTextBox, Path=(Validation.Errors)[0], Converter={StaticResource textErrorBooleanConverter}}"/>
             </StackPanel>
         </GroupBox>

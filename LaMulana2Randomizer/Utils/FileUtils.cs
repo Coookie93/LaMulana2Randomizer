@@ -8,14 +8,14 @@ namespace LaMulana2Randomizer.Utils
 {
     public abstract class FileUtils
     {
-        public static void GetWorldData(out List<JsonArea> areas)
+        public static List<JsonArea> GetWorldData()
         {
             try
             {
                 using (StreamReader sr = File.OpenText("Data\\World.json"))
                 {
                     JsonSerializer serializer = new JsonSerializer();
-                    areas = (List<JsonArea>)serializer.Deserialize(sr, typeof(List<JsonArea>));
+                    return (List<JsonArea>)serializer.Deserialize(sr, typeof(List<JsonArea>));
                 }
             }
             catch (Exception ex)
@@ -51,10 +51,13 @@ namespace LaMulana2Randomizer.Utils
                     sr.WriteLine($"Seed: {randomiser.Settings.Seed}");
                     sr.WriteLine();
 
+                    sr.WriteLine($"Starting Weapon: {randomiser.StartingWeapon.name}");
+                    sr.WriteLine();
+
                     if (randomiser.Settings.RandomCurses)
                     {
-                        sr.WriteLine("Curse Locations");
-                        foreach(Location location in randomiser.cursedLocations)
+                        sr.WriteLine("Curse Locations:");
+                        foreach(Location location in randomiser.CursedLocations)
                         {
                             sr.WriteLine($"  {location.Name}");
                         }
@@ -130,7 +133,7 @@ namespace LaMulana2Randomizer.Utils
                         br.Write((int)p.Item1);
                         br.Write((int)p.Item2);
                     }
-                    foreach(Location location in randomiser.cursedLocations)
+                    foreach(Location location in randomiser.CursedLocations)
                     {
                         br.Write((int)location.Id);
                     }

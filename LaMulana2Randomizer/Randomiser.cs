@@ -11,9 +11,10 @@ namespace LaMulana2Randomizer
         private readonly Random random;
         private Dictionary<string, Area> areas;
         private Dictionary<string, Location> locations;
-        public List<Location> cursedLocations { get; private set; }
 
-        public Settings Settings { get; }
+        public Item StartingWeapon { get; private set; }
+        public List<Location> CursedLocations { get; private set; }
+        public Settings Settings { get; private set; }
 
         public Randomiser(Settings settings)
         {
@@ -26,7 +27,7 @@ namespace LaMulana2Randomizer
             areas = new Dictionary<string, Area>();
             locations = new Dictionary<string, Location>();
 
-            FileUtils.GetWorldData(out List<JsonArea> worldData);
+            List<JsonArea> worldData = FileUtils.GetWorldData();
 
             foreach (JsonArea areaData in worldData)
             {
@@ -79,10 +80,11 @@ namespace LaMulana2Randomizer
             FileUtils.GetItemsFromJson("Data//Mantras.json", out List<Item> mantras);
             FileUtils.GetItemsFromJson("Data//ShopOnlyItems.json", out List<Item> shopOnlyItems);
 
+            StartingWeapon = ItemPool.GetAndRemove(ItemID.Whip, items);
+
             //Places weights at a starting shop since they are needed for alot of early items
             //this means that player will not have to rely on drops or weights from pots
             GetLocation("Nebur Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Weights, shopOnlyItems));
-            GetLocation("Nebur Item").PlaceItem(ItemPool.GetAndRemove(ItemID.AngelShield, items));
 
             if (Settings.ShopPlacement != ShopPlacement.Original)
             {
@@ -205,7 +207,7 @@ namespace LaMulana2Randomizer
 
         private void RandomiseCurses()
         {
-            cursedLocations = new List<Location>();
+            CursedLocations = new List<Location>();
             if (Settings.RandomCurses)
             {
                 var chestLocations = Shuffle.FisherYates(GetUnplacedLocationsOfType(LocationType.Chest), random);
@@ -214,30 +216,19 @@ namespace LaMulana2Randomizer
                     Location location = chestLocations[i];
                     location.AppendRuleString("and Has(Mulana Talisman)");
                     location.BuildLogicTree();
-                    cursedLocations.Add(location);
+                    CursedLocations.Add(location);
                 }
             }
             else
             {
-                Location location = GetLocation("Flame Torc Chest");
-                location.AppendRuleString("and Has(Mulana Talisman)");
-                location.BuildLogicTree();
-                cursedLocations.Add(location);
-
-                location = GetLocation("Giants Flutes Chest");
-                location.AppendRuleString("and Has(Mulana Talisman)");
-                location.BuildLogicTree();
-                cursedLocations.Add(location);
-
-                location = GetLocation("Destiny Tablet Chest");
-                location.AppendRuleString("and Has(Mulana Talisman)");
-                location.BuildLogicTree();
-                cursedLocations.Add(location);
-
-                location = GetLocation("Power Band Chest");
-                location.AppendRuleString("and Has(Mulana Talisman)");
-                location.BuildLogicTree();
-                cursedLocations.Add(location);
+                var defaultLocations = new List<string>{ "Flame Torc Chest", "Giants Flutes Chest", "Destiny Tablet Chest", "Power Band Chest" };
+                foreach(string locationName in defaultLocations)
+                {
+                    Location location = GetLocation(locationName);
+                    location.AppendRuleString("and Has(Mulana Talisman)");
+                    location.BuildLogicTree();
+                    CursedLocations.Add(location);
+                }
             }
         }
 

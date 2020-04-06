@@ -34,11 +34,7 @@ namespace LaMulana2Randomizer.ViewModels
 
         public void Generate()
         {
-            ProgressDialogViewModel dialogViewModel = new ProgressDialogViewModel()
-            {
-                Label = "Hello World!",
-                IsIndeterminate = true
-            };
+            ProgressDialogViewModel dialogViewModel = new ProgressDialogViewModel();
             ProgressDialog dialog = new ProgressDialog()
             {
                 DataContext = dialogViewModel,
@@ -52,7 +48,10 @@ namespace LaMulana2Randomizer.ViewModels
 
         public void GenerateSeed(IProgress<ProgressInfo> progress)
         {
-            for (int i = 0; i < 1; i++)
+            const int NumSeeds = 1;
+            const int MaxAttempts = 25;
+
+            for (int i = 1; i <= NumSeeds; i++)
             {
                 int attemptCount = 0;
                 bool canBeatGame;
@@ -60,7 +59,7 @@ namespace LaMulana2Randomizer.ViewModels
 
                 progress.Report(new ProgressInfo 
                 { 
-                    Label = $"Generating Seed", 
+                    Label = $"Generating Seed {i}/{NumSeeds}", 
                     ProgressValue = 0, 
                     IsIndeterminate = true 
                 });
@@ -107,14 +106,14 @@ namespace LaMulana2Randomizer.ViewModels
                         return;
                     }
 
-                } while (!canBeatGame && attemptCount < 10);
+                } while (!canBeatGame && attemptCount < MaxAttempts);
 
-                if (attemptCount == 10)
+                if (attemptCount == MaxAttempts)
                 {
                     Logger.LogAndFlush($"Failed to generate beatable configuration for seed {randomiser.Settings.Seed}"); 
                     progress.Report(new ProgressInfo
                     {
-                        Label = "Failed to generate beatable configuration stopping after 10 attempts.",
+                        Label = $"Failed to generate beatable configuration stopping after {MaxAttempts} attempts.",
                         ProgressValue = 100,
                         IsIndeterminate = false
                     });
@@ -129,7 +128,7 @@ namespace LaMulana2Randomizer.ViewModels
                         ProgressValue = 100,
                         IsIndeterminate = false
                     });
-                    continue;
+                    return;
                 }
 
                 if (!FileUtils.WriteSeedFile(randomiser))
@@ -140,17 +139,19 @@ namespace LaMulana2Randomizer.ViewModels
                         ProgressValue = 100,
                         IsIndeterminate = false
                     });
-                    continue;
+                    return;
                 }
 
                 Logger.LogAndFlush($"Successfully generated for seed {randomiser.Settings.Seed}");
-                progress.Report(new ProgressInfo
-                {
-                    Label = "Successfully generated seed.",
-                    ProgressValue = 100,
-                    IsIndeterminate = false
-                });
+                Settings.Seed = new Random(Settings.Seed).Next(int.MinValue, int.MaxValue);
             }
+
+            progress.Report(new ProgressInfo
+            {
+                Label = "Successfully generated seed.",
+                ProgressValue = 100,
+                IsIndeterminate = false
+            });
         }
     }
 }

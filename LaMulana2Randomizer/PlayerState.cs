@@ -29,7 +29,9 @@ namespace LaMulana2Randomizer
         public static PlayerState GetStateWithItems(Randomiser randomiser, List<Item> currentItems)
         {
             PlayerState state = new PlayerState(randomiser);
-            
+
+            state.CollectItem(randomiser.StartingWeapon);
+
             foreach (Item item in currentItems)
             {
                 state.CollectItem(item);
@@ -213,9 +215,6 @@ namespace LaMulana2Randomizer
 
                 case LogicType.SkullCount:
                     return SkullCount(int.Parse(rule.value));
-
-                case LogicType.HasWeaponUpgrade:
-                    return HasItem("Chain Whip") || HasItem("Flail Whip") || HasItem("Axe") || HasItem("Axe");
 
                 case LogicType.Setting:
                     return Settings(rule.value);
