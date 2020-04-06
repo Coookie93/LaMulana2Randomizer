@@ -30,7 +30,3 @@ Use Steam's file verification and it will redownload the original Assembly-CShar
 
 ## Compiling:
 The randomisation application should compile fine, for the patch dll you will have to correct the missing references to the Unity dlls, TextMeshPro dll and the games Assembly-CSharp dll as these can't be distributed with the source code.
-
-The logic for bosses/minibosses needs some work along with the item pricing.
-
-F11 opens/closes an overlay for error info.
