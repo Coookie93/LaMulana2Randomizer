@@ -14,7 +14,6 @@ namespace LaMulana2Randomizer
         [JsonConverter(typeof(StringEnumConverter))]
         public LocationType LocationType;
 
-        public bool IsGuardianChest;
         public string Logic;
         public string HardLogic;
         public Item Item;
@@ -24,7 +23,6 @@ namespace LaMulana2Randomizer
     {
         public string Name { get; private set; }
         public LocationType LocationType { get; private set; }
-        public bool IsGuardianChest { get; private set; }
         public Item Item { get; private set; }
         public LocationID Id { get; private set; }
 
@@ -39,7 +37,6 @@ namespace LaMulana2Randomizer
         {
             Name = jsonLocation.Name;
             LocationType = jsonLocation.LocationType;
-            IsGuardianChest = jsonLocation.IsGuardianChest;
             logicString = jsonLocation.Logic;
             hardLogicString = jsonLocation.HardLogic;
             Item = jsonLocation.Item;
@@ -62,7 +59,7 @@ namespace LaMulana2Randomizer
             Item = item;
         }
 
-        public void AppendRuleString(string append)
+        public void AppendLogicString(string append)
         {
             logicString = string.Format($"({logicString}){append}");
         }

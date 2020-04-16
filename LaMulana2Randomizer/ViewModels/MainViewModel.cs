@@ -4,11 +4,19 @@ using System.Windows;
 using System.Windows.Input;
 using LaMulana2Randomizer.UI;
 using LaMulana2Randomizer.Utils;
+using LaMulana2RandomizerShared;
+using Version = LM2RandomizerShared.Version;
 
 namespace LaMulana2Randomizer.ViewModels
 {
     public class MainViewModel : BindableBase
     {
+        private string _title;
+        public string Title {
+            get => _title;
+            set => Set(ref _title, value);
+        }
+
         private Settings _settings;
         public Settings Settings 
         {
@@ -18,6 +26,7 @@ namespace LaMulana2Randomizer.ViewModels
 
         public MainViewModel()
         {
+            Title = Version.version;
             Settings = new Settings();
         }
 
@@ -49,12 +58,11 @@ namespace LaMulana2Randomizer.ViewModels
         public void GenerateSeed(IProgress<ProgressInfo> progress)
         {
             const int NumSeeds = 1;
-            const int MaxAttempts = 25;
+            const int MaxAttempts = 100;
 
             for (int i = 1; i <= NumSeeds; i++)
             {
                 int attemptCount = 0;
-                bool canBeatGame;
                 Randomiser randomiser = new Randomiser(Settings);
 
                 progress.Report(new ProgressInfo 
@@ -64,16 +72,40 @@ namespace LaMulana2Randomizer.ViewModels
                     IsIndeterminate = true 
                 });
 
-                do
+                try
                 {
-                    try
+                    bool entranceCheck;
+                    do
                     {
                         attemptCount++;
                         randomiser.Setup();
+                        entranceCheck = randomiser.EntranceCheck();
+                        if (!entranceCheck)
+                        {
+                            randomiser.Clear();
+                            Logger.Log($"Failed to generate beatable entrance configuartion, retrying.");
+                            progress.Report(new ProgressInfo
+                            {
+                                Label = $"Failed to generate beatable entrance configuartion, retrying attempt {attemptCount}.",
+                                ProgressValue = 0,
+                                IsIndeterminate = true
+                            });
+                        }
+
+                    } while (!entranceCheck && attemptCount < MaxAttempts);
+
+                    randomiser.RandomiseCurses();
+
+                    attemptCount = 0;
+                    bool canBeatGame;
+                    do
+                    {
+                        attemptCount++;
                         randomiser.PlaceItems();
                         canBeatGame = randomiser.CanBeatGame();
                         if (!canBeatGame)
                         {
+                            randomiser.ClearPlacedItems();
                             Logger.Log($"Failed to generate beatable configuartion, retrying.");
                             progress.Report(new ProgressInfo
                             {
@@ -82,38 +114,37 @@ namespace LaMulana2Randomizer.ViewModels
                                 IsIndeterminate = true
                             });
                         }
-                    }
-                    catch (RandomiserException ex)
+                    } while (!canBeatGame && attemptCount < MaxAttempts);
+
+                    if (attemptCount == MaxAttempts && !canBeatGame)
                     {
-                        Logger.Flush();
+                        Logger.LogAndFlush($"Failed to generate beatable configuration for seed {randomiser.Settings.Seed}");
                         progress.Report(new ProgressInfo
                         {
-                            Label = ex.Message,
+                            Label = $"Failed to generate beatable configuration stopping after {MaxAttempts} attempts.",
                             ProgressValue = 100,
                             IsIndeterminate = false
                         });
                         return;
                     }
-                    catch (Exception ex)
-                    {
-                        Logger.LogAndFlush(ex.Message);
-                        progress.Report(new ProgressInfo
-                        {
-                            Label = "Something has gone very wrong!",
-                            ProgressValue = 100,
-                            IsIndeterminate = false
-                        });
-                        return;
-                    }
-
-                } while (!canBeatGame && attemptCount < MaxAttempts);
-
-                if (attemptCount == MaxAttempts)
+                }
+                catch (RandomiserException ex)
                 {
-                    Logger.LogAndFlush($"Failed to generate beatable configuration for seed {randomiser.Settings.Seed}"); 
+                    Logger.Flush();
                     progress.Report(new ProgressInfo
                     {
-                        Label = $"Failed to generate beatable configuration stopping after {MaxAttempts} attempts.",
+                        Label = ex.Message,
+                        ProgressValue = 100,
+                        IsIndeterminate = false
+                    });
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogAndFlush(ex.Message);
+                    progress.Report(new ProgressInfo
+                    {
+                        Label = "Something has gone very wrong!",
                         ProgressValue = 100,
                         IsIndeterminate = false
                     });
@@ -143,7 +174,8 @@ namespace LaMulana2Randomizer.ViewModels
                 }
 
                 Logger.LogAndFlush($"Successfully generated for seed {randomiser.Settings.Seed}");
-                Settings.Seed = new Random(Settings.Seed).Next(int.MinValue, int.MaxValue);
+                if(NumSeeds > 1)
+                    Settings.Seed = new Random(Settings.Seed).Next(int.MinValue, int.MaxValue);
             }
 
             progress.Report(new ProgressInfo

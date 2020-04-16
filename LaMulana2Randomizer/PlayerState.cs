@@ -29,13 +29,10 @@ namespace LaMulana2Randomizer
         public static PlayerState GetStateWithItems(Randomiser randomiser, List<Item> currentItems)
         {
             PlayerState state = new PlayerState(randomiser);
-
             state.CollectItem(randomiser.StartingWeapon);
 
             foreach (Item item in currentItems)
-            {
                 state.CollectItem(item);
-            }
 
             List<Location> requiredLocations = randomiser.GetPlacedRequiredItemLocations();
             List<Location> reachableLocations;
@@ -55,31 +52,78 @@ namespace LaMulana2Randomizer
             return state;
         }
 
-        public bool SoftlockCheck(List<Location> requiredLocations, Location locationToSkip)
+        public static bool SoftlockCheck(Randomiser randomiser, List<Location> requiredLocations, Location locationToSkip)
         {
-            soflocktest = true;
+            PlayerState state = new PlayerState(randomiser);
+            state.CollectItem(randomiser.StartingWeapon);
+
+            state.soflocktest = true;
             List<Location> reachableLocations;
             do
             {
-                reachableLocations = GetReachableLocations(requiredLocations);
+                reachableLocations = state.GetReachableLocations(requiredLocations);
                 foreach (Location location in reachableLocations)
                 {
-                    collectedLocations.Add(location.Name, true);
+                    state.collectedLocations.Add(location.Name, true);
                     if (location.Equals(locationToSkip))
                         continue;
 
-                    CollectItem(location.Item);
+                    state.CollectItem(location.Item);
                 }
 
-                ResetCheckedAreasAndEntrances();
+                state.ResetCheckedAreasAndEntrances();
 
             } while (reachableLocations.Count > 0);
 
 
-            if (GuardianKills(8) && !AnkhCountSoftLock())
+            if (state.GuardianKills(8) && !state.AnkhCountSoftLock())
                 return false;
 
             return true;
+        }
+
+        public static bool CanBeatGame(Randomiser randomiser, List<Location> requiredLocations)
+        {
+            PlayerState state = new PlayerState(randomiser);
+            state.CollectItem(randomiser.StartingWeapon);
+            List<Location> reachableLocations;
+            do
+            {
+                reachableLocations = state.GetReachableLocations(requiredLocations);
+                foreach (Location location in reachableLocations)
+                {
+                    state.CollectItem(location.Item);
+                    state.collectedLocations.Add(location.Name, true);
+                }
+
+                state.ResetCheckedAreasAndEntrances();
+
+            } while (reachableLocations.Count > 0);
+            
+            return state.HasItem("Winner");
+        }
+
+        public static bool EntrancePlacementCheck(Randomiser randomiser, List<Location> requiredLocations, List<Item> items)
+        {
+            PlayerState state = new PlayerState(randomiser);
+            foreach (Item item in items)
+                state.CollectItem(item);
+
+            List<Location> reachableLocations;
+            do
+            {
+                reachableLocations = state.GetReachableLocations(requiredLocations);
+                foreach (Location location in reachableLocations)
+                {
+                    state.CollectItem(location.Item);
+                    state.collectedLocations.Add(location.Name, true);
+                }
+
+                state.ResetCheckedAreasAndEntrances();
+
+            } while (reachableLocations.Count > 0);
+
+            return state.HasItem("Winner");
         }
 
         public bool CanBeatGame(List<Location> requiredLocations)
@@ -97,7 +141,7 @@ namespace LaMulana2Randomizer
                 ResetCheckedAreasAndEntrances();
 
             } while (reachableLocations.Count > 0);
-            
+
             return HasItem("Winner");
         }
 
@@ -105,48 +149,37 @@ namespace LaMulana2Randomizer
         {
             Area area = Randomiser.GetArea(areaName);
             if (area.Equals(Randomiser.GetArea("Village of Departure")))
-            {
                 return true;
-            }
 
             if (areaChecks.TryGetValue(area.Name, out bool cached))
-            {
                 return cached;
-            }
-            else
-            {
-                if (area.Checking)
-                {
-                    return false;
-                }
-                area.Checking = true;
-                bool canReach = area.CanReach(this);
-                area.Checking = false;
-                areaChecks.Add(area.Name, canReach);
 
-                return canReach;
+            if (area.Checking)
+            {
+                return false;
             }
+            area.Checking = true;
+            bool canReach = area.CanReach(this);
+            area.Checking = false;
+            areaChecks.Add(area.Name, canReach);
+
+            return canReach;
         }
 
         public bool CanReach(Connection entrance)
         {
             if (entraceChecks.TryGetValue(entrance.Name, out bool cached))
-            {
                 return cached;
-            }
-            else
-            {
-                if (entrance.Checking)
-                {
-                    return false;
-                }
-                entrance.Checking = true;
-                bool canReach = entrance.CanReach(this);
-                entrance.Checking = false;
-                entraceChecks.Add(entrance.Name, canReach);
 
-                return canReach;
-            }
+            if (entrance.Checking)
+                return false;
+
+            entrance.Checking = true;
+            bool canReach = entrance.CanReach(this);
+            entrance.Checking = false;
+            entraceChecks.Add(entrance.Name, canReach);
+
+            return canReach;
         }
 
         public void CollectItem(Item item)
@@ -198,6 +231,9 @@ namespace LaMulana2Randomizer
                 case LogicType.IsDead:
                     return HasItem(rule.value);
 
+                case LogicType.CanKill:
+                    return CanKill(rule.value);
+
                 case LogicType.OrbCount:
                     return OrbCount(int.Parse(rule.value));
 
@@ -221,6 +257,9 @@ namespace LaMulana2Randomizer
 
                 case LogicType.True:
                     return true;
+
+                case LogicType.False:
+                    return false;
 
                 default:
                     return false;
@@ -268,7 +307,7 @@ namespace LaMulana2Randomizer
         
         private bool HasItem(string itemName)
         {
-            return collectedItems.ContainsKey(itemName) ? true : false;
+            return collectedItems.ContainsKey(itemName);
         } 
         
         private bool CanChant(string mantra)
@@ -284,6 +323,11 @@ namespace LaMulana2Randomizer
         private bool CanSpinCorridor()
         {
             return HasItem("Beherit") && Dissonance(1);
+        }
+
+        private bool CanKill(string enemy)
+        {
+            return Randomiser.GetLocation(enemy).LogicTree.Evaluate(this);
         }
 
         private bool GuardianKills(int count)
@@ -344,6 +388,16 @@ namespace LaMulana2Randomizer
             {
                 case "AutoScan":
                     return Randomiser.Settings.AutScanTablets;
+
+                case "Random Vertical":
+                    return Randomiser.Settings.RandomLadderEntraces;
+
+                case "Non Random Vertical":
+                    return !Randomiser.Settings.RandomLadderEntraces;
+
+                case "Non Random Gates":
+                    return !Randomiser.Settings.RandomGateEntraces;
+
                 default:
                     return false;
             }

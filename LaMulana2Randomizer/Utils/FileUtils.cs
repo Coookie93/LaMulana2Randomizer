@@ -25,20 +25,20 @@ namespace LaMulana2Randomizer.Utils
             }
         }
 
-        public static void GetItemsFromJson(string filePath, out List<Item> itemPool)
+        public static List<Item> GetItemsFromJson()
         {
             try
             {
-                using (StreamReader sr = File.OpenText(filePath))
+                using (StreamReader sr = File.OpenText("Data//Items.json"))
                 {
                     JsonSerializer serializer = new JsonSerializer();
-                    itemPool = (List<Item>)serializer.Deserialize(sr, typeof(List<Item>));
+                    return (List<Item>)serializer.Deserialize(sr, typeof(List<Item>));
                 }
             }
             catch (Exception ex)
             {
-                Logger.Log($"Failed to deserialise {filePath}.\n{ex.Message}");
-                throw new RandomiserException($"Failed to parse {filePath}.");
+                Logger.Log($"Failed to deserialise Data//Items.json.\n{ex.Message}");
+                throw new RandomiserException($"Failed to parse Data//Items.json.");
             }
         }
         
@@ -54,52 +54,71 @@ namespace LaMulana2Randomizer.Utils
                     sr.WriteLine($"Starting Weapon: {randomiser.StartingWeapon.name}");
                     sr.WriteLine();
 
-                    if (randomiser.Settings.RandomCurses)
-                    {
-                        sr.WriteLine("Curse Locations:");
-                        foreach(Location location in randomiser.CursedLocations)
-                        {
-                            sr.WriteLine($"  {location.Name}");
-                        }
-                        sr.WriteLine();
-                    }
+                    sr.WriteLine("Curse Locations: {");
+                    foreach (Location location in randomiser.CursedLocations)
+                        sr.WriteLine($"  {location.Name}");
 
+                    sr.WriteLine("}");
+                    sr.WriteLine();
+
+                    sr.WriteLine("Horizontal Entrances: {");
+                    foreach (var pair in randomiser.LeftRightPairs)
+                        sr.WriteLine($"  {pair.Item1.Name} - {pair.Item2.Name}");
+
+                    sr.WriteLine("}");
+                    sr.WriteLine();
+
+                    sr.WriteLine("Ladder Entrances: {");
+                    foreach (var pair in randomiser.DownUpLadderPairs)
+                        sr.WriteLine($"  {pair.Item1.Name} - {pair.Item2.Name}");
+
+                    sr.WriteLine("}");
+                    sr.WriteLine();
+
+                    sr.WriteLine("Gate Entrances: {");
+                    foreach (var pair in randomiser.GatePairs)
+                        sr.WriteLine($"  {pair.Item1.Name} - {pair.Item2.Name}");
+
+                    sr.WriteLine("}");
+                    sr.WriteLine();
+
+                    sr.WriteLine("Item Locations {");
                     foreach (LocationID id in Enum.GetValues(typeof(LocationID)))
                     {
                         foreach (Location location in randomiser.GetPlacedLocations())
                         {
                             if (id != LocationID.None && id == location.Id)
-                            {
-                                sr.WriteLine($"{location.Name} -> {location.Item.name}");
-                            }
+                                sr.WriteLine($"  {location.Name} -> {location.Item.name}");
                         }
                     }
+                    sr.WriteLine("}");
                     sr.WriteLine();
-                    sr.WriteLine("Expected Playthrough");
+                    sr.WriteLine("Expected Playthrough {");
 
                     PlayerState playthrough = new PlayerState(randomiser);
                     List<Location> reachableLocations;
 
+                    int sphere = 0;
                     do
                     {
                         reachableLocations = playthrough.GetReachableLocations(randomiser.GetPlacedRequiredItemLocations());
-                        sr.WriteLine("{");
+                        sr.WriteLine($"  Sphere {sphere} {{");
                         foreach (Location location in reachableLocations)
                         {
                             playthrough.CollectItem(location.Item);
                             playthrough.collectedLocations.Add(location.Name, true);
-                            sr.WriteLine($"  {location.Name} -> {location.Item.name}");
+                            sr.WriteLine($"    {location.Name} -> {location.Item.name}");
                         }
-                        sr.WriteLine("}");
+                        sr.WriteLine("  }");
 
                         if (playthrough.CanBeatGame(reachableLocations))
-                        {
                             break;
-                        }
 
                         playthrough.ResetCheckedAreasAndEntrances();
-                        
+                        sphere++;
+
                     } while (reachableLocations.Count > 0);
+                    sr.WriteLine("}");
                 }
                 return true;
             }

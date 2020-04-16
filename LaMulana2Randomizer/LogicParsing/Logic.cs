@@ -26,6 +26,7 @@ namespace LaMulana2Randomizer.LogicParsing
         Has,
         CanUse,
         IsDead,
+        CanKill,
         OrbCount,
         GuardianKills,
         PuzzleFinished,
@@ -34,7 +35,8 @@ namespace LaMulana2Randomizer.LogicParsing
         SkullCount,
         HasWeaponUpgrade,
         Setting,
-        True
+        True,
+        False
     }
 
     public class InvalidLogicTypeException : Exception

@@ -107,16 +107,21 @@ namespace LM2RandomiserMod
                                                      flagWatch[flagWatch.Count - 5] + "\r\n" +
                                                      flagWatch[flagWatch.Count - 6]);
                     Vector2 flw2Size = guistyle.CalcSize(flw2);
-                    GUI.contentColor = Color.grey;
-                    GUI.Label(new Rect(flw1Size.x + 20, Screen.height - flw1Size.y, flw2Size.x, flw2Size.y), flw2,
+                    GUI.Label(new Rect(flw1Size.x + 20, Screen.height - flw2Size.y, flw2Size.x, flw2Size.y), flw2,
                         guistyle);
 
                     GUIContent flw3 = new GUIContent(flagWatch[flagWatch.Count - 7] + "\r\n" +
                                                      flagWatch[flagWatch.Count - 8] + "\r\n" +
                                                      flagWatch[flagWatch.Count - 9]);
                     Vector2 flw3Size = guistyle.CalcSize(flw3);
-                    GUI.contentColor = Color.grey;
-                    GUI.Label(new Rect(flw1Size.x + flw2Size.x + 40, Screen.height - flw2Size.y, flw3Size.x, flw3Size.y), flw3,
+                    GUI.Label(new Rect(flw1Size.x + flw2Size.x + 40, Screen.height - flw3Size.y, flw3Size.x, flw3Size.y), flw3,
+                        guistyle);
+
+                    GUIContent flw4 = new GUIContent(flagWatch[flagWatch.Count - 10] + "\r\n" +
+                                                     flagWatch[flagWatch.Count - 11] + "\r\n" +
+                                                     flagWatch[flagWatch.Count - 12]);
+                    Vector2 flw4Size = guistyle.CalcSize(flw4);
+                    GUI.Label(new Rect(flw1Size.x + flw2Size.x + flw3Size.x + 40, Screen.height - flw4Size.y, flw4Size.x, flw4Size.y), flw4,
                         guistyle);
                 }
                 catch (Exception)

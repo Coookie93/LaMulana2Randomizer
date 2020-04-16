@@ -8,7 +8,6 @@ using L2Word;
 using L2Flag;
 using LM2RandomiserMod.Patches;
 using LaMulana2RandomizerShared;
-
 using Version = LM2RandomizerShared.Version;
 
 namespace LM2RandomiserMod

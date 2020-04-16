@@ -7,7 +7,7 @@
         xmlns:main="clr-namespace:LaMulana2Randomizer"
         xmlns:vm="clr-namespace:LaMulana2Randomizer.ViewModels"
         mc:Ignorable="d"
-        Title="La-Mulana 2 Randomizer"  Width="350" Height="550" MinWidth="350" MinHeight="550">
+        Title="{Binding Title}"  Width="350" Height="550" MinWidth="350" MinHeight="550">
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
@@ -151,6 +151,45 @@
                                 <CheckBox.ToolTip>
                                     <ToolTip Style="{StaticResource TootltipStyle}">
                                         <TextBlock Text="Reduces the requirements to fight Guardians/Room Guarders to basically only what is need to start the fight. WARNING this can be really hard." />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                        </StackPanel>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Entrances">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <GroupBox Header="Entrances" Grid.Row="0">
+                        <StackPanel>
+                            <CheckBox Name="RandomHorizontal" IsChecked="{Binding Settings.RandomHorizontalEntraces}" Content="Randomise Horizontal Entrances" Margin="2">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="." />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <CheckBox Name="RandomLadder" IsChecked="{Binding Settings.RandomLadderEntraces}" Content="Randomise Ladder Entrances" Margin="2">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="." />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <CheckBox Name="RandomGates" IsChecked="{Binding Settings.RandomGateEntraces}" Content="Randomise Gate Entrances" Margin="2">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="." />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <CheckBox Name="RandomSoulGates" IsChecked="{Binding Settings.RandomSoulGateEntraces}" Content="Randomise Soul Gate Entrances" Margin="2">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="." />
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>

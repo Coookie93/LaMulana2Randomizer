@@ -60,6 +60,30 @@ namespace LaMulana2Randomizer
             set => Set(ref _randomCurses, value);
         }
 
+        private bool _randomHorizontalEntrances;
+        public bool RandomHorizontalEntraces {
+            get => _randomHorizontalEntrances;
+            set => Set(ref _randomHorizontalEntrances, value);
+        }
+
+        private bool _randomLadderEntrances;
+        public bool RandomLadderEntraces {
+            get => _randomLadderEntrances;
+            set => Set(ref _randomLadderEntrances, value);
+        }
+
+        private bool _randomGateEntrances;
+        public bool RandomGateEntraces {
+            get => _randomGateEntrances;
+            set => Set(ref _randomGateEntrances, value);
+        }
+
+        private bool _randomSoulGateEntrances;
+        public bool RandomSoulGateEntraces {
+            get => _randomSoulGateEntrances;
+            set => Set(ref _randomSoulGateEntrances, value);
+        }
+
         private bool _hardBosses;
         public bool HardBosses { 
             get=>_hardBosses; 
@@ -102,6 +126,11 @@ namespace LaMulana2Randomizer
             RandomCodices = true;
             RandomFDC = true;
             FDCForBacksides = false;
+            RandomCurses = false;
+            RandomHorizontalEntraces = false;
+            RandomLadderEntraces = false;
+            RandomGateEntraces = false;
+            RandomSoulGateEntraces = false;
             HardBosses = false;
             AutScanTablets = false;
             MantraPlacement = MantraPlacement.Original;

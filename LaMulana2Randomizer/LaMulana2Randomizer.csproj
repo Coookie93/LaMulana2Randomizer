@@ -128,12 +128,6 @@
     <None Include="Data\Items.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Data\Mantras.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Data\ShopOnlyItems.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Data\World.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

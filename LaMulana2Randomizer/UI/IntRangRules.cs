@@ -6,9 +6,9 @@ namespace LaMulana2Randomizer.UI
 {
     public class IntRangeRule : ValidationRule
     {
-        public double Min { get; set; }
+        public int Min { get; set; }
 
-        public double Max { get; set; }
+        public int Max { get; set; }
 
         public override ValidationResult Validate(object value,
                                                    CultureInfo cultureInfo)
@@ -31,7 +31,7 @@ namespace LaMulana2Randomizer.UI
             {
                 return new ValidationResult(false,
                     "Please enter value in the range: "
-                    + this.Min + " - " + this.Max + ".");
+                    + Min + " - " + Max + ".");
             }
             return new ValidationResult(true, null);
         }

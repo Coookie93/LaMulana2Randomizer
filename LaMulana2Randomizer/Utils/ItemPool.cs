@@ -20,20 +20,30 @@ namespace LaMulana2Randomizer
 
         public static List<Item> GetRequiredItems(List<Item> itemPool)
         {
-            var requiredItems = from item in itemPool
-                                where item.isRequired
-                                select item;
-
-            return requiredItems.ToList();
+            return itemPool.Where(item => item.isRequired).ToList();
         }
 
         public static List<Item> GetNonRequiredItems(List<Item> itemPool)
         {
-            var nonRequiredItems = from item in itemPool
-                                   where !item.isRequired
-                                   select item;
+            return itemPool.Where(item => !item.isRequired).ToList();
+        }
 
-            return nonRequiredItems.ToList();
+        public static List<Item> GetAndRemoveShopOnlyItems(List<Item> itemPool)
+        {
+            var shopItems = itemPool.Where(item => item.Id >= ItemID.ShurikenAmmo && item.Id <= ItemID.Weights).ToList();
+            foreach (Item item in shopItems)
+                itemPool.Remove(item);
+
+            return shopItems;
+        }
+
+        public static List<Item> GetAndRemoveMantras(List<Item> itemPool)
+        {
+            var mantras = itemPool.Where(item => item.Id >= ItemID.Heaven && item.Id <= ItemID.Night).ToList();
+            foreach (Item mantra in mantras)
+                itemPool.Remove(mantra);
+
+            return mantras;
         }
     }
 }
