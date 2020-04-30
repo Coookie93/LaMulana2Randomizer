@@ -4,7 +4,6 @@ using System.Windows;
 using System.Windows.Input;
 using LaMulana2Randomizer.UI;
 using LaMulana2Randomizer.Utils;
-using LaMulana2RandomizerShared;
 using Version = LM2RandomizerShared.Version;
 
 namespace LaMulana2Randomizer.ViewModels
@@ -30,6 +29,17 @@ namespace LaMulana2Randomizer.ViewModels
             Settings = new Settings();
         }
 
+        private ICommand _rerollCommand;
+        public ICommand RerollCommand {
+            get {
+                if (_rerollCommand == null)
+                {
+                    _rerollCommand = new RelayCommand((x) => true, (x) => Reroll());
+                }
+                return _rerollCommand;
+            }
+        }
+
         private ICommand _generateCommand;
         public ICommand GenerateCommand {
             get {
@@ -39,6 +49,11 @@ namespace LaMulana2Randomizer.ViewModels
                 }
                 return _generateCommand;
             }
+        }
+
+        public void Reroll()
+        {
+            Settings.Seed = new Random().Next(int.MinValue, int.MaxValue);
         }
 
         public void Generate()
@@ -58,11 +73,10 @@ namespace LaMulana2Randomizer.ViewModels
         public void GenerateSeed(IProgress<ProgressInfo> progress)
         {
             const int NumSeeds = 1;
-            const int MaxAttempts = 100;
+            const int MaxAttempts = 250;
 
             for (int i = 1; i <= NumSeeds; i++)
             {
-                int attemptCount = 0;
                 Randomiser randomiser = new Randomiser(Settings);
 
                 progress.Report(new ProgressInfo 
@@ -72,17 +86,20 @@ namespace LaMulana2Randomizer.ViewModels
                     IsIndeterminate = true 
                 });
 
+                int attemptCount = 0;
                 try
                 {
+                    randomiser.Setup();
+
                     bool entranceCheck;
                     do
                     {
                         attemptCount++;
-                        randomiser.Setup();
+                        randomiser.PlaceEntrances();
                         entranceCheck = randomiser.EntranceCheck();
                         if (!entranceCheck)
                         {
-                            randomiser.Clear();
+                            randomiser.ClearEntrances();
                             Logger.Log($"Failed to generate beatable entrance configuartion, retrying.");
                             progress.Report(new ProgressInfo
                             {
@@ -92,9 +109,9 @@ namespace LaMulana2Randomizer.ViewModels
                             });
                         }
 
-                    } while (!entranceCheck && attemptCount < MaxAttempts);
+                    } while (!entranceCheck);
 
-                    randomiser.RandomiseCurses();
+                    randomiser.FixAnkhLogic();
 
                     attemptCount = 0;
                     bool canBeatGame;
@@ -175,7 +192,7 @@ namespace LaMulana2Randomizer.ViewModels
 
                 Logger.LogAndFlush($"Successfully generated for seed {randomiser.Settings.Seed}");
                 if(NumSeeds > 1)
-                    Settings.Seed = new Random(Settings.Seed).Next(int.MinValue, int.MaxValue);
+                    Reroll();
             }
 
             progress.Report(new ProgressInfo
