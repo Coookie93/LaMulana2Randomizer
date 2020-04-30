@@ -24,16 +24,16 @@ namespace LaMulana2Randomizer
         public string Name { get; private set; }
         public LocationType LocationType { get; private set; }
         public Item Item { get; private set; }
-        public LocationID Id { get; private set; }
+        public LocationID ID { get; private set; }
+        public string ParentAreaName { get; private set; }
+        public BinaryNode LogicTree { get; private set; }
 
-        public BinaryNode LogicTree;
-        public string ParentAreaName;
         public bool IsLocked = false;
 
         private string logicString;
         private readonly string hardLogicString;
 
-        public Location(JsonLocation jsonLocation)
+        public Location(JsonLocation jsonLocation, string parentName)
         {
             Name = jsonLocation.Name;
             LocationType = jsonLocation.LocationType;
@@ -41,7 +41,8 @@ namespace LaMulana2Randomizer
             hardLogicString = jsonLocation.HardLogic;
             Item = jsonLocation.Item;
             Enum.TryParse(Name.RemoveWhitespace(), out LocationID temp);
-            Id = temp;
+            ID = temp;
+            ParentAreaName = parentName;
         }
         
         public bool CanReach(PlayerState state)

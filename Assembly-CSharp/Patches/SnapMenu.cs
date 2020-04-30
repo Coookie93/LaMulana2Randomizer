@@ -120,6 +120,7 @@ namespace LM2RandomiserMod.Patches
                             if(rando != null && rando.Randomising)
                             {
                                 LocationID locationID = rando.GetLocationIDForMural(SnapShotTargetSc);
+
                                 ItemID itemID = rando.GetItemIDForLocation(locationID);
                                 ItemInfo itemInfo = ItemDB.GetItemInfo(itemID);
 

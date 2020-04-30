@@ -5,18 +5,18 @@ namespace LaMulana2Randomizer
 {
     public class Item
     {
-        public string name;
-        public bool isRequired;
+        public string Name { get; private set; }
+        public bool IsRequired { get; private set; }
 
         [JsonIgnore]
-        public ItemID Id;
-        
+        public ItemID ID { get; private set; }
+
         [JsonConstructor]
         public Item(string name, ItemID id, bool isRequired = true)
         {
-            this.name = name;
-            this.Id = id;
-            this.isRequired = isRequired;
+            Name = name;
+            ID = id;
+            IsRequired = isRequired;
         }
     }
 }

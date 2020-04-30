@@ -90,10 +90,16 @@ namespace LaMulana2Randomizer
             set=>Set(ref _hardBosses, value); 
         }
 
-        private bool _autScanTablets;
-        public bool AutScanTablets {
-            get => _autScanTablets;
-            set => Set(ref _autScanTablets, value);
+        private bool _autoScanTablets;
+        public bool AutoScanTablets {
+            get => _autoScanTablets;
+            set => Set(ref _autoScanTablets, value);
+        }
+
+        private bool _autoPlaceSkulls;
+        public bool AutoPlaceSkulls {
+            get => _autoPlaceSkulls;
+            set => Set(ref _autoPlaceSkulls, value);
         }
 
         private MantraPlacement _mantraPlacement;
@@ -132,7 +138,8 @@ namespace LaMulana2Randomizer
             RandomGateEntraces = false;
             RandomSoulGateEntraces = false;
             HardBosses = false;
-            AutScanTablets = false;
+            AutoScanTablets = false;
+            AutoPlaceSkulls = false;
             MantraPlacement = MantraPlacement.Original;
             ShopPlacement = ShopPlacement.Original;
         }

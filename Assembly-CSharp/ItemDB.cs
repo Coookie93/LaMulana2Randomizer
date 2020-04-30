@@ -31,7 +31,7 @@ namespace LM2RandomiserMod
                                                                                                                          
             {ItemID.MobileSuperx3P,             new ItemInfo("MSX3p",            "MSX",               "item",        15,      150,    2)},
             {ItemID.ShellHorn,                  new ItemInfo("Shell Horn",       "Shell Horn",        "item",        16,      80,     1)},
-            {ItemID.HolyGrail,                  new ItemInfo("Holy Grail",       "Holy Grail",        "item",        17,      10,     1)},
+            {ItemID.HolyGrail,                  new ItemInfo("Holy Grail",       "Holy Grail",        "item",        17,      0,      1)},
             {ItemID.FairyPass,                  new ItemInfo("F Pass",           "F Pass",            "item",        18,      100,    1)},
             {ItemID.Gloves,                     new ItemInfo("Glove",            "Glove",             "item",        19,      80,     1)},
             {ItemID.DinosaurFigure,             new ItemInfo("D Figure",         "D Figure",          "item",        20,      80,     1)},

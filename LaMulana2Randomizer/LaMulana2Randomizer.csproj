@@ -64,7 +64,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Area.cs" />
-    <Compile Include="Connection.cs" />
+    <Compile Include="Exit.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="Location.cs" />
@@ -83,7 +83,6 @@
     <Compile Include="UI\ProgressDialog.xaml.cs">
       <DependentUpon>ProgressDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\TextErrorBooleanConverter.cs" />
     <Compile Include="BindableBase.cs" />
     <Compile Include="Utils\FileUtils.cs" />
     <Compile Include="Utils\ItemPool.cs" />

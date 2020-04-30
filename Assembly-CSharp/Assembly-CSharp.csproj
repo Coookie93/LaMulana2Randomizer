@@ -89,6 +89,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
@@ -120,9 +123,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExitDB.cs" />
     <Compile Include="DevUI.cs" />
     <Compile Include="ItemDB.cs" />
     <Compile Include="L2Rando.cs" />
+    <Compile Include="Patches\L2SystemCore.cs" />
     <Compile Include="Patches\EventItemScript.cs" />
     <Compile Include="Patches\HolyTabretScript.cs" />
     <Compile Include="Patches\ItemDialog.cs" />

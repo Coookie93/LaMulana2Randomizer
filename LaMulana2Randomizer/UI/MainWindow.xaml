@@ -13,7 +13,6 @@
     </Window.DataContext>
     <Window.Resources>
         <local:EnumBooleanConverter x:Key="enumBooleanConverter"/>
-        <local:TextErrorBooleanConverter x:Key="textErrorBooleanConverter"/>
         <Style x:Key="OriginalShopCheck" TargetType="{x:Type CheckBox}">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsChecked, ElementName=ShopOriginal}" Value="True">
@@ -186,7 +185,7 @@
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
-                            <CheckBox Name="RandomSoulGates" IsChecked="{Binding Settings.RandomSoulGateEntraces}" Content="Randomise Soul Gate Entrances" Margin="2">
+                            <CheckBox Name="RandomSoulGates" IsEnabled="False" IsChecked="{Binding Settings.RandomSoulGateEntraces}" Content="Randomise Soul Gate Entrances" Margin="2">
                                 <CheckBox.ToolTip>
                                     <ToolTip Style="{StaticResource TootltipStyle}">
                                         <TextBlock Text="." />
@@ -203,13 +202,22 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <GroupBox Header="Qaulity of Life" Grid.Row="0">
-                        <CheckBox Name="AutoScanCheck" IsChecked="{Binding Settings.AutScanTablets}" Content="Autoscan Holy Tablets" Margin="2">
-                            <CheckBox.ToolTip>
-                                <ToolTip Style="{StaticResource TootltipStyle}">
-                                    <TextBlock Text="Walking in front of Holy Tablets will add them to the list of warp locations automatically." />
-                                </ToolTip>
-                            </CheckBox.ToolTip>
-                        </CheckBox>
+                        <StackPanel >
+                            <CheckBox Name="AutoScanCheck" IsChecked="{Binding Settings.AutoScanTablets}" Content="Auto-scan Holy Tablets" Margin="2">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="Walking in front of Holy Tablets will add them to the list of warp locations automatically." />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <CheckBox Name="AutoPlaceCheck" IsChecked="{Binding Settings.AutoPlaceSkulls}" Content="Auto-place Crystal Skulls" Margin="2">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="." />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                        </StackPanel>
                     </GroupBox>
                 </Grid>
             </TabItem>
@@ -220,6 +228,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0" Content="Seed:"/>
                     <TextBox Grid.Column="1" x:Name="InputTextBox" HorizontalAlignment="Stretch" Margin="0,5,5,5">
@@ -229,8 +238,23 @@
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox>
+                    <Button Grid.Column="2" Width="18" Height="18" Command="{Binding RerollCommand}"/>
                 </Grid>
-                <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="100" Content="Generate" Command="{Binding GenerateCommand}" IsEnabled="{Binding ElementName=InputTextBox, Path=(Validation.Errors)[0], Converter={StaticResource textErrorBooleanConverter}}"/>
+                <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="100" Content="Generate" Command="{Binding GenerateCommand}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="IsEnabled" Value="False"/>
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Path=(Validation.HasError), ElementName=InputTextBox}" Value="False"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>    
+                    </Button.Style>  
+                </Button> 
             </StackPanel>
         </GroupBox>
     </Grid>
