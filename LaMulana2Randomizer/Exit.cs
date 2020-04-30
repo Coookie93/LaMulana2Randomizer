@@ -1,21 +1,24 @@
 ﻿using LaMulana2Randomizer.LogicParsing;
+using LaMulana2RandomizerShared;
 
 namespace LaMulana2Randomizer
 {
-    public class JsonConnection
+    public class JsonExit
     {
         public string Name;
+        public ExitID ID;
         public string ConnectingAreaName;
         public string Logic;
-        public ConnectionType ConnectionType;
+        public ExitType ConnectionType;
         public bool IsBackSide;
     }
 
-    public class Connection
+    public class Exit
     {
         public string Name { get; private set; }
         public string ParentAreaName { get; private set; }
-        public ConnectionType ConnectionType { get; private set; }
+        public ExitID ID { get; private set; }
+        public ExitType ExitType { get; private set; }
         public bool IsBackside { get; private set; }
         public BinaryNode LogicTree { get; private set; }
 
@@ -24,12 +27,13 @@ namespace LaMulana2Randomizer
 
         private string logicString;
 
-        public Connection(JsonConnection jsonConnection, string parentAreaName) 
+        public Exit(JsonExit jsonConnection, string parentAreaName) 
         {
             Name = jsonConnection.Name;
+            ID = jsonConnection.ID;
             ConnectingAreaName = jsonConnection.ConnectingAreaName;
             logicString = jsonConnection.Logic;
-            ConnectionType = jsonConnection.ConnectionType;
+            ExitType = jsonConnection.ConnectionType;
             IsBackside = jsonConnection.IsBackSide;
             ParentAreaName = parentAreaName;
             if (string.IsNullOrEmpty(Name))
@@ -52,7 +56,7 @@ namespace LaMulana2Randomizer
         }
     }
 
-    public enum ConnectionType
+    public enum ExitType
     {
         LeftDoor,
         RightDoor,

@@ -431,7 +431,9 @@ namespace LM2RandomiserMod.Patches
             this.playerst.resetPlayerStatus(this.Init_PLayer_lv, 0, 999, this.Init_Coin_num, this.Init_Weight_num, 0, MAINWEAPON.KNIFE, 0, SUBWEAPON.NON, 0, USEITEM.NON, 0);
             this.playerst.resetExp();
             this.setFlagData(0, 42, 1);
-        }
+			this.setFlagData(4, 62, 2);
+			this.setFlagData(4, 60, 4);
+		}
 
 #if DEV
         [MonoModIgnore]

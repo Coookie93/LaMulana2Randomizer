@@ -1,2816 +1,2901 @@
 [
   {
-    "name": "Village of Departure",
-    "locations": [
+    "Name": "Village of Departure",
+    "Locations": [
       {
-        "name": "Xelpud Item",
-        "locationType": "Dialogue",
+        "Name": "Xelpud Item",
+        "LocationType": "Dialogue",
         "Logic": "True"
       },
       {
-        "name": "Nebur Item",
-        "locationType": "Dialogue",
+        "Name": "Nebur Item",
+        "LocationType": "Dialogue",
         "Logic": "True"
       },
       {
-        "name": "Alsedana Item",
-        "locationType": "Dialogue",
+        "Name": "Alsedana Item",
+        "LocationType": "Dialogue",
         "Logic": "IsDead(Vritra) or GuardianKills(6)"
       },
       {
-        "name": "Giltoriyo Item",
-        "locationType": "Dialogue",
+        "Name": "Giltoriyo Item",
+        "LocationType": "Dialogue",
         "Logic": "GuardianKills(6)"
       },
       {
-        "name": "Nebur Shop 1",
-        "locationType": "Shop",
+        "Name": "Nebur Shop 1",
+        "LocationType": "Shop",
         "Logic": "True"
       },
       {
-        "name": "Nebur Shop 2",
-        "locationType": "Shop",
+        "Name": "Nebur Shop 2",
+        "LocationType": "Shop",
         "Logic": "True"
       },
       {
-        "name": "Nebur Shop 3",
-        "locationType": "Shop",
+        "Name": "Nebur Shop 3",
+        "LocationType": "Shop",
         "Logic": "True"
       },
       {
-        "name": "Modro Shop 1",
-        "locationType": "Shop",
+        "Name": "Modro Shop 1",
+        "LocationType": "Shop",
         "Logic": "True"
       },
       {
-        "name": "Modro Shop 2",
-        "locationType": "Shop",
+        "Name": "Modro Shop 2",
+        "LocationType": "Shop",
         "Logic": "True"
       },
       {
-        "name": "Modro Shop 3",
-        "locationType": "Shop",
+        "Name": "Modro Shop 3",
+        "LocationType": "Shop",
         "Logic": "True"
       },
       {
-        "name": "Sidro Shop 1",
-        "locationType": "Shop",
+        "Name": "Sidro Shop 1",
+        "LocationType": "Shop",
         "Logic": "True"
       },
       {
-        "name": "Sidro Shop 2",
-        "locationType": "Shop",
+        "Name": "Sidro Shop 2",
+        "LocationType": "Shop",
         "Logic": "True"
       },
       {
-        "name": "Sidro Shop 3",
-        "locationType": "Shop",
+        "Name": "Sidro Shop 3",
+        "LocationType": "Shop",
         "Logic": "True"
       },
       {
-        "name": "Sacred Orb VoD",
-        "locationType": "FreeStanding",
+        "Name": "Sacred Orb VoD",
+        "LocationType": "FreeStanding",
         "Logic": "Has(Feather) and CanWarp"
       }
     ],
-    "exits": [
+    "Exits": [
       {
         "Name": "Village of Departure F5",
-        "connectingAreaName": "Gate of Guidance",
-        "Logic": "True",
-        "ConnectionType": "RightDoor"
+        "ID": "f01Right",
+        "ConnectionType": "RightDoor",
+        "ConnectingAreaName": "Gate of Guidance",
+        "Logic": "True"
       },
       {
         "Name": "Village of Departure F3",
-        "connectingAreaName": "Inferno Cavern",
-        "Logic": "Has(Feather)",
-        "ConnectionType": "DownLadder"
+        "ID": "f01Down",
+        "ConnectionType": "DownLadder",
+        "ConnectingAreaName": "Inferno Cavern",
+        "Logic": "Has(Feather)"
       }
     ]
   },
   {
-    "name": "Inferno Cavern",
-    "locations": [
+    "Name": "Inferno Cavern",
+    "Locations": [
       {
-        "name": "Child Mantra Mural",
-        "locationType": "Mural",
+        "Name": "Child Mantra Mural",
+        "LocationType": "Mural",
         "Logic": "Has(Snapshot) and CanChant(Mother) and CanChant(Wind) and CanWarp"
       }
     ],
-    "exits": [
+    "Exits": [
       {
         "Name": "Inferno Cavern B1",
-        "connectingAreaName": "Village of Departure",
-        "Logic": "False",
-        "ConnectionType": "UpLadder"
+        "ID": "fL05Up",
+        "ConnectionType": "UpLadder",
+        "ConnectingAreaName": "Village of Departure",
+        "Logic": "False"
       }
     ]
   },
   {
-    "name": "Gate of Guidance",
-    "locations": [
+    "Name": "Gate of Guidance",
+    "Locations": [
       {
-        "name": "Shell Horn Chest",
-        "locationType": "Chest",
+        "Name": "Shell Horn Chest",
+        "LocationType": "Chest",
         "Logic": "True"
       },
       {
-        "name": "Holy Grail Chest",
-        "locationType": "Chest",
+        "Name": "Holy Grail Chest",
+        "LocationType": "Chest",
         "Logic": "True"
       },
       {
-        "name": "Hiner Shop 1",
-        "locationType": "Shop",
-        "Logic": "True"
+        "Name": "Hiner Shop 1",
+        "LocationType": "Shop",
+        "Logic": "CanReach(Gate of Illusion)"
       },
       {
-        "name": "Hiner Shop 2",
-        "locationType": "Shop",
-        "Logic": "True"
+        "Name": "Hiner Shop 2",
+        "LocationType": "Shop",
+        "Logic": "CanReach(Gate of Illusion)"
       },
       {
-        "name": "Hiner Shop 3",
-        "locationType": "Shop",
-        "Logic": "True"
+        "Name": "Hiner Shop 3",
+        "LocationType": "Shop",
+        "Logic": "CanReach(Gate of Illusion)"
       },
       {
-        "name": "Hiner Shop 4",
-        "locationType": "Shop",
-        "Logic": "GuardianKills(3)"
+        "Name": "Hiner Shop 4",
+        "LocationType": "Shop",
+        "Logic": "CanReach(Gate of Illusion) and GuardianKills(3)"
       },
       {
-        "name": "Bronze Mirror Spot",
-        "locationType": "FreeStanding",
+        "Name": "Bronze Mirror Spot",
+        "LocationType": "FreeStanding",
         "Logic": "Has(Feather) or Has(Gale Fibula)"
       }
     ],
-    "exits": [
+    "Exits": [
       {
         "Name": "Gate of Guidance C1",
-        "connectingAreaName": "Village of Departure",
-        "Logic": "True",
-        "ConnectionType": "LeftDoor"
+        "ID": "fLLeft",
+        "ConnectionType": "LeftDoor",
+        "ConnectingAreaName": "Village of Departure",
+        "Logic": "True"
       },
       {
         "Name": "Gate of Guidance A6",
-        "connectingAreaName": "Mausoleum of Giants",
-        "Logic": "True",
-        "ConnectionType": "DownLadder"
+        "ID": "fLDown",
+        "ConnectionType": "DownLadder",
+        "ConnectingAreaName": "Mausoleum of Giants",
+        "Logic": "True"
       }
     ]
   },
   {
-    "name": "Gate of Guidance Left",
-    "locations": [],
-    "exits": [
+    "Name": "Gate of Guidance Left",
+    "Locations": [],
+    "Exits": [
       {
         "Name": "Gate of Guidance A3",
-        "connectingAreaName": "Gate of Illusion",
-        "Logic": "True",
-        "ConnectionType": "Gate"
+        "ID": "fLGate",
+        "ConnectionType": "Gate",
+        "ConnectingAreaName": "Gate of Illusion",
+        "Logic": "True"
       },
       {
-        "connectingAreaName": "Gate of Guidance",
-        "Logic": "True",
-        "ConnectionType": "Internal"
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Gate of Guidance",
+        "Logic": "CanReach(Mausoleum of Giants)"
       },
       {
-        "connectingAreaName": "Mausoleum of Giants",
-        "Logic": "True",
-        "ConnectionType": "Unique"
+        "ConnectionType": "Unique",
+        "ConnectingAreaName": "Mausoleum of Giants",
+        "Logic": "False"
       }
     ]
   },
   {
-    "name": "Mausoleum of Giants",
-    "locations": [
+    "Name": "Mausoleum of Giants",
+    "Locations": [
       {
-        "name": "Dissonance (Mausoleum of Giants)",
-        "locationType": "Dissonance",
+        "Name": "Dissonance (Mausoleum of Giants)",
+        "LocationType": "Dissonance",
         "Logic": "CanChant(Sun) and PuzzleFinished(Sakit)",
-        "item": {
-          "name": "Dissonance",
-          "isRequired": true
+        "Item": {
+          "Name": "Dissonance",
+          "IsRequired": true
         }
       }
     ],
-    "exits": [
+    "Exits": [
       {
         "Name": "Mausoleum of Giants A1",
-        "connectingAreaName": "Gate of Guidance",
-        "Logic": "True",
-        "ConnectionType": "UpLadder"
+        "ID": "fL02Up",
+        "ConnectionType": "UpLadder",
+        "ConnectingAreaName": "Gate of Guidance",
+        "Logic": "True"
       },
       {
-        "connectingAreaName": "Gate of Guidance Left",
-        "Logic": "True",
-        "ConnectionType": "Unique"
+        "ConnectionType": "Unique",
+        "ConnectingAreaName": "Gate of Guidance Left",
+        "Logic": "True"
       },
       {
         "Name": "Mausoleum of Giants A5",
-        "connectingAreaName": "Endless Corridor",
-        "Logic": "CanReach(Annwfn Main)",
-        "ConnectionType": "LeftDoor"
+        "ID": "fL02Left",
+        "ConnectionType": "LeftDoor",
+        "ConnectingAreaName": "Endless Corridor",
+        "Logic": "CanReach(Annwfn Main)"
       }
     ]
   },
   {
-    "name": "Endless Corridor",
-    "locations": [
+    "Name": "Endless Corridor",
+    "Locations": [
       {
-        "name": "Freyas Item",
-        "locationType": "Dialogue",
+        "Name": "Freyas Item",
+        "LocationType": "Dialogue",
         "Logic": "True"
       }
     ],
-    "exits": [
+    "Exits": [
       {
         "Name": "Endless Corridor C1",
-        "connectingAreaName": "Mausoleum of Giants",
-        "Logic": "True",
-        "ConnectionType": "RightDoor"
+        "ID": "fL08Right",
+        "ConnectionType": "RightDoor",
+        "ConnectingAreaName": "Mausoleum of Giants",
+        "Logic": "True"
       }
     ]
   },
   {
-    "name": "Gate of Illusion",
-    "locations": [
+    "Name": "Gate of Illusion",
+    "Locations": [
       {
-        "name": "Fobos Item",
-        "locationType": "Dialogue",
+        "Name": "Fobos Item",
+        "LocationType": "Dialogue",
         "Logic": "True"
       },
       {
-        "name": "Fobos Item 2",
-        "locationType": "Dialogue",
+        "Name": "Fobos Item 2",
+        "LocationType": "Dialogue",
         "Logic": "SkullCount(1)"
       }
     ],
-    "exits": [
+    "Exits": [
       {
         "Name": "Gate of Illusion C1",
-        "connectingAreaName": "Roots of Yggdrasil",
-        "Logic": " True",
-        "ConnectionType": "Gate"
+        "ID": "fL11GateY0",
+        "ConnectionType": "Gate",
+        "ConnectingAreaName": "Roots of Yggdrasil",
+        "Logic": " True"
       },
       {
         "Name": "Gate of Illusion A1",
-        "connectingAreaName": "Gate of Guidance Left",
-        "Logic": "True",
-        "ConnectionType": "Gate"
+        "ID": "fL11GateN",
+        "ConnectionType": "Gate",
+        "ConnectingAreaName": "Gate of Guidance Left",
+        "Logic": "True"
       }
     ]
   },
   {
-    "name": "Roots of Yggdrasil",
-    "locations": [
+    "Name": "Roots of Yggdrasil",
+    "Locations": [
       {
-        "name": "Sacred Orb Chest RoY",
-        "locationType": "Chest",
+        "Name": "Sacred Orb Chest RoY",
+        "LocationType": "Chest",
         "Logic": "True"
       },
       {
-        "name": "Map Chest RoY",
-        "locationType": "Chest",
+        "Name": "Map Chest RoY",
+        "LocationType": "Chest",
         "Logic": "True"
       },
       {
-        "name": "Ankh Chest RoY",
-        "locationType": "Chest",
-        "Logic": "Has(Feather) or Has(Katana) or Has(Axe) or CanUse(Bomb) or CanUse(Shuriken) or CanUse(Chakram) or CanUse(Earth Spear) or CanUse(Flare) or Has(Claydoll Suit)"
+        "Name": "Ankh Chest RoY",
+        "LocationType": "Chest",
+        "Logic": "Has(Feather) or Has(Katana) or Has(Axe) or CanUse(Bomb) or CanUse(Shuriken) or CanUse(Chakram) or CanUse(Earth Spear) or CanUse(Flare) or Has(Claydoll Suit) or Has(Lamp of Time) or (Has(Gale Fibula) and Has(Grapple Claw))"
       },
       {
-        "name": "Pyramid Crystal Chest",
-        "locationType": "Chest",
+        "Name": "Pyramid Crystal Chest",
+        "LocationType": "Chest",
         "Logic": "Has(Life Sigil) and (Has(Knife) or Has(Spaulder) or Has(Gauntlet) or Has(Mjolnir) or (Has(Earth Spear) and Has(Ring)))"
       },
       {
-        "name": "Crystal Skull Chest RoY",
-        "locationType": "Chest",
+        "Name": "Crystal Skull Chest RoY",
+        "LocationType": "Chest",
         "Logic": "IsDead(Fafnir)"
       },
       {
-        "name": "Shuriken Puzzle Reward",
-        "locationType": "FreeStanding",
+        "Name": "Shuriken Puzzle Reward",
+        "LocationType": "FreeStanding",
         "Logic": "True"
       },
       {
-        "name": "Knife Puzzle Reward",
-        "locationType": "FreeStanding",
+        "Name": "Knife Puzzle Reward",
+        "LocationType": "FreeStanding",
         "Logic": "Has(Origin Sigil)"
       },
       {
-        "name": "Mantra Mural",
-        "locationType": "Mural",
+        "Name": "Mantra Mural",
+        "LocationType": "Mural",
         "Logic": "Has(Snapshot)"
       },
       {
-        "name": "Korobok Shop 1",
-        "locationType": "Shop",
+        "Name": "Korobok Shop 1",
+        "LocationType": "Shop",
         "Logic": "True"
       },
       {
-        "name": "Korobok Shop 2",
-        "locationType": "Shop",
+        "Name": "Korobok Shop 2",
+        "LocationType": "Shop",
         "Logic": "True"
       },
       {
-        "name": "Korobok Shop 3",
-        "locationType": "Shop",
+        "Name": "Korobok Shop 3",
+        "LocationType": "Shop",
         "Logic": "True"
       },
       {
-        "name": "Ratatoskr 1",
-        "locationType": "Miniboss",
+        "Name": "Ratatoskr 1",
+        "LocationType": "Miniboss",
         "Logic": "True",
         "HardLogic": "True",
-        "item": {
-          "name": "Ratatoskr 1",
-          "isRequired": true
+        "Item": {
+          "Name": "Ratatoskr 1",
+          "IsRequired": true
         }
       },
       {
-        "name": "Nidhogg",
-        "locationType": "Miniboss",
+        "Name": "Nidhogg",
+        "LocationType": "Miniboss",
         "Logic": "CanUse(Flare) or ((CanUse(Shuriken) or Has(Claydoll Suit)) and OrbCount(1))",
         "HardLogic": "True",
-        "item": {
-          "name": "Nidhogg",
-          "isRequired": true
+        "Item": {
+          "Name": "Nidhogg",
+          "IsRequired": true
         }
       },
       {
-        "name": "Fafnir",
-        "locationType": "Guardian",
-        "Logic": "AnkhCount(4) and ((OrbCount(1) and (Has(Leather Whip) or Has(Knife))) or Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Axe) or Has(Katana))",
-        "HardLogic": "AnkhCount(4)",
-        "item": {
-          "name": "Fafnir",
-          "isRequired": true
+        "Name": "Fafnir",
+        "LocationType": "Guardian",
+        "Logic": "((OrbCount(1) and (Has(Leather Whip) or Has(Knife))) or Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Axe) or Has(Katana))",
+        "HardLogic": "True",
+        "Item": {
+          "Name": "Fafnir",
+          "IsRequired": true
         }
       }
     ],
-    "exits": [
+    "Exits": [
       {
         "Name": "Roots of Yggdrasil D4",
-        "connectingAreaName": "Gate of Illusion",
-        "Logic": "True",
-        "ConnectionType": "Gate"
+        "ID": "f00GateY0",
+        "ConnectionType": "Gate",
+        "ConnectingAreaName": "Gate of Illusion",
+        "Logic": "False or Setting(Random Gates)"
       },
       {
         "Name": "Roots of Yggdrasil D6",
-        "connectingAreaName": "Divine Fortress Entrance",
-        "Logic": "GuardianKills(1)",
-        "ConnectionType": "SoulGate"
+        "ConnectionType": "SoulGate",
+        "ConnectingAreaName": "Divine Fortress Entrance",
+        "Logic": "GuardianKills(1) or Setting(Random Soul Gates)"
       },
       {
-        "connectingAreaName": "Roots of Yggdrasil Bottom",
-        "Logic": "Has(Origin Sigil)",
-        "ConnectionType": "Internal"
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Roots of Yggdrasil Bottom",
+        "Logic": "Has(Origin Sigil)"
       },
       {
         "Name": "Roots of Yggdrasil A1",
-        "connectingAreaName": "Annwfn Poison",
-        "Logic": "IsDead(Ratatoskr 1) and (CanUse(Rolling Shuriken) or CanUse(Earth Spear) or CanUse(Caltrops) or CanUse(Bomb))",
-        "ConnectionType": "Gate"
+        "ID": "f00GateYA",
+        "ConnectionType": "Gate",
+        "ConnectingAreaName": "Annwfn Poison",
+        "Logic": "IsDead(Ratatoskr 1) and (CanUse(Rolling Shuriken) or CanUse(Earth Spear) or CanUse(Caltrops) or CanUse(Bomb))"
       },
       {
         "Name": "Roots of Yggdrasil D1",
-        "connectingAreaName": "Icefire Treetop Entrance",
-        "Logic": "IsDead(Nidhogg)",
-        "ConnectionType": "Gate"
+        "ID": "f00GateYB",
+        "ConnectionType": "Gate",
+        "ConnectingAreaName": "Icefire Treetop Entrance",
+        "Logic": "IsDead(Nidhogg)"
       },
       {
         "Name": "Roots of Yggdrasil G1",
-        "connectingAreaName": "Immortal Battlefield Left",
-        "Logic": "Has(Birth Sigil) and (Has(Feather) or Has(Grapple Claw))",
-        "ConnectionType": "Gate"
+        "ID": "f00GateYC",
+        "ConnectionType": "Gate",
+        "ConnectingAreaName": "Immortal Battlefield Left",
+        "Logic": "Has(Birth Sigil) and (Has(Feather) or Has(Grapple Claw))"
       }
     ]
   },
   {
-    "name": "Roots of Yggdrasil Bottom",
-    "locations": [],
-    "exits": [
+    "Name": "Roots of Yggdrasil Bottom",
+    "Locations": [],
+    "Exits": [
       {
         "Name": "Roots of Yggdrasil C5",
-        "connectingAreaName": "Annwfn Main",
-        "Logic": "True",
-        "ConnectionType": "DownLadder"
+        "ID": "f00Down",
+        "ConnectionType": "DownLadder",
+        "ConnectingAreaName": "Annwfn Main",
+        "Logic": "True"
       }
     ]
   },
   {
-    "name": "Divine Fortress Entrance",
-    "locations": [],
-    "exits": [
+    "Name": "Annwfn Main",
+    "Locations": [
       {
-        "connectingAreaName": "Divine Fortress Right",
-        "Logic": "CanUse(Shuriken) or CanUse(Chakram) or Has(Claydoll Suit)",
-        "ConnectionType": "Internal"
-      },
-      {
-        "Name": "Divine Fortress C5",
-        "connectingAreaName": "Roots of Yggdrasil",
-        "Logic": "GuardianKills(1)",
-        "ConnectionType": "SoulGate"
-      }
-    ]
-  },
-  {
-    "name": "Divine Fortress Right",
-    "locations": [
-      {
-        "name": "Map Chest DF",
-        "locationType": "Chest",
+        "Name": "Map Chest Annwfn",
+        "LocationType": "Chest",
         "Logic": "True"
       },
       {
-        "name": "Origin Seal Chest",
-        "locationType": "Chest",
-        "Logic": "IsDead(Hugin and Munin)"
-      },
-      {
-        "name": "Frey Ship",
-        "locationType": "FreeStanding",
-        "Logic": "Has(Hand Scanner) and CanReach(Annwfn Right) and (IsDead(Ixtab) or Has(Feather)) and (Has(Origin Sigil) or CanReach(Divine Fortress Top))"
-      },
-      {
-        "name": "Heaven Mantra Mural",
-        "locationType": "Mural",
-        "Logic": "Has(Snapshot)"
-      },
-      {
-        "name": "Hugin and Munin",
-        "locationType": "Miniboss",
-        "Logic": "CanWarp or Has(Origin Sigil)",
-        "HardLogic": "CanWarp or Has(Origin Sigil)",
-        "item": {
-          "name": "Hugin and Munin",
-          "isRequired": true
-        }
-      }
-    ],
-    "exits": [
-      {
-        "connectingAreaName": "Divine Fortress Main",
-        "Logic": "CanUse(Shuriken) or CanUse(Chakram) or Has(Claydoll Suit) or (CanUse(Earth Spear) and Has(Ring))",
-        "ConnectionType": "Internal"
-      },
-      {
-        "connectingAreaName": "Divine Fortress Entrance",
-        "Logic": "True",
-        "ConnectionType": "Internal"
-      }
-    ]
-  },
-  {
-    "name": "Divine Fortress Main",
-    "locations": [
-      {
-        "name": "Ankh Chest DF",
-        "locationType": "Chest",
-        "Logic": "Has(Origin Sigil)"
-      },
-      {
-        "name": "Sacred Orb Chest DF",
-        "locationType": "Chest",
+        "Name": "Glove Chest",
+        "LocationType": "Chest",
         "Logic": "True"
       },
       {
-        "name": "Shuhoka Shop 1",
-        "locationType": "Shop",
+        "Name": "Crystal Skull Chest Annwfn",
+        "LocationType": "Chest",
         "Logic": "Has(Birth Sigil)"
       },
       {
-        "name": "Shuhoka Shop 2",
-        "locationType": "Shop",
-        "Logic": "Has(Birth Sigil)"
-      },
-      {
-        "name": "Shuhoka Shop 3",
-        "locationType": "Shop",
-        "Logic": "Has(Birth Sigil)"
-      }
-    ],
-    "exits": [
-      {
-        "connectingAreaName": "Divine Fortress Top",
-        "Logic": "Has(Feather) or Has(Grapple Claw)",
-        "ConnectionType": "Internal"
-      },
-      {
-        "connectingAreaName": "Divine Fortress Right",
-        "Logic": "True",
-        "ConnectionType": "Internal"
-      },
-      {
-        "Name": "Divine Fortress A3",
-        "connectingAreaName": "Valhalla Main",
-        "Logic": "True",
-        "ConnectionType": "Gate",
-        "isBackSide": true
-      }
-    ]
-  },
-  {
-    "name": "Divine Fortress Top",
-    "locations": [
-      {
-        "name": "Death Village Chest",
-        "locationType": "Chest",
-        "Logic": "True"
-      }
-    ],
-    "exits": [
-      {
-        "connectingAreaName": "Divine Fortress Main",
-        "Logic": "True",
-        "ConnectionType": "Internal"
-      },
-      {
-        "connectingAreaName": "Divine Fortress Right",
-        "Logic": "True",
-        "ConnectionType": "Internal"
-      }
-    ]
-  },
-  {
-    "name": "Annwfn Main",
-    "locations": [
-      {
-        "name": "Map Chest Annwfn",
-        "locationType": "Chest",
-        "Logic": "True"
-      },
-      {
-        "name": "Glove Chest",
-        "locationType": "Chest",
-        "Logic": "True"
-      },
-      {
-        "name": "Crystal Skull Chest Annwfn",
-        "locationType": "Chest",
-        "Logic": "Has(Birth Sigil)"
-      },
-      {
-        "name": "Rolling Shuriken Puzzle Reward",
-        "locationType": "FreeStanding",
+        "Name": "Rolling Shuriken Puzzle Reward",
+        "LocationType": "FreeStanding",
         "Logic": " Has(Gloves)"
       },
       {
-        "name": "Pym Shop 1",
-        "locationType": "Shop",
+        "Name": "Pym Shop 1",
+        "LocationType": "Shop",
         "Logic": "(IsDead(Kaliya) or Has(Feather)) and Has(Gloves)"
       },
       {
-        "name": "Pym Shop 2",
-        "locationType": "Shop",
+        "Name": "Pym Shop 2",
+        "LocationType": "Shop",
         "Logic": "(IsDead(Kaliya) or Has(Feather)) and Has(Gloves)"
       },
       {
-        "name": "Pym Shop 3",
-        "locationType": "Shop",
+        "Name": "Pym Shop 3",
+        "LocationType": "Shop",
         "Logic": "(IsDead(Kaliya) or Has(Feather)) and Has(Gloves)"
       },
       {
-        "name": "Earth Mantra Mural",
-        "locationType": "Mural",
+        "Name": "Earth Mantra Mural",
+        "LocationType": "Mural",
         "Logic": "Has(Birth Sigil) and Has(Snapshot)"
       },
       {
-        "name": "Kaliya",
-        "locationType": "Miniboss",
+        "Name": "Kaliya",
+        "LocationType": "Miniboss",
         "Logic": "CanUse(Rolling Shuriken)",
         "HardLogic": "CanUse(Rolling Shuriken)",
-        "item": {
-          "name": "Kaliya",
-          "isRequired": true
+        "Item": {
+          "Name": "Kaliya",
+          "IsRequired": true
         }
       }
     ],
-    "exits": [
+    "Exits": [
       {
         "Name": "Annwfn C1",
-        "connectingAreaName": "Roots of Yggdrasil Bottom",
-        "Logic": "True",
-        "ConnectionType": "UpLadder"
+        "ID": "f02Up",
+        "ConnectionType": "UpLadder",
+        "ConnectingAreaName": "Roots of Yggdrasil Bottom",
+        "Logic": "True"
       },
       {
-        "connectingAreaName": "Annwfn Soul Gate",
-        "Logic": "Has(Gloves) or Has(Feather)",
-        "ConnectionType": "Internal"
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Annwfn Soul Gate",
+        "Logic": "Has(Gloves) or Has(Feather)"
       },
       {
-        "connectingAreaName": "Immortal Battlefield Top",
-        "Logic": "CanWarp or CanReach(Immortal Battlefield Main) or (CanKill(Cetus) and Setting(Non Random Vertical))",
-        "ConnectionType": "Unique"
+        "ConnectionType": "Unique",
+        "ConnectingAreaName": "Immortal Battlefield Top",
+        "Logic": "CanWarp or CanReach(Immortal Battlefield Main) or (CanKill(Cetus) and Setting(Non Random Ladders))"
       },
       {
         "Name": "Annwfn E5",
-        "connectingAreaName": "Immortal Battlefield Top",
-        "Logic": "False",
-        "ConnectionType": "DownLadder"
+        "ID": "f02Down",
+        "ConnectionType": "DownLadder",
+        "ConnectingAreaName": "Immortal Battlefield Top",
+        "Logic": "False"
       }
     ]
   },
   {
-    "name": "Annwfn Soul Gate",
-    "locations": [],
-    "exits": [
+    "Name": "Annwfn Soul Gate",
+    "Locations": [],
+    "Exits": [
       {
-        "connectingAreaName": "Annwfn Main",
-        "Logic": "Has(Gloves) or Has(Feather) or CanWarp",
-        "ConnectionType": "Internal"
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Annwfn Main",
+        "Logic": "Has(Gloves) or Has(Feather) or CanWarp"
       },
       {
         "Name": "Annwfn A4",
-        "connectingAreaName": "Shrine of the Frost Giants Main",
-        "Logic": "GuardianKills(2) and Has(Origin Sigil)",
-        "ConnectionType": "SoulGate"
+        "ConnectionType": "SoulGate",
+        "ConnectingAreaName": "Shrine of the Frost Giants Main",
+        "Logic": "(GuardianKills(2) or Setting(Random Soul Gates)) and Has(Origin Sigil)"
       }
     ]
   },
   {
-    "name": "Annwfn Poison",
-    "locations": [],
-    "exits": [
+    "Name": "Annwfn Poison",
+    "Locations": [],
+    "Exits": [
       {
         "Name": "Annwfn G4",
-        "connectingAreaName": "Roots of Yggdrasil",
-        "Logic": "False",
-        "ConnectionType": "Gate"
+        "ID": "f02GateYA",
+        "ConnectionType": "Gate",
+        "ConnectingAreaName": "Roots of Yggdrasil",
+        "Logic": "False"
       },
       {
-        "connectingAreaName": "Annwfn Right",
-        "Logic": "CanUse(Rolling Shuriken) or Has(Claydoll Suit) or (Has(Lamp of Time) and CanWarp)",
-        "ConnectionType": "Internal"
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Annwfn Right",
+        "Logic": "CanUse(Rolling Shuriken) or Has(Claydoll Suit) or Has(Lamp of Time)"
       }
     ]
   },
   {
-    "name": "Annwfn Right",
-    "locations": [
+    "Name": "Annwfn Right",
+    "Locations": [
       {
-        "name": "Sacred Orb Chest Annwfn",
-        "locationType": "Chest",
+        "Name": "Sacred Orb Chest Annwfn",
+        "LocationType": "Chest",
         "Logic": "Has(Life Sigil) and Has(Feather)"
       },
       {
-        "name": "Silver Shield Puzzle Reward",
-        "locationType": "FreeStanding",
+        "Name": "Silver Shield Puzzle Reward",
+        "LocationType": "FreeStanding",
         "Logic": "CanChant(Earth)"
       },
       {
-        "name": "Djed Pillar Chest",
-        "locationType": "Chest",
+        "Name": "Djed Pillar Chest",
+        "LocationType": "Chest",
         "Logic": "IsDead(Kujata)"
       },
       {
-        "name": "Ixtab",
-        "locationType": "Miniboss",
+        "Name": "Ixtab",
+        "LocationType": "Miniboss",
         "Logic": "((Has(Leather Whip) or Has(Rapier)) and OrbCount(2)) or ((Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana) or Has(Claydoll Suit)) and OrbCount(1))",
         "HardLogic": "True",
-        "item": {
-          "name": "Ixtab",
-          "isRequired": true
+        "Item": {
+          "Name": "Ixtab",
+          "IsRequired": true
         }
       },
       {
-        "name": "Kujata",
-        "locationType": "Guardian",
-        "Logic": "AnkhCount(4) and Has(Freys Ship) and (IsDead(Ixtab) or Has(Feather)) and (((Has(Flail Whip) or Has(Axe)) and OrbCount(2)) or ((Has(Chain Whip) or Has(Katana)) and OrbCount(3)) or ((Has(Knife) or Has(Rapier)) and OrbCount(3) and Has(Feather)))",
-        "HardLogic": "AnkhCount(4) and Has(Freys Ship) and (IsDead(Ixtab) or Has(Feather))",
-        "item": {
-          "name": "Kujata",
-          "isRequired": true
-        }
-      }
-    ],
-    "exits": [
-      {
-        "connectingAreaName": "Annwfn Main",
-        "Logic": "IsDead(Ixtab) or Has(Feather)",
-        "ConnectionType": "Internal"
-      }
-    ]
-  },
-  {
-    "name": "Icefire Treetop Entrance",
-    "locations": [],
-    "exits": [
-      {
-        "Name": "Icefire Treetop D3",
-        "connectingAreaName": "Roots of Yggdrasil",
-        "Logic": "False",
-        "ConnectionType": "Gate"
-      },
-      {
-        "connectingAreaName": "Icefire Treetop Left",
-        "Logic": "CanWarp or Has(Claydoll Suit) or Has(Ice Cloak) or OrbCount(3) or ((Has(Feather) or Has(Gale Fibula)) and CanReach(Icefire Treetop Right))",
-        "ConnectionType": "Internal"
-      },
-      {
-        "connectingAreaName": "Icefire Treetop Right",
-        "Logic": "Has(Grapple Claw) and (CanWarp or Has(Feather) or CanReach(Icefire Treetop Left))",
-        "ConnectionType": "Internal"
-      }
-    ]
-  },
-  {
-    "name": "Icefire Treetop Left",
-    "locations": [
-      {
-        "name": "Map Chest IT",
-        "locationType": "Chest",
-        "Logic": "True"
-      },
-      {
-        "name": "Ankh Chest IT",
-        "locationType": "Chest",
-        "Logic": "(Has(Claydoll Suit) or Has(Ice Cloak) or OrbCount(1)) and IsDead(Vedfolnir)"
-      },
-      {
-        "name": "Grapple Claw Chest",
-        "locationType": "Chest",
-        "Logic": "True"
-      },
-      {
-        "name": "Life Sigil Chest",
-        "locationType": "Chest",
-        "Logic": "Has(Birth Sigil) and CanWarp"
-      },
-      {
-        "name": "Flame Torc Chest",
-        "locationType": "Chest",
-        "Logic": "IsDead(Surtr)"
-      },
-      {
-        "name": "Btk Shop 1",
-        "locationType": "Shop",
-        "Logic": "True"
-      },
-      {
-        "name": "Btk Shop 2",
-        "locationType": "Shop",
-        "Logic": "True"
-      },
-      {
-        "name": "Btk Shop 3",
-        "locationType": "Shop",
-        "Logic": "True"
-      },
-      {
-        "name": "Mino Shop 1",
-        "locationType": "Shop",
-        "Logic": "Has(Feather)"
-      },
-      {
-        "name": "Mino Shop 2",
-        "locationType": "Shop",
-        "Logic": "Has(Feather)"
-      },
-      {
-        "name": "Mino Shop 3",
-        "locationType": "Shop",
-        "Logic": "Has(Feather)"
-      },
-      {
-        "name": "Vedfolnir",
-        "locationType": "Miniboss",
-        "Logic": " OrbCount(1)",
-        "HardLogic": "True",
-        "item": {
-          "name": "Vedfolnir",
-          "isRequired": true
-        }
-      },
-      {
-        "name": "Surtr",
-        "locationType": "Guardian",
-        "Logic": "AnkhCount(4) and Has(Light Scythe) and Has(Feather) and (((Has(Knife) or Has(Rapier)) and OrbCount(7)) or (Has(Chain Whip) and OrbCount(6)) or ((Has(Flail Whip) or Has(Axe) or Has(Katana)) and OrbCount(5)))",
-        "HardLogic": "AnkhCount(4) and Has(Light Scythe) and (Has(Feather) or Has(Ice Cloak))",
-        "item": {
-          "name": "Surtr",
-          "isRequired": true
+        "Name": "Kujata",
+        "LocationType": "Guardian",
+        "Logic": "Has(Freys Ship) and (IsDead(Ixtab) or Has(Feather)) and (((Has(Flail Whip) or Has(Axe)) and OrbCount(2)) or ((Has(Chain Whip) or Has(Katana)) and OrbCount(3)) or ((Has(Knife) or Has(Rapier)) and OrbCount(3) and Has(Feather)))",
+        "HardLogic": "Has(Freys Ship) and (IsDead(Ixtab) or Has(Feather))",
+        "Item": {
+          "Name": "Kujata",
+          "IsRequired": true
         }
       }
     ],
-    "exits": [
+    "Exits": [
       {
-        "connectingAreaName": "Icefire Treetop Right",
-        "Logic": "Has(Feather) or Has(Gale Fibula)",
-        "ConnectionType": "Internal"
-      },
-      {
-        "connectingAreaName": "Icefire Treetop Vidofnir",
-        "Logic": "CanChant(Moon) and CanChant(Sun) and CanWarp",
-        "ConnectionType": "Internal"
-      },
-      {
-        "Name": "Icefire Treetop C1",
-        "connectingAreaName": "Immortal Battlefield Ladder",
-        "Logic": "True",
-        "ConnectionType": "UpLadder"
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Annwfn Main",
+        "Logic": "IsDead(Ixtab) or Has(Feather)"
       }
     ]
   },
   {
-    "name": "Icefire Treetop Right",
-    "locations": [
+    "Name": "Immortal Battlefield Top",
+    "Locations": [
       {
-        "name": "Fairy Guild Pass Chest",
-        "locationType": "Chest",
-        "Logic": "Has(Life Sigil)"
-      },
-      {
-        "name": "Crystal Skull Chest IT",
-        "locationType": "Chest",
-        "Logic": "IsDead(Ratatoskr 3)"
-      },
-      {
-        "name": "Sacred Orb Chest IT",
-        "locationType": "Chest",
-        "Logic": "Has(Claydoll Suit) or (Has(Anchor) and (OrbCount(1) or Has(Scalesphere)))"
-      },
-      {
-        "name": "Ratatoskr 3",
-        "locationType": "Miniboss",
-        "Logic": "IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2) and ((Has(Leather Whip) and OrbCount(2)) or ((Has(Chain Whip) or Has(Flail Whip) or Has(Knife) or Has(Rapier) or Has(Axe) or Has(Katana)) and OrbCount(1)))",
-        "HardLogic": "IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2)",
-        "item": {
-          "name": "Ratatoskr 3",
-          "isRequired": true
-        }
-      }
-    ],
-    "exits": [
-      {
-        "connectingAreaName": "Icefire Treetop Left",
-        "Logic": "True",
-        "ConnectionType": "Internal"
-      },
-      {
-        "Name": "Icefire Treetop F1(right)",
-        "connectingAreaName": "Immortal Battlefield Battery",
-        "Logic": "True",
-        "ConnectionType": "UpLadder"
-      },
-      {
-        "Name": "Icefire Treetop F1(left)",
-        "connectingAreaName": "Immortal Battlefield Moon",
-        "Logic": "Has(Life Sigil) and (CanWarp or CanReach(Immortal Battlefield Dinosaur) or Setting(Random Vertical))",
-        "ConnectionType": "UpLadder"
-      },
-      {
-        "Name": "Icefire Treetop G3",
-        "connectingAreaName": "Heavens Labyrinth",
-        "Logic": "(Has(Anchor) or Has(Claydoll Suit)) and GuardianKills(3) and IsDead(Ratatoskr 3)",
-        "ConnectionType": "SoulGate"
-      }
-    ]
-  },
-  {
-    "name": "Icefire Treetop Vidofnir",
-    "locations": [
-      {
-        "name": "Vidofnir",
-        "locationType": "Miniboss",
-        "Logic": "Has(Flame Torc) and Has(Ice Cloak) and (Has(Silver Shield) or Has(Angel Shield)) and ((Has(Chain Whip) and OrbCount(6)) or ((Has(Flail Whip) or Has(Axe) or Has(Katana)) and OrbCount(5)))",
-        "HardLogic": "Has(Flame Torc)",
-        "item": {
-          "name": "Vidofnir",
-          "isRequired": true
-        }
-      }
-    ],
-    "exits": [
-      {
-        "Name": "Icefire Treetop D6",
-        "connectingAreaName": "Eternal Prison Gloom",
-        "Logic": "IsDead(Vidofnir) and GuardianKills(5) and CanWarp",
-        "ConnectionType": "SoulGate",
-        "isBackside": true
-      }
-    ]
-  },
-  {
-    "name": "Valhalla Main",
-    "locations": [
-      {
-        "name": "Map Chest Valhalla",
-        "locationType": "Chest",
-        "Logic": "Has(Origin Sigil)"
-      },
-      {
-        "name": "Scalesphere Chest",
-        "locationType": "Chest",
-        "Logic": "IsDead(Vritra)"
-      },
-      {
-        "name": "Crystal Skull Chest Valhalla",
-        "locationType": "Chest",
-        "Logic": "(Has(Anchor) or Has(Claydoll Suit)) and Has(Death Sigil) and CanChant(Fire) and CanChant(Earth) and IsDead(Jalandhara)"
-      },
-      {
-        "name": "Caltrop Puzzle Reward",
-        "locationType": "FreeStanding",
+        "Name": "Peibalusa Shop 1",
+        "LocationType": "Shop",
         "Logic": "True"
       },
       {
-        "name": "Bargain Duck Shop 1",
-        "locationType": "Shop",
+        "Name": "Peibalusa Shop 2",
+        "LocationType": "Shop",
         "Logic": "True"
       },
       {
-        "name": "Bargain Duck Shop 2",
-        "locationType": "Shop",
+        "Name": "Peibalusa Shop 3",
+        "LocationType": "Shop",
         "Logic": "True"
       },
       {
-        "name": "Bargain Duck Shop 3",
-        "locationType": "Shop",
-        "Logic": "True"
-      },
-      {
-        "name": "Vucub-Caquiz",
-        "locationType": "Miniboss",
-        "Logic": "Has(Origin Sigil) and ((Has(Leather Whip) and OrbCount(1)) or (Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Axe) or Has(Katana) or Has(Claydoll Suit)))",
-        "HardLogic": "Has(Origin Sigil)",
-        "item": {
-          "name": "Vucub-Caquiz",
-          "isRequired": true
-        }
-      },
-      {
-        "name": "Jalandhara",
-        "locationType": "Miniboss",
-        "Logic": "Has(Life Sigil) and Has(Feather) and OrbCount(4) and (Has(Chain Whip) or Has(Flail Whip) or Has(Knife) or Has(Rapier) or Has(Axe) or Has(Katana))",
-        "HardLogic": "Has(Life Sigil) and Has(Feather)",
-        "item": {
-          "name": "Jalandhara",
-          "isRequired": true
-        }
-      },
-      {
-        "name": "Vritra",
-        "locationType": "Guardian",
-        "Logic": "AnkhCount(5) and IsDead(Vucub-Caquiz) and (((Has(Leather Whip) or Has(Knife) or Has(Rapier)) and OrbCount(2)) or ((Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana)) and OrbCount(1)))",
-        "HardLogic": "AnkhCount(5) and IsDead(Vucub-Caquiz)",
-        "item": {
-          "name": "Vritra",
-          "isRequired": true
-        }
-      },
-      {
-        "name": "Dissonance (Valhalla)",
-        "locationType": "Dissonance",
-        "Logic": "Has(Beherit) and IsDead(Vritra)",
-        "item": {
-          "name": "Dissonance",
-          "isRequired": true
-        }
-      }
-    ],
-    "exits": [
-      {
-        "connectingAreaName": "Valhalla Top",
-        "Logic": "Has(Feather) or CanChant(Heaven)",
-        "ConnectionType": "Internal"
-      },
-      {
-        "Name": "Valhalla A2",
-        "connectingAreaName": "Divine Fortress Main",
-        "Logic": "True",
-        "ConnectionType": "Gate"
-      },
-      {
-        "connectingAreaName": "Shrine of the Frost Giants Blood",
-        "Logic": "CanWarp or CanSpinCorridor or (CanReach(Shrine of the Frost Giants Main) and CanKill(Tezcatlipoca) and Setting(Non Random Gates))",
-        "ConnectionType": "Corridor"
-      },
-      {
-        "connectingAreaName": "Ancient Chaos Blood",
-        "Logic": "CanSpinCorridor",
-        "ConnectionType": "Corridor",
-        "isBackside": true
-      },
-      {
-        "connectingAreaName": "Hall of Malice",
-        "Logic": "CanSpinCorridor",
-        "ConnectionType": "Corridor",
-        "isBackside": true
-      },
-      {
-        "connectingAreaName": "Dark Lords Mausoleum Top",
-        "Logic": "CanSpinCorridor",
-        "ConnectionType": "Corridor",
-        "isBackside": true
-      },
-      {
-        "connectingAreaName": "Eternal Prison Doom Entrance",
-        "Logic": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and CanWarp",
-        "ConnectionType": "Corridor",
-        "isBackside": true
-      }
-    ]
-  },
-  {
-    "name": "Valhalla Top",
-    "locations": [
-      {
-        "name": "Fire Mantra Mural",
-        "locationType": "Mural",
-        "Logic": "Has(Birth Sigil) and Has(Snapshot)"
-      },
-      {
-        "name": "Flail Whip Puzzle Reward",
-        "locationType": "FreeStanding",
-        "Logic": "Has(Feather) and Has(Origin Sigil) and Has(Birth Sigil) and Has(Life Sigil) and Has(Death Sigil) and Has(Claydoll Suit) and ((CanUse(Rolling Shuriken) and Has(Birth Sigil)) or CanReach(Valhalla Top Right))"
-      }
-    ],
-    "exits": [
-      {
-        "connectingAreaName": "Valhalla Main",
-        "Logic": "True",
-        "ConnectionType": "Internal"
-      },
-      {
-        "connectingAreaName": "Valhalla Top Right",
-        "Logic": "Has(Claydoll Suit) and Has(Birth Sigil) and CanUse(Rolling Shuriken)",
-        "ConnectionType": "Internal"
-      }
-    ]
-  },
-  {
-    "name": "Valhalla Top Right",
-    "locations": [],
-    "exits": [
-      {
-        "connectingAreaName": "Valhalla Top",
-        "Logic": "Has(Feather)",
-        "ConnectionType": "Internal"
-      },
-      {
-        "connectingAreaName": "Valhalla Main",
-        "Logic": "CanWarp or Has(Feather) or (Has(Claydoll Suit) and CanChant(Heaven))",
-        "ConnectionType": "Internal"
-      },
-      {
-        "Name": "Valhalla E2",
-        "connectingAreaName": "Shrine of the Frost Giants Balor",
-        "Logic": "Has(Claydoll Suit) and GuardianKills(5)",
-        "ConnectionType": "SoulGate"
-      }
-    ]
-  },
-  {
-    "name": "Immortal Battlefield Top",
-    "locations": [
-      {
-        "name": "Peibalusa Shop 1",
-        "locationType": "Shop",
-        "Logic": "True"
-      },
-      {
-        "name": "Peibalusa Shop 2",
-        "locationType": "Shop",
-        "Logic": "True"
-      },
-      {
-        "name": "Peibalusa Shop 3",
-        "locationType": "Shop",
-        "Logic": "True"
-      },
-      {
-        "name": "Cetus",
-        "locationType": "Miniboss",
+        "Name": "Cetus",
+        "LocationType": "Miniboss",
         "Logic": "CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Rolling Shuriken) or CanUse(Caltrops) or Has(Claydoll Suit)",
         "HardLogic": "CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Rolling Shuriken) or CanUse(Caltrops) or Has(Claydoll Suit)",
-        "item": {
-          "name": "Cetus",
-          "isRequired": true
+        "Item": {
+          "Name": "Cetus",
+          "IsRequired": true
         }
       }
     ],
-    "exits": [
+    "Exits": [
       {
-        "connectingAreaName": "Immortal Battlefield Top Left",
-        "Logic": "CanWarp or (Has(Feather) and (CanUse(Earth Spear) or CanUse(Chakram) or CanUse(Bomb) or CanUse(Rolling Shuriken) or CanUse(Caltrops))) or (Has(Gloves) and (CanUse(Earth Spear) or CanUse(Chakram) or CanUse(Bomb)))",
-        "ConnectionType": "Internal"
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Immortal Battlefield Top Left",
+        "Logic": "CanWarp or ((Has(Feather) or Has(Gloves)) and (CanUse(Earth Spear) or CanUse(Chakram) or CanUse(Bomb) or CanUse(Rolling Shuriken) or CanUse(Caltrops)))"
       },
       {
-        "connectingAreaName": "Immortal Battlefield Main",
-        "Logic": "IsDead(Cetus)",
-        "ConnectionType": "Internal"
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Immortal Battlefield Main",
+        "Logic": "IsDead(Cetus)"
       },
       {
         "Name": "Immortal Battlefied F1",
-        "connectingAreaName": "Annwfn Main",
-        "Logic": "IsDead(Cetus)",
-        "ConnectionType": "UpLadder"
+        "ID": "f03Up",
+        "ConnectionType": "UpLadder",
+        "ConnectingAreaName": "Annwfn Main",
+        "Logic": "IsDead(Cetus)"
       }
     ]
   },
   {
-    "name": "Immortal Battlefield Top Left",
-    "locations": [
+    "Name": "Immortal Battlefield Top Left",
+    "Locations": [
       {
-        "name": "Gale Fibula Chest",
-        "locationType": "Chest",
+        "Name": "Gale Fibula Chest",
+        "LocationType": "Chest",
         "Logic": "(CanUse(Earth Spear) or CanUse(Flare) or (CanUse(Bomb) and Has(Ring))) and Has(Gloves)"
       },
       {
-        "name": "Earth Spear Puzzle Reward",
-        "locationType": "FreeStanding",
+        "Name": "Earth Spear Puzzle Reward",
+        "LocationType": "FreeStanding",
         "Logic": "Has(Gloves) or Has(Feather)"
       }
     ],
-    "exits": [
+    "Exits": [
       {
-        "connectingAreaName": "Immortal Battlefield Top",
+        "ConnectingAreaName": "Immortal Battlefield Top",
         "Logic": "(Has(Feather) and (CanUse(Earth Spear) or CanUse(Chakram) or CanUse(Bomb) or CanUse(Rolling Shuriken) or CanUse(Caltrops))) or (Has(Gloves) and (CanUse(Earth Spear) or CanUse(Chakram) or CanUse(Bomb)))",
         "ConnectionType": "Internal"
       }
     ]
   },
   {
-    "name": "Immortal Battlefield Main",
-    "locations": [
+    "Name": "Immortal Battlefield Main",
+    "Locations": [
       {
-        "name": "Map Chest IB",
-        "locationType": "Chest",
+        "Name": "Map Chest IB",
+        "LocationType": "Chest",
         "Logic": "True"
       },
       {
-        "name": "Ice Cloak Chest",
-        "locationType": "Chest",
-        "Logic": "Has(Life Sigil) and (Has(Feather) or CanUse(Shuriken) or CanUse(Rolling Shuriken) or CanUse(Flare)  or CanUse(Chakram) or CanUse(Bomb) or Has(Claydoll Suit))"
+        "Name": "Ice Cloak Chest",
+        "LocationType": "Chest",
+        "Logic": "Has(Life Sigil) and (Has(Feather) or CanUse(Shuriken) or CanUse(Rolling Shuriken) or CanUse(Flare) or CanUse(Chakram) or CanUse(Bomb) or Has(Claydoll Suit))"
       },
       {
-        "name": "Totem Pole Chest",
-        "locationType": "Chest",
+        "Name": "Totem Pole Chest",
+        "LocationType": "Chest",
         "Logic": "Has(Birth Sigil) and (Has(Gale Fibula) or Has(Lamp of Time) or IsDead(Cetus))"
       },
       {
-        "name": "Sacred Orb Chest IB",
-        "locationType": "Chest",
+        "Name": "Sacred Orb Chest IB",
+        "LocationType": "Chest",
         "Logic": "Has(Birth Sigil)"
       },
       {
-        "name": "Lamp of Time Chest",
-        "locationType": "Chest",
+        "Name": "Lamp of Time Chest",
+        "LocationType": "Chest",
         "Logic": "IsDead(Ratatoskr 2) and Has(Cog of Antiquity) and Has(Life Sigil)"
       },
       {
-        "name": "Mjolnir Chest",
-        "locationType": "Chest",
+        "Name": "Mjolnir Chest",
+        "LocationType": "Chest",
         "Logic": "IsDead(Jormangund)"
       },
       {
-        "name": "Chain Whip Puzzle Reward",
-        "locationType": "FreeStanding",
+        "Name": "Chain Whip Puzzle Reward",
+        "LocationType": "FreeStanding",
         "Logic": "Has(Gloves) and (Has(Claydoll Suit) or OrbCount(1) or Has(Ice Cloak))"
       },
       {
-        "name": "Chakram Puzzle Reward",
-        "locationType": "FreeStanding",
+        "Name": "Chakram Puzzle Reward",
+        "LocationType": "FreeStanding",
         "Logic": "IsDead(Svipdagr) and Has(Life Sigil) and CanUse(Earth Spear) and CanUse(Rolling Shuriken)"
       },
       {
-        "name": "Crystal Skull IB",
-        "locationType": "FreeStanding",
+        "Name": "Crystal Skull IB",
+        "LocationType": "FreeStanding",
         "Logic": "IsDead(Ratatoskr 2)"
       },
       {
-        "name": "Secret Treasure of Life Item",
-        "locationType": "FreeStanding",
+        "Name": "Secret Treasure of Life Item",
+        "LocationType": "FreeStanding",
         "Logic": "IsDead(Jormangund) and Dissonance(6) and CanChant(Night)"
       },
       {
-        "name": "Hiro Roderick Shop 1",
-        "locationType": "Shop",
+        "Name": "Hiro Roderick Shop 1",
+        "LocationType": "Shop",
         "Logic": "IsDead(Cetus)"
       },
       {
-        "name": "Hiro Roderick Shop 2",
-        "locationType": "Shop",
+        "Name": "Hiro Roderick Shop 2",
+        "LocationType": "Shop",
         "Logic": "IsDead(Cetus)"
       },
       {
-        "name": "Hiro Roderick Shop 3",
-        "locationType": "Shop",
+        "Name": "Hiro Roderick Shop 3",
+        "LocationType": "Shop",
         "Logic": "IsDead(Cetus)"
       },
       {
-        "name": "Mulbruk Item",
-        "locationType": "Dialogue",
+        "Name": "Mulbruk Item",
+        "LocationType": "Dialogue",
         "Logic": "CanReach(Annwfn Main) and GuardianKills(4)"
       },
       {
-        "name": "Ratatoskr 2",
-        "locationType": "Miniboss",
-        "Logic": "True",
-        "HardLogic": "True",
-        "item": {
-          "name": "Ratatoskr 2",
-          "isRequired": true
+        "Name": "Ratatoskr 2",
+        "LocationType": "Miniboss",
+        "Logic": "IsDead(Ratatoskr 1)",
+        "HardLogic": "IsDead(Ratatoskr 1)",
+        "Item": {
+          "Name": "Ratatoskr 2",
+          "IsRequired": true
         }
       },
       {
-        "name": "Svipdagr",
-        "locationType": "Miniboss",
+        "Name": "Svipdagr",
+        "LocationType": "Miniboss",
         "Logic": "OrbCount(1)",
         "HardLogic": "True",
-        "item": {
-          "name": "Svipdagr",
-          "isRequired": true
+        "Item": {
+          "Name": "Svipdagr",
+          "IsRequired": true
         }
       },
       {
-        "name": "Jormangund",
-        "locationType": "Guardian",
-        "Logic": "AnkhCount(4) and IsDead(Cetus) and Has(Dinosaur Figure) and Has(Pochette Key) and (((Has(Chain Whip) or Has(Rapier) or Has(Axe)) and OrbCount(5)) or ((Has(Flail Whip) or Has(Katana)) and OrbCount(4)))",
-        "HardLogic": "AnkhCount(4) and IsDead(Cetus) and Has(Dinosaur Figure) and Has(Pochette Key)",
-        "item": {
-          "name": "Jormangund",
-          "isRequired": true
+        "Name": "Jormangund",
+        "LocationType": "Guardian",
+        "Logic": "IsDead(Cetus) and Has(Dinosaur Figure) and Has(Pochette Key) and (((Has(Chain Whip) or Has(Rapier) or Has(Axe)) and OrbCount(5)) or ((Has(Flail Whip) or Has(Katana)) and OrbCount(4)))",
+        "HardLogic": "IsDead(Cetus) and Has(Dinosaur Figure) and Has(Pochette Key)",
+        "Item": {
+          "Name": "Jormangund",
+          "IsRequired": true
         }
       }
     ],
-    "exits": [
+    "Exits": [
       {
-        "connectingAreaName": "Immortal Battlefield Top Left",
-        "Logic": "True",
-        "ConnectionType": "Internal"
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Immortal Battlefield Top Left",
+        "Logic": "True"
       },
       {
-        "connectingAreaName": "Immortal Battlefield Dinosaur",
-        "Logic": "(Has(Anchor) or Has(Claydoll Suit)) and (IsDead(Cetus) or Has(Feather) or CanWarp)",
-        "ConnectionType": "Internal"
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Immortal Battlefield Dinosaur",
+        "Logic": "(Has(Anchor) or Has(Claydoll Suit)) and (IsDead(Cetus) or Has(Feather) or CanWarp)"
       },
       {
         "Name": "Immortal Battlefield H4",
-        "connectingAreaName": "Cavern",
-        "Logic": "True",
-        "ConnectionType": "RightDoor"
+        "ID": "f03Right",
+        "ConnectionType": "RightDoor",
+        "ConnectingAreaName": "Cavern",
+        "Logic": "True"
       },
       {
-        "connectingAreaName": "Immortal Battlefield Ladder",
-        "Logic": "IsDead(Cetus)",
-        "ConnectionType": "Internal"
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Immortal Battlefield Ladder",
+        "Logic": "IsDead(Cetus)"
       },
       {
         "Name": "Immortal Battlefield H2",
-        "connectingAreaName": "Gate of the Dead",
-        "Logic": "GuardianKills(2)",
-        "ConnectionType": "SoulGate"
+        "ConnectionType": "SoulGate",
+        "ConnectingAreaName": "Gate of the Dead",
+        "Logic": "GuardianKills(2) or Setting(Random Soul Gates)"
       }
     ]
   },
   {
-    "name": "Immortal Battlefield Left",
-    "locations": [],
-    "exits": [
+    "Name": "Immortal Battlefield Left",
+    "Locations": [],
+    "Exits": [
       {
         "Name": "Immortal Battlefield A6",
-        "connectingAreaName": "Roots of Yggdrasil",
-        "Logic": "False",
-        "ConnectionType": "Gate"
+        "ID": "f03GateYC",
+        "ConnectionType": "Gate",
+        "ConnectingAreaName": "Roots of Yggdrasil",
+        "Logic": "False"
       },
       {
-        "connectingAreaName": "Immortal Battlefield Main",
-        "Logic": "True",
-        "ConnectionType": "Internal"
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Immortal Battlefield Main",
+        "Logic": "True"
       },
       {
-        "Name": "Immortal Battlefield B7",
-        "connectingAreaName": "Takamagahara Shrine Entrance",
-        "Logic": "GuardianKills(3)",
-        "ConnectionType": "SoulGate"
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Immortal Battlefield Left Soul Gate",
+        "Logic": "True"
       }
     ]
   },
   {
-    "name": "Immortal Battlefield Battery",
-    "locations": [
+    "Name": "Immortal Battlefield Left Soul Gate",
+    "Locations": [],
+    "Exits": [
       {
-        "name": "Battery Chest",
-        "locationType": "Chest",
+        "Name": "Immortal Battlefield B7",
+        "ConnectionType": "SoulGate",
+        "ConnectingAreaName": "Takamagahara Shrine Entrance",
+        "Logic": "GuardianKills(3) or Setting(Random Soul Gates)"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Immortal Battlefield Main",
+        "Logic": "True"
+      }
+    ]
+  },
+  {
+    "Name": "Immortal Battlefield Battery",
+    "Locations": [
+      {
+        "Name": "Battery Chest",
+        "LocationType": "Chest",
         "Logic": "IsDead(Svipdagr) and CanWarp and Has(Life Sigil) and Has(Feather) and CanChant(Wind) and CanChant(Sea) and CanChant(Fire) and CanChant(Earth)"
       }
     ],
-    "exits": [
+    "Exits": [
       {
-        "connectingAreaName": "Immortal Battlefield Dinosaur",
-        "Logic": "Has(Grapple Claw)",
-        "ConnectionType": "Internal"
-      },
-      {
-        "Name": "Immortal Battlefield G7(right)",
-        "connectingAreaName": "Icefire Treetop Right",
-        "Logic": "True",
-        "ConnectionType": "DownLadder"
-      }
-    ]
-  },
-  {
-    "name": "Immortal Battlefield Dinosaur",
-    "locations": [
-      {
-        "name": "Dinosaur Figure Chest",
-        "locationType": "Chest",
-        "Logic": "CanUse(Flare) or CanUse(Earth Spear) or Has(Rapier)"
-      }
-    ],
-    "exits": [
-      {
-        "connectingAreaName": "Immortal Battlefield Battery",
-        "Logic": "Has(Grapple Claw)",
-        "ConnectionType": "Internal"
-      }
-    ]
-  },
-  {
-    "name": "Immortal Battlefield Moon",
-    "locations": [
-      {
-        "name": "Moon Mantra Mural",
-        "locationType": "Mural",
-        "Logic": "CanChant(Sun) and Has(Snapshot)"
-      }
-    ],
-    "exits": [
-      {
-        "connectingAreaName": "Immortal Battlefield Dinosaur",
-        "Logic": "True",
-        "ConnectionType": "Internal"
-      },
-      {
-        "Name": "Immortal Battlefield G7(left)",
-        "connectingAreaName": "Icefire Treetop Right",
-        "Logic": "False",
-        "ConnectionType": "DownLadder"
-      }
-    ]
-  },
-  {
-    "name": "Immortal Battlefield Ladder",
-    "locations": [],
-    "exits": [
-      {
-        "Name": "Immortal Battlefield D7",
-        "connectingAreaName": "Icefire Treetop Left",
-        "Logic": "True",
-        "ConnectionType": "DownLadder"
-      }
-    ]
-  },
-  {
-    "name": "Immortal Battlefield Spiral Boat",
-    "locations": [],
-    "exits": [
-      {
-        "connectingAreaName": "Spiral Hell",
-        "Logic": "Dissonance(6) and CanChant(Heaven) and CanChant(Earth) and CanChant(Sun) and CanChant(Moon) and CanChant(Fire) and CanChant(Sea) and CanChant(Wind) and CanChant(Mother) and CanChant(Child) and CanChant(Night) and Has(Secret Treasure of Life)",
-        "ConnectionType": "Unique"
-      }
-    ]
-  },
-  {
-    "name": "Cavern",
-    "locations": [
-      {
-        "name": "Sun Mantra Mural",
-        "locationType": "Mural",
-        "Logic": "Has(Snapshot)"
-      }
-    ],
-    "exits": [
-      {
-        "Name": "Cavern A1",
-        "connectingAreaName": "Immortal Battlefield Main",
-        "Logic": "True",
-        "ConnectionType": "LeftDoor"
-      },
-      {
-        "Name": "Cavern D1",
-        "connectingAreaName": "Cliff",
-        "Logic": "True",
-        "ConnectionType": "RightDoor"
-      }
-    ]
-  },
-  {
-    "name": "Cliff",
-    "locations": [],
-    "exits": [
-      {
-        "Name": "Cliff A1",
-        "connectingAreaName": "Cavern",
-        "Logic": "False",
-        "ConnectionType": "LeftDoor"
-      }
-    ]
-  },
-  {
-    "name": "Shrine of the Frost Giants Main",
-    "locations": [
-      {
-        "name": "Map Chest SotFG",
-        "locationType": "Chest",
-        "Logic": "True"
-      },
-      {
-        "name": "Birth Sigil Chest",
-        "locationType": "Chest",
-        "Logic": "Has(Origin Sigil)"
-      },
-      {
-        "name": "Ankh Chest SotFG",
-        "locationType": "Chest",
-        "Logic": "True"
-      },
-      {
-        "name": "Pochette Key Chest",
-        "locationType": "Chest",
-        "Logic": "IsDead(Badhbh Cath) and Has(Life Sigil) and Has(Grapple Claw)"
-      },
-      {
-        "name": "Rapier Puzzle Reward",
-        "locationType": "FreeStanding",
-        "Logic": "True"
-      },
-      {
-        "name": "Weapon Fairy",
-        "locationType": "Fairy",
-        "Logic": "Has(Fairy Pass) and Has(Freyas Pendant) and CanReach(Annwfn Right)",
-        "item": {
-          "name": "Weapon Fairy",
-          "isRequired": true
-        }
-      },
-      {
-        "name": "Badhbh Cath",
-        "locationType": "Miniboss",
-        "Logic": "((Has(Leather Whip) or Has(Knife) or Has(Rapier)) and OrbCount(1)) or (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana))",
-        "HardLogic": "True",
-        "item": {
-          "name": "Badhbh Cath",
-          "isRequired": true
-        }
-      },
-      {
-        "name": "Fenrir",
-        "locationType": "Miniboss",
-        "Logic": "PuzzleFinished(Bergelmir) and Has(Flame Torc) and (Has(Silver Shield) or Has(Angel Shield)) and OrbCount(7) and (Has(Flail Whip) or Has(Axe) or Has(Katana))",
-        "HardLogic": "PuzzleFinished(Bergelmir) and Has(Flame Torc) and (Has(Silver Shield) or Has(Angel Shield))",
-        "item": {
-          "name": "Fenrir",
-          "isRequired": true
-        }
-      },
-      {
-        "name": "Liquour",
-        "locationType": "Puzzle",
-        "Logic": "IsDead(Fenrir) and CanChant(Moon) and CanChant(Mother) and CanChant(Child) and Has(Vessel)",
-        "item": {
-          "name": "Liquour",
-          "isRequired": true
-        }
-      }
-    ],
-    "exits": [
-      {
-        "Name": "Shrine of the Frost Giants E4",
-        "connectingAreaName": "Annwfn Soul Gate",
-        "Logic": "GuardianKills(2)",
-        "ConnectionType": "SoulGate"
-      },
-      {
-        "connectingAreaName": "Shrine of the Frost Giants Top",
-        "Logic": "IsDead(Badhbh Cath) and Has(Grapple Claw)",
-        "ConnectionType": "Internal"
-      }
-    ]
-  },
-  {
-    "name": "Shrine of the Frost Giants Top",
-    "locations": [
-      {
-        "name": "Sacred Orb Chest SotFG",
-        "locationType": "Chest",
-        "Logic": "CanUse(Earth Spear) or CanUse(Flare)"
-      },
-      {
-        "name": "Sea Mantra Mural",
-        "locationType": "Mural",
-        "Logic": "Has(Snapshot) and Has(Birth Sigil)"
-      }
-    ],
-    "exits": [
-      {
-        "connectingAreaName": "Shrine of the Frost Giants Balor",
-        "Logic": "Has(Feather) and PuzzleFinished(Bergelmir)",
-        "ConnectionType": "Internal"
-      }
-    ]
-  },
-  {
-    "name": "Shrine of the Frost Giants Balor",
-    "locations": [
-      {
-        "name": "Claydoll Chest",
-        "locationType": "Chest",
-        "Logic": "Has(Life Sigil) and Has(Feather) and IsDead(Balor)"
-      },
-      {
-        "name": "Balor",
-        "locationType": "Miniboss",
-        "Logic": "((Has(Knife) or Has(Rapier) or Has(Katana)) and Has(Feather) and OrbCount(2)) or ((Has(Chain Whip) or Has(Flail Whip) or Has(Axe)) and OrbCount(2))",
-        "HardLogic": "True",
-        "item": {
-          "name": "Balor",
-          "isRequired": true
-        }
-      }
-    ],
-    "exits": [
-      {
-        "Name": "Shrine of the Frost Giants E1",
-        "connectingAreaName": "Valhalla Top Right",
-        "Logic": "Has(Claydoll Suit) and GuardianKills(5) and IsDead(Balor)",
-        "ConnectionType": "SoulGate",
-        "isBackside": true
-      }
-    ]
-  },
-  {
-    "name": "Shrine of the Frost Giants Blood",
-    "locations": [
-      {
-        "name": "Tezcatlipoca",
-        "locationType": "Miniboss",
-        "Logic": "Has(Gloves) and OrbCount(1)",
-        "HardLogic": "Has(Gloves)",
-        "item": {
-          "name": "Tezcatlipoca",
-          "isRequired": true
-        }
-      }
-    ],
-    "exits": [
-      {
-        "Name": "Shrine of the Frost Giants(Corridor) B2",
-        "connectingAreaName": "Shrine of the Frost Giants Left",
-        "Logic": "Has(Grapple Claw) and IsDead(Tezcatlipoca)",
-        "ConnectionType": "Gate"
-      },
-      {
-        "connectingAreaName": "Ancient Chaos Blood",
-        "Logic": "CanWarp or CanSpinCorridor",
-        "ConnectionType": "Corridor",
-        "isBackside": true
-      },
-      {
-        "connectingAreaName": "Hall of Malice",
-        "Logic": "CanSpinCorridor",
-        "ConnectionType": "Corridor",
-        "isBackside": true
-      },
-      {
-        "connectingAreaName": "Dark Lords Mausoleum Top",
-        "Logic": "CanSpinCorridor",
-        "ConnectionType": "Corridor",
-        "isBackside": true
-      },
-      {
-        "connectingAreaName": "Valhalla Main",
-        "Logic": "CanSpinCorridor",
-        "ConnectionType": "Corridor",
-        "isBackside": true
-      },
-      {
-        "connectingAreaName": "Eternal Prison Doom Entrance",
-        "Logic": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and CanWarp",
-        "ConnectionType": "Corridor",
-        "isBackside": true
-      }
-    ]
-  },
-  {
-    "name": "Shrine of the Frost Giants Left",
-    "locations": [
-      {
-        "name": "Gauntlet Chest",
-        "locationType": "Chest",
-        "Logic": "Has(Feather) and Has(Life Sigil)"
-      },
-      {
-        "name": "Hydlit Shop 1",
-        "locationType": "Shop",
-        "Logic": "((Has(Snow Shoes) and Has(Gale Fibula)) or Has(Lamp of Time)) and PuzzleFinished(Bergelmir)"
-      },
-      {
-        "name": "Hydlit Shop 2",
-        "locationType": "Shop",
-        "Logic": "((Has(Snow Shoes) and Has(Gale Fibula)) or Has(Lamp of Time)) and PuzzleFinished(Bergelmir)"
-      },
-      {
-        "name": "Hydlit Shop 3",
-        "locationType": "Shop",
-        "Logic": "((Has(Snow Shoes) and Has(Gale Fibula)) or Has(Lamp of Time)) and PuzzleFinished(Bergelmir)"
-      },
-      {
-        "name": "Bergelmir",
-        "locationType": "Puzzle",
-        "Logic": "CanChant(Earth) and CanChant(Moon) and CanChant(Heaven)",
-        "item": {
-          "name": "Bergelmir",
-          "isRequired": true
-        }
-      }
-    ],
-    "exits": [
-      {
-        "connectingAreaName": "Shrine of the Frost Giants Main",
-        "Logic": "True",
-        "ConnectionType": "Internal"
-      },
-      {
-        "Name": "Shrine of the Frost Giants B4",
-        "connectingAreaName": "Shrine of the Frost Giants Blood",
-        "Logic": "False",
-        "ConnectionType": "Gate"
-      }
-    ]
-  },
-  {
-    "name": "Gate of the Dead",
-    "locations": [
-      {
-        "name": "Map Chest GotD",
-        "locationType": "Chest",
-        "Logic": "True"
-      },
-      {
-        "name": "Yagoo Map Street Chest",
-        "locationType": "Chest",
-        "Logic": "Has(Gloves)"
-      },
-      {
-        "name": "Vajra Chest",
-        "locationType": "Chest",
-        "Logic": "True"
-      },
-      {
-        "name": "Sacred Orb Chest GotD",
-        "locationType": "Chest",
-        "Logic": "True"
-      },
-      {
-        "name": "Anchor Chest",
-        "locationType": "Chest",
-        "Logic": "CanReach(Divine Fortress Main) and Has(Gloves) and CanReach(Annwfn Right) and (IsDead(Ixtab) or Has(Feather)) and Has(Hand Scanner)"
-      },
-      {
-        "name": "Crystal Skull Chest GotD",
-        "locationType": "Chest",
-        "Logic": "True"
-      },
-      {
-        "name": "Katana Puzzle Reward",
-        "locationType": "FreeStanding",
-        "Logic": "Has(Life Sigil)"
-      },
-      {
-        "name": "Aytum Shop 1",
-        "locationType": "Shop",
-        "Logic": "True"
-      },
-      {
-        "name": "Aytum Shop 2",
-        "locationType": "Shop",
-        "Logic": "True"
-      },
-      {
-        "name": "Aytum Shop 3",
-        "locationType": "Shop",
-        "Logic": "True"
-      },
-      {
-        "name": "White Pedestals",
-        "locationType": "Puzzle",
-        "Logic": "Has(Pepper) and Has(Birth Sigil) and CanChant(Sun) and IsDead(Unicorn)",
-        "item": {
-          "name": "White Pedestals",
-          "isRequired": true
-        }
-      },
-      {
-        "name": "Unicorn",
-        "locationType": "Miniboss",
-        "Logic": "OrbCount(1) and ((Has(Katana) and Has(Vajra)) or Has(Leather Whip) or Has(Chain Whip) or Has(Flail Whip) or Has(Axe))",
-        "HardLogic": "True",
-        "item": {
-          "name": "Unicorn",
-          "isRequired": true
-        }
-      }
-    ],
-    "exits": [
-      {
-        "Name": "Gate of the Dead C4",
-        "connectingAreaName": "Immortal Battlefield Main",
-        "Logic": "True",
-        "ConnectionType": "SoulGate"
-      },
-      {
-        "Name": "Gate of the Dead F5",
-        "connectingAreaName": "Dark Lords Mausoleum Main",
-        "Logic": "PuzzleFinished(White Pedestals)",
-        "ConnectionType": "Gate",
-        "isBackside": true
-      }
-    ]
-  },
-  {
-    "name": "Dark Lords Mausoleum Main",
-    "locations": [
-      {
-        "name": "Feather Chest",
-        "locationType": "Chest",
-        "Logic": "Has(Feather) or IsDead(Angra Mainyu)"
-      },
-      {
-        "name": "Ankh Chest DLM",
-        "locationType": "Chest",
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Immortal Battlefield Dinosaur",
         "Logic": "Has(Grapple Claw)"
       },
       {
-        "name": "Map Chest DLM",
-        "locationType": "Chest",
-        "Logic": "Has(Birth Sigil)"
-      },
+        "Name": "Immortal Battlefield G7(right)",
+        "ID": "f03Down3",
+        "ConnectionType": "DownLadder",
+        "ConnectingAreaName": "Icefire Treetop Right",
+        "Logic": "True"
+      }
+    ]
+  },
+  {
+    "Name": "Immortal Battlefield Dinosaur",
+    "Locations": [
       {
-        "name": "Crucifix Chest",
-        "locationType": "Chest",
-        "Logic": "IsDead(Aten-Ra)"
-      },
-      {
-        "name": "Maats Feather Chest",
-        "locationType": "Chest",
-        "Logic": "CanReach(Ancient Chaos Tablet) and IsDead(Annit) and Has(Feather) and PuzzleFinished(Judgement Puzzle)"
-      },
-      {
-        "name": "Kero Shop 1",
-        "locationType": "Shop",
-        "Logic": "Has(Feather)"
-      },
-      {
-        "name": "Kero Shop 2",
-        "locationType": "Shop",
-        "Logic": "Has(Feather)"
-      },
-      {
-        "name": "Kero Shop 3",
-        "locationType": "Shop",
-        "Logic": "Has(Feather)"
-      },
-      {
-        "name": "Money Fairy",
-        "locationType": "Fairy",
-        "Logic": "Has(Fairy Pass) and Has(Freyas Pendant) and CanReach(Annwfn Main) and (Has(Gale Fibula) or Has(Lamp of Time))",
-        "item": {
-          "name": "Money Fairy",
-          "isRequired": true
-        }
-      },
-      {
-        "name": "Footstep Puzzle",
-        "locationType": "Puzzle",
-        "Logic": "CanChant(Heaven) and CanChant(Sun) and CanChant(Earth)",
-        "item": {
-          "name": "Footstep Puzzle",
-          "isRequired": true
-        }
-      },
-      {
-        "name": "Judgement Puzzle",
-        "locationType": "Puzzle",
-        "Logic": "CanChant(Heaven) and CanChant(Sun) and CanChant(Earth) and CanChant(Fire) and IsDead(Sekhmet)",
-        "item": {
-          "name": "Judgement Puzzle",
-          "isRequired": true
-        }
-      },
-      {
-        "name": "Sekhmet",
-        "locationType": "Miniboss",
-        "Logic": "PuzzleFinished(Footstep Puzzle) and OrbCount(3) and (Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Axe) or Has(Katana))",
-        "HardLogic": "PuzzleFinished(Footstep Puzzle)",
-        "item": {
-          "name": "Sekhmet",
-          "isRequired": true
-        }
-      },
-      {
-        "name": "Aten-Ra",
-        "locationType": "Guardian",
-        "Logic": "AnkhCount(6) and IsDead(Sekhmet) and PuzzleFinished(White Pedestals) and (((Has(Chain Whip) or Has(Axe)) and OrbCount(6)) or ((Has(Flail Whip) or Has(Katana)) and OrbCount(5)))",
-        "HardLogic": "AnkhCount(6) and IsDead(Sekhmet) and PuzzleFinished(White Pedestals)",
-        "item": {
-          "name": "Aten-Ra",
-          "isRequired": true
-        }
-      },
-      {
-        "name": "Dissonance (Dark Lords Mausoleum)",
-        "locationType": "Dissonance",
-        "Logic": "Has(Beherit) and IsDead(Aten-Ra)",
-        "item": {
-          "name": "Dissonance",
-          "isRequired": true
-        }
+        "Name": "Dinosaur Figure Chest",
+        "LocationType": "Chest",
+        "Logic": "CanUse(Flare) or CanUse(Earth Spear) or Has(Rapier)"
       }
     ],
-    "exits": [
+    "Exits": [
       {
-        "connectingAreaName": "Dark Lords Mausoleum Top",
-        "Logic": "Has(Feather)",
-        "ConnectionType": "Internal"
-      },
-      {
-        "Name": "Dark Star Lord's Mausoleum D7",
-        "connectingAreaName": "Gate of the Dead",
-        "Logic": "False",
-        "ConnectionType": "Gate"
-      },
-      {
-        "connectingAreaName": "Nibiru",
-        "Logic": "Has(Grapple Claw) and Has(Mjolnir) and Has(Claydoll Suit) and Has(Pyramid Crystal) and Has(Destiny Tablet) and CanChant(Heaven) and CanChant(Moon) and CanChant(Fire) and CanChant(Sea) and CanChant(Sun)",
-        "ConnectionType": "Unique"
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Immortal Battlefield Battery",
+        "Logic": "Has(Grapple Claw)"
       }
     ]
   },
   {
-    "name": "Dark Lords Mausoleum Top",
-    "locations": [
+    "Name": "Immortal Battlefield Moon",
+    "Locations": [
       {
-        "name": "Crystal Skull Chest DLM",
-        "locationType": "Chest",
-        "Logic": "SkullCount(1) and (Has(Feather) or CanWarp or (CanReach(Dark Lords Mausoleum Main) and CanUse(Bomb)))"
-      },
-      {
-        "name": "La Mulana Chest",
-        "locationType": "Chest",
-        "Logic": "CanUse(Bomb) and (Has(Feather) or CanWarp or CanReach(Dark Lords Mausoleum Main))"
-      },
-      {
-        "name": "Vessel Chest",
-        "locationType": "Chest",
-        "Logic": "IsDead(Annit)"
-      },
-      {
-        "name": "Angra Mainyu",
-        "locationType": "Miniboss",
-        "Logic": "Has(Mjolnir) and OrbCount(1) and (CanWarp or Has(Feather) or CanReach(Dark Lords Mausoleum Main))",
-        "HardLogic": "Has(Mjolnir) and (Has(Feather) or CanWarp or CanReach(Dark Lords Mausoleum Main))",
-        "item": {
-          "name": "Angra Mainyu",
-          "isRequired": true
-        }
-      },
-      {
-        "name": "Annit",
-        "locationType": "Miniboss",
-        "Logic": "Has(Feather) and Has(Pyramid Crystal) and (Has(Silver Shield) or Has(Angel Shield)) and OrbCount(2) and (Has(Chain Whip) or Has(Flail Whip) or Has(Knife) or Has(Rapier) or Has(Axe) or Has(Katana))",
-        "HardLogic": "Has(Feather) and Has(Pyramid Crystal)",
-        "item": {
-          "name": "Annit",
-          "isRequired": true
-        }
+        "Name": "Moon Mantra Mural",
+        "LocationType": "Mural",
+        "Logic": "CanChant(Sun) and Has(Snapshot)"
       }
     ],
-    "exits": [
+    "Exits": [
       {
-        "connectingAreaName": "Dark Lords Mausoleum Main",
-        "Logic": "Has(Feather) or CanWarp",
-        "ConnectionType": "Internal"
-      },
-      {
-        "connectingAreaName": "Valhalla Main",
-        "Logic": "CanWarp or CanSpinCorridor",
-        "ConnectionType": "Corridor",
-        "isBackside": true
-      },
-      {
-        "connectingAreaName": "Shrine of the Frost Giants Blood",
-        "Logic": "CanSpinCorridor",
-        "ConnectionType": "Corridor"
-      },
-      {
-        "connectingAreaName": "Ancient Chaos Blood",
-        "Logic": "CanSpinCorridor",
-        "ConnectionType": "Corridor",
-        "isBackside": true
-      },
-      {
-        "connectingAreaName": "Hall of Malice",
-        "Logic": "CanSpinCorridor",
-        "ConnectionType": "Corridor",
-        "isBackside": true
-      },
-      {
-        "connectingAreaName": "Eternal Prison Doom Entrance",
-        "Logic": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and CanWarp",
-        "ConnectionType": "Corridor",
-        "isBackside": true
-      }
-    ]
-  },
-  {
-    "name": "Nibiru",
-    "locations": [
-      {
-        "name": "Night Mantra Mural",
-        "locationType": "Mural",
-        "Logic": "Has(Death Sigil) and Has(Snapshot)"
-      },
-      {
-        "name": "Dissonance (Nibiru)",
-        "locationType": "Dissonance",
-        "Logic": "Has(Beherit) and SkullCount(12) and Has(Power Band) and Has(Mjolnir)",
-        "item": {
-          "name": "Dissonance",
-          "isRequired": true
-        }
-      }
-    ],
-    "exits": [
-      {
-        "connectingAreaName": "Dark Lords Mausoleum Main",
-        "Logic": "False",
-        "ConnectionType": "Unique"
-      }
-    ]
-  },
-  {
-    "name": "Takamagahara Shrine Entrance",
-    "locations": [],
-    "exits": [
-      {
-        "connectingAreaName": "Takamagahara Shrine Main",
-        "Logic": "Has(Knife) or Has(Katana) or Has(Rapier) or Has(Axe) or CanUse(Rolling Shuriken) or CanUse(Earth Spear) or CanUse(Caltrops) or CanUse(Bomb) or Has(Spaulder) or Has(Vajra)",
-        "ConnectionType": "Internal"
-      },
-      {
-        "Name": "Takamagahara Shrine D1",
-        "connectingAreaName": "Immortal Battlefield Main",
-        "Logic": "GuardianKills(3)",
-        "ConnectionType": "SoulGate"
-      }
-    ]
-  },
-  {
-    "name": "Takamagahara Shrine Main",
-    "locations": [
-      {
-        "name": "Map Chest TS",
-        "locationType": "Chest",
-        "Logic": "Has(Katana) or CanUse(Earth Spear) or CanUse(Bomb)"
-      },
-      {
-        "name": "Ring Chest",
-        "locationType": "Chest",
-        "Logic": "(Has(Katana) or CanUse(Earth Spear) or CanUse(Bomb)) and Has(Feather) and Has(Life Sigil) and Has(Key Fairy)"
-      },
-      {
-        "name": "Sacred Orb Chest TS",
-        "locationType": "Chest",
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Immortal Battlefield Dinosaur",
         "Logic": "True"
       },
       {
-        "name": "Flare Puzzle Reward",
-        "locationType": "FreeStanding",
-        "Logic": "IsDead(Raijin and Fujin) and Has(Birth Sigil) and (Has(Lamp of Time) or Has(Gale Fibula))"
-      },
+        "Name": "Immortal Battlefield G7(left)",
+        "ID": "f03Down2",
+        "ConnectionType": "DownLadder",
+        "ConnectingAreaName": "Icefire Treetop Right",
+        "Logic": "False"
+      }
+    ]
+  },
+  {
+    "Name": "Immortal Battlefield Ladder",
+    "Locations": [],
+    "Exits": [
       {
-        "name": "Ash Geen Shop 1",
-        "locationType": "Shop",
+        "Name": "Immortal Battlefield D7",
+        "ID": "f03Down1",
+        "ConnectionType": "DownLadder",
+        "ConnectingAreaName": "Icefire Treetop Left",
         "Logic": "True"
-      },
-      {
-        "name": "Ash Geen Shop 2",
-        "locationType": "Shop",
-        "Logic": "True"
-      },
-      {
-        "name": "Ash Geen Shop 3",
-        "locationType": "Shop",
-        "Logic": "True"
-      },
-      {
-        "name": "Raijin and Fujin",
-        "locationType": "Miniboss",
-        "Logic": "Has(Mjolnir) and OrbCount(1)",
-        "HardLogic": "True",
-        "item": {
-          "name": "Raijin and Fujin",
-          "isRequired": true
-        }
-      }
-    ],
-    "exits": [
-      {
-        "connectingAreaName": "Takamagahara Shrine Bottom",
-        "Logic": "Has(Katana) or CanUse(Earth Spear) or CanUse(Bomb)",
-        "ConnectionType": "Internal"
-      },
-      {
-        "connectingAreaName": "Heavens Labyrinth Cog",
-        "Logic": "IsDead(Raijin and Fujin) and CanChant(Earth) and CanChant(Wind) and CanChant(Fire) and CanChant(Sea) and CanChant(Heaven) and CanWarp",
-        "ConnectionType": "Unique"
-      },
-      {
-        "connectingAreaName": "Takamagahara Shrine Entrance",
-        "Logic": "Has(Feather)",
-        "ConnectionType": "Internal"
       }
     ]
   },
   {
-    "name": "Takamagahara Shrine Bottom",
-    "locations": [
+    "Name": "Immortal Battlefield Spiral Boat",
+    "Locations": [],
+    "Exits": [
       {
-        "name": "Crystal Skull Chest TS",
-        "locationType": "Chest",
-        "Logic": "Has(Life Sigil) and (Has(Feather) or CanWarp)"
-      },
-      {
-        "name": "Egg of Creation Chest",
-        "locationType": "Chest",
-        "Logic": "IsDead(Daji) and Has(Feather)"
-      },
-      {
-        "name": "Daji",
-        "locationType": "Miniboss",
-        "Logic": "OrbCount(2) and ((Has(Chain Whip) and (Has(Gauntlet) or Has(Spaulder))) or (Has(Knife) and Has(Spaulder) and Has(Feather)) or (Has(Rapier) and Has(Gauntlet) and Has(Spaulder) and Has(Feather)) or (Has(Flail Whip) or Has(Axe) or Has(Katana)))",
-        "HardLogic": "(Has(Chain Whip) and (Has(Gauntlet) or Has(Spaulder))) or (Has(Knife) and Has(Spaulder) and Has(Feather)) or (Has(Rapier) and Has(Gauntlet) and Has(Spaulder) and Has(Feather)) or (Has(Flail Whip) or Has(Axe) or Has(Katana))",
-        "item": {
-          "name": "Daji",
-          "isRequired": true
-        }
-      }
-    ],
-    "exits": [
-      {
-        "connectingAreaName": "Takamagahara Shrine Main",
-        "Logic": "True",
-        "ConnectionType": "Internal"
-      },
-      {
-        "Name": "Takamagahara Shrine C7",
-        "connectingAreaName": "Ancient Chaos Bottom",
-        "Logic": "True",
-        "ConnectionType": "Gate",
-        "isBackside": true
+        "ConnectionType": "Unique",
+        "ConnectingAreaName": "Spiral Hell",
+        "Logic": "Dissonance(6) and CanChant(Heaven) and CanChant(Earth) and CanChant(Sun) and CanChant(Moon) and CanChant(Fire) and CanChant(Sea) and CanChant(Wind) and CanChant(Mother) and CanChant(Child) and CanChant(Night) and Has(Secret Treasure of Life)"
       }
     ]
   },
   {
-    "name": "Takamagahara Shrine Blood",
-    "locations": [
+    "Name": "Cavern",
+    "Locations": [
       {
-        "name": "Power Band Chest",
-        "locationType": "Chest",
-        "Logic": "IsDead(Belial)"
-      },
-      {
-        "name": "Belial",
-        "locationType": "Miniboss",
-        "Logic": "Has(Cog of Antiquity) and (Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(6))) and ((Has(Egg of Creation) and OrbCount(6) and (CanUse(Earth Spear) or CanUse(Rolling Shuriken) or (Has(Katana) and Has(Feather)))) or (Has(Lamp of Time) and OrbCount(3) and ((Has(Axe) and (Has(Gauntlet) or Has(Spaulder))) or (Has(Katana) and (Has(Vajra) or Has(Spaulder))) or (Has(Rapier) and Has(Vajra)) or (Has(Knife) and (Has(Vajra) or Has(Spaulder))) or ((Has(Chain Whip) or Has(Flail Whip)) and (Has(Vajra) or Has(Gauntlet) or Has(Spaulder))))))",
-        "HardLogic": "Has(Cog of Antiquity) and (Has(Claydoll Suit) or Has(Ice Cloak)) and Has(Egg of Creation)",
-        "item": {
-          "name": "Belial",
-          "isRequired": true
-        }
-      }
-    ],
-    "exits": [
-      {
-        "Name": "Takamagahara Shrine B1",
-        "connectingAreaName": "Ancient Chaos Blood",
-        "Logic": "False",
-        "ConnectionType": "SoulGate"
-      }
-    ]
-  },
-  {
-    "name": "Ancient Chaos Bottom",
-    "locations": [
-      {
-        "name": "Map Chest AC",
-        "locationType": "Chest",
-        "Logic": " True"
-      },
-      {
-        "name": "Venom Shop 1",
-        "locationType": "Shop",
-        "Logic": "Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(4))"
-      },
-      {
-        "name": "Venom Shop 2",
-        "locationType": "Shop",
-        "Logic": "Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(4))"
-      },
-      {
-        "name": "Venom Shop 3",
-        "locationType": "Shop",
-        "Logic": "Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(4))"
-      },
-      {
-        "name": "Ki-sikil-lil-la-ke",
-        "locationType": "Miniboss",
-        "Logic": "OrbCount(2) and ((Has(Knife) and Has(Feather)) or Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Axe) or Has(Katana) or Has(Claydoll Suit))",
-        "HardLogic": "True",
-        "item": {
-          "name": "Ki-sikil-lil-la-ke",
-          "isRequired": true
-        }
-      }
-    ],
-    "exits": [
-      {
-        "connectingAreaName": "Ancient Chaos Tablet",
-        "Logic": "IsDead(Ki-sikil-lil-la-ke)",
-        "ConnectionType": "Internal"
-      },
-      {
-        "connectingAreaName": "Ancient Chaos Wind",
-        "Logic": "Has(Grapple Claw)",
-        "ConnectionType": "Internal"
-      },
-      {
-        "Name": "Ancient Chaos D6",
-        "connectingAreaName": "Takamagahara Shrine Bottom",
-        "Logic": "False",
-        "ConnectionType": "Gate"
-      }
-    ]
-  },
-  {
-    "name": "Ancient Chaos Wind",
-    "locations": [
-      {
-        "name": "Wind Mantra Mural",
-        "locationType": "Mural",
+        "Name": "Sun Mantra Mural",
+        "LocationType": "Mural",
         "Logic": "Has(Snapshot)"
       }
     ],
-    "exits": [
+    "Exits": [
       {
-        "connectingAreaName": "Ancient Chaos Main",
+        "Name": "Cavern A1",
+        "ID": "fP00Left",
+        "ConnectionType": "LeftDoor",
+        "ConnectingAreaName": "Immortal Battlefield Main",
+        "Logic": "True"
+      },
+      {
+        "Name": "Cavern D1",
+        "ID": "fP00Right",
+        "ConnectionType": "RightDoor",
+        "ConnectingAreaName": "Cliff",
+        "Logic": "True"
+      }
+    ]
+  },
+  {
+    "Name": "Cliff",
+    "Locations": [],
+    "Exits": [
+      {
+        "Name": "Cliff A1",
+        "ID": "fP02Left",
+        "ConnectionType": "LeftDoor",
+        "ConnectingAreaName": "Cavern",
+        "Logic": "False"
+      }
+    ]
+  },
+  {
+    "Name": "Icefire Treetop Entrance",
+    "Locations": [],
+    "Exits": [
+      {
+        "Name": "Icefire Treetop D3",
+        "ID": "f04GateYB",
+        "ConnectionType": "Gate",
+        "ConnectingAreaName": "Roots of Yggdrasil",
+        "Logic": "False or Setting(Random Gates)"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Icefire Treetop Left",
+        "Logic": "CanWarp or Has(Claydoll Suit) or Has(Ice Cloak) or OrbCount(3) or ((Has(Feather) or Has(Gale Fibula)) and CanReach(Icefire Treetop Right))"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Icefire Treetop Right",
+        "Logic": "Has(Grapple Claw) and (CanWarp or Has(Feather) or CanReach(Icefire Treetop Left))"
+      }
+    ]
+  },
+  {
+    "Name": "Icefire Treetop Left",
+    "Locations": [
+      {
+        "Name": "Map Chest IT",
+        "LocationType": "Chest",
+        "Logic": "True"
+      },
+      {
+        "Name": "Ankh Chest IT",
+        "LocationType": "Chest",
+        "Logic": "(Has(Claydoll Suit) or Has(Ice Cloak) or OrbCount(1)) and IsDead(Vedfolnir)"
+      },
+      {
+        "Name": "Grapple Claw Chest",
+        "LocationType": "Chest",
+        "Logic": "True"
+      },
+      {
+        "Name": "Life Sigil Chest",
+        "LocationType": "Chest",
+        "Logic": "Has(Birth Sigil) and CanWarp"
+      },
+      {
+        "Name": "Flame Torc Chest",
+        "LocationType": "Chest",
+        "Logic": "IsDead(Surtr)"
+      },
+      {
+        "Name": "Btk Shop 1",
+        "LocationType": "Shop",
+        "Logic": "True"
+      },
+      {
+        "Name": "Btk Shop 2",
+        "LocationType": "Shop",
+        "Logic": "True"
+      },
+      {
+        "Name": "Btk Shop 3",
+        "LocationType": "Shop",
+        "Logic": "True"
+      },
+      {
+        "Name": "Mino Shop 1",
+        "LocationType": "Shop",
+        "Logic": "Has(Feather)"
+      },
+      {
+        "Name": "Mino Shop 2",
+        "LocationType": "Shop",
+        "Logic": "Has(Feather)"
+      },
+      {
+        "Name": "Mino Shop 3",
+        "LocationType": "Shop",
+        "Logic": "Has(Feather)"
+      },
+      {
+        "Name": "Vedfolnir",
+        "LocationType": "Miniboss",
+        "Logic": " OrbCount(1)",
+        "HardLogic": "True",
+        "Item": {
+          "Name": "Vedfolnir",
+          "IsRequired": true
+        }
+      },
+      {
+        "Name": "Surtr",
+        "LocationType": "Guardian",
+        "Logic": "Has(Light Scythe) and (Has(Feather) or Has(Ice Cloak)) and (((Has(Knife) or Has(Rapier)) and OrbCount(7)) or (Has(Chain Whip) and OrbCount(6)) or ((Has(Flail Whip) or Has(Axe) or Has(Katana)) and OrbCount(5)))",
+        "HardLogic": "Has(Light Scythe) and (Has(Feather) or Has(Ice Cloak))",
+        "Item": {
+          "Name": "Surtr",
+          "IsRequired": true
+        }
+      }
+    ],
+    "Exits": [
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Icefire Treetop Right",
+        "Logic": "Has(Feather) or Has(Gale Fibula)"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Icefire Treetop Vidofnir",
+        "Logic": "CanChant(Moon) and CanChant(Sun) and CanWarp"
+      },
+      {
+        "Name": "Icefire Treetop C1",
+        "ID": "f04Up",
+        "ConnectionType": "UpLadder",
+        "ConnectingAreaName": "Immortal Battlefield Ladder",
+        "Logic": "True"
+      }
+    ]
+  },
+  {
+    "Name": "Icefire Treetop Right",
+    "Locations": [
+      {
+        "Name": "Fairy Guild Pass Chest",
+        "LocationType": "Chest",
+        "Logic": "Has(Life Sigil)"
+      },
+      {
+        "Name": "Crystal Skull Chest IT",
+        "LocationType": "Chest",
+        "Logic": "IsDead(Ratatoskr 3)"
+      },
+      {
+        "Name": "Sacred Orb Chest IT",
+        "LocationType": "Chest",
+        "Logic": "Has(Claydoll Suit) or (Has(Anchor) and (OrbCount(1) or Has(Scalesphere)))"
+      },
+      {
+        "Name": "Ratatoskr 3",
+        "LocationType": "Miniboss",
+        "Logic": "IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2) and CanReach(Icefire Treetop Left) and ((Has(Leather Whip) and OrbCount(3)) or ((Has(Chain Whip) or Has(Flail Whip) or Has(Knife) or Has(Rapier) or Has(Axe) or Has(Katana)) and OrbCount(2)))",
+        "HardLogic": "IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2)",
+        "Item": {
+          "Name": "Ratatoskr 3",
+          "IsRequired": true
+        }
+      }
+    ],
+    "Exits": [
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Icefire Treetop Left",
+        "Logic": "CanWarp or Has(Feather) or Has(Gale Fibula)"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Icefire Treetop Entrance",
+        "Logic": "Has(Feather) and Has(Grapple Claw)"
+      },
+      {
+        "Name": "Icefire Treetop F1(right)",
+        "ID": "f04Up2",
+        "ConnectionType": "UpLadder",
+        "ConnectingAreaName": "Immortal Battlefield Battery",
+        "Logic": "True"
+      },
+      {
+        "Name": "Icefire Treetop F1(left)",
+        "ID": "f04Up3",
+        "ConnectionType": "UpLadder",
+        "ConnectingAreaName": "Immortal Battlefield Moon",
+        "Logic": "Has(Life Sigil) and (CanWarp or CanReach(Immortal Battlefield Dinosaur) or Setting(Random Ladders))"
+      },
+      {
+        "Name": "Icefire Treetop G3",
+        "ConnectionType": "SoulGate",
+        "ConnectingAreaName": "Heavens Labyrinth",
+        "Logic": "(Has(Anchor) or Has(Claydoll Suit)) and IsDead(Ratatoskr 3) and (GuardianKills(3) or Setting(Random Soul Gates))"
+      }
+    ]
+  },
+  {
+    "Name": "Icefire Treetop Vidofnir",
+    "Locations": [
+      {
+        "Name": "Vidofnir",
+        "LocationType": "Miniboss",
+        "Logic": "Has(Flame Torc) and Has(Ice Cloak) and (Has(Silver Shield) or Has(Angel Shield)) and ((Has(Chain Whip) and OrbCount(6)) or ((Has(Flail Whip) or Has(Axe) or Has(Katana)) and OrbCount(5)))",
+        "HardLogic": "Has(Flame Torc)",
+        "Item": {
+          "Name": "Vidofnir",
+          "IsRequired": true
+        }
+      }
+    ],
+    "Exits": [
+      {
+        "Name": "Icefire Treetop D6",
+        "ConnectionType": "SoulGate",
+        "ConnectingAreaName": "Eternal Prison Gloom",
+        "Logic": "IsDead(Vidofnir) and ((GuardianKills(5) and CanWarp) or Setting(Random Soul Gates))",
+        "IsBackSide": true
+      }
+    ]
+  },
+  {
+    "Name": "Divine Fortress Entrance",
+    "Locations": [],
+    "Exits": [
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Divine Fortress Right",
+        "Logic": "CanUse(Shuriken) or CanUse(Chakram) or Has(Claydoll Suit)"
+      },
+      {
+        "Name": "Divine Fortress C5",
+        "ConnectionType": "SoulGate",
+        "ConnectingAreaName": "Roots of Yggdrasil",
+        "Logic": "GuardianKills(1) or Setting(Random Soul Gates)"
+      }
+    ]
+  },
+  {
+    "Name": "Divine Fortress Right",
+    "Locations": [
+      {
+        "Name": "Map Chest DF",
+        "LocationType": "Chest",
+        "Logic": "True"
+      },
+      {
+        "Name": "Origin Seal Chest",
+        "LocationType": "Chest",
+        "Logic": "IsDead(Hugin and Munin)"
+      },
+      {
+        "Name": "Frey Ship",
+        "LocationType": "FreeStanding",
+        "Logic": "Has(Hand Scanner) and CanReach(Annwfn Right) and (IsDead(Ixtab) or Has(Feather)) and (Has(Origin Sigil) or CanReach(Divine Fortress Top))"
+      },
+      {
+        "Name": "Heaven Mantra Mural",
+        "LocationType": "Mural",
+        "Logic": "Has(Snapshot)"
+      },
+      {
+        "Name": "Hugin and Munin",
+        "LocationType": "Miniboss",
+        "Logic": "CanWarp or Has(Origin Sigil)",
+        "HardLogic": "CanWarp or Has(Origin Sigil)",
+        "Item": {
+          "Name": "Hugin and Munin",
+          "IsRequired": true
+        }
+      }
+    ],
+    "Exits": [
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Divine Fortress Main",
+        "Logic": "CanUse(Shuriken) or CanUse(Chakram) or Has(Claydoll Suit) or (CanUse(Earth Spear) and Has(Ring))"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Divine Fortress Entrance",
+        "Logic": "True"
+      }
+    ]
+  },
+  {
+    "Name": "Divine Fortress Main",
+    "Locations": [
+      {
+        "Name": "Ankh Chest DF",
+        "LocationType": "Chest",
+        "Logic": "Has(Origin Sigil)"
+      },
+      {
+        "Name": "Sacred Orb Chest DF",
+        "LocationType": "Chest",
+        "Logic": "True"
+      },
+      {
+        "Name": "Shuhoka Shop 1",
+        "LocationType": "Shop",
+        "Logic": "Has(Birth Sigil)"
+      },
+      {
+        "Name": "Shuhoka Shop 2",
+        "LocationType": "Shop",
+        "Logic": "Has(Birth Sigil)"
+      },
+      {
+        "Name": "Shuhoka Shop 3",
+        "LocationType": "Shop",
+        "Logic": "Has(Birth Sigil)"
+      }
+    ],
+    "Exits": [
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Divine Fortress Top",
+        "Logic": "Has(Feather) or Has(Grapple Claw)"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Divine Fortress Right",
+        "Logic": "True"
+      },
+      {
+        "Name": "Divine Fortress A3",
+        "ID": "f05GateP1",
+        "ConnectionType": "Gate",
+        "ConnectingAreaName": "Valhalla Main",
+        "Logic": "True",
+        "IsBackSide": true
+      }
+    ]
+  },
+  {
+    "Name": "Divine Fortress Top",
+    "Locations": [
+      {
+        "Name": "Death Village Chest",
+        "LocationType": "Chest",
+        "Logic": "True"
+      }
+    ],
+    "Exits": [
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Divine Fortress Main",
+        "Logic": "True"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Divine Fortress Right",
+        "Logic": "True"
+      }
+    ]
+  },
+  {
+    "Name": "Shrine of the Frost Giants Main",
+    "Locations": [
+      {
+        "Name": "Map Chest SotFG",
+        "LocationType": "Chest",
+        "Logic": "True"
+      },
+      {
+        "Name": "Birth Sigil Chest",
+        "LocationType": "Chest",
+        "Logic": "Has(Origin Sigil)"
+      },
+      {
+        "Name": "Ankh Chest SotFG",
+        "LocationType": "Chest",
+        "Logic": "True"
+      },
+      {
+        "Name": "Pochette Key Chest",
+        "LocationType": "Chest",
+        "Logic": "IsDead(Badhbh Cath) and Has(Life Sigil) and Has(Grapple Claw)"
+      },
+      {
+        "Name": "Rapier Puzzle Reward",
+        "LocationType": "FreeStanding",
+        "Logic": "True"
+      },
+      {
+        "Name": "Weapon Fairy",
+        "LocationType": "Fairy",
+        "Logic": "Has(Fairy Pass) and Has(Freyas Pendant) and CanReach(Annwfn Right)",
+        "Item": {
+          "Name": "Weapon Fairy",
+          "IsRequired": true
+        }
+      },
+      {
+        "Name": "Badhbh Cath",
+        "LocationType": "Miniboss",
+        "Logic": "((Has(Leather Whip) or Has(Knife) or Has(Rapier)) and OrbCount(1)) or (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana))",
+        "HardLogic": "True",
+        "Item": {
+          "Name": "Badhbh Cath",
+          "IsRequired": true
+        }
+      },
+      {
+        "Name": "Fenrir",
+        "LocationType": "Miniboss",
+        "Logic": "PuzzleFinished(Bergelmir) and Has(Flame Torc) and (Has(Silver Shield) or Has(Angel Shield)) and OrbCount(7) and (Has(Flail Whip) or Has(Axe) or Has(Katana))",
+        "HardLogic": "PuzzleFinished(Bergelmir) and Has(Flame Torc) and (Has(Silver Shield) or Has(Angel Shield))",
+        "Item": {
+          "Name": "Fenrir",
+          "IsRequired": true
+        }
+      },
+      {
+        "Name": "Liquour",
+        "LocationType": "Puzzle",
+        "Logic": "IsDead(Fenrir) and CanChant(Moon) and CanChant(Mother) and CanChant(Child) and Has(Vessel)",
+        "Item": {
+          "Name": "Liquour",
+          "IsRequired": true
+        }
+      }
+    ],
+    "Exits": [
+      {
+        "Name": "Shrine of the Frost Giants E4",
+        "ConnectionType": "SoulGate",
+        "ConnectingAreaName": "Annwfn Soul Gate",
+        "Logic": "GuardianKills(2)  or Setting(Random Soul Gates)"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Shrine of the Frost Giants Top",
+        "Logic": "IsDead(Badhbh Cath) and Has(Grapple Claw)"
+      }
+    ]
+  },
+  {
+    "Name": "Shrine of the Frost Giants Top",
+    "Locations": [
+      {
+        "Name": "Sacred Orb Chest SotFG",
+        "LocationType": "Chest",
+        "Logic": "CanUse(Earth Spear) or CanUse(Flare)"
+      },
+      {
+        "Name": "Sea Mantra Mural",
+        "LocationType": "Mural",
+        "Logic": "Has(Snapshot) and Has(Birth Sigil)"
+      }
+    ],
+    "Exits": [
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Shrine of the Frost Giants Balor",
+        "Logic": "Has(Feather) and PuzzleFinished(Bergelmir)"
+      }
+    ]
+  },
+  {
+    "Name": "Shrine of the Frost Giants Balor",
+    "Locations": [
+      {
+        "Name": "Claydoll Chest",
+        "LocationType": "Chest",
+        "Logic": "Has(Life Sigil) and Has(Feather) and IsDead(Balor)"
+      },
+      {
+        "Name": "Balor",
+        "LocationType": "Miniboss",
+        "Logic": "((Has(Knife) or Has(Rapier) or Has(Katana)) and Has(Feather) and OrbCount(2)) or ((Has(Chain Whip) or Has(Flail Whip) or Has(Axe)) and OrbCount(2))",
+        "HardLogic": "True",
+        "Item": {
+          "Name": "Balor",
+          "IsRequired": true
+        }
+      }
+    ],
+    "Exits": [
+      {
+        "Name": "Shrine of the Frost Giants E1",
+        "ConnectionType": "SoulGate",
+        "ConnectingAreaName": "Valhalla Top Right",
+        "Logic": "Has(Claydoll Suit) and (GuardianKills(5) or Setting(Random Soul Gates)) and IsDead(Balor)",
+        "IsBackSide": true
+      }
+    ]
+  },
+  {
+    "Name": "Shrine of the Frost Giants Blood",
+    "Locations": [
+      {
+        "Name": "Tezcatlipoca",
+        "LocationType": "Miniboss",
+        "Logic": "Has(Gloves) and OrbCount(1)",
+        "HardLogic": "Has(Gloves)",
+        "Item": {
+          "Name": "Tezcatlipoca",
+          "IsRequired": true
+        }
+      }
+    ],
+    "Exits": [
+      {
+        "Name": "Shrine of the Frost Giants(Corridor) B2",
+        "ID": "f06_2GateP0",
+        "ConnectionType": "Gate",
+        "ConnectingAreaName": "Shrine of the Frost Giants Left",
+        "Logic": "Has(Grapple Claw) and IsDead(Tezcatlipoca)"
+      },
+      {
+        "ConnectionType": "Corridor",
+        "ConnectingAreaName": "Ancient Chaos Blood",
+        "Logic": "CanWarp or CanSpinCorridor",
+        "IsBackSide": true
+      },
+      {
+        "ConnectionType": "Corridor",
+        "ConnectingAreaName": "Hall of Malice",
+        "Logic": "CanSpinCorridor",
+        "IsBackSide": true
+      },
+      {
+        "ConnectionType": "Corridor",
+        "ConnectingAreaName": "Dark Lords Mausoleum Top",
+        "Logic": "CanSpinCorridor",
+        "IsBackSide": true
+      },
+      {
+        "ConnectionType": "Corridor",
+        "ConnectingAreaName": "Valhalla Main",
+        "Logic": "CanSpinCorridor",
+        "IsBackSide": true
+      },
+      {
+        "ConnectionType": "Corridor",
+        "ConnectingAreaName": "Eternal Prison Doom Entrance",
+        "Logic": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and CanWarp",
+        "IsBackSide": true
+      }
+    ]
+  },
+  {
+    "Name": "Shrine of the Frost Giants Left",
+    "Locations": [
+      {
+        "Name": "Gauntlet Chest",
+        "LocationType": "Chest",
+        "Logic": "Has(Feather) and Has(Life Sigil)"
+      },
+      {
+        "Name": "Hydlit Shop 1",
+        "LocationType": "Shop",
+        "Logic": "((Has(Snow Shoes) and Has(Gale Fibula)) or Has(Lamp of Time)) and PuzzleFinished(Bergelmir)"
+      },
+      {
+        "Name": "Hydlit Shop 2",
+        "LocationType": "Shop",
+        "Logic": "((Has(Snow Shoes) and Has(Gale Fibula)) or Has(Lamp of Time)) and PuzzleFinished(Bergelmir)"
+      },
+      {
+        "Name": "Hydlit Shop 3",
+        "LocationType": "Shop",
+        "Logic": "((Has(Snow Shoes) and Has(Gale Fibula)) or Has(Lamp of Time)) and PuzzleFinished(Bergelmir)"
+      },
+      {
+        "Name": "Bergelmir",
+        "LocationType": "Puzzle",
+        "Logic": "CanChant(Earth) and CanChant(Moon) and CanChant(Heaven)",
+        "Item": {
+          "Name": "Bergelmir",
+          "IsRequired": true
+        }
+      }
+    ],
+    "Exits": [
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Shrine of the Frost Giants Main",
+        "Logic": "True"
+      },
+      {
+        "Name": "Shrine of the Frost Giants B4",
+        "ID": "f06GateP0",
+        "ConnectionType": "Gate",
+        "ConnectingAreaName": "Shrine of the Frost Giants Blood",
+        "Logic": "False"
+      }
+    ]
+  },
+  {
+    "Name": "Gate of the Dead",
+    "Locations": [
+      {
+        "Name": "Map Chest GotD",
+        "LocationType": "Chest",
+        "Logic": "True"
+      },
+      {
+        "Name": "Yagoo Map Street Chest",
+        "LocationType": "Chest",
+        "Logic": "Has(Gloves)"
+      },
+      {
+        "Name": "Vajra Chest",
+        "LocationType": "Chest",
+        "Logic": "True"
+      },
+      {
+        "Name": "Sacred Orb Chest GotD",
+        "LocationType": "Chest",
+        "Logic": "True"
+      },
+      {
+        "Name": "Anchor Chest",
+        "LocationType": "Chest",
+        "Logic": "CanReach(Divine Fortress Main) and Has(Gloves) and CanReach(Annwfn Right) and (IsDead(Ixtab) or Has(Feather)) and Has(Hand Scanner)"
+      },
+      {
+        "Name": "Crystal Skull Chest GotD",
+        "LocationType": "Chest",
+        "Logic": "True"
+      },
+      {
+        "Name": "Katana Puzzle Reward",
+        "LocationType": "FreeStanding",
+        "Logic": "Has(Life Sigil)"
+      },
+      {
+        "Name": "Aytum Shop 1",
+        "LocationType": "Shop",
+        "Logic": "True"
+      },
+      {
+        "Name": "Aytum Shop 2",
+        "LocationType": "Shop",
+        "Logic": "True"
+      },
+      {
+        "Name": "Aytum Shop 3",
+        "LocationType": "Shop",
+        "Logic": "True"
+      },
+      {
+        "Name": "White Pedestals",
+        "LocationType": "Puzzle",
+        "Logic": "Has(Pepper) and Has(Birth Sigil) and CanChant(Sun) and IsDead(Unicorn)",
+        "Item": {
+          "Name": "White Pedestals",
+          "IsRequired": true
+        }
+      },
+      {
+        "Name": "Unicorn",
+        "LocationType": "Miniboss",
+        "Logic": "OrbCount(1) and ((Has(Katana) and Has(Vajra)) or Has(Leather Whip) or Has(Chain Whip) or Has(Flail Whip) or Has(Axe))",
+        "HardLogic": "True",
+        "Item": {
+          "Name": "Unicorn",
+          "IsRequired": true
+        }
+      }
+    ],
+    "Exits": [
+      {
+        "Name": "Gate of the Dead C4",
+        "ConnectionType": "SoulGate",
+        "ConnectingAreaName": "Immortal Battlefield Main",
+        "Logic": "GuardianKills(2) or Setting(Random Soul Gates)"
+      },
+      {
+        "Name": "Gate of the Dead F5",
+        "ID": "f07GateP0",
+        "ConnectionType": "Gate",
+        "ConnectingAreaName": "Dark Lords Mausoleum Main",
+        "Logic": "PuzzleFinished(White Pedestals)",
+        "IsBackSide": true
+      }
+    ]
+  },
+  {
+    "Name": "Takamagahara Shrine Entrance",
+    "Locations": [],
+    "Exits": [
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Takamagahara Shrine Main",
+        "Logic": "Has(Knife) or Has(Katana) or Has(Rapier) or Has(Axe) or CanUse(Rolling Shuriken) or CanUse(Earth Spear) or CanUse(Caltrops) or CanUse(Bomb) or Has(Spaulder) or Has(Vajra)"
+      },
+      {
+        "Name": "Takamagahara Shrine D1",
+        "ConnectionType": "SoulGate",
+        "ConnectingAreaName": "Immortal Battlefield Left Soul Gate",
+        "Logic": "GuardianKills(3) or Setting(Random Soul Gates)"
+      }
+    ]
+  },
+  {
+    "Name": "Takamagahara Shrine Main",
+    "Locations": [
+      {
+        "Name": "Sacred Orb Chest TS",
+        "LocationType": "Chest",
+        "Logic": "True"
+      },
+      {
+        "Name": "Flare Puzzle Reward",
+        "LocationType": "FreeStanding",
+        "Logic": "IsDead(Raijin and Fujin) and Has(Birth Sigil) and (Has(Lamp of Time) or Has(Gale Fibula))"
+      },
+      {
+        "Name": "Ash Geen Shop 1",
+        "LocationType": "Shop",
+        "Logic": "True"
+      },
+      {
+        "Name": "Ash Geen Shop 2",
+        "LocationType": "Shop",
+        "Logic": "True"
+      },
+      {
+        "Name": "Ash Geen Shop 3",
+        "LocationType": "Shop",
+        "Logic": "True"
+      },
+      {
+        "Name": "Raijin and Fujin",
+        "LocationType": "Miniboss",
+        "Logic": "Has(Mjolnir) and OrbCount(1)",
+        "HardLogic": "True",
+        "Item": {
+          "Name": "Raijin and Fujin",
+          "IsRequired": true
+        }
+      }
+    ],
+    "Exits": [
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Takamagahara Shrine Left",
+        "Logic": "Has(Katana) or CanUse(Earth Spear) or CanUse(Bomb)"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Takamagahara Shrine Bottom",
+        "Logic": "Has(Katana) or CanUse(Earth Spear) or CanUse(Bomb)"
+      },
+      {
+        "ConnectionType": "Unique",
+        "ConnectingAreaName": "Heavens Labyrinth Cog",
+        "Logic": "IsDead(Raijin and Fujin) and CanChant(Earth) and CanChant(Wind) and CanChant(Fire) and CanChant(Sea) and CanChant(Heaven) and CanWarp"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Takamagahara Shrine Entrance",
+        "Logic": "Has(Feather)"
+      }
+    ]
+  },
+  {
+    "Name": "Takamagahara Shrine Left",
+    "Locations": [
+      {
+        "Name": "Map Chest TS",
+        "LocationType": "Chest",
+        "Logic": "True"
+      },
+      {
+        "Name": "Ring Chest",
+        "LocationType": "Chest",
+        "Logic": "Has(Feather) and Has(Life Sigil) and Has(Key Fairy)"
+      }
+    ],
+    "Exits": [
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Takamagahara Shrine Main",
+        "Logic": "True"
+      }
+    ]
+  },
+  {
+    "Name": "Takamagahara Shrine Bottom",
+    "Locations": [
+      {
+        "Name": "Crystal Skull Chest TS",
+        "LocationType": "Chest",
+        "Logic": "Has(Life Sigil) and (Has(Feather) or CanWarp)"
+      },
+      {
+        "Name": "Egg of Creation Chest",
+        "LocationType": "Chest",
+        "Logic": "IsDead(Daji) and Has(Feather)"
+      },
+      {
+        "Name": "Daji",
+        "LocationType": "Miniboss",
+        "Logic": "OrbCount(2) and ((Has(Chain Whip) and (Has(Gauntlet) or Has(Spaulder))) or (Has(Knife) and Has(Spaulder) and Has(Feather)) or (Has(Rapier) and Has(Gauntlet) and Has(Spaulder) and Has(Feather)) or (Has(Flail Whip) or Has(Axe) or Has(Katana)))",
+        "HardLogic": "(Has(Chain Whip) and (Has(Gauntlet) or Has(Spaulder))) or (Has(Knife) and Has(Spaulder) and Has(Feather)) or (Has(Rapier) and Has(Gauntlet) and Has(Spaulder) and Has(Feather)) or (Has(Flail Whip) or Has(Axe) or Has(Katana))",
+        "Item": {
+          "Name": "Daji",
+          "IsRequired": true
+        }
+      }
+    ],
+    "Exits": [
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Takamagahara Shrine Main",
+        "Logic": "True"
+      },
+      {
+        "Name": "Takamagahara Shrine C7",
+        "ID": "f08GateP0",
+        "ConnectionType": "Gate",
+        "ConnectingAreaName": "Ancient Chaos Bottom",
+        "Logic": "True",
+        "IsBackSide": true
+      }
+    ]
+  },
+  {
+    "Name": "Takamagahara Shrine Blood",
+    "Locations": [
+      {
+        "Name": "Power Band Chest",
+        "LocationType": "Chest",
+        "Logic": "IsDead(Belial)"
+      },
+      {
+        "Name": "Belial",
+        "LocationType": "Miniboss",
+        "Logic": "Has(Life Sigil) and Has(Cog of Antiquity) and (Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(6))) and ((Has(Egg of Creation) and OrbCount(6) and (CanUse(Earth Spear) or CanUse(Rolling Shuriken) or (Has(Katana) and Has(Feather)))) or (Has(Lamp of Time) and OrbCount(3) and ((Has(Axe) and (Has(Gauntlet) or Has(Spaulder))) or (Has(Katana) and (Has(Vajra) or Has(Spaulder))) or (Has(Rapier) and Has(Vajra)) or (Has(Knife) and (Has(Vajra) or Has(Spaulder))) or ((Has(Chain Whip) or Has(Flail Whip)) and (Has(Vajra) or Has(Gauntlet) or Has(Spaulder))))))",
+        "HardLogic": "Has(Life Sigil) and Has(Cog of Antiquity) and (Has(Claydoll Suit) or Has(Ice Cloak)) and Has(Egg of Creation)",
+        "Item": {
+          "Name": "Belial",
+          "IsRequired": true
+        }
+      }
+    ],
+    "Exits": [
+      {
+        "Name": "Takamagahara Shrine B1",
+        "ConnectionType": "SoulGate",
+        "ConnectingAreaName": "Ancient Chaos Blood",
+        "Logic": "GuardianKills(5) or Setting(Random Soul Gates)"
+      }
+    ]
+  },
+  {
+    "Name": "Heavens Labyrinth",
+    "Locations": [
+      {
+        "Name": "Map Chest HL",
+        "LocationType": "Chest",
+        "Logic": "True"
+      },
+      {
+        "Name": "Crystal Skull Chest HL",
+        "LocationType": "Chest",
+        "Logic": "Has(Grapple Claw) and Has(Feather)"
+      },
+      {
+        "Name": "Megarock Shop 1",
+        "LocationType": "Shop",
+        "Logic": "Has(Grapple Claw) and Has(Feather)"
+      },
+      {
+        "Name": "Megarock Shop 2",
+        "LocationType": "Shop",
+        "Logic": "Has(Grapple Claw) and Has(Feather)"
+      },
+      {
+        "Name": "Megarock Shop 3",
+        "LocationType": "Shop",
+        "Logic": "Has(Grapple Claw) and Has(Feather)"
+      }
+    ],
+    "Exits": [
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Heavens Labyrinth Spun",
+        "Logic": "CanChant(Heaven)"
+      },
+      {
+        "Name": "Heavens Labyrinth E5",
+        "ConnectionType": "SoulGate",
+        "ConnectingAreaName": "Icefire Treetop Right",
+        "Logic": "GuardianKills(3) or Setting(Random Soul Gates)"
+      },
+      {
+        "Name": "Heavens Labyrinth D1",
+        "ID": "f09GateP0",
+        "ConnectionType": "Gate",
+        "ConnectingAreaName": "Hall of Malice Top",
+        "Logic": "(Has(Feather) or Has(Grapple Claw)) and IsDead(Griffin) and IsDead(Arachne) and IsDead(Scylla)",
+        "IsBackSide": true
+      }
+    ]
+  },
+  {
+    "Name": "Heavens Labyrinth Spun",
+    "Locations": [
+      {
+        "Name": "Sacred Orb Chest HL",
+        "LocationType": "Chest",
+        "Logic": "(Has(Feather) or Has(Grapple Claw)) and IsDead(Glasya-Labolas)"
+      },
+      {
+        "Name": "Perfume Chest",
+        "LocationType": "Chest",
+        "Logic": "IsDead(Griffin)"
+      },
+      {
+        "Name": "Axe Puzzle Reward",
+        "LocationType": "FreeStanding",
+        "Logic": "(Has(Feather) or Has(Grapple Claw)) and Has(Gloves) and IsDead(Glasya-Labolas)"
+      },
+      {
+        "Name": "Mobile Super X3 Item",
+        "LocationType": "FreeStanding",
+        "Logic": "(Has(Feather) or Has(Grapple Claw)) and IsDead(Griffin) and IsDead(Arachne) and IsDead(Scylla)"
+      },
+      {
+        "Name": "Arachne",
+        "LocationType": "Miniboss",
+        "Logic": "CanWarp",
+        "HardLogic": "CanWarp",
+        "Item": {
+          "Name": "Arachne",
+          "IsRequired": true
+        }
+      },
+      {
+        "Name": "Scylla",
+        "LocationType": "Miniboss",
+        "Logic": "CanWarp",
+        "HardLogic": "CanWarp",
+        "Item": {
+          "Name": "Scylla",
+          "IsRequired": true
+        }
+      },
+      {
+        "Name": "Glasya-Labolas",
+        "LocationType": "Miniboss",
+        "Logic": "CanWarp and OrbCount(1) and ((Has(Rapier) and (Has(Spaulder) or Has(Gauntlet) or Has(Vajra))) or Has(Chain Whip) or Has(Flail Whip) or Has(Knife) or Has(Axe) or Has(Katana))",
+        "HardLogic": "CanWarp",
+        "Item": {
+          "Name": "Glasya-Labolas",
+          "IsRequired": true
+        }
+      },
+      {
+        "Name": "Griffin",
+        "LocationType": "Miniboss",
+        "Logic": "(Has(Gale Fibula) or Has(Lamp of Time)) and Has(Gloves) and Has(Life Sigil) and IsDead(Glasya-Labolas) and OrbCount(2)",
+        "HardLogic": "(Has(Gale Fibula) or Has(Lamp of Time)) and Has(Gloves) and Has(Life Sigil) and IsDead(Glasya-Labolas)",
+        "Item": {
+          "Name": "Griffin",
+          "IsRequired": true
+        }
+      },
+      {
+        "Name": "Dissonance (Heavens Labyrinth)",
+        "LocationType": "Dissonance",
+        "Logic": "CanWarp and IsDead(Echidna) and Has(Beherit) and Has(Hand Scanner)",
+        "Item": {
+          "Name": "Dissonance",
+          "IsRequired": true
+        }
+      }
+    ],
+    "Exits": []
+  },
+  {
+    "Name": "Heavens Labyrinth Cog",
+    "Locations": [
+      {
+        "Name": "Cog of Antiquity Chest",
+        "LocationType": "Chest",
+        "Logic": "Has(Ancient Battery) and CanReach(Heavens Labyrinth) and CanWarp"
+      }
+    ],
+    "Exits": []
+  },
+  {
+    "Name": "Valhalla Main",
+    "Locations": [
+      {
+        "Name": "Map Chest Valhalla",
+        "LocationType": "Chest",
+        "Logic": "Has(Origin Sigil)"
+      },
+      {
+        "Name": "Scalesphere Chest",
+        "LocationType": "Chest",
+        "Logic": "IsDead(Vritra)"
+      },
+      {
+        "Name": "Crystal Skull Chest Valhalla",
+        "LocationType": "Chest",
+        "Logic": "(Has(Anchor) or Has(Claydoll Suit)) and Has(Death Sigil) and CanChant(Fire) and CanChant(Earth) and IsDead(Jalandhara)"
+      },
+      {
+        "Name": "Caltrop Puzzle Reward",
+        "LocationType": "FreeStanding",
+        "Logic": "True"
+      },
+      {
+        "Name": "Bargain Duck Shop 1",
+        "LocationType": "Shop",
+        "Logic": "True"
+      },
+      {
+        "Name": "Bargain Duck Shop 2",
+        "LocationType": "Shop",
+        "Logic": "True"
+      },
+      {
+        "Name": "Bargain Duck Shop 3",
+        "LocationType": "Shop",
+        "Logic": "True"
+      },
+      {
+        "Name": "Vucub-Caquiz",
+        "LocationType": "Miniboss",
+        "Logic": "Has(Origin Sigil) and ((Has(Leather Whip) and OrbCount(1)) or (Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Axe) or Has(Katana) or Has(Claydoll Suit)))",
+        "HardLogic": "Has(Origin Sigil)",
+        "Item": {
+          "Name": "Vucub-Caquiz",
+          "IsRequired": true
+        }
+      },
+      {
+        "Name": "Jalandhara",
+        "LocationType": "Miniboss",
+        "Logic": "Has(Life Sigil) and Has(Feather) and OrbCount(4) and (Has(Chain Whip) or Has(Flail Whip) or Has(Knife) or Has(Rapier) or Has(Axe) or Has(Katana))",
+        "HardLogic": "Has(Life Sigil) and Has(Feather)",
+        "Item": {
+          "Name": "Jalandhara",
+          "IsRequired": true
+        }
+      },
+      {
+        "Name": "Vritra",
+        "LocationType": "Guardian",
+        "Logic": "CanReach(Roots of Yggdrasil) and IsDead(Vucub-Caquiz) and (((Has(Leather Whip) or Has(Knife) or Has(Rapier)) and OrbCount(2)) or ((Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana)) and OrbCount(1)))",
+        "HardLogic": "CanReach(Roots of Yggdrasil) and IsDead(Vucub-Caquiz)",
+        "Item": {
+          "Name": "Vritra",
+          "IsRequired": true
+        }
+      },
+      {
+        "Name": "Dissonance (Valhalla)",
+        "LocationType": "Dissonance",
+        "Logic": "Has(Beherit) and IsDead(Vritra)",
+        "Item": {
+          "Name": "Dissonance",
+          "IsRequired": true
+        }
+      }
+    ],
+    "Exits": [
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Valhalla Top",
+        "Logic": "Has(Feather) or CanChant(Heaven)"
+      },
+      {
+        "Name": "Valhalla A2",
+        "ID": "f10GateP0",
+        "ConnectionType": "Gate",
+        "ConnectingAreaName": "Divine Fortress Main",
+        "Logic": "True"
+      },
+      {
+        "ConnectionType": "Corridor",
+        "ConnectingAreaName": "Shrine of the Frost Giants Blood",
+        "Logic": "CanWarp or CanSpinCorridor or (CanReach(Shrine of the Frost Giants Main) and CanKill(Tezcatlipoca) and Setting(Non Random Gates))"
+      },
+      {
+        "ConnectionType": "Corridor",
+        "ConnectingAreaName": "Ancient Chaos Blood",
+        "Logic": "CanSpinCorridor",
+        "IsBackSide": true
+      },
+      {
+        "ConnectionType": "Corridor",
+        "ConnectingAreaName": "Hall of Malice",
+        "Logic": "CanSpinCorridor",
+        "IsBackSide": true
+      },
+      {
+        "ConnectionType": "Corridor",
+        "ConnectingAreaName": "Dark Lords Mausoleum Top",
+        "Logic": "CanSpinCorridor",
+        "IsBackSide": true
+      },
+      {
+        "ConnectionType": "Corridor",
+        "ConnectingAreaName": "Eternal Prison Doom Entrance",
+        "Logic": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and CanWarp",
+        "IsBackSide": true
+      }
+    ]
+  },
+  {
+    "Name": "Valhalla Top",
+    "Locations": [
+      {
+        "Name": "Fire Mantra Mural",
+        "LocationType": "Mural",
+        "Logic": "Has(Birth Sigil) and Has(Snapshot)"
+      },
+      {
+        "Name": "Flail Whip Puzzle Reward",
+        "LocationType": "FreeStanding",
+        "Logic": "(Has(Feather) or Has(Grapple Claw)) and Has(Origin Sigil) and Has(Birth Sigil) and Has(Life Sigil) and Has(Death Sigil) and Has(Claydoll Suit) and ((CanUse(Rolling Shuriken) and Has(Birth Sigil)) or CanReach(Valhalla Top Right))"
+      }
+    ],
+    "Exits": [
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Valhalla Main",
+        "Logic": "True"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Valhalla Top Right",
+        "Logic": "Has(Claydoll Suit) and Has(Birth Sigil) and CanUse(Rolling Shuriken)"
+      }
+    ]
+  },
+  {
+    "Name": "Valhalla Top Right",
+    "Locations": [],
+    "Exits": [
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Valhalla Top",
+        "Logic": "Has(Feather)"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Valhalla Main",
+        "Logic": "CanWarp or Has(Feather) or (Has(Claydoll Suit) and CanChant(Heaven))"
+      },
+      {
+        "Name": "Valhalla E2",
+        "ConnectionType": "SoulGate",
+        "ConnectingAreaName": "Shrine of the Frost Giants Balor",
+        "Logic": "Has(Claydoll Suit) and (GuardianKills(5) or Setting(Random Soul Gates))"
+      }
+    ]
+  },
+  {
+    "Name": "Dark Lords Mausoleum Main",
+    "Locations": [
+      {
+        "Name": "Feather Chest",
+        "LocationType": "Chest",
+        "Logic": "Has(Feather) or IsDead(Angra Mainyu)"
+      },
+      {
+        "Name": "Ankh Chest DLM",
+        "LocationType": "Chest",
+        "Logic": "Has(Grapple Claw)"
+      },
+      {
+        "Name": "Map Chest DLM",
+        "LocationType": "Chest",
+        "Logic": "Has(Birth Sigil)"
+      },
+      {
+        "Name": "Crucifix Chest",
+        "LocationType": "Chest",
+        "Logic": "IsDead(Aten-Ra)"
+      },
+      {
+        "Name": "Maats Feather Chest",
+        "LocationType": "Chest",
+        "Logic": "CanReach(Ancient Chaos Tablet) and IsDead(Annit) and Has(Feather) and PuzzleFinished(Judgement Puzzle)"
+      },
+      {
+        "Name": "Kero Shop 1",
+        "LocationType": "Shop",
+        "Logic": "Has(Feather)"
+      },
+      {
+        "Name": "Kero Shop 2",
+        "LocationType": "Shop",
+        "Logic": "Has(Feather)"
+      },
+      {
+        "Name": "Kero Shop 3",
+        "LocationType": "Shop",
+        "Logic": "Has(Feather)"
+      },
+      {
+        "Name": "Money Fairy",
+        "LocationType": "Fairy",
+        "Logic": "Has(Fairy Pass) and Has(Freyas Pendant) and CanReach(Annwfn Main) and (Has(Gale Fibula) or Has(Lamp of Time))",
+        "Item": {
+          "Name": "Money Fairy",
+          "IsRequired": true
+        }
+      },
+      {
+        "Name": "Footstep Puzzle",
+        "LocationType": "Puzzle",
+        "Logic": "CanChant(Heaven) and CanChant(Sun) and CanChant(Earth)",
+        "Item": {
+          "Name": "Footstep Puzzle",
+          "IsRequired": true
+        }
+      },
+      {
+        "Name": "Judgement Puzzle",
+        "LocationType": "Puzzle",
+        "Logic": "CanChant(Heaven) and CanChant(Sun) and CanChant(Earth) and CanChant(Fire) and IsDead(Sekhmet)",
+        "Item": {
+          "Name": "Judgement Puzzle",
+          "IsRequired": true
+        }
+      },
+      {
+        "Name": "Sekhmet",
+        "LocationType": "Miniboss",
+        "Logic": "PuzzleFinished(Footstep Puzzle) and OrbCount(3) and (Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Axe) or Has(Katana))",
+        "HardLogic": "PuzzleFinished(Footstep Puzzle)",
+        "Item": {
+          "Name": "Sekhmet",
+          "IsRequired": true
+        }
+      },
+      {
+        "Name": "Aten-Ra",
+        "LocationType": "Guardian",
+        "Logic": "IsDead(Sekhmet) and PuzzleFinished(White Pedestals) and (((Has(Chain Whip) or Has(Axe)) and OrbCount(6)) or ((Has(Flail Whip) or Has(Katana)) and OrbCount(5)))",
+        "HardLogic": "IsDead(Sekhmet) and PuzzleFinished(White Pedestals)",
+        "Item": {
+          "Name": "Aten-Ra",
+          "IsRequired": true
+        }
+      },
+      {
+        "Name": "Dissonance (Dark Lords Mausoleum)",
+        "LocationType": "Dissonance",
+        "Logic": "Has(Beherit) and IsDead(Aten-Ra)",
+        "Item": {
+          "Name": "Dissonance",
+          "IsRequired": true
+        }
+      }
+    ],
+    "Exits": [
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Dark Lords Mausoleum Top",
+        "Logic": "Has(Feather)"
+      },
+      {
+        "Name": "Dark Star Lord's Mausoleum D7",
+        "ID": "f11GateP0",
+        "ConnectionType": "Gate",
+        "ConnectingAreaName": "Gate of the Dead",
+        "Logic": "False or Setting(Random Gates)"
+      },
+      {
+        "ConnectionType": "Unique",
+        "ConnectingAreaName": "Nibiru",
+        "Logic": "Has(Grapple Claw) and Has(Mjolnir) and Has(Claydoll Suit) and Has(Pyramid Crystal) and Has(Destiny Tablet) and CanChant(Heaven) and CanChant(Moon) and CanChant(Fire) and CanChant(Sea) and CanChant(Sun)"
+      }
+    ]
+  },
+  {
+    "Name": "Dark Lords Mausoleum Top",
+    "Locations": [
+      {
+        "Name": "Crystal Skull Chest DLM",
+        "LocationType": "Chest",
+        "Logic": "SkullCount(1) and (Has(Feather) or CanWarp or (CanReach(Dark Lords Mausoleum Main) and CanUse(Bomb)))"
+      },
+      {
+        "Name": "La Mulana Chest",
+        "LocationType": "Chest",
+        "Logic": "CanUse(Bomb) and (Has(Feather) or CanWarp or CanReach(Dark Lords Mausoleum Main))"
+      },
+      {
+        "Name": "Vessel Chest",
+        "LocationType": "Chest",
+        "Logic": "IsDead(Annit)"
+      },
+      {
+        "Name": "Angra Mainyu",
+        "LocationType": "Miniboss",
+        "Logic": "Has(Mjolnir) and OrbCount(1) and (CanWarp or Has(Feather) or CanReach(Dark Lords Mausoleum Main))",
+        "HardLogic": "Has(Mjolnir) and (Has(Feather) or CanWarp or CanReach(Dark Lords Mausoleum Main))",
+        "Item": {
+          "Name": "Angra Mainyu",
+          "IsRequired": true
+        }
+      },
+      {
+        "Name": "Annit",
+        "LocationType": "Miniboss",
+        "Logic": "Has(Feather) and Has(Pyramid Crystal) and (Has(Silver Shield) or Has(Angel Shield)) and OrbCount(2) and (Has(Chain Whip) or Has(Flail Whip) or Has(Knife) or Has(Rapier) or Has(Axe) or Has(Katana))",
+        "HardLogic": "Has(Feather) and Has(Pyramid Crystal)",
+        "Item": {
+          "Name": "Annit",
+          "IsRequired": true
+        }
+      }
+    ],
+    "Exits": [
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Dark Lords Mausoleum Main",
+        "Logic": "Has(Feather) or CanWarp"
+      },
+      {
+        "ConnectionType": "Corridor",
+        "ConnectingAreaName": "Valhalla Main",
+        "Logic": "CanWarp or CanSpinCorridor",
+        "IsBackSide": true
+      },
+      {
+        "ConnectionType": "Corridor",
+        "ConnectingAreaName": "Shrine of the Frost Giants Blood",
+        "Logic": "CanSpinCorridor"
+      },
+      {
+        "ConnectionType": "Corridor",
+        "ConnectingAreaName": "Ancient Chaos Blood",
+        "Logic": "CanSpinCorridor",
+        "IsBackSide": true
+      },
+      {
+        "ConnectionType": "Corridor",
+        "ConnectingAreaName": "Hall of Malice",
+        "Logic": "CanSpinCorridor",
+        "IsBackSide": true
+      },
+      {
+        "ConnectionType": "Corridor",
+        "ConnectingAreaName": "Eternal Prison Doom Entrance",
+        "Logic": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and CanWarp",
+        "IsBackSide": true
+      }
+    ]
+  },
+  {
+    "Name": "Nibiru",
+    "Locations": [
+      {
+        "Name": "Night Mantra Mural",
+        "LocationType": "Mural",
+        "Logic": "Has(Death Sigil) and Has(Snapshot)"
+      },
+      {
+        "Name": "Dissonance (Nibiru)",
+        "LocationType": "Dissonance",
+        "Logic": "Has(Beherit) and SkullCount(12) and Has(Power Band) and Has(Mjolnir)",
+        "Item": {
+          "Name": "Dissonance",
+          "IsRequired": true
+        }
+      }
+    ],
+    "Exits": [
+      {
+        "ConnectionType": "Unique",
+        "ConnectingAreaName": "Dark Lords Mausoleum Main",
+        "Logic": "False"
+      }
+    ]
+  },
+  {
+    "Name": "Ancient Chaos Bottom",
+    "Locations": [
+      {
+        "Name": "Map Chest AC",
+        "LocationType": "Chest",
+        "Logic": " True"
+      },
+      {
+        "Name": "Venom Shop 1",
+        "LocationType": "Shop",
+        "Logic": "Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(4))"
+      },
+      {
+        "Name": "Venom Shop 2",
+        "LocationType": "Shop",
+        "Logic": "Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(4))"
+      },
+      {
+        "Name": "Venom Shop 3",
+        "LocationType": "Shop",
+        "Logic": "Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(4))"
+      },
+      {
+        "Name": "Ki-sikil-lil-la-ke",
+        "LocationType": "Miniboss",
+        "Logic": "OrbCount(2) and ((Has(Knife) and Has(Feather)) or Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Axe) or Has(Katana) or Has(Claydoll Suit))",
+        "HardLogic": "True",
+        "Item": {
+          "Name": "Ki-sikil-lil-la-ke",
+          "IsRequired": true
+        }
+      }
+    ],
+    "Exits": [
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Ancient Chaos Tablet",
+        "Logic": "IsDead(Ki-sikil-lil-la-ke)"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Ancient Chaos Wind",
+        "Logic": "Has(Grapple Claw)"
+      },
+      {
+        "Name": "Ancient Chaos D6",
+        "ID": "f12GateP0",
+        "ConnectionType": "Gate",
+        "ConnectingAreaName": "Takamagahara Shrine Bottom",
+        "Logic": "False"
+      }
+    ]
+  },
+  {
+    "Name": "Ancient Chaos Wind",
+    "Locations": [
+      {
+        "Name": "Wind Mantra Mural",
+        "LocationType": "Mural",
+        "Logic": "Has(Snapshot)"
+      }
+    ],
+    "Exits": [
+      {
+        "ConnectingAreaName": "Ancient Chaos Main",
         "Logic": "Has(Feather)",
         "ConnectionType": "Internal"
       }
     ]
   },
   {
-    "name": "Ancient Chaos Tablet",
-    "locations": [
+    "Name": "Ancient Chaos Tablet",
+    "Locations": [
       {
-        "name": "Ankh Chest AC",
-        "locationType": "Chest",
-        "Logic": "True"
+        "Name": "Ankh Chest AC",
+        "LocationType": "Chest",
+        "Logic": "IsDead(Ki-sikil-lil-la-ke)"
       },
       {
-        "name": "Crystal Skull Chest AC",
-        "locationType": "Chest",
+        "Name": "Crystal Skull Chest AC",
+        "LocationType": "Chest",
         "Logic": "CanUse(Shuriken) or CanUse(Rolling Shuriken) or CanUse(Earth Spear) or CanUse(Chakram) or CanUse(Bomb) or Has(Claydoll Suit)"
       }
     ],
-    "exits": [
+    "Exits": [
       {
-        "connectingAreaName": "Ancient Chaos Main",
-        "Logic": "True",
-        "ConnectionType": "Internal"
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Ancient Chaos Main",
+        "Logic": "True"
       }
     ]
   },
   {
-    "name": "Ancient Chaos Main",
-    "locations": [
+    "Name": "Ancient Chaos Main",
+    "Locations": [
       {
-        "name": "Destiny Tablet Chest",
-        "locationType": "Chest",
+        "Name": "Destiny Tablet Chest",
+        "LocationType": "Chest",
         "Logic": "IsDead(Anzu)"
       },
       {
-        "name": "Scriptures Chest",
-        "locationType": "Chest",
+        "Name": "Scriptures Chest",
+        "LocationType": "Chest",
         "Logic": "IsDead(Anu)"
       },
       {
-        "name": "Anzu",
-        "locationType": "Miniboss",
+        "Name": "Anzu",
+        "LocationType": "Miniboss",
         "Logic": "Has(Lamp of Time) and Has(Claydoll Suit) and (Has(Silver Shield) or Has(Angel Shield)) and OrbCount(6) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana))",
         "HardLogic": "Has(Lamp of Time) and Has(Claydoll Suit)",
-        "item": {
-          "name": "Anzu",
-          "isRequired": true
+        "Item": {
+          "Name": "Anzu",
+          "IsRequired": true
         }
       },
       {
-        "name": "Anu",
-        "locationType": "Guardian",
-        "Logic": "AnkhCount(8) and Has(Gloves) and IsDead(Ki-sikil-lil-la-ke) and (((Has(Chain Whip) or Has(Rapier) or Has(Axe) or Has(Katana)) and OrbCount(6)) or (Has(Flail Whip) and OrbCount(5)))",
-        "HardLogic": "AnkhCount(8) and Has(Gloves) and IsDead(Ki-sikil-lil-la-ke)",
-        "item": {
-          "name": "Anu",
-          "isRequired": true
+        "Name": "Anu",
+        "LocationType": "Guardian",
+        "Logic": "Has(Gloves) and IsDead(Ki-sikil-lil-la-ke) and (((Has(Chain Whip) or Has(Rapier) or Has(Axe) or Has(Katana)) and OrbCount(6)) or (Has(Flail Whip) and OrbCount(5)))",
+        "HardLogic": "Has(Gloves) and IsDead(Ki-sikil-lil-la-ke)",
+        "Item": {
+          "Name": "Anu",
+          "IsRequired": true
         }
       }
     ],
-    "exits": [
+    "Exits": [
       {
-        "connectingAreaName": "Ancient Chaos Tablet",
-        "Logic": "True",
-        "ConnectionType": "Internal"
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Ancient Chaos Tablet",
+        "Logic": "True"
       },
       {
-        "connectingAreaName": "Ancient Chaos Wind",
-        "Logic": "True",
-        "ConnectionType": "Internal"
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Ancient Chaos Wind",
+        "Logic": "True"
       }
     ]
   },
   {
-    "name": "Ancient Chaos Blood",
-    "locations": [],
-    "exits": [
+    "Name": "Ancient Chaos Blood",
+    "Locations": [],
+    "Exits": [
       {
         "Name": "Ancient Chaos C1",
-        "connectingAreaName": "Takamagahara Shrine Blood",
-        "Logic": "Has(Feather) and GuardianKills(5)",
-        "ConnectionType": "SoulGate"
+        "ConnectionType": "SoulGate",
+        "ConnectingAreaName": "Takamagahara Shrine Blood",
+        "Logic": "Has(Feather) and (GuardianKills(5) or Setting(Random Soul Gates))"
       },
       {
-        "connectingAreaName": "Dark Lords Mausoleum Top",
+        "ConnectionType": "Corridor",
+        "ConnectingAreaName": "Dark Lords Mausoleum Top",
         "Logic": "CanSpinCorridor",
-        "ConnectionType": "Corridor",
-        "isBackside": true
+        "IsBackSide": true
       },
       {
-        "connectingAreaName": "Hall of Malice",
-        "Logic": "CanWarp or CanSpinCorridor or CanReach(Heavens Labyrinth Spun)",
         "ConnectionType": "Corridor",
-        "isBackside": true
+        "ConnectingAreaName": "Hall of Malice",
+        "Logic": "CanWarp or CanSpinCorridor",
+        "IsBackSide": true
       },
       {
-        "connectingAreaName": "Eternal Prison Doom Entrance",
+        "ConnectionType": "Corridor",
+        "ConnectingAreaName": "Eternal Prison Doom Entrance",
         "Logic": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and CanWarp",
-        "ConnectionType": "Corridor",
-        "isBackside": true
+        "IsBackSide": true
       }
     ]
   },
   {
-    "name": "Heavens Labyrinth",
-    "locations": [
+    "Name": "Hall of Malice Top",
+    "Locations": [
       {
-        "name": "Map Chest HL",
-        "locationType": "Chest",
-        "Logic": "True"
-      },
-      {
-        "name": "Crystal Skull Chest HL",
-        "locationType": "Chest",
-        "Logic": "Has(Grapple Claw) and Has(Feather)"
-      },
-      {
-        "name": "Megarock Shop 1",
-        "locationType": "Shop",
-        "Logic": "Has(Grapple Claw) and Has(Feather)"
-      },
-      {
-        "name": "Megarock Shop 2",
-        "locationType": "Shop",
-        "Logic": "Has(Grapple Claw) and Has(Feather)"
-      },
-      {
-        "name": "Megarock Shop 3",
-        "locationType": "Shop",
-        "Logic": "Has(Grapple Claw) and Has(Feather)"
-      }
-    ],
-    "exits": [
-      {
-        "connectingAreaName": "Heavens Labyrinth Spun",
-        "Logic": "CanChant(Heaven)",
-        "ConnectionType": "Internal"
-      },
-      {
-        "Name": "Heavens Labyrinth E5",
-        "connectingAreaName": "Icefire Treetop Right",
-        "Logic": "GuardianKills(3)",
-        "ConnectionType": "SoulGate"
-      },
-      {
-        "Name": "Heavens Labyrinth D1",
-        "connectingAreaName": "Hall of Malice Top",
-        "Logic": "(Has(Feather) or Has(Grapple Claw)) and IsDead(Griffin) and IsDead(Arachne) and IsDead(Scylla)",
-        "ConnectionType": "Gate",
-        "isBackside": true
-      }
-    ]
-  },
-  {
-    "name": "Heavens Labyrinth Spun",
-    "locations": [
-      {
-        "name": "Sacred Orb Chest HL",
-        "locationType": "Chest",
-        "Logic": "(Has(Feather) or Has(Grapple Claw)) and IsDead(Glasya-Labolas)"
-      },
-      {
-        "name": "Perfume Chest",
-        "locationType": "Chest",
-        "Logic": "IsDead(Griffin)"
-      },
-      {
-        "name": "Axe Puzzle Reward",
-        "locationType": "FreeStanding",
-        "Logic": "(Has(Feather) or Has(Grapple Claw)) and Has(Gloves) and IsDead(Glasya-Labolas)"
-      },
-      {
-        "name": "Mobile Super X3 Item",
-        "locationType": "FreeStanding",
-        "Logic": "(Has(Feather) or Has(Grapple Claw)) and IsDead(Griffin) and IsDead(Arachne) and IsDead(Scylla)"
-      },
-      {
-        "name": "Arachne",
-        "locationType": "Miniboss",
-        "Logic": "CanWarp",
-        "HardLogic": "CanWarp",
-        "item": {
-          "name": "Arachne",
-          "isRequired": true
-        }
-      },
-      {
-        "name": "Scylla",
-        "locationType": "Miniboss",
-        "Logic": "CanWarp",
-        "HardLogic": "CanWarp",
-        "item": {
-          "name": "Scylla",
-          "isRequired": true
-        }
-      },
-      {
-        "name": "Glasya-Labolas",
-        "locationType": "Miniboss",
-        "Logic": "CanWarp and OrbCount(1) and ((Has(Rapier) and (Has(Spaulder) or Has(Gauntlet) or Has(Vajra))) or Has(Chain Whip) or Has(Flail Whip) or Has(Knife) or Has(Axe) or Has(Katana))",
-        "HardLogic": "CanWarp",
-        "item": {
-          "name": "Glasya-Labolas",
-          "isRequired": true
-        }
-      },
-      {
-        "name": "Griffin",
-        "locationType": "Miniboss",
-        "Logic": "(Has(Gale Fibula) or Has(Lamp of Time)) and Has(Gloves) and Has(Life Sigil) and IsDead(Glasya-Labolas) and OrbCount(2)",
-        "HardLogic": "(Has(Gale Fibula) or Has(Lamp of Time)) and Has(Gloves) and Has(Life Sigil) and IsDead(Glasya-Labolas)",
-        "item": {
-          "name": "Griffin",
-          "isRequired": true
-        }
-      },
-      {
-        "name": "Dissonance (Heavens Labyrinth)",
-        "locationType": "Dissonance",
-        "Logic": "CanWarp and IsDead(Echidna) and Has(Beherit) and Has(Hand Scanner)",
-        "item": {
-          "name": "Dissonance",
-          "isRequired": true
-        }
-      }
-    ],
-    "exits": [ ]
-  },
-  {
-    "name": "Heavens Labyrinth Cog",
-    "locations": [
-      {
-        "name": "Cog of Antiquity Chest",
-        "locationType": "Chest",
-        "Logic": "Has(Ancient Battery) and CanReach(Heavens Labyrinth) and CanWarp"
-      }
-    ],
-    "exits": []
-  },
-  {
-    "name": "Hall of Malice Top",
-    "locations": [
-      {
-        "name": "Map Chest HoM",
-        "locationType": "Chest",
+        "Name": "Map Chest HoM",
+        "LocationType": "Chest",
         "Logic": "True"
       }
     ],
-    "exits": [
+    "Exits": [
       {
-        "connectingAreaName": "Hall of Malice Awoken",
-        "Logic": "Has(Cog of Antiquity)",
-        "ConnectionType": "Internal"
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Hall of Malice Awoken",
+        "Logic": "Has(Cog of Antiquity)"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Hall of Malice",
+        "Logic": "True"
       },
       {
         "Name": "Hall of Malice C1",
-        "connectingAreaName": "Heavens Labyrinth",
-        "Logic": "False",
-        "ConnectionType": "Gate"
+        "ID": "f13GateP0",
+        "ConnectionType": "Gate",
+        "ConnectingAreaName": "Heavens Labyrinth",
+        "Logic": "False"
       }
     ]
   },
   {
-    "name": "Hall of Malice",
-    "locations": [
+    "Name": "Hall of Malice",
+    "Locations": [
       {
-        "name": "FairyLan Shop 1",
-        "locationType": "Shop",
+        "Name": "FairyLan Shop 1",
+        "LocationType": "Shop",
         "Logic": "Has(Claydoll Suit)"
       },
       {
-        "name": "FairyLan Shop 2",
-        "locationType": "Shop",
+        "Name": "FairyLan Shop 2",
+        "LocationType": "Shop",
         "Logic": "Has(Claydoll Suit)"
       },
       {
-        "name": "FairyLan Shop 3",
-        "locationType": "Shop",
+        "Name": "FairyLan Shop 3",
+        "LocationType": "Shop",
         "Logic": "Has(Claydoll Suit)"
       }
     ],
-    "exits": [
+    "Exits": [
       {
-        "connectingAreaName": "Ancient Chaos Blood",
-        "Logic": "CanSpinCorridor",
         "ConnectionType": "Corridor",
-        "isBackside": true
+        "ConnectingAreaName": "Ancient Chaos Blood",
+        "Logic": "CanSpinCorridor",
+        "IsBackSide": true
       },
       {
-        "connectingAreaName": "Shrine of the Frost Giants Blood",
         "ConnectionType": "Corridor",
+        "ConnectingAreaName": "Shrine of the Frost Giants Blood",
         "Logic": "CanSpinCorridor"
       },
       {
-        "connectingAreaName": "Eternal Prison Doom Entrance",
-        "Logic": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and CanWarp",
         "ConnectionType": "Corridor",
-        "isBackside": true
+        "ConnectingAreaName": "Eternal Prison Doom Entrance",
+        "Logic": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and CanWarp",
+        "IsBackSide": true
       }
     ]
   },
   {
-    "name": "Hall of Malice Awoken",
-    "locations": [
+    "Name": "Hall of Malice Awoken",
+    "Locations": [
       {
-        "name": "Nemean Fur Chest",
-        "locationType": "Chest",
+        "Name": "Nemean Fur Chest",
+        "LocationType": "Chest",
         "Logic": "IsDead(HoM Left Path) and Has(Feather) and Has(Lamp of Time)"
       },
       {
-        "name": "Crystal Skull Chest HoM",
-        "locationType": "Chest",
+        "Name": "Crystal Skull Chest HoM",
+        "LocationType": "Chest",
         "Logic": "IsDead(HoM Right Path) and Has(Death Sigil)"
       },
       {
-        "name": "Giants Flutes Chest",
-        "locationType": "Chest",
+        "Name": "Giants Flutes Chest",
+        "LocationType": "Chest",
         "Logic": "IsDead(Echidna)"
       },
       {
-        "name": "Miracle Witch Chest",
-        "locationType": "Chest",
+        "Name": "Miracle Witch Chest",
+        "LocationType": "Chest",
         "Logic": "Has(Flame Torc) and IsDead(HoM Right Path)"
       },
       {
-        "name": "HoM Left Path",
-        "locationType": "Miniboss",
+        "Name": "HoM Left Path",
+        "LocationType": "Miniboss",
         "Logic": "(Has(Silver Shield) or Has(Angel Shield)) and (Has(Chain Whip) and OrbCount(7)) or ((Has(Axe) or Has(Katana)) and OrbCount(6)) or (Has(Flail Whip) and OrbCount(5))",
         "HardLogic": "True",
-        "item": {
-          "name": "HoM Left Path",
-          "isRequired": true
+        "Item": {
+          "Name": "HoM Left Path",
+          "IsRequired": true
         }
       },
       {
-        "name": "HoM Middle Path",
-        "locationType": "Miniboss",
+        "Name": "HoM Middle Path",
+        "LocationType": "Miniboss",
         "Logic": "(Has(Silver Shield) or Has(Angel Shield)) and (Has(Chain Whip) and OrbCount(7)) or ((Has(Axe) or Has(Katana)) and OrbCount(6)) or (Has(Flail Whip) and OrbCount(5))",
         "HardLogic": "True",
-        "item": {
-          "name": "HoM Middle Path",
-          "isRequired": true
+        "Item": {
+          "Name": "HoM Middle Path",
+          "IsRequired": true
         }
       },
       {
-        "name": "HoM Right Path",
-        "locationType": "Miniboss",
+        "Name": "HoM Right Path",
+        "LocationType": "Miniboss",
         "Logic": "(Has(Silver Shield) or Has(Angel Shield)) and (Has(Chain Whip) and OrbCount(7)) or ((Has(Flail Whip) or Has(Axe) or Has(Katana)) and OrbCount(6))",
         "HardLogic": "True",
-        "item": {
-          "name": "HoM Right Path",
-          "isRequired": true
+        "Item": {
+          "Name": "HoM Right Path",
+          "IsRequired": true
         }
       },
       {
-        "name": "Orthrus",
-        "locationType": "Miniboss",
+        "Name": "Orthrus",
+        "LocationType": "Miniboss",
         "Logic": "IsDead(HoM Right Path)",
         "HardLogic": "IsDead(HoM Right Path)",
-        "item": {
-          "name": "Orthrus",
-          "isRequired": true
+        "Item": {
+          "Name": "Orthrus",
+          "IsRequired": true
         }
       },
       {
-        "name": "Echidna",
-        "locationType": "Guardian",
-        "Logic": "AnkhCount(8) and IsDead(Orthrus) and IsDead(HoM Left Path) and IsDead(HoM Middle Path) and Has(Feather) and OrbCount(8) and (Has(Flail Whip) or Has(Axe))",
-        "HardLogic": "AnkhCount(8) and IsDead(Orthrus) and IsDead(HoM Left Path) and IsDead(HoM Middle Path) and Has(Feather)",
-        "item": {
-          "name": "Echidna",
-          "isRequired": true
+        "Name": "Echidna",
+        "LocationType": "Guardian",
+        "Logic": "IsDead(Orthrus) and IsDead(HoM Left Path) and IsDead(HoM Middle Path) and Has(Feather) and OrbCount(8) and (Has(Flail Whip) or Has(Axe))",
+        "HardLogic": "IsDead(Orthrus) and IsDead(HoM Left Path) and IsDead(HoM Middle Path) and Has(Feather)",
+        "Item": {
+          "Name": "Echidna",
+          "IsRequired": true
         }
       }
     ],
-    "exits": [
+    "Exits": [
       {
-        "connectingAreaName": "Immortal Battlefield Spiral Boat",
-        "Logic": "Has(Death Sigil) and Has(Earth Spear) and GuardianKills(9)",
-        "ConnectionType": "Unique"
+        "ConnectionType": "Unique",
+        "ConnectingAreaName": "Immortal Battlefield Spiral Boat",
+        "Logic": "Has(Death Sigil) and Has(Earth Spear) and GuardianKills(9)"
       }
     ]
   },
   {
-    "name": "Eternal Prison Doom Entrance",
-    "locations": [
+    "Name": "Eternal Prison Doom Entrance",
+    "Locations": [
       {
-        "name": "Crystal Skull Chest EPD",
-        "locationType": "Chest",
+        "Name": "Crystal Skull Chest EPD",
+        "LocationType": "Chest",
         "Logic": "Has(Feather)"
       }
     ],
-    "exits": [
+    "Exits": [
       {
-        "connectingAreaName": "Eternal Prison Doom Main",
-        "Logic": "True",
-        "ConnectionType": "Internal"
-      },
-      {
-        "connectingAreaName": "Ancient Chaos Blood",
-        "Logic": "CanSpinCorridor",
-        "ConnectionType": "Corridor"
-      },
-      {
-        "connectingAreaName": "Hall of Malice",
-        "Logic": "CanSpinCorridor",
-        "ConnectionType": "Corridor"
-      }
-    ]
-  },
-  {
-    "name": "Eternal Prison Doom Main",
-    "locations": [
-      {
-        "name": "Map Chest EPD",
-        "locationType": "Chest",
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Eternal Prison Doom Main",
         "Logic": "True"
       },
       {
-        "name": "La Mulana 2 Chest",
-        "locationType": "Chest",
+        "ConnectionType": "Corridor",
+        "ConnectingAreaName": "Ancient Chaos Blood",
+        "Logic": "CanSpinCorridor"
+      },
+      {
+        "ConnectionType": "Corridor",
+        "ConnectingAreaName": "Hall of Malice",
+        "Logic": "CanSpinCorridor"
+      }
+    ]
+  },
+  {
+    "Name": "Eternal Prison Doom Main",
+    "Locations": [
+      {
+        "Name": "Map Chest EPD",
+        "LocationType": "Chest",
+        "Logic": "True"
+      },
+      {
+        "Name": "La Mulana 2 Chest",
+        "LocationType": "Chest",
         "Logic": "Has(Mjolnir) and Has(Power Band) and (Has(Feather) or (Has(Gale Fibula) and Has(Snow Shoes)))"
       },
       {
-        "name": "Osiris Item",
-        "locationType": "Dialogue",
+        "Name": "Osiris Item",
+        "LocationType": "Dialogue",
         "Logic": "Has(Maats Feather) and Has(Djed Pillar) and (Has(Claydoll Suit) or Has(Ice Cloak)) and Has(Feather) and ((Has(Gale Fibula) or Has(Lamp of Time)) or CanReach(Eternal Prison Gloom))"
       },
       {
-        "name": "Hraesvelgr",
-        "locationType": "Miniboss",
+        "Name": "Hraesvelgr",
+        "LocationType": "Miniboss",
         "Logic": "IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2) and IsDead(Ratatoskr 3) and IsDead(Ratatoskr 4) and IsDead(Nidhogg) and CanChant(Moon) and Has(Feather)",
         "HardLogic": "IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2) and IsDead(Ratatoskr 3) and IsDead(Ratatoskr 4) and IsDead(Nidhogg) and CanChant(Moon)",
-        "item": {
-          "name": "Hraesvelgr",
-          "isRequired": true
+        "Item": {
+          "Name": "Hraesvelgr",
+          "IsRequired": true
         }
       }
     ],
-    "exits": [
+    "Exits": [
       {
-        "connectingAreaName": "Eternal Prison Doom Entrance",
-        "Logic": "IsDead(Hraesvelgr) and Has(Feather)",
-        "ConnectionType": "Internal"
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Eternal Prison Doom Entrance",
+        "Logic": "IsDead(Hraesvelgr) and Has(Feather)"
       },
       {
-        "connectingAreaName": "Eternal Prison Doom Top",
-        "Logic": "Has(Feather) and Has(Glove)",
-        "ConnectionType": "Internal"
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Eternal Prison Doom Top",
+        "Logic": "Has(Feather) and Has(Glove)"
       },
       {
-        "connectingAreaName": "Eternal Prison Gloom",
-        "Logic": "Has(Grapple Claw) and (Has(Gale Fibula) or Has(Lamp of Time)) and (Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(1) and Has(Anchor)))",
-        "ConnectionType": "Internal"
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Eternal Prison Gloom",
+        "Logic": "Has(Grapple Claw) and (Has(Gale Fibula) or Has(Lamp of Time)) and (Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(1) and Has(Anchor)))"
       },
       {
-        "connectingAreaName": "Divine Fortress Top",
-        "Logic": "True",
-        "ConnectionType": "Unique"
+        "ConnectionType": "Unique",
+        "ConnectingAreaName": "Divine Fortress Top",
+        "Logic": "True"
       },
       {
-        "connectingAreaName": "Icefire Treetop Right",
-        "Logic": "True",
-        "ConnectionType": "Unique"
+        "ConnectionType": "Unique",
+        "ConnectingAreaName": "Icefire Treetop Right",
+        "Logic": "True"
       },
       {
-        "connectingAreaName": "Takamagahara Shrine Bottom",
-        "Logic": "True",
-        "ConnectionType": "Unique"
+        "ConnectionType": "Unique",
+        "ConnectingAreaName": "Takamagahara Shrine Bottom",
+        "Logic": "True"
       }
     ]
   },
   {
-    "name": "Eternal Prison Doom Top",
-    "locations": [
+    "Name": "Eternal Prison Doom Top",
+    "Locations": [
       {
-        "name": "Spaulder Chest",
-        "locationType": "Chest",
+        "Name": "Spaulder Chest",
+        "LocationType": "Chest",
         "Logic": "Has(Key Fairy) and (Has(Feather) or (Has(Snow Shoes) and Has(Gale Fibula)))"
       }
     ],
-    "exits": [
+    "Exits": [
       {
-        "connectingAreaName": "Eternal Prison Doom Hel",
-        "Logic": "IsDead(Vidofnir) and IsDead(Hraesvelgr) and GuardianKills(5) and PuzzleFinished(Garm) and CanUse(Bomb) and Has(Holy Grail) and Has(Grapple Claw) and Has(Gale Fibula) and Has(Claydoll Suit) and Has(Gloves) and Has(Anchor) and Has(Feather) and Has(Life Sigil) and (Has(Hand Scanner) or Setting(Autoscan))",
-        "ConnectionType": "Internal"
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Eternal Prison Doom Hel",
+        "Logic": "((IsDead(Vidofnir) and GuardianKills(5)) or Setting(Random Soul Gates)) and IsDead(Hraesvelgr) and PuzzleFinished(Garm) and CanUse(Bomb) and Has(Holy Grail) and Has(Grapple Claw) and Has(Gale Fibula) and Has(Claydoll Suit) and Has(Gloves) and Has(Anchor) and Has(Feather) and Has(Life Sigil) and (Has(Hand Scanner) or Setting(AutoScan))"
       }
     ]
   },
   {
-    "name": "Eternal Prison Doom Hel",
-    "locations": [
+    "Name": "Eternal Prison Doom Hel",
+    "Locations": [
       {
-        "name": "Hel",
-        "locationType": "Guardian",
-        "Logic": "AnkhCount(9) and OrbCount(8) and (Has(Flail Whip) or Has(Axe) or Has(Katana))",
-        "HardLogic": "AnkhCount(9)",
-        "item": {
-          "name": "Hel",
-          "isRequired": true
+        "Name": "Hel",
+        "LocationType": "Guardian",
+        "Logic": "OrbCount(8) and (Has(Flail Whip) or Has(Axe) or Has(Katana))",
+        "HardLogic": "True",
+        "Item": {
+          "Name": "Hel",
+          "IsRequired": true
         }
       },
       {
-        "name": "Book of the Dead Chest",
-        "locationType": "Chest",
+        "Name": "Book of the Dead Chest",
+        "LocationType": "Chest",
         "Logic": "IsDead(Hel)"
       },
       {
-        "name": "Dissonance (Eternal Prison)",
-        "locationType": "Dissonance",
+        "Name": "Dissonance (Eternal Prison)",
+        "LocationType": "Dissonance",
         "Logic": "IsDead(Hel) and Has(Beherit)",
-        "item": {
-          "name": "Dissonance",
-          "isRequired": true
+        "Item": {
+          "Name": "Dissonance",
+          "IsRequired": true
         }
       }
     ],
-    "exits": []
+    "Exits": []
   },
   {
-    "name": "Eternal Prison Gloom",
-    "locations": [
+    "Name": "Eternal Prison Gloom",
+    "Locations": [
       {
-        "name": "Map Chest EPG",
-        "locationType": "Chest",
+        "Name": "Map Chest EPG",
+        "LocationType": "Chest",
         "Logic": "Has(Life Sigil)"
       },
       {
-        "name": "Beo Eglana Mural",
-        "locationType": "Mural",
+        "Name": "Beo Eglana Mural",
+        "LocationType": "Mural",
         "Logic": "CanUse(Bomb) and Has(Snapshot)"
       },
       {
-        "name": "Death Sigil Chest",
-        "locationType": "Chest",
+        "Name": "Death Sigil Chest",
+        "LocationType": "Chest",
         "Logic": "Has(Mjolnir) and Has(Life Sigil) and (Has(Death Sigil) or ((Has(Hand Scanner) or Setting(AutoScan)) and Has(Future Development Company) and CanWarp))"
       },
       {
-        "name": "Mother Mantra Mural",
-        "locationType": "Mural",
+        "Name": "Mother Mantra Mural",
+        "LocationType": "Mural",
         "Logic": "CanUse(Bomb) and Has(Snapshot) and Has(Enga Musica)"
       },
       {
-        "name": "Ankh Jewel",
-        "locationType": "FreeStanding",
+        "Name": "Ankh Jewel",
+        "LocationType": "FreeStanding",
         "Logic": "IsDead(Ratatoskr 4)"
       },
       {
-        "name": "Key Fairy",
-        "locationType": "Fairy",
+        "Name": "Key Fairy",
+        "LocationType": "Fairy",
         "Logic": "Has(Fairy Pass) and Has(Freyas Pendant) and CanReach(Annwfn Right)",
-        "item": {
-          "name": "Key Fairy",
-          "isRequired": true
+        "Item": {
+          "Name": "Key Fairy",
+          "IsRequired": true
         }
       },
       {
-        "name": "Garm Statue Puzzle",
-        "locationType": "Puzzle",
+        "Name": "Garm Statue Puzzle",
+        "LocationType": "Puzzle",
         "Logic": "Has(Enga Musica) and Has(Feather) and CanChant(Fire) and CanChant(Earth) and CanChant(Sun)",
-        "item": {
-          "name": "Garm",
-          "isRequired": true
+        "Item": {
+          "Name": "Garm",
+          "IsRequired": true
         }
       },
       {
-        "name": "Bomb Puzzle Reward",
-        "locationType": "FreeStanding",
+        "Name": "Bomb Puzzle Reward",
+        "LocationType": "FreeStanding",
         "Logic": "Has(Key Fairy) and Has(Life Sigil) and PuzzleFinished(Garm)"
       },
       {
-        "name": "Sakit Puzzle",
-        "locationType": "Puzzle",
+        "Name": "Sakit Puzzle",
+        "LocationType": "Puzzle",
         "Logic": "Has(Enga Musica) and Has(Feather) and IsDead(Vidofnir) and CanChant(Moon) and Has(Giants Flute) and Has(Liquour) and Has(Hand Scanner)",
-        "item": {
-          "name": "Sakit",
-          "isRequired": true
+        "Item": {
+          "Name": "Sakit",
+          "IsRequired": true
         }
       },
       {
-        "name": "Ratatoskr 4",
-        "locationType": "Miniboss",
+        "Name": "Ratatoskr 4",
+        "LocationType": "Miniboss",
         "Logic": "Has(Enga Musica) and Has(Feather) and IsDead(Ratatoskr 3) and (((Has(Chain Whip) or Has(Axe)) and OrbCount(7)) or ((Has(Flail Whip) or Has(Katana)) and OrbCount(6)))",
         "HardLogic": "Has(Enga Musica) and Has(Feather) and IsDead(Ratatoskr 3)",
-        "item": {
-          "name": "Ratatoskr 4",
-          "isRequired": true
+        "Item": {
+          "Name": "Ratatoskr 4",
+          "IsRequired": true
         }
       }
     ],
-    "exits": [
+    "Exits": [
       {
-        "connectingAreaName": "Eternal Prison Doom Main",
-        "Logic": "((Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(1))) or Has(Grapple Claw)) and Has(Feather)",
-        "ConnectionType": "Internal"
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Eternal Prison Doom Main",
+        "Logic": "((Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(1))) or Has(Grapple Claw)) and Has(Feather)"
       },
       {
-        "connectingAreaName": "Eternal Prison Doom Top",
-        "Logic": "Has(Death Sigil)",
-        "ConnectionType": "Internal"
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Eternal Prison Doom Top",
+        "Logic": "Has(Death Sigil)"
       },
       {
         "Name": "Eternal Prison Gloom D2",
-        "connectingAreaName": "Icefire Treetop Vidofnir",
-        "Logic": "GuardianKills(5)",
-        "ConnectionType": "SoulGate"
+        "ConnectionType": "SoulGate",
+        "ConnectingAreaName": "Icefire Treetop Vidofnir",
+        "Logic": "GuardianKills(5) or Setting(Random Soul Gates)"
       },
       {
-        "connectingAreaName": "Divine Fortress Top",
-        "Logic": "True",
-        "ConnectionType": "Unique"
+        "ConnectionType": "Unique",
+        "ConnectingAreaName": "Divine Fortress Top",
+        "Logic": "True"
       },
       {
-        "connectingAreaName": "Icefire Treetop Right",
-        "Logic": "True",
-        "ConnectionType": "Unique"
+        "ConnectionType": "Unique",
+        "ConnectingAreaName": "Icefire Treetop Right",
+        "Logic": "True"
       },
       {
-        "connectingAreaName": "Takamagahara Shrine Bottom",
-        "Logic": "True",
-        "ConnectionType": "Unique"
+        "ConnectionType": "Unique",
+        "ConnectingAreaName": "Takamagahara Shrine Bottom",
+        "Logic": "True"
       }
     ]
   },
   {
-    "name": "Spiral Hell",
-    "locations": [
+    "Name": "Spiral Hell",
+    "Locations": [
       {
-        "name": "9th Child",
-        "locationType": "FinalBoss",
+        "Name": "9th Child",
+        "LocationType": "FinalBoss",
         "Logic": "True",
         "HardLogic": "True",
-        "item": {
-          "name": "Winner",
-          "isRequired": true
+        "Item": {
+          "Name": "Winner",
+          "IsRequired": true
         }
       }
     ],
-    "exits": []
+    "Exits": []
   }
 ]

@@ -51,7 +51,7 @@ namespace LaMulana2Randomizer.Utils
                     sr.WriteLine($"Seed: {randomiser.Settings.Seed}");
                     sr.WriteLine();
 
-                    sr.WriteLine($"Starting Weapon: {randomiser.StartingWeapon.name}");
+                    sr.WriteLine($"Starting Weapon: {randomiser.StartingWeapon.Name}");
                     sr.WriteLine();
 
                     sr.WriteLine("Curse Locations: {");
@@ -62,14 +62,14 @@ namespace LaMulana2Randomizer.Utils
                     sr.WriteLine();
 
                     sr.WriteLine("Horizontal Entrances: {");
-                    foreach (var pair in randomiser.LeftRightPairs)
+                    foreach (var pair in randomiser.DoorPairs)
                         sr.WriteLine($"  {pair.Item1.Name} - {pair.Item2.Name}");
 
                     sr.WriteLine("}");
                     sr.WriteLine();
 
                     sr.WriteLine("Ladder Entrances: {");
-                    foreach (var pair in randomiser.DownUpLadderPairs)
+                    foreach (var pair in randomiser.LadderPairs)
                         sr.WriteLine($"  {pair.Item1.Name} - {pair.Item2.Name}");
 
                     sr.WriteLine("}");
@@ -82,13 +82,20 @@ namespace LaMulana2Randomizer.Utils
                     sr.WriteLine("}");
                     sr.WriteLine();
 
+                    sr.WriteLine("Soul Gate Entrances: {");
+                    foreach (var pair in randomiser.SoulGatePairs)
+                        sr.WriteLine($"  {pair.Item1.Name} - {pair.Item2.Name}: Soul Amount {pair.Item3}");
+
+                    sr.WriteLine("}");
+                    sr.WriteLine();
+
                     sr.WriteLine("Item Locations {");
                     foreach (LocationID id in Enum.GetValues(typeof(LocationID)))
                     {
                         foreach (Location location in randomiser.GetPlacedLocations())
                         {
-                            if (id != LocationID.None && id == location.Id)
-                                sr.WriteLine($"  {location.Name} -> {location.Item.name}");
+                            if (id != LocationID.None && id == location.ID)
+                                sr.WriteLine($"  {location.Name} -> {location.Item.Name}");
                         }
                     }
                     sr.WriteLine("}");
@@ -96,6 +103,8 @@ namespace LaMulana2Randomizer.Utils
                     sr.WriteLine("Expected Playthrough {");
 
                     PlayerState playthrough = new PlayerState(randomiser);
+                    playthrough.CollectItem(randomiser.StartingWeapon);
+
                     List<Location> reachableLocations;
 
                     int sphere = 0;
@@ -106,12 +115,12 @@ namespace LaMulana2Randomizer.Utils
                         foreach (Location location in reachableLocations)
                         {
                             playthrough.CollectItem(location.Item);
-                            playthrough.collectedLocations.Add(location.Name, true);
-                            sr.WriteLine($"    {location.Name} -> {location.Item.name}");
+                            playthrough.CollectLocation(location);
+                            sr.WriteLine($"    {location.Name} -> {location.Item.Name}");
                         }
                         sr.WriteLine("  }");
 
-                        if (playthrough.CanBeatGame(reachableLocations))
+                        if (playthrough.CanBeatGame())
                             break;
 
                         playthrough.ResetCheckedAreasAndEntrances();
@@ -135,9 +144,9 @@ namespace LaMulana2Randomizer.Utils
             {
                 foreach (Location location in randomiser.GetPlacedLocations())
                 {
-                    if (id != LocationID.None && id == location.Id)
+                    if (id != LocationID.None && id == location.ID)
                     {
-                        temp.Add(new Tuple<LocationID, ItemID>(location.Id, location.Item.Id));
+                        temp.Add(new Tuple<LocationID, ItemID>(location.ID, location.Item.ID));
                     }
                 }
             }
@@ -145,7 +154,8 @@ namespace LaMulana2Randomizer.Utils
             try
             {   using (BinaryWriter br = new BinaryWriter(File.Open("Seed\\seed.lm2r", FileMode.Create)))
                 {
-                    br.Write(randomiser.Settings.AutScanTablets);
+                    br.Write(randomiser.Settings.AutoScanTablets);
+                    br.Write(randomiser.Settings.AutoPlaceSkulls);
                     br.Write(temp.Count);
                     foreach(var p in temp)
                     {
@@ -154,7 +164,25 @@ namespace LaMulana2Randomizer.Utils
                     }
                     foreach(Location location in randomiser.CursedLocations)
                     {
-                        br.Write((int)location.Id);
+                        br.Write((int)location.ID);
+                    }
+                    br.Write(randomiser.DoorPairs.Count);
+                    foreach(var d in randomiser.DoorPairs)
+                    {
+                        br.Write((int)d.Item1.ID);
+                        br.Write((int)d.Item2.ID);
+                    }
+                    br.Write(randomiser.LadderPairs.Count);
+                    foreach(var l in randomiser.LadderPairs)
+                    {
+                        br.Write((int)l.Item1.ID);
+                        br.Write((int)l.Item2.ID);
+                    }
+                    br.Write(randomiser.GatePairs.Count);
+                    foreach (var l in randomiser.GatePairs)
+                    {
+                        br.Write((int)l.Item1.ID);
+                        br.Write((int)l.Item2.ID);
                     }
                 }
                 Logger.Log($"Total items randomised {temp.Count}");

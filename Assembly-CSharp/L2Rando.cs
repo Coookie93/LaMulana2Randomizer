@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using L2Word;
 using L2Flag;
+using L2MobTask;
 using LM2RandomiserMod.Patches;
 using LaMulana2RandomizerShared;
 using Version = LM2RandomizerShared.Version;
@@ -14,16 +15,20 @@ namespace LM2RandomiserMod
 {
     public class L2Rando : MonoBehaviour
     {
+        public bool Randomising { get; private set; } = false;
+        public bool AutoScanTablets { get; private set; } = false;
+
+        private Dictionary<LocationID,ItemID> locationToItemMap;
+        private List<LocationID> cursedChests;
+        private Dictionary<ExitID, ExitID> exitToExitMap;
+        private bool randomGates = false;
+        private bool autoPlaceSkull = false;
+
         private patched_L2System sys;
         private L2ShopDataBase shopDataBase;
         private L2TalkDataBase talkDataBase;
 
-        private GameObject cursedChest;
-
-        public bool Randomising { get; private set; } = false;
-        public bool AutoScanTablets { get; private set; } = false;
-        private Dictionary<LocationID,ItemID> locationToItemMap;
-        private List<LocationID> cursedChests;
+        private GameObject cursedChestPrefab;
 
         private Font currentFont = null;
         private bool showText = false;
@@ -64,11 +69,43 @@ namespace LM2RandomiserMod
         void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             showText = scene.name.Equals("title");
-            
+
             if (Randomising)
             {
                 StartCoroutine(ChangeTreasureBoxes());
                 ChangeEventItems();
+
+                ChangeEntrances(scene.name);
+
+                var bgScroll = FindObjectOfType<BGScrollSystem>();
+                if (scene.name.Equals("field03"))
+                {
+                    GameObject obj = new GameObject
+                    {
+                        name = "PlayerStart f03Up"
+                    };
+                    obj.transform.SetParent(bgScroll.transform);
+                    PlayerAnchor2 playerAnchor = obj.AddComponent<PlayerAnchor2>();
+                    playerAnchor.transform.position = new Vector3(488, 756, 0);
+                    bgScroll.WarpAnchors.Add(playerAnchor);
+                }
+                else if (scene.name.Equals("field04"))
+                {
+                    GameObject obj = new GameObject
+                    {
+                        name = "PlayerStart f04Up3"
+                    };
+                    obj.transform.SetParent(bgScroll.transform);
+                    PlayerAnchor2 playerAnchor = obj.AddComponent<PlayerAnchor2>();
+                    playerAnchor.transform.position = new Vector3(840, 640, 0);
+                    bgScroll.WarpAnchors.Add(playerAnchor);
+                }
+                else if (scene.name.Equals("fieldSpace"))
+                {
+                    foreach (var grailCanceller in FindObjectsOfType<HolyGrailCancellerScript>())
+                        grailCanceller.gameObject.SetActive(false);
+                }
+
 
                 //these cause the message to popup when you record a mantra for the first time, so just deactivate
                 //the gameobject so they don't appear
@@ -131,6 +168,7 @@ namespace LM2RandomiserMod
                         }
                     }
 
+                    //stops nebur from disappearing
                     foreach (L2FlagBoxParent flagBoxParent in flagWatcher.CheckFlags)
                     {
                         foreach (L2FlagBox flagBox in flagBoxParent.BOX)
@@ -187,29 +225,30 @@ namespace LM2RandomiserMod
                 ItemID.GaneshaTalisman, ItemID.MaatsFeather, ItemID.Feather, ItemID.FreysShip, ItemID.Harp, ItemID.DestinyTablet, ItemID.SecretTreasureofLife,
                 ItemID.OriginSigil, ItemID.BirthSigil, ItemID.LifeSigil, ItemID.DeathSigil, ItemID.ClaydollSuit};
 
-            L2FlagBoxEnd[] getFlags = null;
+            List<L2FlagBoxEnd> getFlags = new List<L2FlagBoxEnd>();
             if (itemID >= ItemID.SacredOrb0 && itemID <= ItemID.SacredOrb9)
             {
-                getFlags = new L2FlagBoxEnd[2];
-                getFlags[0] = new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = itemInfo.itemFlag, data = 1 };
-                getFlags[1] = new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 0, flag_no1 = 2, data = 1 };
+                getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = itemInfo.itemFlag, data = 1 });
+                getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 0, flag_no1 = 2, data = 1 });
             }
             else if (itemID >= ItemID.CrystalSkull1 && itemID <= ItemID.CrystalSkull12)
             {
-                getFlags = new L2FlagBoxEnd[3];
-                getFlags[0] = new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = itemInfo.itemFlag, data = 1 };
-                getFlags[1] = new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 0, flag_no1 = 32, data = 1 };
-                getFlags[2] = new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 3, flag_no1 = 30, data = 4 };
+                getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = itemInfo.itemFlag, data = 1 });
+                getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 0, flag_no1 = 32, data = 1 });
+                getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 3, flag_no1 = 30, data = 4 });
+                if (autoPlaceSkull)
+                {
+                    getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 5, flag_no1 = (int)itemID - 108, data = 1 });
+                    getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 5, flag_no1 = 47, data = 1 });
+                }
             }
             else if ((itemID >= ItemID.AnkhJewel1 && itemID <= ItemID.AnkhJewel9) || Array.IndexOf(storyItems, itemID) > -1)
             {
-                getFlags = new L2FlagBoxEnd[2];
-                getFlags[0] = new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = itemInfo.itemFlag, data = 1 };
-                getFlags[1] = new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 3, flag_no1 = 30, data = 4 };
+                getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = itemInfo.itemFlag, data = 1 });
+                getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 3, flag_no1 = 30, data = 4 });
             }
             else
             {
-                getFlags = new L2FlagBoxEnd[1];
                 short flagValue = 1;
                 if (itemID == ItemID.ChainWhip || itemID == ItemID.SilverShield || itemID == ItemID.MobileSuperx3P)
                 {
@@ -220,10 +259,10 @@ namespace LM2RandomiserMod
                     flagValue = 3;
                 }
 
-                getFlags[0] = new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = itemInfo.itemFlag, data = flagValue };
+                getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = itemInfo.itemFlag, data = flagValue });
             }
 
-            return getFlags;
+            return getFlags.ToArray();
         }
 
         public void Initialise(L2ShopDataBase shopDataBase, L2TalkDataBase talkDataBase, patched_L2System system)
@@ -233,7 +272,7 @@ namespace LM2RandomiserMod
             sys = system;
 #if DEV
             DevUI devUI = gameObject.AddComponent<DevUI>() as DevUI;
-            devUI.Initialise(this, sys);
+            devUI.Initialise(sys);
 #endif
             StartCoroutine(Setup());
         }
@@ -242,12 +281,14 @@ namespace LM2RandomiserMod
         {
             locationToItemMap = new Dictionary<LocationID, ItemID>();
             cursedChests = new List<LocationID>();
+            exitToExitMap = new Dictionary<ExitID, ExitID>();
             try
             {
                 using (BinaryReader br = new BinaryReader(File.Open(Path.Combine(Directory.GetCurrentDirectory(),
                     "LaMulana2Randomizer\\Seed\\seed.lm2r"), FileMode.Open)))
                 {
                     AutoScanTablets = br.ReadBoolean();
+                    autoPlaceSkull = br.ReadBoolean();
                     int itemCount = br.ReadInt32();
                     for (int i = 0; i < itemCount; i++)
                     {
@@ -256,6 +297,31 @@ namespace LM2RandomiserMod
                     for(int i = 0; i < 4; i++)
                     {
                         cursedChests.Add((LocationID)br.ReadInt32());
+                    }
+                    int doorPairCount = br.ReadInt32();
+                    for(int i = 0; i < doorPairCount; i++)
+                    {
+                        ExitID door1 = (ExitID)br.ReadInt32();
+                        ExitID door2 = (ExitID)br.ReadInt32();
+                        exitToExitMap.Add(door1, door2);
+                        exitToExitMap.Add(door2, door1);
+                    }
+                    int ladderPairCount = br.ReadInt32();
+                    for (int i = 0; i < ladderPairCount; i++)
+                    {
+                        ExitID ladder1 = (ExitID)br.ReadInt32();
+                        ExitID ladder2 = (ExitID)br.ReadInt32();
+                        exitToExitMap.Add(ladder1, ladder2);
+                        exitToExitMap.Add(ladder2, ladder1);
+                    }
+                    int gatePairCount = br.ReadInt32();
+                    randomGates = gatePairCount > 0;
+                    for (int i = 0; i < gatePairCount; i++)
+                    {
+                        ExitID gate1 = (ExitID)br.ReadInt32();
+                        ExitID gate2 = (ExitID)br.ReadInt32();
+                        exitToExitMap.Add(gate1, gate2);
+                        exitToExitMap.Add(gate2, gate1);
                     }
                     if (itemCount != locationToItemMap.Count)
                     {
@@ -285,13 +351,13 @@ namespace LM2RandomiserMod
                 ChangeShopThanks();
                 ChangeDialogueItems();
                 MojiScriptFixes();
-                yield return StartCoroutine(GetCursedChest());
+                yield return StartCoroutine(GetGameObjects());
                 Randomising = true;
             }
             sys.setKeyBlock(false);
         }
 
-        private IEnumerator GetCursedChest()
+        private IEnumerator GetGameObjects()
         {
             var ao = SceneManager.LoadSceneAsync("field04");
             while (!ao.isDone)
@@ -299,15 +365,44 @@ namespace LM2RandomiserMod
 
             foreach (TreasureBoxScript box in FindObjectsOfType<TreasureBoxScript>())
             {
-                if (box.curseMode && cursedChest == null)
+                if (box.curseMode && cursedChestPrefab == null)
                 {
-                    cursedChest = Instantiate(box.gameObject);
-                    cursedChest.name = "Cursed Chest Prefab";
-                    DontDestroyOnLoad(cursedChest);
-                    cursedChest.SetActive(false);
+                    cursedChestPrefab = Instantiate(box.gameObject);
+                    cursedChestPrefab.name = "Cursed Chest Prefab";
+                    DontDestroyOnLoad(cursedChestPrefab);
+                    cursedChestPrefab.SetActive(false);
                 }
             }
             sys.reInitSystem();
+        }
+
+        private ItemData GetItemDataFromName(string objName)
+        {
+            if (objName.Contains("ItemSym "))
+            {
+                string name = objName.Substring(8);
+
+                if (name.Contains("SacredOrb"))
+                {
+                    name = name.Insert(6, " ");
+                }
+                else if (name.Equals("MSX3p"))
+                {
+                    name = "MSX";
+                }
+                return L2SystemCore.getItemData(name);
+            }
+            return null;
+        }
+
+        private bool IsLocationCursed(LocationID locationID)
+        {
+            foreach (LocationID cursedID in cursedChests)
+            {
+                if (locationID == cursedID)
+                    return true;
+            }
+            return false;
         }
 
         private IEnumerator ChangeTreasureBoxes()
@@ -327,7 +422,7 @@ namespace LM2RandomiserMod
                     TreasureBoxScript newBox;
                     if (IsLocationCursed(locationID))
                     {
-                        GameObject obj = Instantiate(cursedChest, box.transform.position, box.transform.rotation);
+                        GameObject obj = Instantiate(cursedChestPrefab, box.transform.position, box.transform.rotation);
                         newBox = obj.GetComponent<TreasureBoxScript>();
                         newBox.curseMode = true;
                         newBox.forceOpenFlags = box.forceOpenFlags;
@@ -423,8 +518,9 @@ namespace LM2RandomiserMod
                     item.gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
                 }
             }
+
             yield return new WaitForEndOfFrame();
-            foreach(var box in oldboxes)
+            foreach (var box in oldboxes)
                 box.gameObject.SetActive(false);
         }
 
@@ -493,34 +589,141 @@ namespace LM2RandomiserMod
             }
         }
 
-        private ItemData GetItemDataFromName(string objName)
-        {
-            if (objName.Contains("ItemSym "))
-            {
-                string name = objName.Substring(8);
-
-                if(name.Contains("SacredOrb"))
-                {
-                    name = name.Insert(6, " ");
-                }
-                else if(name.Equals("MSX3p"))
-                {
-                    name = "MSX";
-                }
-                return L2SystemCore.getItemData(name);
-            }
-            return null;
-        }
         
-        private bool IsLocationCursed(LocationID locationID)
+        private ExitID GetExitIDFromAnchorName(string anchorName, string field)
         {
-            foreach(LocationID cursedID in cursedChests)
+            if(field.Equals("fieldL02") && anchorName.Equals("PlayerStart"))
             {
-                if(locationID == cursedID)
-                    return true;
+                return ExitID.fL02Left;
             }
-            return false;
+            else if(field.Equals("field03") && anchorName.Equals("PlayerStart"))
+            {
+                return ExitID.f03Right;
+            }
+            else if (field.Equals("fieldP00") && anchorName.Equals("PlayerStart"))
+            {
+                return ExitID.fP00Right;
+            }
+            else if (field.Equals("field01") && anchorName.Equals("PlayerStart"))
+            {
+                return ExitID.f01Down;
+            }
+            return ExitDB.AnchorNameToExitID(anchorName);
         }
+
+        private void ChangeEntrances(string field)
+        {
+            if (field.Equals("fieldLast"))
+                return;
+
+            List<AnimatorController> doors = new List<AnimatorController>(); 
+            if (randomGates)
+            {
+                foreach (AnimatorController animator in FindObjectsOfType<AnimatorController>())
+                {
+                    if (animator.name.Equals("YugGateDoor"))
+                        doors.Add(animator);
+                }
+            }
+
+            foreach(AnchorGateZ gate in FindObjectsOfType<AnchorGateZ>())
+            {
+                ExitID exitID = GetExitIDFromAnchorName(gate.AnchorName, field);
+                if (exitID != ExitID.None && exitToExitMap.TryGetValue(exitID, out ExitID destinationID))
+                {
+                    ExitInfo destinationInfo = ExitDB.GetExitInfo(destinationID);
+                    gate.AnchorName = destinationInfo.AnchorName;
+                    gate.FieldNo = destinationInfo.FieldNo;
+
+                    ExitInfo exitInfo = ExitDB.GetExitInfo(exitID);
+
+                    if (exitInfo.FieldNo == destinationInfo.FieldNo)
+                        gate.bgmFadeOut = false;
+
+
+                    if (exitID >= ExitID.f00GateY0 && exitID <= ExitID.fL11GateN)
+                    {
+                        L2FlagBoxParent[] boxParents = new L2FlagBoxParent[1];
+                        boxParents[0] = new L2FlagBoxParent();
+                        List<L2FlagBox> flagBoxes = new List<L2FlagBox>();
+
+                        AnimatorController gateDoor = null;
+                        foreach (var door in doors)
+                        {
+                            Vector3 position = gate.transform.position;
+                            if (position.x - 30 < door.transform.position.x && position.x + 30 > door.transform.position.x &&
+                                position.y - 30 < door.transform.position.y && position.y + 30 > door.transform.position.y)
+                                gateDoor = door;
+                        }
+
+                        if (exitInfo.SheetNo != -1)
+                        {
+                            flagBoxes.Add(new L2FlagBox()
+                            {
+                                seet_no1 = exitInfo.SheetNo,
+                                flag_no1 = exitInfo.FlagNo,
+                                seet_no2 = -1,
+                                flag_no2 = 1,
+                                logic = LOGIC.AND,
+                                comp = COMPARISON.GreaterEq
+                            });
+
+                            if(exitID == ExitID.f07GateP0)
+                            {
+                                flagBoxes.Add(new L2FlagBox()
+                                {
+                                    seet_no1 = 11,
+                                    flag_no1 = 24,
+                                    seet_no2 = -1,
+                                    flag_no2 = 0,
+                                    logic = LOGIC.AND,
+                                    comp = COMPARISON.Equal
+                                });
+                            }
+
+                            boxParents[0].BOX = flagBoxes.ToArray();
+                            if (gate.shdowtask != null)
+                                gate.shdowtask.startflag = boxParents;
+
+                            if (gateDoor != null)
+                                gateDoor.CheckFlags = boxParents;
+
+                        }
+                        else
+                        {
+                            if (gate.shdowtask != null)
+                                gate.shdowtask.startflag = new L2FlagBoxParent[0];
+
+                            if (gateDoor != null)
+                                gateDoor.CheckFlags = new L2FlagBoxParent[0];
+                        }
+                    }
+
+                    if (destinationID == ExitID.fL02Left)
+                    {
+                        gate.gateFlags = new L2FlagBoxEnd[]
+                        {
+                            new L2FlagBoxEnd()
+                            {
+                                seet_no1 = 5,
+                                flag_no1 = 73,
+                                data = 2,
+                                calcu = CALCU.EQR
+                            },
+                            new L2FlagBoxEnd()
+                            {
+                                seet_no1 = 5,
+                                flag_no1 = 22,
+                                data = 1,
+                                calcu = CALCU.EQR
+                            }
+                        };
+                    }
+                }
+            }
+        }
+
+        #region Shops
 
         private void ChangeShopItems()
         {
@@ -564,6 +767,16 @@ namespace LM2RandomiserMod
 
         private void ChangeShopThanks()
         {
+            //change this strings beforehand because they do stuff usually that is unwanted
+            //Modro's thank1, remove check for shield
+            shopDataBase.cellData[1][9][1][0] = "[@anim,thank,1]\n[@animp,buyF0121,1]";
+
+            //Hiner's thank3
+            shopDataBase.cellData[3][11][1][0] = "[@anim,thank,1]\n[@animp,buyF0142,1]";
+
+            //Hiner's thank4
+            shopDataBase.cellData[4][10][1][0] = "[@anim,thank,1]\n[@animp,buyF0142,1]";
+
             ChangeThanksStrings(LocationID.SidroShop1, LocationID.SidroShop2, LocationID.SidroShop3,0,9);
             ChangeThanksStrings(LocationID.ModroShop1, LocationID.ModroShop2, LocationID.ModroShop3,1,9,2,3);
             ChangeThanksStrings(LocationID.NeburShop1, LocationID.NeburShop2, LocationID.NeburShop3,2,8);
@@ -587,11 +800,11 @@ namespace LM2RandomiserMod
             ChangeThanksStrings(LocationID.FairyLanShop1, LocationID.FairyLanShop2, LocationID.FairyLanShop3,20,8);
         }
 
-        private void ChangeThanksStrings(LocationID firstSpot, LocationID secondSpot, LocationID thirdSpot, int seet, int first, int secondOffset = 1, int thirdOffset = 2)
+        private void ChangeThanksStrings(LocationID firstSlot, LocationID secondSlot, LocationID thirdSlot, int sheet, int first, int secondOffset = 1, int thirdOffset = 2)
         {
-            shopDataBase.cellData[seet][first][1][0] += CreateGetFlagString(firstSpot);
-            shopDataBase.cellData[seet][first + secondOffset][1][0] += CreateGetFlagString(secondSpot);
-            shopDataBase.cellData[seet][first + thirdOffset][1][0] += CreateGetFlagString(thirdSpot);
+            shopDataBase.cellData[sheet][first][1][0] += CreateGetFlagString(firstSlot);
+            shopDataBase.cellData[sheet][first + secondOffset][1][0] += CreateGetFlagString(secondSlot);
+            shopDataBase.cellData[sheet][first + thirdOffset][1][0] += CreateGetFlagString(thirdSlot);
         }
 
         private string CreateGetFlagString(LocationID locationID)
@@ -627,6 +840,10 @@ namespace LM2RandomiserMod
             return flagString;
         }
 
+        #endregion
+
+        #region Dialogue
+
         private void ChangeDialogueItems()
         {
             //Xelpud's item
@@ -650,28 +867,27 @@ namespace LM2RandomiserMod
                 "{0}[@setf,1,54,=,1]\n[@anim,talk,1]\n[@p,1st-3]");
 
             //Check to see if you can get Giltoriyo's item
-            talkDataBase.cellData[3][3][1][0] = ChangeTalkFlagCheck(LocationID.GiltoriyoItem, COMPARISON.Greater, "[@iff,5,62,=,7,giltoriyo,9th]\n[@iff,2,{0},&gt;,{1},giltoriyo,8th]\n" +
-                "[@iff,5,62,=,6,giltoriyo,7th]\n[@iff,5,62,=,5,giltoriyo,6th]\n[@iff,5,62,=,4,giltoriyo,5th]\n[@iff,5,62,=,3,giltoriyo,4th]\n[@iff,5,62,=,2,giltoriyo,2nd]\n" +
-                "[@exit]\n[@anim,talk,1]\n[@p,1st]");
-            
-            //Didnt talk to Alsedana after vritra
+            talkDataBase.cellData[3][4][1][0] = ChangeTalkFlagCheck(LocationID.GiltoriyoItem, COMPARISON.Greater, "[@iff,2,{0},&gt;,{1},giltoriyo,1st-3]\n[@anim,talk,1]\n[@p,1st-2]");
+
+            //Alsedana's itemf from Giltoriyo if didn't talk to Alsedana after vritra or vritra was after 6 guardians
             talkDataBase.cellData[3][7][1][0] = ChangeTalkStringAndFlagCheck(LocationID.AlsedanaItem,
                 "[@iff,2,{0},&gt;,{1},giltoriyo,2nd]\n[@exit]\n{2}[@anim,talk,1]\n[@p,1st-5]");
 
             //Fobos' 1st item
-            talkDataBase.cellData[6][9][1][0] = ChangeTalkString(LocationID.FobosItem,
-                "[@setf,5,16,=,5]\n[@anim,talk,1]\n{0}[@p,3rd-2]");
+            talkDataBase.cellData[6][9][1][0] = ChangeTalkString(LocationID.FobosItem, "[@setf,5,16,=,5]\n[@anim,talk,1]\n{0}[@p,3rd-2]");
 
-            //Fobo' 2nd item
-            talkDataBase.cellData[5][24][1][0] = ChangeTalkString(LocationID.FobosItem2, 
-                "[@exit]\n[@anim,talk,1]\n[@setf,23,15,=,4]\n{0}[@p,lastC]");
+            //Fobos' 1st item check to see if you don't have the item
+            talkDataBase.cellData[5][3][1][0] = ChangeTalkFlagCheck(LocationID.FobosItem, COMPARISON.Less, "[@iff,5,16,=,0,fobos,1st]\n[@iff,2,{0},&lt;,{1},fobos,2nd]\n[@p,gS1]");
+            
+            //Fobos' 1st item
+            talkDataBase.cellData[5][16][1][0] = ChangeTalkString(LocationID.FobosItem, "[@exit]\n[@anim,talk,1]\n[@setf,5,17,=,1]\n{0}[@p,lastC]");
 
-            //Fobos' 2nd item check to see if you don't have the item
-            talkDataBase.cellData[5][3][1][0] = ChangeTalkFlagCheck(LocationID.FobosItem2, COMPARISON.Less, "[@iff,5,16,=,0,fobos,1st]\n[@iff,2,{0},&lt;,{1},fobos,gS2]\n[@anifla,mfanim,wait]\n" +
-                "[@iff,23,15,=,1,fobos,getSkull]\n[@iff,5,68,=,1,fobos,skullFull]\n[@iff,5,69,=,1,fobos,mirror]\n[@iff,5,78,=,4,fobos,hint1]\n[@iff,5,79,=,1,fobos,hint2]\n[@iff,5,80,=,1,fobos,hint3]\n" +
-                "[@iff,5,81,=,1,fobos,hint4]\n[@iff,5,82,=,1,fobos,hint5]\n[@iff,5,83,=,1,fobos,hint6]\n[@iff,5,84,=,1,fobos,hint7]\n[@iff,5,85,=,1,fobos,hint8]\n[@iff,5,16,&gt;,12,fobos,8th]\n" +
-                "[@iff,5,16,=,12,fobos,7th]\n[@iff,5,16,=,10,fobos,6th]\n[@iff,5,16,=,9,fobos,5th]\n[@iff,5,16,=,8,fobos,4th]\n[@iff,5,16,=,7,fobos,3rd]\n[@iff,5,16,=,6,fobos,2nd]\n[@iff,5,16,=,5,fobos,2nd]\n" +
-                "[@anifla,mfanim,nochar]\n[@nochar]");
+            //Fobos' 2nd item check
+            talkDataBase.cellData[5][22][1][0] = ChangeTalkFlagCheck(LocationID.FobosItem2, COMPARISON.Less, 
+                "[@iff,2,{0},&lt;,{1},fobos,gS2]\n[@anim,stalk2,1]\n[@setf,23,15,=,2]\n[@anifla,mnext,swait]\n[@out]");
+
+            //Fobos' 2nd item
+            talkDataBase.cellData[5][24][1][0] = ChangeTalkString(LocationID.FobosItem2, "[@exit]\n[@anim,talk,1]\n[@setf,23,15,=,4]\n{0}[@p,lastC]");
 
             //Freya's item
             talkDataBase.cellData[7][7][1][0] = ChangeTalkString(LocationID.FreyasItem,
@@ -837,17 +1053,27 @@ namespace LM2RandomiserMod
             //Fobos's 2nd item check if you have a skull
             talkDataBase.cellData[5][23][1][0] = "[@iff,0,32,&gt;,0,fobos,gS3]\n[@anim,stalk,1]\n[@anifla,mnext,swait]";
 
+            talkDataBase.cellData[5][3][3][1] = "Hmmm.";
+            talkDataBase.cellData[5][16][3][1] = "Here take this, I also opened that gate over there.";
+
             //Change Fairy King to set flag to open endless even if you have the pendant
             talkDataBase.cellData[8][10][1][0] = "[@exit]\n[@anim,talk,1]\n[@setf,3,34,=,2]\n[@setf,5,12,=,1]\n[@p,2nd-2]";
 
             //Change the Fairy King check on Freya's Pendant
-            talkDataBase.cellData[8][3][1][0] = "[@iff,3,34,&gt;,3,freyr,5th]\n[@iff,3,34,=,3,freyr,4th]\n[@iff,3,34,=,2,freyr,3rd]\n[@iff,2,31,&gt;,0,freyr,2nd]\n[@iff,3,34,=,1,freyr,1stEnd]\n[@iff,3,34,=,0,freyr,1st]";
+            talkDataBase.cellData[8][3][1][0] = "[@iff,3,34,&gt;,3,freyr,5th]\n[@iff,3,34,=,3,freyr,4th]\n[@iff,3,34,=,2,freyr,3rd]\n[@iff,2,31,&gt;,0,freyr,2nd]\n" +
+                "[@iff,3,34,=,1,freyr,1stEnd]\n[@iff,3,34,=,0,freyr,1st]";
 
             //Add check to see if you have beaten 4 guardians so mulbruuk can give you the item
             talkDataBase.cellData[10][41][1][0] = "[@exit]\n[@anim,talk,1]\n[@setf,3,33,=,10]\n[@iff,3,0,&gt;,3,mulbruk2,3rd-1]\n[@p,lastC]";
+
+            //remove giltoriyo check on his item
+            talkDataBase.cellData[3][3][1][0] = "[@iff,5,62,=,7,giltoriyo,9th]\n[@iff,5,62,=,6,giltoriyo,7th]\n[@iff,5,62,=,5,giltoriyo,6th]\n" +
+                "[@iff,5,62,=,4,giltoriyo,5th]\n[@iff,5,62,=,3,giltoriyo,4th]\n[@iff,5,62,=,2,giltoriyo,2nd]\n[@exit]\n[@anim,talk,1]\n[@p,1st]";
 
             //fix giltoriyo early dialogue exit
             talkDataBase.cellData[3][6][1][0] = "[@setf,5,62,=,2]\n[@setf,1,7,=,0]\n[@anim,talk,1]\n[@p,1st-4]";
         }
     }
+
+    #endregion
 }
