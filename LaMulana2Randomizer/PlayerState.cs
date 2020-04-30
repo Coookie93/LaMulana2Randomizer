@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using LaMulana2RandomizerShared;
+﻿using System.Linq;
+using System.Collections.Generic;
+using LaMulana2Randomizer.Utils;
 using LaMulana2Randomizer.LogicParsing;
 
 namespace LaMulana2Randomizer
@@ -8,14 +8,14 @@ namespace LaMulana2Randomizer
     public class PlayerState
     {
         readonly string[] bossNames = {"Fafnir", "Surtr", "Vritra", "Kujata", "Aten-Ra", "Jormangund", "Anu", "Echidna", "Hel"};
-        
-        public Dictionary<string, bool> areaChecks;
-        public Dictionary<string, bool> entraceChecks;
-        public Dictionary<string, bool> collectedLocations;
-        public Dictionary<string, int> collectedItems;
-        public Randomiser Randomiser;
 
+        private readonly Randomiser Randomiser;
+        private readonly Dictionary<string, bool> collectedLocations;
+        private readonly Dictionary<string, int> collectedItems;
+        
         private bool soflocktest = false;
+        private Dictionary<string, bool> areaChecks;
+        private Dictionary<string, bool> entraceChecks;
 
         public PlayerState(Randomiser randomiser)
         {
@@ -52,63 +52,80 @@ namespace LaMulana2Randomizer
             return state;
         }
 
-        public static bool SoftlockCheck(Randomiser randomiser, List<Location> requiredLocations, Location locationToSkip)
+        public static bool CanBeatGame(Randomiser randomiser)
         {
             PlayerState state = new PlayerState(randomiser);
             state.CollectItem(randomiser.StartingWeapon);
 
-            state.soflocktest = true;
+            List<Location> requiredLocations = randomiser.GetPlacedRequiredItemLocations();
             List<Location> reachableLocations;
             do
             {
                 reachableLocations = state.GetReachableLocations(requiredLocations);
                 foreach (Location location in reachableLocations)
                 {
-                    state.collectedLocations.Add(location.Name, true);
-                    if (location.Equals(locationToSkip))
-                        continue;
-
                     state.CollectItem(location.Item);
+                    state.collectedLocations.Add(location.Name, true);
                 }
 
                 state.ResetCheckedAreasAndEntrances();
 
             } while (reachableLocations.Count > 0);
 
+            return state.CanBeatGame();
+        }
 
-            if (state.GuardianKills(8) && !state.AnkhCountSoftLock())
-                return false;
+        public static bool AnkhSoftlockCheck(Randomiser randomiser)
+        {
+            foreach (Location guardianToSkip in randomiser.GetPlacedLocationsOfType(LocationType.Guardian))
+            {
+                PlayerState state = new PlayerState(randomiser)
+                {
+                    soflocktest = true
+                };
+                state.CollectItem(randomiser.StartingWeapon);
 
+                int guardiansEncountered = 0;
+                List<Location> requiredLocations = randomiser.GetPlacedRequiredItemLocations();
+
+                List<Location> reachableLocations;
+                do
+                {
+                    reachableLocations = state.GetReachableLocations(requiredLocations);
+                    foreach (Location location in reachableLocations)
+                    {
+                        state.collectedLocations.Add(location.Name, true);
+                        if (location.LocationType == LocationType.Guardian)
+                        {
+                            if (!location.Equals(guardianToSkip))
+                            {
+                                state.CollectItem(location.Item);
+                                guardiansEncountered++;
+                            }
+                        }
+                        else
+                        {
+                            state.CollectItem(location.Item);
+                        }
+                    }
+
+                    state.ResetCheckedAreasAndEntrances();
+
+                } while (reachableLocations.Count > 0);
+
+                if (guardiansEncountered >= state.collectedItems["Ankh Jewel"])
+                    return false;
+            }
             return true;
         }
 
-        public static bool CanBeatGame(Randomiser randomiser, List<Location> requiredLocations)
+        public static bool EntrancePlacementCheck(Randomiser randomiser)
         {
             PlayerState state = new PlayerState(randomiser);
-            state.CollectItem(randomiser.StartingWeapon);
-            List<Location> reachableLocations;
-            do
-            {
-                reachableLocations = state.GetReachableLocations(requiredLocations);
-                foreach (Location location in reachableLocations)
-                {
-                    state.CollectItem(location.Item);
-                    state.collectedLocations.Add(location.Name, true);
-                }
-
-                state.ResetCheckedAreasAndEntrances();
-
-            } while (reachableLocations.Count > 0);
-            
-            return state.HasItem("Winner");
-        }
-
-        public static bool EntrancePlacementCheck(Randomiser randomiser, List<Location> requiredLocations, List<Item> items)
-        {
-            PlayerState state = new PlayerState(randomiser);
-            foreach (Item item in items)
+            foreach (Item item in FileUtils.GetItemsFromJson())
                 state.CollectItem(item);
 
+            List<Location> requiredLocations = randomiser.GetPlacedRequiredItemLocations();
             List<Location> reachableLocations;
             do
             {
@@ -123,25 +140,11 @@ namespace LaMulana2Randomizer
 
             } while (reachableLocations.Count > 0);
 
-            return state.HasItem("Winner");
+            return state.CanBeatGame();
         }
 
-        public bool CanBeatGame(List<Location> requiredLocations)
+        public bool CanBeatGame()
         {
-            List<Location> reachableLocations;
-            do
-            {
-                reachableLocations = GetReachableLocations(requiredLocations);
-                foreach (Location location in reachableLocations)
-                {
-                    CollectItem(location.Item);
-                    collectedLocations.Add(location.Name, true);
-                }
-
-                ResetCheckedAreasAndEntrances();
-
-            } while (reachableLocations.Count > 0);
-
             return HasItem("Winner");
         }
 
@@ -166,7 +169,7 @@ namespace LaMulana2Randomizer
             return canReach;
         }
 
-        public bool CanReach(Connection entrance)
+        public bool CanReach(Exit entrance)
         {
             if (entraceChecks.TryGetValue(entrance.Name, out bool cached))
                 return cached;
@@ -184,16 +187,16 @@ namespace LaMulana2Randomizer
 
         public void CollectItem(Item item)
         {
-            if (collectedItems.ContainsKey(item.name))
+            if (collectedItems.ContainsKey(item.Name))
             {
-                collectedItems[item.name]++;
+                collectedItems[item.Name]++;
             }
             else
             {
-                collectedItems.Add(item.name, 1);
+                collectedItems.Add(item.Name, 1);
             }
 
-            if (bossNames.Contains(item.name))
+            if (bossNames.Contains(item.Name))
             {
                 if (collectedItems.ContainsKey("Guardians"))
                 {
@@ -204,6 +207,23 @@ namespace LaMulana2Randomizer
                     collectedItems.Add("Guardians", 1);
                 }
             }
+        }
+
+        public void CollectItem(string itemName)
+        {
+            if (collectedItems.ContainsKey(itemName))
+            {
+                collectedItems[itemName]++;
+            }
+            else
+            {
+                collectedItems.Add(itemName, 1);
+            }
+        }
+
+        public void CollectLocation(Location location)
+        {
+            collectedLocations.Add(location.Name, true);
         }
 
         public bool Evaluate(Logic rule)
@@ -273,9 +293,7 @@ namespace LaMulana2Randomizer
             foreach (var area in areaChecks)
             {
                 if (area.Value)
-                {
                     temp.Add(area.Key, area.Value);
-                }
             }
             areaChecks = temp;
 
@@ -284,9 +302,7 @@ namespace LaMulana2Randomizer
             foreach (var entrance in entraceChecks)
             {
                 if (entrance.Value)
-                {
                     temp.Add(entrance.Key, entrance.Value);
-                }
             }
             entraceChecks = temp;
         }
@@ -356,14 +372,7 @@ namespace LaMulana2Randomizer
 
         private bool AnkhCountSoftLock()
         {
-            if (collectedItems.TryGetValue("Ankh Jewel", out int ankhs))
-            {
-                if (collectedItems.TryGetValue("Guardians", out int guardians))
-                    return ankhs > guardians;
-
-                return true;
-            }
-            return false;
+            return collectedItems.ContainsKey("Ankh Jewel");
         }
 
         private bool SkullCount(int count)
@@ -387,16 +396,25 @@ namespace LaMulana2Randomizer
             switch (settingName)
             {
                 case "AutoScan":
-                    return Randomiser.Settings.AutScanTablets;
+                    return Randomiser.Settings.AutoScanTablets;
 
-                case "Random Vertical":
+                case "Random Ladders":
                     return Randomiser.Settings.RandomLadderEntraces;
 
-                case "Non Random Vertical":
+                case "Non Random Ladders":
                     return !Randomiser.Settings.RandomLadderEntraces;
+
+                case "Random Gates":
+                    return Randomiser.Settings.RandomGateEntraces;
 
                 case "Non Random Gates":
                     return !Randomiser.Settings.RandomGateEntraces;
+
+                case "Random Soul Gates":
+                    return Randomiser.Settings.RandomSoulGateEntraces;
+
+                case "Non Random Soul Gates":
+                    return !Randomiser.Settings.RandomSoulGateEntraces;
 
                 default:
                     return false;
