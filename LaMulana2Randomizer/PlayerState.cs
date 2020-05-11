@@ -13,7 +13,6 @@ namespace LaMulana2Randomizer
         private readonly Dictionary<string, bool> collectedLocations;
         private readonly Dictionary<string, int> collectedItems;
         
-        private bool soflocktest = false;
         private Dictionary<string, bool> areaChecks;
         private Dictionary<string, bool> entraceChecks;
 
@@ -79,10 +78,7 @@ namespace LaMulana2Randomizer
         {
             foreach (Location guardianToSkip in randomiser.GetPlacedLocationsOfType(LocationType.Guardian))
             {
-                PlayerState state = new PlayerState(randomiser)
-                {
-                    soflocktest = true
-                };
+                PlayerState state = new PlayerState(randomiser);
                 state.CollectItem(randomiser.StartingWeapon);
 
                 int guardiansEncountered = 0;
@@ -164,7 +160,17 @@ namespace LaMulana2Randomizer
             area.Checking = true;
             bool canReach = area.CanReach(this);
             area.Checking = false;
-            areaChecks.Add(area.Name, canReach);
+
+            //when writing the spoiler log playthrough only care about caching areas that can be reached, caching areas that can't
+            //be reached sometimes leads to the playthorugh being incorrect
+            if (Randomiser.WritingSpoilers && canReach)
+            {
+                areaChecks.Add(area.Name, canReach);
+            }
+            else
+            {
+                areaChecks.Add(area.Name, canReach);
+            }
 
             return canReach;
         }
@@ -180,7 +186,17 @@ namespace LaMulana2Randomizer
             entrance.Checking = true;
             bool canReach = entrance.CanReach(this);
             entrance.Checking = false;
-            entraceChecks.Add(entrance.Name, canReach);
+
+            //when writing the spoiler log playthrough only care about caching entrances that can be reached, caching entrances that can't
+            //be reached sometimes leads to the playthorugh being incorrect
+            if (Randomiser.WritingSpoilers && canReach)
+            {
+                entraceChecks.Add(entrance.Name, canReach);
+            }
+            else
+            {
+                entraceChecks.Add(entrance.Name, canReach);
+            }
 
             return canReach;
         }
@@ -240,7 +256,10 @@ namespace LaMulana2Randomizer
                     return HasItem("Holy Grail");
 
                 case LogicType.CanSpinCorridor:
-                    return CanSpinCorridor(); 
+                    return CanSpinCorridor();
+
+                case LogicType.CanStopTime:
+                    return CanStopTime();
 
                 case LogicType.Has:
                     return HasItem(rule.value);
@@ -264,7 +283,7 @@ namespace LaMulana2Randomizer
                     return HasItem(rule.value);
 
                 case LogicType.AnkhCount:
-                    return soflocktest ? AnkhCountSoftLock() : AnkhCount(int.Parse(rule.value));
+                    return Randomiser.SoftLockTest ? AnkhCountSoftLock() : AnkhCount(int.Parse(rule.value));
 
                 case LogicType.Dissonance:
                     return Dissonance(int.Parse(rule.value));
@@ -339,6 +358,16 @@ namespace LaMulana2Randomizer
         private bool CanSpinCorridor()
         {
             return HasItem("Beherit") && Dissonance(1);
+        }
+
+        private bool CanStopTime()
+        {
+            if(collectedItems.ContainsKey("Lamp of Time"))
+            {
+                return CanReach("Roots of Yggdrasil") || CanReach("Immortal Battlefield Main") 
+                        || CanReach("Icefire Treetop Left") || CanReach("Dark Lords Mausoleum Main");
+            }
+            return false;
         }
 
         private bool CanKill(string enemy)

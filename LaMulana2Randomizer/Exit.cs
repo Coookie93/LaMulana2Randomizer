@@ -10,7 +10,6 @@ namespace LaMulana2Randomizer
         public string ConnectingAreaName;
         public string Logic;
         public ExitType ConnectionType;
-        public bool IsBackSide;
     }
 
     public class Exit
@@ -19,7 +18,6 @@ namespace LaMulana2Randomizer
         public string ParentAreaName { get; private set; }
         public ExitID ID { get; private set; }
         public ExitType ExitType { get; private set; }
-        public bool IsBackside { get; private set; }
         public BinaryNode LogicTree { get; private set; }
 
         public string ConnectingAreaName;
@@ -34,7 +32,6 @@ namespace LaMulana2Randomizer
             ConnectingAreaName = jsonConnection.ConnectingAreaName;
             logicString = jsonConnection.Logic;
             ExitType = jsonConnection.ConnectionType;
-            IsBackside = jsonConnection.IsBackSide;
             ParentAreaName = parentAreaName;
             if (string.IsNullOrEmpty(Name))
                 Name = $"{ParentAreaName} to {ConnectingAreaName}";

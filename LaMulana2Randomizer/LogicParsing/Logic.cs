@@ -23,6 +23,7 @@ namespace LaMulana2Randomizer.LogicParsing
         CanChant,
         CanWarp,
         CanSpinCorridor,
+        CanStopTime,
         Has,
         CanUse,
         IsDead,
@@ -33,7 +34,6 @@ namespace LaMulana2Randomizer.LogicParsing
         AnkhCount,
         Dissonance,
         SkullCount,
-        HasWeaponUpgrade,
         Setting,
         True,
         False

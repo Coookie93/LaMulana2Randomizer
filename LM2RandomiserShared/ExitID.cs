@@ -55,6 +55,7 @@
         f02GateN2,
         f03GateN3,
         f03GateN4,
+        f03GateN9,
         f04GateN5,
         f04GateN6,
         f05GateN1,
@@ -66,6 +67,7 @@
         f09GateN5,
         f10GateN7,
         f12GateN8,
+        f13GateN9,
         f14GateN6,
     }
 }

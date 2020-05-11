@@ -16,11 +16,14 @@ namespace LaMulana2Randomizer
         private List<JsonArea> worldData;
         private bool villageDeadEnd = false;
 
+        public bool WritingSpoilers;
+        public bool SoftLockTest { get; private set; }
         public Item StartingWeapon { get; private set; }
         public List<Location> CursedLocations { get; private set; }
-        public List<(Exit, Exit)> DoorPairs { get; private set; }
-        public List<(Exit, Exit)> LadderPairs { get; private set; }
-        public List<(Exit, Exit)> GatePairs { get; private set; }
+        public List<string> HorizontalPairs { get; private set; }
+        public List<string> LadderPairs { get; private set; }
+        public List<string> GatePairs { get; private set; }
+        public List<(ExitID, ExitID)> ExitPairs { get; private set; }
         public List<(Exit, Exit, int)> SoulGatePairs { get; private set; }
         public Settings Settings { get; private set; }
 
@@ -28,13 +31,13 @@ namespace LaMulana2Randomizer
         {
             Settings = settings;
             random = new Random(settings.Seed);
-
             areas = new Dictionary<string, Area>();
             locations = new Dictionary<string, Location>();
             exits = new List<Exit>();
-            DoorPairs = new List<(Exit, Exit)>();
-            LadderPairs = new List<(Exit, Exit)>();
-            GatePairs = new List<(Exit, Exit)>();
+            HorizontalPairs = new List<string>();
+            LadderPairs = new List<string>();
+            GatePairs = new List<string>();
+            ExitPairs = new List<(ExitID, ExitID)>();
             SoulGatePairs = new List<(Exit, Exit, int)>();
         }
         
@@ -44,7 +47,7 @@ namespace LaMulana2Randomizer
 
             foreach (JsonArea areaData in worldData)
             {
-                Area area = new Area(areaData.Name);
+                Area area = new Area(areaData);
 
                 foreach (JsonLocation locationData in areaData.Locations)
                 {
@@ -161,6 +164,21 @@ namespace LaMulana2Randomizer
             }
         }
 
+        public void FixFDCLogic()
+        {
+            if (Settings.FDCForBacksides)
+            {
+                foreach(Exit exit in exits)
+                {
+                    if (exit.ExitType != ExitType.Internal && GetArea(exit.ConnectingAreaName).IsBackside)
+                    {
+                        exit.AppendLogicString(" and Has(Future Development Company)");
+                        exit.BuildLogicTree();
+                    }
+                }
+            }
+        }
+
         public void PlaceItems()
         {
             List<Item> items = FileUtils.GetItemsFromJson();
@@ -216,11 +234,11 @@ namespace LaMulana2Randomizer
                 area.Exits.Clear();
                 area.Entrances.Clear();
             }
-
             exits.Clear();
-            DoorPairs.Clear();
+            HorizontalPairs.Clear();
             LadderPairs.Clear();
             GatePairs.Clear();
+            ExitPairs.Clear();
             SoulGatePairs.Clear();
         }
 
@@ -235,12 +253,41 @@ namespace LaMulana2Randomizer
 
         public bool CanBeatGame()
         {
-            return PlayerState.CanBeatGame(this) && PlayerState.AnkhSoftlockCheck(this);
+            SoftLockTest = true;
+            bool result = PlayerState.CanBeatGame(this) && PlayerState.AnkhSoftlockCheck(this);
+            SoftLockTest = false;
+            return result;
         }
         
         public bool EntranceCheck()
         {
             return PlayerState.EntrancePlacementCheck(this);
+        }
+
+        public void AdjustShopPrices()
+        {
+            WritingSpoilers = true;
+            PlayerState playthrough = new PlayerState(this);
+            playthrough.CollectItem(StartingWeapon);
+
+            List<Location> reachableLocations;
+            for(int i = 0; i < 5; i++)
+            {
+                float multiplier = (5 + i) / 10.0f;
+                reachableLocations = playthrough.GetReachableLocations(GetPlacedRequiredItemLocations());
+                foreach (Location location in reachableLocations)
+                {
+                    Item item = location.Item;
+                    playthrough.CollectItem(item);
+                    playthrough.CollectLocation(location);
+
+                    if (item.IsRequired && item.ID < ItemID.ShurikenAmmo)
+                        item.AdjustPrice(multiplier);
+
+                }
+                playthrough.ResetCheckedAreasAndEntrances();
+            }
+            WritingSpoilers = false;
         }
 
         public Area GetArea(string areaName)
@@ -433,7 +480,7 @@ namespace LaMulana2Randomizer
                 GetLocation("Child Mantra Mural").PlaceItem(ItemPool.GetAndRemove(ItemID.Child, items));
                 GetLocation("Night Mantra Mural").PlaceItem(ItemPool.GetAndRemove(ItemID.Night, items));
             }
-            else if(Settings.MantraPlacement== MantraPlacement.OnlyMurals)
+            else if(Settings.MantraPlacement == MantraPlacement.OnlyMurals)
             {
                 List<Item> mantras = Shuffle.FisherYates(ItemPool.GetAndRemoveMantras(items), random);
                 RandomiseWithChecks(GetUnplacedLocationsOfType(LocationType.Mural), mantras, items);
@@ -591,14 +638,14 @@ namespace LaMulana2Randomizer
                     do
                     {
                         rightDoor = rightDoors[random.Next(rightDoors.Count)];
-                    } while ((rightDoor.ID == ExitID.f01Right && !Settings.RandomLadderEntraces) || rightDoor.ID == ExitID.fL08Right);
+                    } while ((rightDoor.ID == ExitID.f01Right && (!Settings.RandomLadderEntraces || !Settings.AllowVillageToCliff)) || rightDoor.ID == ExitID.fL08Right);
                 }
                 else if (leftDoor.ID == ExitID.fP00Left)
                 {
                     do
                     {
                         rightDoor = rightDoors[random.Next(rightDoors.Count)];
-                    } while (rightDoor.ID == ExitID.fP00Right || (((rightDoor.ID == ExitID.f01Right && !Settings.RandomLadderEntraces)
+                    } while (rightDoor.ID == ExitID.fP00Right || (((rightDoor.ID == ExitID.f01Right && (!Settings.RandomLadderEntraces || !Settings.AllowVillageToCliff))
                                 || rightDoor.ID == ExitID.fL08Right) && cavernToCliff));
                 }
                 else
@@ -632,7 +679,8 @@ namespace LaMulana2Randomizer
                 leftDoor.ConnectingAreaName = rightDoor.ParentAreaName;
                 rightDoor.ConnectingAreaName = leftDoor.ParentAreaName;
 
-                DoorPairs.Add((leftDoor, rightDoor));
+                ExitPairs.Add((leftDoor.ID, rightDoor.ID));
+                HorizontalPairs.Add($"    {leftDoor.Name} - {rightDoor.Name}");
                 leftDoors.Remove(leftDoor);
                 rightDoors.Remove(rightDoor);
             }
@@ -645,9 +693,11 @@ namespace LaMulana2Randomizer
             List<Exit> priorityDownLadders = new List<Exit>()
             {
                 downLadders.Find(x => x.ID == ExitID.f02Down),
-                downLadders.Find(x => x.ID == ExitID.f03Down2),
-                downLadders.Find(x => x.ID == ExitID.f01Down),
+                downLadders.Find(x => x.ID == ExitID.f03Down2)
             };
+
+            if (villageDeadEnd)
+                priorityDownLadders.Add(downLadders.Find(x => x.ID == ExitID.f01Down));
 
             Exit downLadder = null;
             Exit upLadder = null;
@@ -708,7 +758,8 @@ namespace LaMulana2Randomizer
                 upLadder.ConnectingAreaName = downLadder.ParentAreaName;
                 downLadder.ConnectingAreaName = upLadder.ParentAreaName;
 
-                LadderPairs.Add((upLadder, downLadder));
+                ExitPairs.Add((upLadder.ID, downLadder.ID));
+                LadderPairs.Add($"    {upLadder.Name} - {downLadder.Name}");
                 upLadders.Remove(upLadder);
                 downLadders.Remove(downLadder);
             }
@@ -766,7 +817,8 @@ namespace LaMulana2Randomizer
                 gate1.ConnectingAreaName = gate2.ParentAreaName;
                 gate2.ConnectingAreaName = gate1.ParentAreaName;
 
-                GatePairs.Add((gate1, gate2));
+                ExitPairs.Add((gate1.ID, gate2.ID));
+                GatePairs.Add($"    {gate1.Name} - {gate2.Name}");
                 gates.Remove(gate1);
                 gates.Remove(gate2);
             }
@@ -818,11 +870,38 @@ namespace LaMulana2Randomizer
         private void RandomiseSoulGateEntrances()
         {
             List<Exit> gates = Shuffle.FisherYates(GetConnectionsOfType(ExitType.SoulGate), random);
-            List<int> soulAmounts = Shuffle.FisherYates(new List<int>() { 1, 2, 2, 3, 3, 5, 5, 5 }, random);
+            List<int> soulAmounts = new List<int>() { 1, 2, 2, 3, 3, 5, 5, 5 };
+            List<Exit> priorityGates = new List<Exit>();
+
+            if (Settings.IncludeNineGates)
+            {
+                gates.Find(x => x.ID == ExitID.f03GateN9);
+                gates.Find(x => x.ID == ExitID.f08GateN8);
+                soulAmounts.Add(9);
+            }
+            else
+            {
+                gates.Remove(gates.Find(x => x.ID == ExitID.f03GateN9));
+                gates.Remove(gates.Find(x => x.ID == ExitID.f13GateN9));
+            }
+
+            soulAmounts = Shuffle.FisherYates(soulAmounts, random);
+            foreach (Exit exit in priorityGates)
+                gates.Remove(exit);
+
             while (gates.Count > 0)
             {
-                Exit gate1 = gates[random.Next(gates.Count)];
-                gates.Remove(gate1);
+                Exit gate1 = null;
+                if(priorityGates.Count > 0)
+                {
+                    gate1 = priorityGates[random.Next(priorityGates.Count)];
+                    priorityGates.Remove(gate1);
+                }
+                else
+                {
+                    gate1 = gates[random.Next(gates.Count)];
+                    gates.Remove(gate1);
+                }
 
                 Exit gate2 = gates[random.Next(gates.Count)];
                 gates.Remove(gate2);
@@ -844,10 +923,10 @@ namespace LaMulana2Randomizer
 
                 SoulGatePairs.Add((gate1, gate2, soulAmount));
 
-                if (gate1.Name.Equals("Eternal Prison Gloom D2") || gate2.Name.Equals("Eternal Prison Gloom D2"))
+                if (gate1.ID == ExitID.f14GateN6 || gate2.ID == ExitID.f14GateN6)
                 {
                     Exit toHel = exits.Find(exit => exit.ConnectingAreaName.Equals("Eternal Prison Doom Hel"));
-                    if (gate2.Name.Equals("Icefire Treetop D6"))
+                    if (gate1.ID == ExitID.f04GateN6 || gate2.ID == ExitID.f04GateN6)
                     {
                         toHel.AppendLogicString($" and IsDead(Vidofnir) and GuardianKills({ soulAmount})");
                     }
@@ -862,15 +941,15 @@ namespace LaMulana2Randomizer
 
         private void FixSoulGateLogic(Exit gate1, Exit gate2)
         {
-            if (gate1.Name.Equals("Eternal Prison Gloom D2"))
+            if (gate1.ID == ExitID.f14GateN6)
             {
                 gate2.AppendLogicString(" and CanWarp");
             }
-            else if (gate1.Name.Equals("Shrine of the Frost Giants E1"))
+            else if (gate1.ID == ExitID.f06GateN7)
             {
                 gate2.AppendLogicString(" and Has(Feather) and Has(Claydoll Suit)");
             }
-            else if (gate1.Name.Equals("Ancient Chaos C1"))
+            else if (gate1.ID == ExitID.f12GateN8)
             {
                 gate2.AppendLogicString("and (CanWarp or Has(Feather))");
             }

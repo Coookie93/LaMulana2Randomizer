@@ -163,6 +163,7 @@
     </Content>
     <Content Include="Newtonsoft\Newtonsoft.Json.dll" />
     <Content Include="Newtonsoft\Newtonsoft.Json.pdb" />
+    <Resource Include="Icons\dice.png" />
     <None Include="Seed\spoilers.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

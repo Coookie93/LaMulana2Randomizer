@@ -171,6 +171,23 @@
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
+                            <CheckBox Name="VillageToCliff" IsChecked="{Binding Settings.AllowVillageToCliff}" Content="Allow Village to Cliff" Margin="20,2,2,2">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="." />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                                <CheckBox.Style>
+                                    <Style TargetType="CheckBox">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=RandomHorizontal, Path=IsChecked}" Value="True">
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </CheckBox.Style>
+                            </CheckBox>
                             <CheckBox Name="RandomLadder" IsChecked="{Binding Settings.RandomLadderEntraces}" Content="Randomise Ladder Entrances" Margin="2">
                                 <CheckBox.ToolTip>
                                     <ToolTip Style="{StaticResource TootltipStyle}">
@@ -185,12 +202,29 @@
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
-                            <CheckBox Name="RandomSoulGates" IsEnabled="False" IsChecked="{Binding Settings.RandomSoulGateEntraces}" Content="Randomise Soul Gate Entrances" Margin="2">
+                            <CheckBox Name="RandomSoulGates" IsChecked="{Binding Settings.RandomSoulGateEntraces}" Content="Randomise Soul Gate Entrances" Margin="2">
                                 <CheckBox.ToolTip>
                                     <ToolTip Style="{StaticResource TootltipStyle}">
                                         <TextBlock Text="." />
                                     </ToolTip>
                                 </CheckBox.ToolTip>
+                            </CheckBox>
+                            <CheckBox Name="IncludeNineGate" IsChecked="{Binding Settings.IncludeNineGates}" Content="Include Nine Soul Gates" Margin="20,2,2,2">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="." />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                                <CheckBox.Style>
+                                    <Style TargetType="CheckBox">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=RandomSoulGates, Path=IsChecked}" Value="True">
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </CheckBox.Style>
                             </CheckBox>
                         </StackPanel>
                     </GroupBox>
@@ -238,7 +272,9 @@
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox>
-                    <Button Grid.Column="2" Width="18" Height="18" Command="{Binding RerollCommand}"/>
+                    <Button Grid.Column="2" Width="18" Height="18" Command="{Binding RerollCommand}" BorderThickness="0" Background="Snow">
+                        <Image Source="/Icons/dice.png" />
+                    </Button>
                 </Grid>
                 <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="100" Content="Generate" Command="{Binding GenerateCommand}">
                     <Button.Style>

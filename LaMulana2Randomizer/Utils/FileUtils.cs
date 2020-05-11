@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using LaMulana2RandomizerShared;
 
@@ -8,6 +9,44 @@ namespace LaMulana2Randomizer.Utils
 {
     public abstract class FileUtils
     {
+        public static Settings LoadSettings()
+        {
+            try
+            {
+                using (StreamReader sr = File.OpenText("Settings.json"))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    return (Settings)serializer.Deserialize(sr, typeof(Settings));
+                }
+            }
+            catch(Exception ex)
+            {
+                Logger.Log($"Failed to deserialise Settings.json.\n{ex.Message}");
+            }
+            return new Settings();
+        }
+
+        public static void SaveSettings(Settings settings)
+        {
+            try
+            {
+                using (StreamWriter sw = new StreamWriter("Settings.json"))
+                using (JsonWriter jw = new JsonTextWriter(sw))
+                {
+                    JsonSerializer serializer = new JsonSerializer
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        Formatting = Formatting.Indented
+                    };
+                    serializer.Serialize(jw, settings);
+                }
+            }
+            catch(Exception ex)
+            {
+                Logger.Log($"Failed to serialise Settings.json.\n{ex.Message}");
+            }
+        }
+
         public static List<JsonArea> GetWorldData()
         {
             try
@@ -44,63 +83,70 @@ namespace LaMulana2Randomizer.Utils
         
         public static bool WriteSpoilers(Randomiser randomiser)
         {
+            randomiser.WritingSpoilers = true;
             try
             {
-                using (StreamWriter sr = File.CreateText("Seed\\spoilers.txt"))
+                using (StreamWriter sw = File.CreateText("Seed\\spoilers.txt"))
                 {
-                    sr.WriteLine($"Seed: {randomiser.Settings.Seed}");
-                    sr.WriteLine();
+                    sw.WriteLine($"Seed: {randomiser.Settings.Seed}\n");
 
-                    sr.WriteLine($"Starting Weapon: {randomiser.StartingWeapon.Name}");
-                    sr.WriteLine();
+                    sw.WriteLine($"Starting Weapon: {randomiser.StartingWeapon.Name}\n");
 
-                    sr.WriteLine("Curse Locations: {");
+                    sw.WriteLine("Curse Locations: {");
                     foreach (Location location in randomiser.CursedLocations)
-                        sr.WriteLine($"  {location.Name}");
+                        sw.WriteLine($"  {location.Name}");
 
-                    sr.WriteLine("}");
-                    sr.WriteLine();
+                    sw.WriteLine("}\n");
 
-                    sr.WriteLine("Horizontal Entrances: {");
-                    foreach (var pair in randomiser.DoorPairs)
-                        sr.WriteLine($"  {pair.Item1.Name} - {pair.Item2.Name}");
+                    sw.WriteLine("Entrance Placement: {");
+                    if (randomiser.Settings.RandomHorizontalEntraces)
+                    {
+                        sw.WriteLine("  Horizontal Entrances: {");
+                        foreach (string pair in randomiser.HorizontalPairs)
+                            sw.WriteLine(pair);
 
-                    sr.WriteLine("}");
-                    sr.WriteLine();
+                        sw.WriteLine("  }");
+                    }
 
-                    sr.WriteLine("Ladder Entrances: {");
-                    foreach (var pair in randomiser.LadderPairs)
-                        sr.WriteLine($"  {pair.Item1.Name} - {pair.Item2.Name}");
+                    if (randomiser.Settings.RandomLadderEntraces)
+                    {
+                        sw.WriteLine("  Ladders Entrances: {");
+                        foreach (string pair in randomiser.LadderPairs)
+                            sw.WriteLine(pair);
 
-                    sr.WriteLine("}");
-                    sr.WriteLine();
+                        sw.WriteLine("  }");
+                    }
 
-                    sr.WriteLine("Gate Entrances: {");
-                    foreach (var pair in randomiser.GatePairs)
-                        sr.WriteLine($"  {pair.Item1.Name} - {pair.Item2.Name}");
+                    if (randomiser.Settings.RandomGateEntraces)
+                    {
+                        sw.WriteLine("  Gate Entrances: {");
+                        foreach (string pair in randomiser.GatePairs)
+                            sw.WriteLine(pair);
 
-                    sr.WriteLine("}");
-                    sr.WriteLine();
+                        sw.WriteLine("  }");
+                    }
+                        
+                    if (randomiser.Settings.RandomSoulGateEntraces)
+                    {
+                        sw.WriteLine("  Soul Gate Entrances: {");
+                        foreach (var pair in randomiser.SoulGatePairs)
+                            sw.WriteLine($"    {pair.Item1.Name} - {pair.Item2.Name}: Soul Amount {pair.Item3}");
 
-                    sr.WriteLine("Soul Gate Entrances: {");
-                    foreach (var pair in randomiser.SoulGatePairs)
-                        sr.WriteLine($"  {pair.Item1.Name} - {pair.Item2.Name}: Soul Amount {pair.Item3}");
+                        sw.WriteLine("  }");
+                    }
+                    sw.WriteLine("}\n");
 
-                    sr.WriteLine("}");
-                    sr.WriteLine();
-
-                    sr.WriteLine("Item Locations {");
+                    sw.WriteLine("Item Placement {");
                     foreach (LocationID id in Enum.GetValues(typeof(LocationID)))
                     {
                         foreach (Location location in randomiser.GetPlacedLocations())
                         {
                             if (id != LocationID.None && id == location.ID)
-                                sr.WriteLine($"  {location.Name} -> {location.Item.Name}");
+                                sw.WriteLine($"  {location.Name} -> {location.Item.Name}");
                         }
                     }
-                    sr.WriteLine("}");
-                    sr.WriteLine();
-                    sr.WriteLine("Expected Playthrough {");
+                    sw.WriteLine("}\n");
+                    sw.WriteLine("Expected Playthrough {");
 
                     PlayerState playthrough = new PlayerState(randomiser);
                     playthrough.CollectItem(randomiser.StartingWeapon);
@@ -111,14 +157,14 @@ namespace LaMulana2Randomizer.Utils
                     do
                     {
                         reachableLocations = playthrough.GetReachableLocations(randomiser.GetPlacedRequiredItemLocations());
-                        sr.WriteLine($"  Sphere {sphere} {{");
+                        sw.WriteLine($"  Sphere {sphere} {{");
                         foreach (Location location in reachableLocations)
                         {
                             playthrough.CollectItem(location.Item);
                             playthrough.CollectLocation(location);
-                            sr.WriteLine($"    {location.Name} -> {location.Item.Name}");
+                            sw.WriteLine($"    {location.Name} -> {location.Item.Name}");
                         }
-                        sr.WriteLine("  }");
+                        sw.WriteLine("  }");
 
                         if (playthrough.CanBeatGame())
                             break;
@@ -127,8 +173,9 @@ namespace LaMulana2Randomizer.Utils
                         sphere++;
 
                     } while (reachableLocations.Count > 0);
-                    sr.WriteLine("}");
+                    sw.WriteLine("}");
                 }
+                randomiser.WritingSpoilers = false;
                 return true;
             }
             catch (Exception ex)
@@ -137,16 +184,25 @@ namespace LaMulana2Randomizer.Utils
                 return false;
             }
         }
+
         public static bool WriteSeedFile(Randomiser randomiser)
         {
-            List<Tuple<LocationID, ItemID>> temp = new List<Tuple<LocationID, ItemID>>();
+            List<(LocationID, ItemID)> items = new List<(LocationID, ItemID)>();
+            List<(LocationID, ItemID, int)> shopItems = new List<(LocationID, ItemID, int)>();
             foreach (LocationID id in Enum.GetValues(typeof(LocationID)))
             {
                 foreach (Location location in randomiser.GetPlacedLocations())
                 {
                     if (id != LocationID.None && id == location.ID)
                     {
-                        temp.Add(new Tuple<LocationID, ItemID>(location.ID, location.Item.ID));
+                        if (location.LocationType == LocationType.Shop)
+                        {
+                            shopItems.Add((location.ID, location.Item.ID, location.Item.Price));
+                        }
+                        else
+                        {
+                            items.Add((location.ID, location.Item.ID));
+                        }
                     }
                 }
             }
@@ -156,36 +212,42 @@ namespace LaMulana2Randomizer.Utils
                 {
                     br.Write(randomiser.Settings.AutoScanTablets);
                     br.Write(randomiser.Settings.AutoPlaceSkulls);
-                    br.Write(temp.Count);
-                    foreach(var p in temp)
+                    br.Write(items.Count);
+                    foreach(var p in items)
                     {
                         br.Write((int)p.Item1);
                         br.Write((int)p.Item2);
                     }
-                    foreach(Location location in randomiser.CursedLocations)
+
+                    br.Write(shopItems.Count);
+                    foreach (var p in shopItems)
+                    {
+                        br.Write((int)p.Item1);
+                        br.Write((int)p.Item2);
+                        br.Write(p.Item3);
+                    }
+
+                    foreach (Location location in randomiser.CursedLocations)
                     {
                         br.Write((int)location.ID);
                     }
-                    br.Write(randomiser.DoorPairs.Count);
-                    foreach(var d in randomiser.DoorPairs)
+
+                    br.Write(randomiser.ExitPairs.Count);
+                    foreach(var d in randomiser.ExitPairs)
                     {
-                        br.Write((int)d.Item1.ID);
-                        br.Write((int)d.Item2.ID);
+                        br.Write((int)d.Item1);
+                        br.Write((int)d.Item2);
                     }
-                    br.Write(randomiser.LadderPairs.Count);
-                    foreach(var l in randomiser.LadderPairs)
+
+                    br.Write(randomiser.SoulGatePairs.Count);
+                    foreach (var s in randomiser.SoulGatePairs)
                     {
-                        br.Write((int)l.Item1.ID);
-                        br.Write((int)l.Item2.ID);
-                    }
-                    br.Write(randomiser.GatePairs.Count);
-                    foreach (var l in randomiser.GatePairs)
-                    {
-                        br.Write((int)l.Item1.ID);
-                        br.Write((int)l.Item2.ID);
+                        br.Write((int)s.Item1.ID);
+                        br.Write((int)s.Item2.ID);
+                        br.Write(s.Item3);
                     }
                 }
-                Logger.Log($"Total items randomised {temp.Count}");
+                Logger.Log($"Total items randomised {items.Count + shopItems.Count}");
             }
             catch (Exception ex)
             {

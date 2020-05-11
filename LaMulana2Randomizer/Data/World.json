@@ -75,14 +75,14 @@
     ],
     "Exits": [
       {
-        "Name": "Village of Departure F5",
+        "Name": "Village of Departure Main (F-5)",
         "ID": "f01Right",
         "ConnectionType": "RightDoor",
         "ConnectingAreaName": "Gate of Guidance",
         "Logic": "True"
       },
       {
-        "Name": "Village of Departure F3",
+        "Name": "Village of Departure Ladder (F-3)",
         "ID": "f01Down",
         "ConnectionType": "DownLadder",
         "ConnectingAreaName": "Inferno Cavern",
@@ -101,7 +101,7 @@
     ],
     "Exits": [
       {
-        "Name": "Inferno Cavern B1",
+        "Name": "Inferno Cavern (B-1)",
         "ID": "fL05Up",
         "ConnectionType": "UpLadder",
         "ConnectingAreaName": "Village of Departure",
@@ -150,14 +150,14 @@
     ],
     "Exits": [
       {
-        "Name": "Gate of Guidance C1",
+        "Name": "Gate of Guidance Main (C-1)",
         "ID": "fLLeft",
         "ConnectionType": "LeftDoor",
         "ConnectingAreaName": "Village of Departure",
         "Logic": "True"
       },
       {
-        "Name": "Gate of Guidance A6",
+        "Name": "Gate of Guidance Ladder (A-6)",
         "ID": "fLDown",
         "ConnectionType": "DownLadder",
         "ConnectingAreaName": "Mausoleum of Giants",
@@ -170,7 +170,7 @@
     "Locations": [],
     "Exits": [
       {
-        "Name": "Gate of Guidance A3",
+        "Name": "Gate of Guidance Gate (A-3)",
         "ID": "fLGate",
         "ConnectionType": "Gate",
         "ConnectingAreaName": "Gate of Illusion",
@@ -203,7 +203,7 @@
     ],
     "Exits": [
       {
-        "Name": "Mausoleum of Giants A1",
+        "Name": "Mausoleum of Giants Ladder (A-1)",
         "ID": "fL02Up",
         "ConnectionType": "UpLadder",
         "ConnectingAreaName": "Gate of Guidance",
@@ -215,7 +215,7 @@
         "Logic": "True"
       },
       {
-        "Name": "Mausoleum of Giants A5",
+        "Name": "Mausoleum of Giants Left Door (A-5)",
         "ID": "fL02Left",
         "ConnectionType": "LeftDoor",
         "ConnectingAreaName": "Endless Corridor",
@@ -234,7 +234,7 @@
     ],
     "Exits": [
       {
-        "Name": "Endless Corridor C1",
+        "Name": "Endless Corridor (C-1)",
         "ID": "fL08Right",
         "ConnectionType": "RightDoor",
         "ConnectingAreaName": "Mausoleum of Giants",
@@ -258,14 +258,14 @@
     ],
     "Exits": [
       {
-        "Name": "Gate of Illusion C1",
+        "Name": "Gate of Illusion Right Gate (C-1)",
         "ID": "fL11GateY0",
         "ConnectionType": "Gate",
         "ConnectingAreaName": "Roots of Yggdrasil",
         "Logic": " True"
       },
       {
-        "Name": "Gate of Illusion A1",
+        "Name": "Gate of Illusion Left Gate (A-1)",
         "ID": "fL11GateN",
         "ConnectionType": "Gate",
         "ConnectingAreaName": "Gate of Guidance Left",
@@ -289,7 +289,7 @@
       {
         "Name": "Ankh Chest RoY",
         "LocationType": "Chest",
-        "Logic": "Has(Feather) or Has(Katana) or Has(Axe) or CanUse(Bomb) or CanUse(Shuriken) or CanUse(Chakram) or CanUse(Earth Spear) or CanUse(Flare) or Has(Claydoll Suit) or Has(Lamp of Time) or (Has(Gale Fibula) and Has(Grapple Claw))"
+        "Logic": "Has(Feather) or Has(Katana) or Has(Axe) or CanUse(Bomb) or CanUse(Shuriken) or CanUse(Chakram) or CanUse(Earth Spear) or CanUse(Flare) or Has(Claydoll Suit) or CanStopTime or (Has(Gale Fibula) and Has(Grapple Claw))"
       },
       {
         "Name": "Pyramid Crystal Chest",
@@ -364,14 +364,15 @@
     ],
     "Exits": [
       {
-        "Name": "Roots of Yggdrasil D4",
+        "Name": "Roots of Yggdrasil Main (D-4)",
         "ID": "f00GateY0",
         "ConnectionType": "Gate",
         "ConnectingAreaName": "Gate of Illusion",
         "Logic": "False or Setting(Random Gates)"
       },
       {
-        "Name": "Roots of Yggdrasil D6",
+        "Name": "Roots of Yggdrasil Soul Gate (D-6)",
+        "ID": "f00GateN1",
         "ConnectionType": "SoulGate",
         "ConnectingAreaName": "Divine Fortress Entrance",
         "Logic": "GuardianKills(1) or Setting(Random Soul Gates)"
@@ -382,21 +383,21 @@
         "Logic": "Has(Origin Sigil)"
       },
       {
-        "Name": "Roots of Yggdrasil A1",
+        "Name": "Roots of Yggdrasil Top Left Gate (A-1)",
         "ID": "f00GateYA",
         "ConnectionType": "Gate",
         "ConnectingAreaName": "Annwfn Poison",
         "Logic": "IsDead(Ratatoskr 1) and (CanUse(Rolling Shuriken) or CanUse(Earth Spear) or CanUse(Caltrops) or CanUse(Bomb))"
       },
       {
-        "Name": "Roots of Yggdrasil D1",
+        "Name": "Roots of Yggdrasil Top Middle Gate (D-1)",
         "ID": "f00GateYB",
         "ConnectionType": "Gate",
         "ConnectingAreaName": "Icefire Treetop Entrance",
         "Logic": "IsDead(Nidhogg)"
       },
       {
-        "Name": "Roots of Yggdrasil G1",
+        "Name": "Roots of Yggdrasil Top Right Gate (G-1)",
         "ID": "f00GateYC",
         "ConnectionType": "Gate",
         "ConnectingAreaName": "Immortal Battlefield Left",
@@ -409,7 +410,7 @@
     "Locations": [],
     "Exits": [
       {
-        "Name": "Roots of Yggdrasil C5",
+        "Name": "Roots of Yggdrasil Ladder (C-5)",
         "ID": "f00Down",
         "ConnectionType": "DownLadder",
         "ConnectingAreaName": "Annwfn Main",
@@ -473,7 +474,7 @@
     ],
     "Exits": [
       {
-        "Name": "Annwfn C1",
+        "Name": "Annwfn Ladder (C-1)",
         "ID": "f02Up",
         "ConnectionType": "UpLadder",
         "ConnectingAreaName": "Roots of Yggdrasil Bottom",
@@ -490,7 +491,7 @@
         "Logic": "CanWarp or CanReach(Immortal Battlefield Main) or (CanKill(Cetus) and Setting(Non Random Ladders))"
       },
       {
-        "Name": "Annwfn E5",
+        "Name": "Annwfn Bottom (E-5)",
         "ID": "f02Down",
         "ConnectionType": "DownLadder",
         "ConnectingAreaName": "Immortal Battlefield Top",
@@ -508,7 +509,8 @@
         "Logic": "Has(Gloves) or Has(Feather) or CanWarp"
       },
       {
-        "Name": "Annwfn A4",
+        "Name": "Annwfn Soul Gate (A-4)",
+        "ID": "f02GateN2",
         "ConnectionType": "SoulGate",
         "ConnectingAreaName": "Shrine of the Frost Giants Main",
         "Logic": "(GuardianKills(2) or Setting(Random Soul Gates)) and Has(Origin Sigil)"
@@ -520,7 +522,7 @@
     "Locations": [],
     "Exits": [
       {
-        "Name": "Annwfn G4",
+        "Name": "Annwfn Gate (G-4)",
         "ID": "f02GateYA",
         "ConnectionType": "Gate",
         "ConnectingAreaName": "Roots of Yggdrasil",
@@ -529,7 +531,7 @@
       {
         "ConnectionType": "Internal",
         "ConnectingAreaName": "Annwfn Right",
-        "Logic": "CanUse(Rolling Shuriken) or Has(Claydoll Suit) or Has(Lamp of Time)"
+        "Logic": "CanUse(Rolling Shuriken) or Has(Claydoll Suit) or CanStopTime"
       }
     ]
   },
@@ -621,7 +623,7 @@
         "Logic": "IsDead(Cetus)"
       },
       {
-        "Name": "Immortal Battlefied F1",
+        "Name": "Immortal Battlefied Up Ladder (F-1)",
         "ID": "f03Up",
         "ConnectionType": "UpLadder",
         "ConnectingAreaName": "Annwfn Main",
@@ -667,7 +669,7 @@
       {
         "Name": "Totem Pole Chest",
         "LocationType": "Chest",
-        "Logic": "Has(Birth Sigil) and (Has(Gale Fibula) or Has(Lamp of Time) or IsDead(Cetus))"
+        "Logic": "Has(Birth Sigil) and (Has(Gale Fibula) or CanStopTime or IsDead(Cetus))"
       },
       {
         "Name": "Sacred Orb Chest IB",
@@ -702,7 +704,7 @@
       {
         "Name": "Secret Treasure of Life Item",
         "LocationType": "FreeStanding",
-        "Logic": "IsDead(Jormangund) and Dissonance(6) and CanChant(Night)"
+        "Logic": "IsDead(Jormangund) and IsDead(Anu) and Dissonance(6) and CanChant(Night)"
       },
       {
         "Name": "Hiro Roderick Shop 1",
@@ -767,7 +769,7 @@
         "Logic": "(Has(Anchor) or Has(Claydoll Suit)) and (IsDead(Cetus) or Has(Feather) or CanWarp)"
       },
       {
-        "Name": "Immortal Battlefield H4",
+        "Name": "Immortal Battlefield Right Door (H-4)",
         "ID": "f03Right",
         "ConnectionType": "RightDoor",
         "ConnectingAreaName": "Cavern",
@@ -779,7 +781,8 @@
         "Logic": "IsDead(Cetus)"
       },
       {
-        "Name": "Immortal Battlefield H2",
+        "Name": "Immortal Battlefield Two Soul Gate (H-2)",
+        "ID": "f03GateN3",
         "ConnectionType": "SoulGate",
         "ConnectingAreaName": "Gate of the Dead",
         "Logic": "GuardianKills(2) or Setting(Random Soul Gates)"
@@ -791,7 +794,7 @@
     "Locations": [],
     "Exits": [
       {
-        "Name": "Immortal Battlefield A6",
+        "Name": "Immortal Battlefield Gate (A-6)",
         "ID": "f03GateYC",
         "ConnectionType": "Gate",
         "ConnectingAreaName": "Roots of Yggdrasil",
@@ -814,7 +817,8 @@
     "Locations": [],
     "Exits": [
       {
-        "Name": "Immortal Battlefield B7",
+        "Name": "Immortal Battlefield Three Soul Gate (B-7)",
+        "ID": "f03GateN4",
         "ConnectionType": "SoulGate",
         "ConnectingAreaName": "Takamagahara Shrine Entrance",
         "Logic": "GuardianKills(3) or Setting(Random Soul Gates)"
@@ -842,7 +846,7 @@
         "Logic": "Has(Grapple Claw)"
       },
       {
-        "Name": "Immortal Battlefield G7(right)",
+        "Name": "Immortal Battlefield Down Ladder below Battery Chest (G-7)",
         "ID": "f03Down3",
         "ConnectionType": "DownLadder",
         "ConnectingAreaName": "Icefire Treetop Right",
@@ -883,7 +887,7 @@
         "Logic": "True"
       },
       {
-        "Name": "Immortal Battlefield G7(left)",
+        "Name": "Immortal Battlefield Moon Altar Hallway (G-7)",
         "ID": "f03Down2",
         "ConnectionType": "DownLadder",
         "ConnectingAreaName": "Icefire Treetop Right",
@@ -896,7 +900,7 @@
     "Locations": [],
     "Exits": [
       {
-        "Name": "Immortal Battlefield D7",
+        "Name": "Immortal Battlefield Down Ladder near Spinning Wheel (D-7)",
         "ID": "f03Down1",
         "ConnectionType": "DownLadder",
         "ConnectingAreaName": "Icefire Treetop Left",
@@ -909,9 +913,16 @@
     "Locations": [],
     "Exits": [
       {
+        "Name": "Immortal Battlefield Nine Soul Gate(D-4)",
+        "ID": "f03GateN9",
+        "ConnectionType": "SoulGate",
+        "ConnectingAreaName": "Hall of Malice",
+        "Logic": "GuardianKills(9) or Setting(Random Soul Gates)"
+      },
+      {
         "ConnectionType": "Unique",
         "ConnectingAreaName": "Spiral Hell",
-        "Logic": "Dissonance(6) and CanChant(Heaven) and CanChant(Earth) and CanChant(Sun) and CanChant(Moon) and CanChant(Fire) and CanChant(Sea) and CanChant(Wind) and CanChant(Mother) and CanChant(Child) and CanChant(Night) and Has(Secret Treasure of Life)"
+        "Logic": "IsDead(Anu) and Dissonance(6) and Has(Secret Treasure of Life) and CanChant(Heaven) and CanChant(Earth) and CanChant(Sun) and CanChant(Moon) and CanChant(Fire) and CanChant(Sea) and CanChant(Wind) and CanChant(Mother) and CanChant(Child) and CanChant(Night)"
       }
     ]
   },
@@ -926,14 +937,14 @@
     ],
     "Exits": [
       {
-        "Name": "Cavern A1",
+        "Name": "Cavern Left Door (A-1)",
         "ID": "fP00Left",
         "ConnectionType": "LeftDoor",
         "ConnectingAreaName": "Immortal Battlefield Main",
         "Logic": "True"
       },
       {
-        "Name": "Cavern D1",
+        "Name": "Cavern Right Door (D-1)",
         "ID": "fP00Right",
         "ConnectionType": "RightDoor",
         "ConnectingAreaName": "Cliff",
@@ -946,7 +957,7 @@
     "Locations": [],
     "Exits": [
       {
-        "Name": "Cliff A1",
+        "Name": "Cliff (A-1)",
         "ID": "fP02Left",
         "ConnectionType": "LeftDoor",
         "ConnectingAreaName": "Cavern",
@@ -959,7 +970,7 @@
     "Locations": [],
     "Exits": [
       {
-        "Name": "Icefire Treetop D3",
+        "Name": "Icefire Treetop Gate (D-3)",
         "ID": "f04GateYB",
         "ConnectionType": "Gate",
         "ConnectingAreaName": "Roots of Yggdrasil",
@@ -1068,7 +1079,7 @@
         "Logic": "CanChant(Moon) and CanChant(Sun) and CanWarp"
       },
       {
-        "Name": "Icefire Treetop C1",
+        "Name": "Icefire Treetop Ladder Fire Side (C-1)",
         "ID": "f04Up",
         "ConnectionType": "UpLadder",
         "ConnectingAreaName": "Immortal Battlefield Ladder",
@@ -1117,21 +1128,22 @@
         "Logic": "Has(Feather) and Has(Grapple Claw)"
       },
       {
-        "Name": "Icefire Treetop F1(right)",
+        "Name": "Icefire Treetop Right Ladder Ice Side (F-1)",
         "ID": "f04Up2",
         "ConnectionType": "UpLadder",
         "ConnectingAreaName": "Immortal Battlefield Battery",
         "Logic": "True"
       },
       {
-        "Name": "Icefire Treetop F1(left)",
+        "Name": "Icefire Treetop Left Ladder Ice Side (F-1)",
         "ID": "f04Up3",
         "ConnectionType": "UpLadder",
         "ConnectingAreaName": "Immortal Battlefield Moon",
         "Logic": "Has(Life Sigil) and (CanWarp or CanReach(Immortal Battlefield Dinosaur) or Setting(Random Ladders))"
       },
       {
-        "Name": "Icefire Treetop G3",
+        "Name": "Icefire Treetop Three Soul Gate (G-3)",
+        "ID": "f04GateN5",
         "ConnectionType": "SoulGate",
         "ConnectingAreaName": "Heavens Labyrinth",
         "Logic": "(Has(Anchor) or Has(Claydoll Suit)) and IsDead(Ratatoskr 3) and (GuardianKills(3) or Setting(Random Soul Gates))"
@@ -1154,11 +1166,11 @@
     ],
     "Exits": [
       {
-        "Name": "Icefire Treetop D6",
+        "Name": "Icefire Treetop Five Soul (D-6)",
+        "ID": "f04GateN6",
         "ConnectionType": "SoulGate",
         "ConnectingAreaName": "Eternal Prison Gloom",
-        "Logic": "IsDead(Vidofnir) and ((GuardianKills(5) and CanWarp) or Setting(Random Soul Gates))",
-        "IsBackSide": true
+        "Logic": "IsDead(Vidofnir) and ((GuardianKills(5) and CanWarp) or Setting(Random Soul Gates))"
       }
     ]
   },
@@ -1172,7 +1184,8 @@
         "Logic": "CanUse(Shuriken) or CanUse(Chakram) or Has(Claydoll Suit)"
       },
       {
-        "Name": "Divine Fortress C5",
+        "Name": "Divine Fortress Soul Gate (C-5)",
+        "ID": "f05GateN1",
         "ConnectionType": "SoulGate",
         "ConnectingAreaName": "Roots of Yggdrasil",
         "Logic": "GuardianKills(1) or Setting(Random Soul Gates)"
@@ -1267,12 +1280,11 @@
         "Logic": "True"
       },
       {
-        "Name": "Divine Fortress A3",
+        "Name": "Divine Fortress Gate (A-3)",
         "ID": "f05GateP1",
         "ConnectionType": "Gate",
         "ConnectingAreaName": "Valhalla Main",
-        "Logic": "True",
-        "IsBackSide": true
+        "Logic": "True"
       }
     ]
   },
@@ -1367,7 +1379,8 @@
     ],
     "Exits": [
       {
-        "Name": "Shrine of the Frost Giants E4",
+        "Name": "Shrine of the Frost Giants Two Soul Gate (E-4)",
+        "ID": "f06GateN2",
         "ConnectionType": "SoulGate",
         "ConnectingAreaName": "Annwfn Soul Gate",
         "Logic": "GuardianKills(2)  or Setting(Random Soul Gates)"
@@ -1422,11 +1435,11 @@
     ],
     "Exits": [
       {
-        "Name": "Shrine of the Frost Giants E1",
+        "Name": "Shrine of the Frost Giants Five Soul Gate (E-1)",
+        "ID": "f06GateN7",
         "ConnectionType": "SoulGate",
         "ConnectingAreaName": "Valhalla Top Right",
-        "Logic": "Has(Claydoll Suit) and (GuardianKills(5) or Setting(Random Soul Gates)) and IsDead(Balor)",
-        "IsBackSide": true
+        "Logic": "Has(Claydoll Suit) and (GuardianKills(5) or Setting(Random Soul Gates)) and IsDead(Balor)"
       }
     ]
   },
@@ -1446,7 +1459,7 @@
     ],
     "Exits": [
       {
-        "Name": "Shrine of the Frost Giants(Corridor) B2",
+        "Name": "Shrine of the Frost Giants Backside (B-2)",
         "ID": "f06_2GateP0",
         "ConnectionType": "Gate",
         "ConnectingAreaName": "Shrine of the Frost Giants Left",
@@ -1455,32 +1468,27 @@
       {
         "ConnectionType": "Corridor",
         "ConnectingAreaName": "Ancient Chaos Blood",
-        "Logic": "CanWarp or CanSpinCorridor",
-        "IsBackSide": true
+        "Logic": "CanWarp or CanSpinCorridor"
       },
       {
         "ConnectionType": "Corridor",
         "ConnectingAreaName": "Hall of Malice",
-        "Logic": "CanSpinCorridor",
-        "IsBackSide": true
+        "Logic": "CanSpinCorridor"
       },
       {
         "ConnectionType": "Corridor",
         "ConnectingAreaName": "Dark Lords Mausoleum Top",
-        "Logic": "CanSpinCorridor",
-        "IsBackSide": true
+        "Logic": "CanSpinCorridor"
       },
       {
         "ConnectionType": "Corridor",
         "ConnectingAreaName": "Valhalla Main",
-        "Logic": "CanSpinCorridor",
-        "IsBackSide": true
+        "Logic": "CanSpinCorridor"
       },
       {
         "ConnectionType": "Corridor",
         "ConnectingAreaName": "Eternal Prison Doom Entrance",
-        "Logic": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and CanWarp",
-        "IsBackSide": true
+        "Logic": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and CanWarp"
       }
     ]
   },
@@ -1495,17 +1503,17 @@
       {
         "Name": "Hydlit Shop 1",
         "LocationType": "Shop",
-        "Logic": "((Has(Snow Shoes) and Has(Gale Fibula)) or Has(Lamp of Time)) and PuzzleFinished(Bergelmir)"
+        "Logic": "((Has(Snow Shoes) and Has(Gale Fibula)) or CanStopTime) and PuzzleFinished(Bergelmir)"
       },
       {
         "Name": "Hydlit Shop 2",
         "LocationType": "Shop",
-        "Logic": "((Has(Snow Shoes) and Has(Gale Fibula)) or Has(Lamp of Time)) and PuzzleFinished(Bergelmir)"
+        "Logic": "((Has(Snow Shoes) and Has(Gale Fibula)) or CanStopTime) and PuzzleFinished(Bergelmir)"
       },
       {
         "Name": "Hydlit Shop 3",
         "LocationType": "Shop",
-        "Logic": "((Has(Snow Shoes) and Has(Gale Fibula)) or Has(Lamp of Time)) and PuzzleFinished(Bergelmir)"
+        "Logic": "((Has(Snow Shoes) and Has(Gale Fibula)) or CanStopTime) and PuzzleFinished(Bergelmir)"
       },
       {
         "Name": "Bergelmir",
@@ -1524,7 +1532,7 @@
         "Logic": "True"
       },
       {
-        "Name": "Shrine of the Frost Giants B4",
+        "Name": "Shrine of the Frost Giants Gate (B-4)",
         "ID": "f06GateP0",
         "ConnectionType": "Gate",
         "ConnectingAreaName": "Shrine of the Frost Giants Blood",
@@ -1607,18 +1615,18 @@
     ],
     "Exits": [
       {
-        "Name": "Gate of the Dead C4",
+        "Name": "Gate of the Dead Soul Gate (C-4)",
+        "ID": "f07GateN3",
         "ConnectionType": "SoulGate",
         "ConnectingAreaName": "Immortal Battlefield Main",
         "Logic": "GuardianKills(2) or Setting(Random Soul Gates)"
       },
       {
-        "Name": "Gate of the Dead F5",
+        "Name": "Gate of the Dead Gate (F-5)",
         "ID": "f07GateP0",
         "ConnectionType": "Gate",
         "ConnectingAreaName": "Dark Lords Mausoleum Main",
-        "Logic": "PuzzleFinished(White Pedestals)",
-        "IsBackSide": true
+        "Logic": "PuzzleFinished(White Pedestals)"
       }
     ]
   },
@@ -1632,7 +1640,8 @@
         "Logic": "Has(Knife) or Has(Katana) or Has(Rapier) or Has(Axe) or CanUse(Rolling Shuriken) or CanUse(Earth Spear) or CanUse(Caltrops) or CanUse(Bomb) or Has(Spaulder) or Has(Vajra)"
       },
       {
-        "Name": "Takamagahara Shrine D1",
+        "Name": "Takamagahara Shrine Three Soul Gate (D-1)",
+        "ID": "f08GateN4",
         "ConnectionType": "SoulGate",
         "ConnectingAreaName": "Immortal Battlefield Left Soul Gate",
         "Logic": "GuardianKills(3) or Setting(Random Soul Gates)"
@@ -1650,7 +1659,7 @@
       {
         "Name": "Flare Puzzle Reward",
         "LocationType": "FreeStanding",
-        "Logic": "IsDead(Raijin and Fujin) and Has(Birth Sigil) and (Has(Lamp of Time) or Has(Gale Fibula))"
+        "Logic": "IsDead(Raijin and Fujin) and Has(Birth Sigil) and (CanStopTime or Has(Gale Fibula))"
       },
       {
         "Name": "Ash Geen Shop 1",
@@ -1754,12 +1763,11 @@
         "Logic": "True"
       },
       {
-        "Name": "Takamagahara Shrine C7",
+        "Name": "Takamagahara Shrine Gate (C-7)",
         "ID": "f08GateP0",
         "ConnectionType": "Gate",
         "ConnectingAreaName": "Ancient Chaos Bottom",
-        "Logic": "True",
-        "IsBackSide": true
+        "Logic": "True"
       }
     ]
   },
@@ -1774,7 +1782,7 @@
       {
         "Name": "Belial",
         "LocationType": "Miniboss",
-        "Logic": "Has(Life Sigil) and Has(Cog of Antiquity) and (Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(6))) and ((Has(Egg of Creation) and OrbCount(6) and (CanUse(Earth Spear) or CanUse(Rolling Shuriken) or (Has(Katana) and Has(Feather)))) or (Has(Lamp of Time) and OrbCount(3) and ((Has(Axe) and (Has(Gauntlet) or Has(Spaulder))) or (Has(Katana) and (Has(Vajra) or Has(Spaulder))) or (Has(Rapier) and Has(Vajra)) or (Has(Knife) and (Has(Vajra) or Has(Spaulder))) or ((Has(Chain Whip) or Has(Flail Whip)) and (Has(Vajra) or Has(Gauntlet) or Has(Spaulder))))))",
+        "Logic": "Has(Life Sigil) and Has(Cog of Antiquity) and (Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(6))) and ((Has(Egg of Creation) and OrbCount(6) and (CanUse(Earth Spear) or CanUse(Rolling Shuriken) or (Has(Katana) and Has(Feather)))) or (CanStopTime and OrbCount(3) and ((Has(Axe) and (Has(Gauntlet) or Has(Spaulder))) or (Has(Katana) and (Has(Vajra) or Has(Spaulder))) or (Has(Rapier) and Has(Vajra)) or (Has(Knife) and (Has(Vajra) or Has(Spaulder))) or ((Has(Chain Whip) or Has(Flail Whip)) and (Has(Vajra) or Has(Gauntlet) or Has(Spaulder))))))",
         "HardLogic": "Has(Life Sigil) and Has(Cog of Antiquity) and (Has(Claydoll Suit) or Has(Ice Cloak)) and Has(Egg of Creation)",
         "Item": {
           "Name": "Belial",
@@ -1784,7 +1792,8 @@
     ],
     "Exits": [
       {
-        "Name": "Takamagahara Shrine B1",
+        "Name": "Takamagahara Shrine Five Soul Gate (B-1)",
+        "ID": "f08GateN8",
         "ConnectionType": "SoulGate",
         "ConnectingAreaName": "Ancient Chaos Blood",
         "Logic": "GuardianKills(5) or Setting(Random Soul Gates)"
@@ -1827,18 +1836,18 @@
         "Logic": "CanChant(Heaven)"
       },
       {
-        "Name": "Heavens Labyrinth E5",
+        "Name": "Heavens Labyrinth Soul Gate (E-5)",
+        "ID": "f09GateN5",
         "ConnectionType": "SoulGate",
         "ConnectingAreaName": "Icefire Treetop Right",
         "Logic": "GuardianKills(3) or Setting(Random Soul Gates)"
       },
       {
-        "Name": "Heavens Labyrinth D1",
+        "Name": "Heavens Labyrinth Gate (D-1)",
         "ID": "f09GateP0",
         "ConnectionType": "Gate",
         "ConnectingAreaName": "Hall of Malice Top",
-        "Logic": "(Has(Feather) or Has(Grapple Claw)) and IsDead(Griffin) and IsDead(Arachne) and IsDead(Scylla)",
-        "IsBackSide": true
+        "Logic": "(Has(Feather) or Has(Grapple Claw)) and IsDead(Griffin) and IsDead(Arachne) and IsDead(Scylla)"
       }
     ]
   },
@@ -1898,8 +1907,8 @@
       {
         "Name": "Griffin",
         "LocationType": "Miniboss",
-        "Logic": "(Has(Gale Fibula) or Has(Lamp of Time)) and Has(Gloves) and Has(Life Sigil) and IsDead(Glasya-Labolas) and OrbCount(2)",
-        "HardLogic": "(Has(Gale Fibula) or Has(Lamp of Time)) and Has(Gloves) and Has(Life Sigil) and IsDead(Glasya-Labolas)",
+        "Logic": "(Has(Gale Fibula) or CanStopTime) and Has(Gloves) and Has(Life Sigil) and IsDead(Glasya-Labolas) and OrbCount(2)",
+        "HardLogic": "(Has(Gale Fibula) or CanStopTime) and Has(Gloves) and Has(Life Sigil) and IsDead(Glasya-Labolas)",
         "Item": {
           "Name": "Griffin",
           "IsRequired": true
@@ -1930,6 +1939,7 @@
   },
   {
     "Name": "Valhalla Main",
+    "IsBackside" : true,
     "Locations": [
       {
         "Name": "Map Chest Valhalla",
@@ -1979,7 +1989,7 @@
       {
         "Name": "Jalandhara",
         "LocationType": "Miniboss",
-        "Logic": "Has(Life Sigil) and Has(Feather) and OrbCount(4) and (Has(Chain Whip) or Has(Flail Whip) or Has(Knife) or Has(Rapier) or Has(Axe) or Has(Katana))",
+        "Logic": "Has(Life Sigil) and Has(Feather) and OrbCount(4) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana))",
         "HardLogic": "Has(Life Sigil) and Has(Feather)",
         "Item": {
           "Name": "Jalandhara",
@@ -2013,7 +2023,7 @@
         "Logic": "Has(Feather) or CanChant(Heaven)"
       },
       {
-        "Name": "Valhalla A2",
+        "Name": "Valhalla Gate (A-2)",
         "ID": "f10GateP0",
         "ConnectionType": "Gate",
         "ConnectingAreaName": "Divine Fortress Main",
@@ -2027,26 +2037,22 @@
       {
         "ConnectionType": "Corridor",
         "ConnectingAreaName": "Ancient Chaos Blood",
-        "Logic": "CanSpinCorridor",
-        "IsBackSide": true
+        "Logic": "CanSpinCorridor"
       },
       {
         "ConnectionType": "Corridor",
         "ConnectingAreaName": "Hall of Malice",
-        "Logic": "CanSpinCorridor",
-        "IsBackSide": true
+        "Logic": "CanSpinCorridor"
       },
       {
         "ConnectionType": "Corridor",
         "ConnectingAreaName": "Dark Lords Mausoleum Top",
-        "Logic": "CanSpinCorridor",
-        "IsBackSide": true
+        "Logic": "CanSpinCorridor"
       },
       {
         "ConnectionType": "Corridor",
         "ConnectingAreaName": "Eternal Prison Doom Entrance",
-        "Logic": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and CanWarp",
-        "IsBackSide": true
+        "Logic": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and CanWarp"
       }
     ]
   },
@@ -2079,6 +2085,7 @@
   },
   {
     "Name": "Valhalla Top Right",
+    "IsBackside": true,
     "Locations": [],
     "Exits": [
       {
@@ -2092,7 +2099,8 @@
         "Logic": "CanWarp or Has(Feather) or (Has(Claydoll Suit) and CanChant(Heaven))"
       },
       {
-        "Name": "Valhalla E2",
+        "Name": "Valhalla Soul Gate (E-2)",
+        "ID": "f10GateN7",
         "ConnectionType": "SoulGate",
         "ConnectingAreaName": "Shrine of the Frost Giants Balor",
         "Logic": "Has(Claydoll Suit) and (GuardianKills(5) or Setting(Random Soul Gates))"
@@ -2101,6 +2109,7 @@
   },
   {
     "Name": "Dark Lords Mausoleum Main",
+    "IsBackside": true,
     "Locations": [
       {
         "Name": "Feather Chest",
@@ -2145,7 +2154,7 @@
       {
         "Name": "Money Fairy",
         "LocationType": "Fairy",
-        "Logic": "Has(Fairy Pass) and Has(Freyas Pendant) and CanReach(Annwfn Main) and (Has(Gale Fibula) or Has(Lamp of Time))",
+        "Logic": "Has(Fairy Pass) and Has(Freyas Pendant) and CanReach(Annwfn Main) and (Has(Gale Fibula) or CanStopTime)",
         "Item": {
           "Name": "Money Fairy",
           "IsRequired": true
@@ -2206,7 +2215,7 @@
         "Logic": "Has(Feather)"
       },
       {
-        "Name": "Dark Star Lord's Mausoleum D7",
+        "Name": "Dark Star Lord's Mausoleum Gate (D-7)",
         "ID": "f11GateP0",
         "ConnectionType": "Gate",
         "ConnectingAreaName": "Gate of the Dead",
@@ -2221,6 +2230,7 @@
   },
   {
     "Name": "Dark Lords Mausoleum Top",
+    "IsBackside": true,
     "Locations": [
       {
         "Name": "Crystal Skull Chest DLM",
@@ -2250,7 +2260,7 @@
       {
         "Name": "Annit",
         "LocationType": "Miniboss",
-        "Logic": "Has(Feather) and Has(Pyramid Crystal) and (Has(Silver Shield) or Has(Angel Shield)) and OrbCount(2) and (Has(Chain Whip) or Has(Flail Whip) or Has(Knife) or Has(Rapier) or Has(Axe) or Has(Katana))",
+        "Logic": "Has(Feather) and Has(Pyramid Crystal) and (Has(Silver Shield) or Has(Angel Shield)) and OrbCount(3) and (Has(Chain Whip) or Has(Flail Whip) or Has(Knife) or Has(Axe) or Has(Katana))",
         "HardLogic": "Has(Feather) and Has(Pyramid Crystal)",
         "Item": {
           "Name": "Annit",
@@ -2267,8 +2277,7 @@
       {
         "ConnectionType": "Corridor",
         "ConnectingAreaName": "Valhalla Main",
-        "Logic": "CanWarp or CanSpinCorridor",
-        "IsBackSide": true
+        "Logic": "CanWarp or CanSpinCorridor"
       },
       {
         "ConnectionType": "Corridor",
@@ -2278,20 +2287,17 @@
       {
         "ConnectionType": "Corridor",
         "ConnectingAreaName": "Ancient Chaos Blood",
-        "Logic": "CanSpinCorridor",
-        "IsBackSide": true
+        "Logic": "CanSpinCorridor"
       },
       {
         "ConnectionType": "Corridor",
         "ConnectingAreaName": "Hall of Malice",
-        "Logic": "CanSpinCorridor",
-        "IsBackSide": true
+        "Logic": "CanSpinCorridor"
       },
       {
         "ConnectionType": "Corridor",
         "ConnectingAreaName": "Eternal Prison Doom Entrance",
         "Logic": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and CanWarp",
-        "IsBackSide": true
       }
     ]
   },
@@ -2323,6 +2329,7 @@
   },
   {
     "Name": "Ancient Chaos Bottom",
+    "IsBackside": true,
     "Locations": [
       {
         "Name": "Map Chest AC",
@@ -2367,7 +2374,7 @@
         "Logic": "Has(Grapple Claw)"
       },
       {
-        "Name": "Ancient Chaos D6",
+        "Name": "Ancient Chaos Gate (D-6)",
         "ID": "f12GateP0",
         "ConnectionType": "Gate",
         "ConnectingAreaName": "Takamagahara Shrine Bottom",
@@ -2430,8 +2437,8 @@
       {
         "Name": "Anzu",
         "LocationType": "Miniboss",
-        "Logic": "Has(Lamp of Time) and Has(Claydoll Suit) and (Has(Silver Shield) or Has(Angel Shield)) and OrbCount(6) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana))",
-        "HardLogic": "Has(Lamp of Time) and Has(Claydoll Suit)",
+        "Logic": "CanStopTime and Has(Claydoll Suit) and (Has(Silver Shield) or Has(Angel Shield)) and OrbCount(6) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana))",
+        "HardLogic": "CanStopTime and Has(Claydoll Suit)",
         "Item": {
           "Name": "Anzu",
           "IsRequired": true
@@ -2440,7 +2447,7 @@
       {
         "Name": "Anu",
         "LocationType": "Guardian",
-        "Logic": "Has(Gloves) and IsDead(Ki-sikil-lil-la-ke) and (((Has(Chain Whip) or Has(Rapier) or Has(Axe) or Has(Katana)) and OrbCount(6)) or (Has(Flail Whip) and OrbCount(5)))",
+        "Logic": "Has(Gloves) and IsDead(Ki-sikil-lil-la-ke) and (((Has(Chain Whip) or Has(Rapier) or Has(Axe)) and OrbCount(6)) or (Has(Flail Whip) and OrbCount(5)))",
         "HardLogic": "Has(Gloves) and IsDead(Ki-sikil-lil-la-ke)",
         "Item": {
           "Name": "Anu",
@@ -2463,10 +2470,12 @@
   },
   {
     "Name": "Ancient Chaos Blood",
+    "IsBackside": true,
     "Locations": [],
     "Exits": [
       {
-        "Name": "Ancient Chaos C1",
+        "Name": "Ancient Chaos Soul Gate (C-1)",
+        "ID": "f12GateN8",
         "ConnectionType": "SoulGate",
         "ConnectingAreaName": "Takamagahara Shrine Blood",
         "Logic": "Has(Feather) and (GuardianKills(5) or Setting(Random Soul Gates))"
@@ -2474,25 +2483,23 @@
       {
         "ConnectionType": "Corridor",
         "ConnectingAreaName": "Dark Lords Mausoleum Top",
-        "Logic": "CanSpinCorridor",
-        "IsBackSide": true
+        "Logic": "CanSpinCorridor"
       },
       {
         "ConnectionType": "Corridor",
         "ConnectingAreaName": "Hall of Malice",
-        "Logic": "CanWarp or CanSpinCorridor",
-        "IsBackSide": true
+        "Logic": "CanWarp or CanSpinCorridor"
       },
       {
         "ConnectionType": "Corridor",
         "ConnectingAreaName": "Eternal Prison Doom Entrance",
-        "Logic": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and CanWarp",
-        "IsBackSide": true
+        "Logic": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and CanWarp"
       }
     ]
   },
   {
     "Name": "Hall of Malice Top",
+    "IsBackside": true,
     "Locations": [
       {
         "Name": "Map Chest HoM",
@@ -2512,7 +2519,7 @@
         "Logic": "True"
       },
       {
-        "Name": "Hall of Malice C1",
+        "Name": "Hall of Malice Gate (C-1)",
         "ID": "f13GateP0",
         "ConnectionType": "Gate",
         "ConnectingAreaName": "Heavens Labyrinth",
@@ -2522,6 +2529,7 @@
   },
   {
     "Name": "Hall of Malice",
+    "IsBackside": true,
     "Locations": [
       {
         "Name": "FairyLan Shop 1",
@@ -2543,8 +2551,7 @@
       {
         "ConnectionType": "Corridor",
         "ConnectingAreaName": "Ancient Chaos Blood",
-        "Logic": "CanSpinCorridor",
-        "IsBackSide": true
+        "Logic": "CanSpinCorridor"
       },
       {
         "ConnectionType": "Corridor",
@@ -2554,8 +2561,15 @@
       {
         "ConnectionType": "Corridor",
         "ConnectingAreaName": "Eternal Prison Doom Entrance",
-        "Logic": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and CanWarp",
-        "IsBackSide": true
+        "Logic": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and CanWarp"
+      },
+      {
+
+        "Name": "Hall of Malice Soul Gate (D-3)",
+        "ID": "f13GateN9",
+        "ConnectionType": "SoulGate",
+        "ConnectingAreaName": "Immortal Battlefield Spiral Boat",
+        "Logic": "Has(Death Sigil) and Has(Earth Spear) and (GuardianKills(9) or Setting(Random Soul Gates))"
       }
     ]
   },
@@ -2565,7 +2579,7 @@
       {
         "Name": "Nemean Fur Chest",
         "LocationType": "Chest",
-        "Logic": "IsDead(HoM Left Path) and Has(Feather) and Has(Lamp of Time)"
+        "Logic": "IsDead(HoM Left Path) and Has(Feather) and CanStopTime"
       },
       {
         "Name": "Crystal Skull Chest HoM",
@@ -2585,7 +2599,7 @@
       {
         "Name": "HoM Left Path",
         "LocationType": "Miniboss",
-        "Logic": "(Has(Silver Shield) or Has(Angel Shield)) and (Has(Chain Whip) and OrbCount(7)) or ((Has(Axe) or Has(Katana)) and OrbCount(6)) or (Has(Flail Whip) and OrbCount(5))",
+        "Logic": "((Has(Silver Shield) and Has(Feather)) or Has(Angel Shield)) and ((Has(Chain Whip) and OrbCount(7)) or ((Has(Axe) or Has(Katana)) and OrbCount(6)) or (Has(Flail Whip) and OrbCount(5)))",
         "HardLogic": "True",
         "Item": {
           "Name": "HoM Left Path",
@@ -2595,7 +2609,7 @@
       {
         "Name": "HoM Middle Path",
         "LocationType": "Miniboss",
-        "Logic": "(Has(Silver Shield) or Has(Angel Shield)) and (Has(Chain Whip) and OrbCount(7)) or ((Has(Axe) or Has(Katana)) and OrbCount(6)) or (Has(Flail Whip) and OrbCount(5))",
+        "Logic": "(Has(Silver Shield) or Has(Angel Shield)) and ((Has(Chain Whip) and OrbCount(7)) or ((Has(Flail Whip) or Has(Axe) or Has(Katana)) and OrbCount(6)))",
         "HardLogic": "True",
         "Item": {
           "Name": "HoM Middle Path",
@@ -2605,7 +2619,7 @@
       {
         "Name": "HoM Right Path",
         "LocationType": "Miniboss",
-        "Logic": "(Has(Silver Shield) or Has(Angel Shield)) and (Has(Chain Whip) and OrbCount(7)) or ((Has(Flail Whip) or Has(Axe) or Has(Katana)) and OrbCount(6))",
+        "Logic": "(Has(Silver Shield) or Has(Angel Shield)) and ((Has(Chain Whip) and OrbCount(7)) or ((Has(Flail Whip) or Has(Axe) or Has(Katana)) and OrbCount(6)))",
         "HardLogic": "True",
         "Item": {
           "Name": "HoM Right Path",
@@ -2633,16 +2647,11 @@
         }
       }
     ],
-    "Exits": [
-      {
-        "ConnectionType": "Unique",
-        "ConnectingAreaName": "Immortal Battlefield Spiral Boat",
-        "Logic": "Has(Death Sigil) and Has(Earth Spear) and GuardianKills(9)"
-      }
-    ]
+    "Exits": []
   },
   {
     "Name": "Eternal Prison Doom Entrance",
+    "IsBackside": true,
     "Locations": [
       {
         "Name": "Crystal Skull Chest EPD",
@@ -2684,7 +2693,7 @@
       {
         "Name": "Osiris Item",
         "LocationType": "Dialogue",
-        "Logic": "Has(Maats Feather) and Has(Djed Pillar) and (Has(Claydoll Suit) or Has(Ice Cloak)) and Has(Feather) and ((Has(Gale Fibula) or Has(Lamp of Time)) or CanReach(Eternal Prison Gloom))"
+        "Logic": "Has(Maats Feather) and Has(Djed Pillar) and (Has(Claydoll Suit) or Has(Ice Cloak)) and Has(Feather) and ((Has(Gale Fibula) or CanStopTime) or CanReach(Eternal Prison Gloom))"
       },
       {
         "Name": "Hraesvelgr",
@@ -2711,7 +2720,7 @@
       {
         "ConnectionType": "Internal",
         "ConnectingAreaName": "Eternal Prison Gloom",
-        "Logic": "Has(Grapple Claw) and (Has(Gale Fibula) or Has(Lamp of Time)) and (Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(1) and Has(Anchor)))"
+        "Logic": "Has(Grapple Claw) and (Has(Gale Fibula) or CanStopTime) and (Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(1) and Has(Anchor)))"
       },
       {
         "ConnectionType": "Unique",
@@ -2779,6 +2788,7 @@
   },
   {
     "Name": "Eternal Prison Gloom",
+    "IsBackside": true,
     "Locations": [
       {
         "Name": "Map Chest EPG",
@@ -2860,7 +2870,8 @@
         "Logic": "Has(Death Sigil)"
       },
       {
-        "Name": "Eternal Prison Gloom D2",
+        "Name": "Eternal Prison Gloom Soul Gate (D-2)",
+        "ID": "f14GateN6",
         "ConnectionType": "SoulGate",
         "ConnectingAreaName": "Icefire Treetop Vidofnir",
         "Logic": "GuardianKills(5) or Setting(Random Soul Gates)"

@@ -11,7 +11,7 @@ namespace LM2RandomiserMod.Patches
     [MonoModPatch("L2Flag.L2FlagSystem")]
     public class patched_L2FlagSystem : L2Flag.L2FlagSystem
     {
-        [NonSerialized] public List<string> flagWatch = new List<string>();
+        [NonSerialized] public Queue<string> flagWatch = new Queue<string>();
 
         public patched_L2FlagSystem(L2System l2sys) : base(l2sys)
         {
@@ -51,7 +51,7 @@ namespace LM2RandomiserMod.Patches
 
             if (flagWatch == null)
             {
-                flagWatch = new List<String>();
+                flagWatch = new Queue<String>();
             }
 
             short oldData = 0;
@@ -73,7 +73,10 @@ namespace LM2RandomiserMod.Patches
                     return;
             }
 
-            flagWatch.Add($"{flag.seetName[sheet_no]}.{name} = {oldData + difference} (diff:{difference})");
+            flagWatch.Enqueue($"{flag.seetName[sheet_no]}.{name} = {oldData + difference} (diff:{difference})");
+
+            if (flagWatch.Count > 12)
+                flagWatch.Dequeue();
         }
 
         public void AddFlagToWatch(int sheet_no, string name, short data)
@@ -84,7 +87,7 @@ namespace LM2RandomiserMod.Patches
 
             if (flagWatch == null)
             {
-                flagWatch = new List<String>();
+                flagWatch = new Queue<String>();
             }
 
             short oldData = 0;
@@ -92,9 +95,12 @@ namespace LM2RandomiserMod.Patches
 
             short difference = (short)(data - oldData);
 
-            flagWatch.Add($"{flag.seetName[sheet_no]}.{name} = {data} (diff:{difference})");
+            flagWatch.Enqueue($"{flag.seetName[sheet_no]}.{name} = {data} (diff:{difference})");
+
+            if (flagWatch.Count > 12)
+                flagWatch.Dequeue();
         }
-        public List<string> GetFlagWatches()
+        public Queue<string> GetFlagWatches()
         {
             return flagWatch;
         }

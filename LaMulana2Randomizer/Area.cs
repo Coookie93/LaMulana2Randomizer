@@ -5,6 +5,7 @@ namespace LaMulana2Randomizer
     public class JsonArea
     {
         public string Name;
+        public bool IsBackside;
         public List<JsonLocation> Locations;
         public List<JsonExit> Exits;
     }
@@ -12,14 +13,16 @@ namespace LaMulana2Randomizer
     public class Area
     {
         public string Name { get; private set; }
+        public bool IsBackside { get; private set; }
         public List<Exit> Exits { get; private set; }
         public List<Exit> Entrances { get; private set; }
 
         public bool Checking = false;
 
-        public Area(string name)
+        public Area(JsonArea area)
         {
-            Name = name;
+            Name = area.Name;
+            IsBackside = area.IsBackside;
             Entrances = new List<Exit>();
             Exits = new List<Exit>();
         }

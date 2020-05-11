@@ -26,7 +26,8 @@ namespace LaMulana2Randomizer.ViewModels
         public MainViewModel()
         {
             Title = Version.version;
-            Settings = new Settings();
+            Settings = FileUtils.LoadSettings();
+            Reroll();
         }
 
         private ICommand _rerollCommand;
@@ -58,6 +59,7 @@ namespace LaMulana2Randomizer.ViewModels
 
         public void Generate()
         {
+            FileUtils.SaveSettings(Settings);
             ProgressDialogViewModel dialogViewModel = new ProgressDialogViewModel();
             ProgressDialog dialog = new ProgressDialog()
             {
@@ -112,6 +114,7 @@ namespace LaMulana2Randomizer.ViewModels
                     } while (!entranceCheck);
 
                     randomiser.FixAnkhLogic();
+                    randomiser.FixFDCLogic();
 
                     attemptCount = 0;
                     bool canBeatGame;
@@ -119,6 +122,7 @@ namespace LaMulana2Randomizer.ViewModels
                     {
                         attemptCount++;
                         randomiser.PlaceItems();
+                        randomiser.AdjustShopPrices();
                         canBeatGame = randomiser.CanBeatGame();
                         if (!canBeatGame)
                         {

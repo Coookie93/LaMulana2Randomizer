@@ -90,15 +90,20 @@ namespace LM2RandomiserMod
 
                 var flagWatch = ((patched_L2FlagSystem)sys.getFlagSys()).GetFlagWatches();
 
-                if (flagWatch == null || flagWatch.Count < 3)
+                if (flagWatch == null)
                     return;
 
                 guistyle.fontSize = 10;
 
                 try
                 {
-                    GUIContent flw1 = new GUIContent(flagWatch[flagWatch.Count - 1] + "\r\n" + flagWatch[flagWatch.Count - 2] +
-                                                 "\r\n" + flagWatch[flagWatch.Count - 3]);
+                    string flags = string.Empty;
+
+                    foreach(var flag in flagWatch)
+                    {
+                        flags = string.Format($"{flags}\n{flag}");
+                    }
+                    GUIContent flw1 = new GUIContent(flags);
                     Vector2 flw1Size = guistyle.CalcSize(flw1);
                     GUI.Label(new Rect(0, Screen.height - flw1Size.y, flw1Size.x, flw1Size.y), flw1, guistyle);
                 }

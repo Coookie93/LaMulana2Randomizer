@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,15 +14,29 @@ using Version = LM2RandomizerShared.Version;
 
 namespace LM2RandomiserMod
 {
+    public class ShopItem 
+    {
+        public ItemID ID;
+        public int Price;
+
+        public ShopItem(ItemID id, int price)
+        {
+            ID = id;
+            Price = price;
+        }
+    }
+
     public class L2Rando : MonoBehaviour
     {
         public bool Randomising { get; private set; } = false;
         public bool AutoScanTablets { get; private set; } = false;
 
         private Dictionary<LocationID,ItemID> locationToItemMap;
+        private Dictionary<LocationID, ShopItem> shopToItemMap;
         private List<LocationID> cursedChests;
         private Dictionary<ExitID, ExitID> exitToExitMap;
-        private bool randomGates = false;
+        private Dictionary<ExitID, int> soulGateValueMap;
+        private bool randomSoulGates = false;
         private bool autoPlaceSkull = false;
 
         private patched_L2System sys;
@@ -29,6 +44,16 @@ namespace LM2RandomiserMod
         private L2TalkDataBase talkDataBase;
 
         private GameObject cursedChestPrefab;
+        private GameObject oneSoulGatePrefab;
+        private GameObject twoSoulGatePrefab;
+        private GameObject threeSoulGatePrefab;
+        private GameObject fiveSoulGatePrefab;
+        private GameObject nineSoulGatePrefab;
+        private GameObject oneSoulPrefab;
+        private GameObject twoSoulPrefab;
+        private GameObject threeSoulPrefab;
+        private GameObject fiveSoulPrefab;
+        private GameObject nineSoulPrefab;
 
         private Font currentFont = null;
         private bool showText = false;
@@ -75,7 +100,7 @@ namespace LM2RandomiserMod
                 StartCoroutine(ChangeTreasureBoxes());
                 ChangeEventItems();
 
-                ChangeEntrances(scene.name);
+                StartCoroutine(ChangeEntrances(scene.name));
 
                 var bgScroll = FindObjectOfType<BGScrollSystem>();
                 if (scene.name.Equals("field03"))
@@ -105,7 +130,6 @@ namespace LM2RandomiserMod
                     foreach (var grailCanceller in FindObjectsOfType<HolyGrailCancellerScript>())
                         grailCanceller.gameObject.SetActive(false);
                 }
-
 
                 //these cause the message to popup when you record a mantra for the first time, so just deactivate
                 //the gameobject so they don't appear
@@ -280,8 +304,10 @@ namespace LM2RandomiserMod
         bool LoadSeed()
         {
             locationToItemMap = new Dictionary<LocationID, ItemID>();
+            shopToItemMap = new Dictionary<LocationID, ShopItem>();
             cursedChests = new List<LocationID>();
             exitToExitMap = new Dictionary<ExitID, ExitID>();
+            soulGateValueMap = new Dictionary<ExitID, int>();
             try
             {
                 using (BinaryReader br = new BinaryReader(File.Open(Path.Combine(Directory.GetCurrentDirectory(),
@@ -294,39 +320,49 @@ namespace LM2RandomiserMod
                     {
                         locationToItemMap.Add((LocationID)br.ReadInt32(), (ItemID)br.ReadInt32());
                     }
-                    for(int i = 0; i < 4; i++)
+                    if (itemCount != locationToItemMap.Count)
+                    {
+                        message = $"Seed Failed to load, mismatch between the expected and actual item count, {itemCount} to {locationToItemMap.Count}.";
+                        return false;
+                    }
+
+                    int shopItemCount = br.ReadInt32();
+                    for (int i = 0; i < shopItemCount; i++)
+                    {
+                        shopToItemMap.Add((LocationID)br.ReadInt32(), new ShopItem((ItemID)br.ReadInt32(), br.ReadInt32()));
+                    }
+                    if (shopItemCount != shopToItemMap.Count)
+                    {
+                        message = $"Seed Failed to load, mismatch between the expected and actual shop item count, {shopItemCount} to {shopToItemMap.Count}.";
+                        return false;
+                    }
+
+                    for (int i = 0; i < 4; i++)
                     {
                         cursedChests.Add((LocationID)br.ReadInt32());
                     }
-                    int doorPairCount = br.ReadInt32();
-                    for(int i = 0; i < doorPairCount; i++)
+
+                    int exitPairCount = br.ReadInt32();
+                    for(int i = 0; i < exitPairCount; i++)
                     {
-                        ExitID door1 = (ExitID)br.ReadInt32();
-                        ExitID door2 = (ExitID)br.ReadInt32();
-                        exitToExitMap.Add(door1, door2);
-                        exitToExitMap.Add(door2, door1);
+                        ExitID exit1 = (ExitID)br.ReadInt32();
+                        ExitID exit2 = (ExitID)br.ReadInt32();
+                        exitToExitMap.Add(exit1, exit2);
+                        exitToExitMap.Add(exit2, exit1);
                     }
-                    int ladderPairCount = br.ReadInt32();
-                    for (int i = 0; i < ladderPairCount; i++)
-                    {
-                        ExitID ladder1 = (ExitID)br.ReadInt32();
-                        ExitID ladder2 = (ExitID)br.ReadInt32();
-                        exitToExitMap.Add(ladder1, ladder2);
-                        exitToExitMap.Add(ladder2, ladder1);
-                    }
-                    int gatePairCount = br.ReadInt32();
-                    randomGates = gatePairCount > 0;
-                    for (int i = 0; i < gatePairCount; i++)
+
+                    int soulGatePairs = br.ReadInt32();
+                    randomSoulGates = soulGatePairs > 0;
+                    for (int i = 0; i < soulGatePairs; i++)
                     {
                         ExitID gate1 = (ExitID)br.ReadInt32();
                         ExitID gate2 = (ExitID)br.ReadInt32();
                         exitToExitMap.Add(gate1, gate2);
                         exitToExitMap.Add(gate2, gate1);
-                    }
-                    if (itemCount != locationToItemMap.Count)
-                    {
-                        message = "Seed Failed to load, mismatch between the expected and actual item count.";
-                        return false;
+
+                        int soulValue = br.ReadInt32();
+                        soulGateValueMap.Add(gate1, soulValue);
+                        soulGateValueMap.Add(gate2, soulValue);
                     }
                 }
             }
@@ -373,7 +409,142 @@ namespace LM2RandomiserMod
                     cursedChestPrefab.SetActive(false);
                 }
             }
+
+            if (randomSoulGates)
+            {
+                foreach (AnimatorController controller in FindObjectsOfType<AnimatorController>())
+                {
+                    if (controller.name.Equals("soul_gate"))
+                    {
+                        if (controller.CheckFlags[0].BOX[0].flag_no1 == 5 && threeSoulGatePrefab == null)
+                        {
+                            threeSoulGatePrefab = Instantiate(controller.gameObject);
+                            threeSoulGatePrefab.name = "Three Soul Gate Prefab";
+                            DontDestroyOnLoad(threeSoulGatePrefab);
+                            threeSoulGatePrefab.SetActive(false);
+                        }
+                        else if (controller.CheckFlags[0].BOX[0].flag_no1 == 8 && fiveSoulGatePrefab == null)
+                        {
+                            fiveSoulGatePrefab = Instantiate(controller.gameObject);
+                            fiveSoulGatePrefab.name = "Five Soul Gate Prefab";
+                            DontDestroyOnLoad(fiveSoulGatePrefab);
+                            fiveSoulGatePrefab.SetActive(false);
+                        }
+                    }
+                    else if (controller.name.Equals("soul_cont"))
+                    {
+                        if (controller.CheckFlags[0].BOX[0].flag_no1 == 23 && threeSoulPrefab == null)
+                        {
+                            threeSoulPrefab = Instantiate(controller.gameObject);
+                            threeSoulPrefab.name = "Three Soul Prefab";
+                            DontDestroyOnLoad(threeSoulPrefab);
+                            threeSoulPrefab.SetActive(false);
+                        }
+                        else if (controller.CheckFlags[0].BOX[0].flag_no1 == 26 && fiveSoulPrefab == null)
+                        {
+                            fiveSoulPrefab = Instantiate(controller.gameObject);
+                            fiveSoulPrefab.name = "Five Soul Prefab";
+                            DontDestroyOnLoad(fiveSoulPrefab);
+                            fiveSoulPrefab.SetActive(false);
+                        }
+                    }
+                }
+            }
+
             sys.reInitSystem();
+
+            if (randomSoulGates)
+            {
+                ao = SceneManager.LoadSceneAsync("field05");
+                while (!ao.isDone)
+                    yield return null;
+
+                foreach (AnimatorController controller in FindObjectsOfType<AnimatorController>())
+                {
+                    if (controller.name.Equals("soul_gate"))
+                    {
+                        if (oneSoulGatePrefab == null)
+                        {
+                            oneSoulGatePrefab = Instantiate(controller.gameObject);
+                            oneSoulGatePrefab.name = "One Soul Gate Prefab";
+                            DontDestroyOnLoad(oneSoulGatePrefab);
+                            oneSoulGatePrefab.SetActive(false);
+                        }
+                    }
+                    else if (controller.name.Equals("soul_cont"))
+                    {
+                        if (oneSoulPrefab == null)
+                        {
+                            oneSoulPrefab = Instantiate(controller.gameObject);
+                            oneSoulPrefab.name = "One Soul Prefab";
+                            DontDestroyOnLoad(oneSoulPrefab);
+                            oneSoulPrefab.SetActive(false);
+                        }
+                    }
+                }
+
+                sys.reInitSystem();
+
+                ao = SceneManager.LoadSceneAsync("field02");
+                while (!ao.isDone)
+                    yield return null;
+
+                foreach (AnimatorController controller in FindObjectsOfType<AnimatorController>())
+                {
+                    if (controller.name.Equals("soul_gate"))
+                    {
+                        if (twoSoulGatePrefab == null)
+                        {
+                            twoSoulGatePrefab = Instantiate(controller.gameObject);
+                            twoSoulGatePrefab.name = "Two Soul Gate Prefab";
+                            DontDestroyOnLoad(twoSoulGatePrefab);
+                            twoSoulGatePrefab.SetActive(false);
+                        }
+                    }
+                    else if (controller.name.Equals("soul_cont"))
+                    {
+                        if (twoSoulPrefab == null)
+                        {
+                            twoSoulPrefab = Instantiate(controller.gameObject);
+                            twoSoulPrefab.name = "Two Soul Prefab";
+                            DontDestroyOnLoad(twoSoulPrefab);
+                            twoSoulPrefab.SetActive(false);
+                        }
+                    }
+                }
+
+                sys.reInitSystem();
+
+                ao = SceneManager.LoadSceneAsync("field13");
+                while (!ao.isDone)
+                    yield return null;
+
+                foreach (AnimatorController controller in FindObjectsOfType<AnimatorController>())
+                {
+                    if (controller.name.Equals("soul_gate"))
+                    {
+                        if (nineSoulGatePrefab == null)
+                        {
+                            nineSoulGatePrefab = Instantiate(controller.gameObject);
+                            nineSoulGatePrefab.name = "Nine Soul Gate Prefab";
+                            DontDestroyOnLoad(nineSoulGatePrefab);
+                            nineSoulGatePrefab.SetActive(false);
+                        }
+                    }
+                    else if (controller.name.Equals("soul_cont"))
+                    {
+                        if (nineSoulPrefab == null)
+                        {
+                            nineSoulPrefab = Instantiate(controller.gameObject);
+                            nineSoulPrefab.name = "Nine Soul Prefab";
+                            DontDestroyOnLoad(nineSoulPrefab);
+                            nineSoulPrefab.SetActive(false);
+                        }
+                    }
+                }
+
+                sys.reInitSystem();
+            }
         }
 
         private ItemData GetItemDataFromName(string objName)
@@ -611,18 +782,25 @@ namespace LM2RandomiserMod
             return ExitDB.AnchorNameToExitID(anchorName);
         }
 
-        private void ChangeEntrances(string field)
+        private IEnumerator ChangeEntrances(string field)
         {
             if (field.Equals("fieldLast"))
-                return;
+                yield return false;
 
-            List<AnimatorController> doors = new List<AnimatorController>(); 
-            if (randomGates)
+            List<AnimatorController> yugGates = new List<AnimatorController>(); 
+            foreach (AnimatorController animator in FindObjectsOfType<AnimatorController>())
             {
-                foreach (AnimatorController animator in FindObjectsOfType<AnimatorController>())
+                if (animator.name.Equals("YugGateDoor"))
+                    yugGates.Add(animator);
+            }
+
+            List<GameObject> objectsToRemove = new List<GameObject>();
+            if (randomSoulGates)
+            {
+                foreach (AnimatorController controller in FindObjectsOfType<AnimatorController>())
                 {
-                    if (animator.name.Equals("YugGateDoor"))
-                        doors.Add(animator);
+                    if (controller.name.Equals("soul_gate") || controller.name.Equals("soul_cont"))
+                        objectsToRemove.Add(controller.gameObject);
                 }
             }
 
@@ -640,7 +818,6 @@ namespace LM2RandomiserMod
                     if (exitInfo.FieldNo == destinationInfo.FieldNo)
                         gate.bgmFadeOut = false;
 
-
                     if (exitID >= ExitID.f00GateY0 && exitID <= ExitID.fL11GateN)
                     {
                         L2FlagBoxParent[] boxParents = new L2FlagBoxParent[1];
@@ -648,7 +825,7 @@ namespace LM2RandomiserMod
                         List<L2FlagBox> flagBoxes = new List<L2FlagBox>();
 
                         AnimatorController gateDoor = null;
-                        foreach (var door in doors)
+                        foreach (var door in yugGates)
                         {
                             Vector3 position = gate.transform.position;
                             if (position.x - 30 < door.transform.position.x && position.x + 30 > door.transform.position.x &&
@@ -698,149 +875,185 @@ namespace LM2RandomiserMod
                                 gateDoor.CheckFlags = new L2FlagBoxParent[0];
                         }
                     }
+                    else if(exitID >= ExitID.f00GateN1)
+                    {
+                        L2FlagBoxParent[] boxParents = new L2FlagBoxParent[1];
+                        boxParents[0] = new L2FlagBoxParent();
+                        List<L2FlagBox> flagBoxes = new List<L2FlagBox>();
 
+                        AnimatorController soulGateDoor = null;
+                        AnimatorController soul = null;
+
+                        soulGateValueMap.TryGetValue(exitID, out int soulValue);
+
+                        switch (soulValue)
+                        {
+                            case 1:
+                            {
+                                GameObject obj1 = Instantiate(oneSoulGatePrefab, gate.transform.position, Quaternion.identity);
+                                soulGateDoor = obj1.GetComponent<AnimatorController>();
+                                GameObject obj2 = Instantiate(oneSoulPrefab, gate.transform.position, Quaternion.identity);
+                                soul = obj2.GetComponent<AnimatorController>();
+                                break;
+                            }
+                            case 2:
+                            {
+                                GameObject obj1 = Instantiate(twoSoulGatePrefab, gate.transform.position, Quaternion.identity);
+                                soulGateDoor = obj1.GetComponent<AnimatorController>();
+                                GameObject obj2 = Instantiate(twoSoulPrefab, gate.transform.position, Quaternion.identity);
+                                soul = obj2.GetComponent<AnimatorController>();
+                                break;
+                            }
+                            case 3:
+                            {
+                                GameObject obj1 = Instantiate(threeSoulGatePrefab, gate.transform.position, Quaternion.identity);
+                                soulGateDoor = obj1.GetComponent<AnimatorController>();
+                                GameObject obj2 = Instantiate(threeSoulPrefab, gate.transform.position, Quaternion.identity);
+                                soul = obj2.GetComponent<AnimatorController>();
+                                break;
+                            }
+                            case 5:
+                            {
+                                GameObject obj1 = Instantiate(fiveSoulGatePrefab, gate.transform.position, Quaternion.identity);
+                                soulGateDoor = obj1.GetComponent<AnimatorController>();
+                                GameObject obj2 = Instantiate(fiveSoulPrefab, gate.transform.position, Quaternion.identity);
+                                soul = obj2.GetComponent<AnimatorController>();
+                                break;
+                            }
+                            case 9:
+                            {
+                                GameObject obj1 = Instantiate(nineSoulGatePrefab, gate.transform.position, Quaternion.identity);
+                                soulGateDoor = obj1.GetComponent<AnimatorController>();
+                                GameObject obj2 = Instantiate(nineSoulPrefab, gate.transform.position, Quaternion.identity);
+                                soul = obj2.GetComponent<AnimatorController>();
+                                break;
+                            }
+                        }
+
+                        soulGateDoor.transform.SetParent(gate.transform.parent);
+                        soul.transform.parent.SetParent(gate.transform.parent);
+
+                        flagBoxes.Add(new L2FlagBox()
+                        {
+                            seet_no1 = 3,
+                            flag_no1 = 0,
+                            seet_no2 = -1,
+                            flag_no2 = soulValue,
+                            logic = LOGIC.AND,
+                            comp = COMPARISON.GreaterEq
+                        });
+
+                        boxParents[0].BOX = flagBoxes.ToArray();
+                        if (gate.shdowtask != null)
+                            gate.shdowtask.startflag = boxParents;
+
+                        if (soulGateDoor != null)
+                        {
+                            soulGateDoor.gameObject.SetActive(true);
+                            soulGateDoor.CheckFlags = boxParents;
+                        }
+
+                        if(soul != null)
+                        {
+                            soul.gameObject.SetActive(true);
+                            soul.CheckFlags = boxParents;
+                        }
+                    }
+
+                    List<L2FlagBoxEnd> gateFlags = new List<L2FlagBoxEnd>();
                     if (destinationID == ExitID.fL02Left)
                     {
-                        gate.gateFlags = new L2FlagBoxEnd[]
+                        gateFlags.Add(new L2FlagBoxEnd()
+                        {
+                            seet_no1 = 5,
+                            flag_no1 = 73,
+                            data = 2,
+                            calcu = CALCU.EQR
+                        });
+                        gateFlags.Add(new L2FlagBoxEnd()
+                        {
+                            seet_no1 = 5,
+                            flag_no1 = 22,
+                            data = 1,
+                            calcu = CALCU.EQR
+                        });
+                    }
+                    else if(destinationID == ExitID.f14GateN6)
+                    {
+                        gateFlags.Add(new L2FlagBoxEnd()
+                        {
+                            seet_no1 = 18,
+                            flag_no1 = 0,
+                            data = 1,
+                            calcu = CALCU.EQR
+                        });
+                    }
+
+                    if(gateFlags.Count > 0)
+                    {
+                        gateFlags.AddRange(gate.gateFlags.ToList());
+                        gate.gateFlags = gateFlags.ToArray();
+                    }
+
+
+                    if(destinationID == ExitID.fLGate)
+                    {
+                        GameObject obj = new GameObject();
+                        obj.transform.position = gate.transform.position;
+                        FlagWatcherScript flagWatcher = obj.AddComponent<FlagWatcherScript>();
+                        flagWatcher.actionWaitFrames = 60;
+                        flagWatcher.autoFinish = false;
+                        flagWatcher.characterEfxType = MoveCharacterBase.CharacterEffectType.NONE;
+                        flagWatcher.startAreaMode = MoveCharacterBase.ActionstartAreaMode.VIEW;
+                        flagWatcher.taskLayerNo = 2;
+                        flagWatcher.AnimeData = new GameObject[0];
+                        flagWatcher.ResetFlags = new L2FlagBoxEnd[0];
+                        flagWatcher.CheckFlags = new L2FlagBoxParent[1];
+                        flagWatcher.CheckFlags[0] = new L2FlagBoxParent();
+                        flagWatcher.CheckFlags[0].BOX = new L2FlagBox[]
+                        {
+                            new L2FlagBox()
+                            {
+                                seet_no1 = 5,
+                                flag_no1 = 73,
+                                seet_no2 = -1,
+                                flag_no2 = 2,
+                                logic = LOGIC.NON,
+                                comp = COMPARISON.Equal
+                            }
+                        };
+                        flagWatcher.ActionFlags = new L2FlagBoxEnd[]
                         {
                             new L2FlagBoxEnd()
                             {
                                 seet_no1 = 5,
                                 flag_no1 = 73,
-                                data = 2,
-                                calcu = CALCU.EQR
-                            },
-                            new L2FlagBoxEnd()
-                            {
-                                seet_no1 = 5,
-                                flag_no1 = 22,
                                 data = 1,
                                 calcu = CALCU.EQR
+                            }
+                        };
+                        flagWatcher.finishFlags = new L2FlagBoxParent[1];
+                        flagWatcher.finishFlags[0] = new L2FlagBoxParent();
+                        flagWatcher.finishFlags[0].BOX = new L2FlagBox[]
+                        {
+                            new L2FlagBox()
+                            {
+                                seet_no1 = 5,
+                                flag_no1 = 73,
+                                seet_no2 = -1,
+                                flag_no2 = 1,
+                                logic = LOGIC.NON,
+                                comp = COMPARISON.Equal
                             }
                         };
                     }
                 }
             }
+
+            yield return new WaitForEndOfFrame();
+            foreach (var obj in objectsToRemove)
+                obj.SetActive(false);
         }
-
-        #region Shops
-
-        private void ChangeShopItems()
-        {
-            shopDataBase.cellData[0][25][1][0] = CreateShopItemsString(LocationID.SidroShop1, LocationID.SidroShop2, LocationID.SidroShop3);
-            shopDataBase.cellData[1][26][1][0] = CreateShopItemsString(LocationID.ModroShop1, LocationID.ModroShop2, LocationID.ModroShop3);
-            shopDataBase.cellData[2][24][1][0] = CreateShopItemsString(LocationID.NeburShop1, LocationID.NeburShop2, LocationID.NeburShop3);
-            shopDataBase.cellData[3][25][1][0] = CreateShopItemsString(LocationID.HinerShop1, LocationID.HinerShop2, LocationID.HinerShop3);
-            shopDataBase.cellData[4][24][1][0] = CreateShopItemsString(LocationID.HinerShop1, LocationID.HinerShop2, LocationID.HinerShop4);
-            shopDataBase.cellData[5][24][1][0] = CreateShopItemsString(LocationID.KorobokShop1, LocationID.KorobokShop2, LocationID.KorobokShop3);
-            shopDataBase.cellData[6][24][1][0] = CreateShopItemsString(LocationID.PymShop1, LocationID.PymShop2, LocationID.PymShop3);
-            shopDataBase.cellData[7][24][1][0] = CreateShopItemsString(LocationID.PeibalusaShop1, LocationID.PeibalusaShop2, LocationID.PeibalusaShop3);
-            shopDataBase.cellData[8][24][1][0] = CreateShopItemsString(LocationID.HiroRoderickShop1, LocationID.HiroRoderickShop2, LocationID.HiroRoderickShop3);
-            shopDataBase.cellData[9][24][1][0] = CreateShopItemsString(LocationID.BtkShop1, LocationID.BtkShop2, LocationID.BtkShop3);
-            shopDataBase.cellData[10][24][1][0] = CreateShopItemsString(LocationID.BtkShop1, LocationID.BtkShop2, LocationID.BtkShop3);
-            shopDataBase.cellData[11][24][1][0] = CreateShopItemsString(LocationID.MinoShop1, LocationID.MinoShop2, LocationID.MinoShop3);
-            shopDataBase.cellData[12][24][1][0] = CreateShopItemsString(LocationID.ShuhokaShop1, LocationID.ShuhokaShop2, LocationID.ShuhokaShop3);
-            shopDataBase.cellData[13][24][1][0] = CreateShopItemsString(LocationID.HydlitShop1, LocationID.HydlitShop2, LocationID.HydlitShop3);
-            shopDataBase.cellData[14][24][1][0] = CreateShopItemsString(LocationID.AytumShop1, LocationID.AytumShop2, LocationID.AytumShop3);
-            shopDataBase.cellData[15][24][1][0] = CreateShopItemsString(LocationID.AshGeenShop1, LocationID.AshGeenShop2, LocationID.AshGeenShop3);
-            shopDataBase.cellData[16][24][1][0] = CreateShopItemsString(LocationID.MegarockShop1, LocationID.MegarockShop2, LocationID.MegarockShop3);
-            shopDataBase.cellData[17][24][1][0] = CreateShopItemsString(LocationID.BargainDuckShop1, LocationID.BargainDuckShop2, LocationID.BargainDuckShop3);
-            shopDataBase.cellData[18][24][1][0] = CreateShopItemsString(LocationID.KeroShop1, LocationID.KeroShop2, LocationID.KeroShop3);
-            shopDataBase.cellData[19][24][1][0] = CreateShopItemsString(LocationID.VenomShop1, LocationID.VenomShop2, LocationID.VenomShop3);
-            shopDataBase.cellData[20][24][1][0] = CreateShopItemsString(LocationID.FairyLanShop1, LocationID.FairyLanShop2, LocationID.FairyLanShop3);
-        }
-
-        private string CreateShopItemsString(LocationID firstSpot, LocationID secondSpot, LocationID thirdSpot)
-        {
-            return string.Format("{0}\n{1}\n{2}", CreateSetItemString(firstSpot), CreateSetItemString(secondSpot), CreateSetItemString(thirdSpot));
-        }
-
-        private string CreateSetItemString(LocationID locationID)
-        {
-            if (locationToItemMap.TryGetValue(locationID, out ItemID newItemID))
-            {
-                ItemInfo newItemInfo = ItemDB.GetItemInfo(newItemID);
-                return string.Format("[@sitm,{0},{1},{2},{3}]", newItemInfo.shopType, newItemInfo.shopName, newItemInfo.shopPrice, newItemInfo.shopAmount);
-            }
-            return string.Empty;
-        }
-
-        private void ChangeShopThanks()
-        {
-            //change this strings beforehand because they do stuff usually that is unwanted
-            //Modro's thank1, remove check for shield
-            shopDataBase.cellData[1][9][1][0] = "[@anim,thank,1]\n[@animp,buyF0121,1]";
-
-            //Hiner's thank3
-            shopDataBase.cellData[3][11][1][0] = "[@anim,thank,1]\n[@animp,buyF0142,1]";
-
-            //Hiner's thank4
-            shopDataBase.cellData[4][10][1][0] = "[@anim,thank,1]\n[@animp,buyF0142,1]";
-
-            ChangeThanksStrings(LocationID.SidroShop1, LocationID.SidroShop2, LocationID.SidroShop3,0,9);
-            ChangeThanksStrings(LocationID.ModroShop1, LocationID.ModroShop2, LocationID.ModroShop3,1,9,2,3);
-            ChangeThanksStrings(LocationID.NeburShop1, LocationID.NeburShop2, LocationID.NeburShop3,2,8);
-            ChangeThanksStrings(LocationID.HinerShop1, LocationID.HinerShop2, LocationID.HinerShop3,3,9);
-            ChangeThanksStrings(LocationID.HinerShop1, LocationID.HinerShop2, LocationID.HinerShop4,4,8);
-            ChangeThanksStrings(LocationID.KorobokShop1, LocationID.KorobokShop2, LocationID.KorobokShop3,5,8);
-            ChangeThanksStrings(LocationID.PymShop1, LocationID.PymShop2, LocationID.PymShop3,6,8);
-            ChangeThanksStrings(LocationID.PeibalusaShop1, LocationID.PeibalusaShop2, LocationID.PeibalusaShop3,7,8);
-            ChangeThanksStrings(LocationID.HiroRoderickShop1, LocationID.HiroRoderickShop2, LocationID.HiroRoderickShop3,8,8);
-            ChangeThanksStrings(LocationID.BtkShop1, LocationID.BtkShop2, LocationID.BtkShop3,9,8);
-            ChangeThanksStrings(LocationID.BtkShop1, LocationID.BtkShop2, LocationID.BtkShop3,10,8);
-            ChangeThanksStrings(LocationID.MinoShop1, LocationID.MinoShop2, LocationID.MinoShop3,11,8);
-            ChangeThanksStrings(LocationID.ShuhokaShop1, LocationID.ShuhokaShop2, LocationID.ShuhokaShop3,12,8);
-            ChangeThanksStrings(LocationID.HydlitShop1, LocationID.HydlitShop2, LocationID.HydlitShop3,13,8);
-            ChangeThanksStrings(LocationID.AytumShop1, LocationID.AytumShop2, LocationID.AytumShop3,14,8);
-            ChangeThanksStrings(LocationID.AshGeenShop1, LocationID.AshGeenShop2, LocationID.AshGeenShop3,15,8);
-            ChangeThanksStrings(LocationID.MegarockShop1, LocationID.MegarockShop2, LocationID.MegarockShop3,16,8);
-            ChangeThanksStrings(LocationID.BargainDuckShop1, LocationID.BargainDuckShop2, LocationID.BargainDuckShop3,17,8);
-            ChangeThanksStrings(LocationID.KeroShop1, LocationID.KeroShop2, LocationID.KeroShop3,18,8);
-            ChangeThanksStrings(LocationID.VenomShop1, LocationID.VenomShop2, LocationID.VenomShop3,19,8);
-            ChangeThanksStrings(LocationID.FairyLanShop1, LocationID.FairyLanShop2, LocationID.FairyLanShop3,20,8);
-        }
-
-        private void ChangeThanksStrings(LocationID firstSlot, LocationID secondSlot, LocationID thirdSlot, int sheet, int first, int secondOffset = 1, int thirdOffset = 2)
-        {
-            shopDataBase.cellData[sheet][first][1][0] += CreateGetFlagString(firstSlot);
-            shopDataBase.cellData[sheet][first + secondOffset][1][0] += CreateGetFlagString(secondSlot);
-            shopDataBase.cellData[sheet][first + thirdOffset][1][0] += CreateGetFlagString(thirdSlot);
-        }
-
-        private string CreateGetFlagString(LocationID locationID)
-        {
-            string flagString = string.Empty;
-
-            if (locationToItemMap.TryGetValue(locationID, out ItemID newItemID))
-            {
-                ItemInfo newItemInfo = ItemDB.GetItemInfo(newItemID);
-
-                if (newItemInfo.boxName.Equals("Crystal S"))
-                {
-                    flagString = "\n[@take,Crystal S,02item,1]";
-                }
-
-                L2FlagBoxEnd[] getFLags = CreateGetFlags(newItemID, newItemInfo);
-                if (getFLags != null)
-                {
-                    for (int i = 0; i < getFLags.Length; i++)
-                    {
-                        L2FlagBoxEnd flag = getFLags[i];
-                        if (flag.calcu == CALCU.ADD)
-                        {
-                            flagString += string.Format("\n[@setf,{0},{1},+,{2}]", flag.seet_no1, flag.flag_no1, flag.data);
-                        }
-                        else if (flag.calcu == CALCU.EQR)
-                        {
-                            flagString += string.Format("\n[@setf,{0},{1},=,{2}]", flag.seet_no1, flag.flag_no1, flag.data);
-                        }
-                    }
-                }
-            }
-            return flagString;
-        }
-
-        #endregion
 
         #region Dialogue
 
@@ -883,8 +1096,8 @@ namespace LM2RandomiserMod
             talkDataBase.cellData[5][16][1][0] = ChangeTalkString(LocationID.FobosItem, "[@exit]\n[@anim,talk,1]\n[@setf,5,17,=,1]\n{0}[@p,lastC]");
 
             //Fobos' 2nd item check
-            talkDataBase.cellData[5][22][1][0] = ChangeTalkFlagCheck(LocationID.FobosItem2, COMPARISON.Less, 
-                "[@iff,2,{0},&lt;,{1},fobos,gS2]\n[@anim,stalk2,1]\n[@setf,23,15,=,2]\n[@anifla,mnext,swait]\n[@out]");
+            talkDataBase.cellData[5][22][1][0] = ChangeTalkFlagCheck(LocationID.FobosItem2, COMPARISON.Less,
+                "[@setf,5,17,=,1]\n[@iff,2,{0},&lt;,{1},fobos,gS2]\n[@anim,stalk2,1]\n[@setf,23,15,=,2]\n[@anifla,mnext,swait]\n[@out]");
 
             //Fobos' 2nd item
             talkDataBase.cellData[5][24][1][0] = ChangeTalkString(LocationID.FobosItem2, "[@exit]\n[@anim,talk,1]\n[@setf,23,15,=,4]\n{0}[@p,lastC]");
@@ -894,9 +1107,9 @@ namespace LM2RandomiserMod
                 "[@anim,talk,1]\n{0}[@setf,5,67,=,1]\n[@p,lastC]");
 
             //Add check too Freya's starting mojiscript so she gives the item if you havent got it yet
-            talkDataBase.cellData[7][3][1][0] = ChangeTalkFlagCheck(LocationID.FreyasItem, COMPARISON.Less,"[@anifla,mfanim,wait2]\n[@iff,2,{0},&lt;,{1},freyja,1st-1]\n[@iff,3,95,&gt;,0,freyja,escape]\n" +
+            talkDataBase.cellData[7][3][1][0] = ChangeTalkFlagCheck(LocationID.FreyasItem, COMPARISON.Less, "[@anifla,mfanim,wait2]\n[@iff,2,{0},&lt;,{1},freyja,1st-1]\n[@iff,3,95,&gt;,0,freyja,escape]\n" +
                 "[@anifla,mfanim,wait]\n[@iff,3,35,&gt;,7,freyja,8th]\n[@iff,3,35,=,6,freyja,7th3]\n[@iff,3,35,&gt;,3,freyja,7th2]\n[@iff,3,35,=,3,freyja,ragna]\n[@iff,3,35,=,2,freyja,4th]\n" +
-                "[@iff,3,35,=,1,freyja,3rd]\n[@iff,5,67,=,1,freyja,2nd]\n[@exit]\n[@anim,talk,1]\n[@p,1st-1]");
+                "[@iff,3,35,=,1,freyja,3rd]\n[@iff,5,67,=,1,freyja,2nd]\n[@exit]\n[@anim,talk,1]\n[@p,2nd]");
 
             //Mulbruk's item
             talkDataBase.cellData[10][42][1][0] = ChangeTalkString(LocationID.MulbrukItem,
@@ -1053,6 +1266,7 @@ namespace LM2RandomiserMod
             //Fobos's 2nd item check if you have a skull
             talkDataBase.cellData[5][23][1][0] = "[@iff,0,32,&gt;,0,fobos,gS3]\n[@anim,stalk,1]\n[@anifla,mnext,swait]";
 
+            //Fobos Dialogue
             talkDataBase.cellData[5][3][3][1] = "Hmmm.";
             talkDataBase.cellData[5][16][3][1] = "Here take this, I also opened that gate over there.";
 
@@ -1073,7 +1287,126 @@ namespace LM2RandomiserMod
             //fix giltoriyo early dialogue exit
             talkDataBase.cellData[3][6][1][0] = "[@setf,5,62,=,2]\n[@setf,1,7,=,0]\n[@anim,talk,1]\n[@p,1st-4]";
         }
-    }
+        #endregion
 
-    #endregion
+        #region Shops
+
+        private void ChangeShopItems()
+        {
+            shopDataBase.cellData[0][25][1][0] = CreateShopItemsString(LocationID.SidroShop1, LocationID.SidroShop2, LocationID.SidroShop3);
+            shopDataBase.cellData[1][26][1][0] = CreateShopItemsString(LocationID.ModroShop1, LocationID.ModroShop2, LocationID.ModroShop3);
+            shopDataBase.cellData[2][24][1][0] = CreateShopItemsString(LocationID.NeburShop1, LocationID.NeburShop2, LocationID.NeburShop3);
+            shopDataBase.cellData[3][25][1][0] = CreateShopItemsString(LocationID.HinerShop1, LocationID.HinerShop2, LocationID.HinerShop3);
+            shopDataBase.cellData[4][24][1][0] = CreateShopItemsString(LocationID.HinerShop1, LocationID.HinerShop2, LocationID.HinerShop4);
+            shopDataBase.cellData[5][24][1][0] = CreateShopItemsString(LocationID.KorobokShop1, LocationID.KorobokShop2, LocationID.KorobokShop3);
+            shopDataBase.cellData[6][24][1][0] = CreateShopItemsString(LocationID.PymShop1, LocationID.PymShop2, LocationID.PymShop3);
+            shopDataBase.cellData[7][24][1][0] = CreateShopItemsString(LocationID.PeibalusaShop1, LocationID.PeibalusaShop2, LocationID.PeibalusaShop3);
+            shopDataBase.cellData[8][24][1][0] = CreateShopItemsString(LocationID.HiroRoderickShop1, LocationID.HiroRoderickShop2, LocationID.HiroRoderickShop3);
+            shopDataBase.cellData[9][24][1][0] = CreateShopItemsString(LocationID.BtkShop1, LocationID.BtkShop2, LocationID.BtkShop3);
+            shopDataBase.cellData[10][24][1][0] = CreateShopItemsString(LocationID.BtkShop1, LocationID.BtkShop2, LocationID.BtkShop3);
+            shopDataBase.cellData[11][24][1][0] = CreateShopItemsString(LocationID.MinoShop1, LocationID.MinoShop2, LocationID.MinoShop3);
+            shopDataBase.cellData[12][24][1][0] = CreateShopItemsString(LocationID.ShuhokaShop1, LocationID.ShuhokaShop2, LocationID.ShuhokaShop3);
+            shopDataBase.cellData[13][24][1][0] = CreateShopItemsString(LocationID.HydlitShop1, LocationID.HydlitShop2, LocationID.HydlitShop3);
+            shopDataBase.cellData[14][24][1][0] = CreateShopItemsString(LocationID.AytumShop1, LocationID.AytumShop2, LocationID.AytumShop3);
+            shopDataBase.cellData[15][24][1][0] = CreateShopItemsString(LocationID.AshGeenShop1, LocationID.AshGeenShop2, LocationID.AshGeenShop3);
+            shopDataBase.cellData[16][24][1][0] = CreateShopItemsString(LocationID.MegarockShop1, LocationID.MegarockShop2, LocationID.MegarockShop3);
+            shopDataBase.cellData[17][24][1][0] = CreateShopItemsString(LocationID.BargainDuckShop1, LocationID.BargainDuckShop2, LocationID.BargainDuckShop3);
+            shopDataBase.cellData[18][24][1][0] = CreateShopItemsString(LocationID.KeroShop1, LocationID.KeroShop2, LocationID.KeroShop3);
+            shopDataBase.cellData[19][24][1][0] = CreateShopItemsString(LocationID.VenomShop1, LocationID.VenomShop2, LocationID.VenomShop3);
+            shopDataBase.cellData[20][24][1][0] = CreateShopItemsString(LocationID.FairyLanShop1, LocationID.FairyLanShop2, LocationID.FairyLanShop3);
+        }
+
+        private string CreateShopItemsString(LocationID firstSpot, LocationID secondSpot, LocationID thirdSpot)
+        {
+            return string.Format("{0}\n{1}\n{2}", CreateSetItemString(firstSpot), CreateSetItemString(secondSpot), CreateSetItemString(thirdSpot));
+        }
+
+        private string CreateSetItemString(LocationID locationID)
+        {
+            if (shopToItemMap.TryGetValue(locationID, out ShopItem shopItem))
+            {
+                ItemInfo newItemInfo = ItemDB.GetItemInfo(shopItem.ID);
+                return string.Format("[@sitm,{0},{1},{2},{3}]", newItemInfo.shopType, newItemInfo.shopName, shopItem.Price, newItemInfo.shopAmount);
+            }
+            return string.Empty;
+        }
+
+        private void ChangeShopThanks()
+        {
+            //change this strings beforehand because they do stuff usually that is unwanted
+            //Modro's thank1, remove check for shield
+            shopDataBase.cellData[1][9][1][0] = "[@anim,thank,1]\n[@animp,buyF0121,1]";
+
+            //Hiner's thank3
+            shopDataBase.cellData[3][11][1][0] = "[@anim,thank,1]\n[@animp,buyF0142,1]";
+
+            //Hiner's thank4
+            shopDataBase.cellData[4][10][1][0] = "[@anim,thank,1]\n[@animp,buyF0142,1]";
+
+            ChangeThanksStrings(LocationID.SidroShop1, LocationID.SidroShop2, LocationID.SidroShop3, 0, 9);
+            ChangeThanksStrings(LocationID.ModroShop1, LocationID.ModroShop2, LocationID.ModroShop3, 1, 9, 2, 3);
+            ChangeThanksStrings(LocationID.NeburShop1, LocationID.NeburShop2, LocationID.NeburShop3, 2, 8);
+            ChangeThanksStrings(LocationID.HinerShop1, LocationID.HinerShop2, LocationID.HinerShop3, 3, 9);
+            ChangeThanksStrings(LocationID.HinerShop1, LocationID.HinerShop2, LocationID.HinerShop4, 4, 8);
+            ChangeThanksStrings(LocationID.KorobokShop1, LocationID.KorobokShop2, LocationID.KorobokShop3, 5, 8);
+            ChangeThanksStrings(LocationID.PymShop1, LocationID.PymShop2, LocationID.PymShop3, 6, 8);
+            ChangeThanksStrings(LocationID.PeibalusaShop1, LocationID.PeibalusaShop2, LocationID.PeibalusaShop3, 7, 8);
+            ChangeThanksStrings(LocationID.HiroRoderickShop1, LocationID.HiroRoderickShop2, LocationID.HiroRoderickShop3, 8, 8);
+            ChangeThanksStrings(LocationID.BtkShop1, LocationID.BtkShop2, LocationID.BtkShop3, 9, 8);
+            ChangeThanksStrings(LocationID.BtkShop1, LocationID.BtkShop2, LocationID.BtkShop3, 10, 8);
+            ChangeThanksStrings(LocationID.MinoShop1, LocationID.MinoShop2, LocationID.MinoShop3, 11, 8);
+            ChangeThanksStrings(LocationID.ShuhokaShop1, LocationID.ShuhokaShop2, LocationID.ShuhokaShop3, 12, 8);
+            ChangeThanksStrings(LocationID.HydlitShop1, LocationID.HydlitShop2, LocationID.HydlitShop3, 13, 8);
+            ChangeThanksStrings(LocationID.AytumShop1, LocationID.AytumShop2, LocationID.AytumShop3, 14, 8);
+            ChangeThanksStrings(LocationID.AshGeenShop1, LocationID.AshGeenShop2, LocationID.AshGeenShop3, 15, 8);
+            ChangeThanksStrings(LocationID.MegarockShop1, LocationID.MegarockShop2, LocationID.MegarockShop3, 16, 8);
+            ChangeThanksStrings(LocationID.BargainDuckShop1, LocationID.BargainDuckShop2, LocationID.BargainDuckShop3, 17, 8);
+            ChangeThanksStrings(LocationID.KeroShop1, LocationID.KeroShop2, LocationID.KeroShop3, 18, 8);
+            ChangeThanksStrings(LocationID.VenomShop1, LocationID.VenomShop2, LocationID.VenomShop3, 19, 8);
+            ChangeThanksStrings(LocationID.FairyLanShop1, LocationID.FairyLanShop2, LocationID.FairyLanShop3, 20, 8);
+        }
+
+        private void ChangeThanksStrings(LocationID firstSlot, LocationID secondSlot, LocationID thirdSlot, int sheet, int first, int secondOffset = 1, int thirdOffset = 2)
+        {
+            shopDataBase.cellData[sheet][first][1][0] += CreateGetFlagString(firstSlot);
+            shopDataBase.cellData[sheet][first + secondOffset][1][0] += CreateGetFlagString(secondSlot);
+            shopDataBase.cellData[sheet][first + thirdOffset][1][0] += CreateGetFlagString(thirdSlot);
+        }
+
+        private string CreateGetFlagString(LocationID locationID)
+        {
+            string flagString = string.Empty;
+
+            if (shopToItemMap.TryGetValue(locationID, out ShopItem shopItem))
+            {
+                ItemInfo newItemInfo = ItemDB.GetItemInfo(shopItem.ID);
+
+                if (newItemInfo.boxName.Equals("Crystal S"))
+                {
+                    flagString = "\n[@take,Crystal S,02item,1]";
+                }
+
+                L2FlagBoxEnd[] getFLags = CreateGetFlags(shopItem.ID, newItemInfo);
+                if (getFLags != null)
+                {
+                    for (int i = 0; i < getFLags.Length; i++)
+                    {
+                        L2FlagBoxEnd flag = getFLags[i];
+                        if (flag.calcu == CALCU.ADD)
+                        {
+                            flagString += string.Format("\n[@setf,{0},{1},+,{2}]", flag.seet_no1, flag.flag_no1, flag.data);
+                        }
+                        else if (flag.calcu == CALCU.EQR)
+                        {
+                            flagString += string.Format("\n[@setf,{0},{1},=,{2}]", flag.seet_no1, flag.flag_no1, flag.data);
+                        }
+                    }
+                }
+            }
+            return flagString;
+        }
+
+        #endregion
+
+    }
 }

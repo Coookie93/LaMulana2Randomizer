@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 
 namespace LaMulana2Randomizer
 {
@@ -17,103 +17,116 @@ namespace LaMulana2Randomizer
     }
 
     public class Settings : BindableBase {
-        private int _seed;
+        private int seed;
+        [JsonIgnore]
         public int Seed 
         {
-            get => _seed;
-            set => Set(ref _seed, value);
+            get => seed;
+            set => Set(ref seed, value);
         }
 
-        private bool _randomGrail;
+        private bool randomGrail;
         public bool RandomGrail { 
-            get=>_randomGrail; 
-            set =>Set(ref _randomGrail, value); 
+            get=>randomGrail; 
+            set =>Set(ref randomGrail, value); 
         }
 
-        private bool _randomScanner;
+        private bool randomScanner;
         public bool RandomScanner { 
-            get=>_randomScanner; 
-            set=>Set(ref _randomScanner, value); 
+            get=>randomScanner; 
+            set=>Set(ref randomScanner, value); 
         }
 
-        private bool _randomCodices;
+        private bool randomCodices;
         public bool RandomCodices { 
-            get=>_randomCodices; 
-            set=>Set(ref _randomCodices, value); 
+            get=>randomCodices; 
+            set=>Set(ref randomCodices, value); 
         }
 
-        private bool _randomFDC;
+        private bool randomFDC;
         public bool RandomFDC {
-            get => _randomFDC;
-            set => Set(ref _randomFDC, value);
+            get => randomFDC;
+            set => Set(ref randomFDC, value);
         }
 
-        private bool _fDCForBacksides;
+        private bool fDCForBacksides;
         public bool FDCForBacksides { 
-            get=>_fDCForBacksides; 
-            set=>Set(ref _fDCForBacksides, value); 
+            get=>fDCForBacksides; 
+            set=>Set(ref fDCForBacksides, value); 
         }
 
-        private bool _randomCurses;
+        private bool randomCurses;
         public bool RandomCurses {
-            get => _randomCurses;
-            set => Set(ref _randomCurses, value);
+            get => randomCurses;
+            set => Set(ref randomCurses, value);
         }
 
-        private bool _randomHorizontalEntrances;
+        private bool randomHorizontalEntrances;
         public bool RandomHorizontalEntraces {
-            get => _randomHorizontalEntrances;
-            set => Set(ref _randomHorizontalEntrances, value);
+            get => randomHorizontalEntrances;
+            set => Set(ref randomHorizontalEntrances, value);
         }
 
-        private bool _randomLadderEntrances;
+        private bool allowVillageToCliff;
+        public bool AllowVillageToCliff {
+            get => allowVillageToCliff;
+            set => Set(ref allowVillageToCliff, value);
+        }
+
+        private bool randomLadderEntrances;
         public bool RandomLadderEntraces {
-            get => _randomLadderEntrances;
-            set => Set(ref _randomLadderEntrances, value);
+            get => randomLadderEntrances;
+            set => Set(ref randomLadderEntrances, value);
         }
 
-        private bool _randomGateEntrances;
+        private bool randomGateEntrances;
         public bool RandomGateEntraces {
-            get => _randomGateEntrances;
-            set => Set(ref _randomGateEntrances, value);
+            get => randomGateEntrances;
+            set => Set(ref randomGateEntrances, value);
         }
 
-        private bool _randomSoulGateEntrances;
+        private bool randomSoulGateEntrances;
         public bool RandomSoulGateEntraces {
-            get => _randomSoulGateEntrances;
-            set => Set(ref _randomSoulGateEntrances, value);
+            get => randomSoulGateEntrances;
+            set => Set(ref randomSoulGateEntrances, value);
         }
 
-        private bool _hardBosses;
+        private bool includeNineGates;
+        public bool IncludeNineGates {
+            get => includeNineGates;
+            set => Set(ref includeNineGates, value);
+        }
+
+        private bool hardBosses;
         public bool HardBosses { 
-            get=>_hardBosses; 
-            set=>Set(ref _hardBosses, value); 
+            get=>hardBosses; 
+            set=>Set(ref hardBosses, value); 
         }
 
-        private bool _autoScanTablets;
+        private bool autoScanTablets;
         public bool AutoScanTablets {
-            get => _autoScanTablets;
-            set => Set(ref _autoScanTablets, value);
+            get => autoScanTablets;
+            set => Set(ref autoScanTablets, value);
         }
 
-        private bool _autoPlaceSkulls;
+        private bool autoPlaceSkulls;
         public bool AutoPlaceSkulls {
-            get => _autoPlaceSkulls;
-            set => Set(ref _autoPlaceSkulls, value);
+            get => autoPlaceSkulls;
+            set => Set(ref autoPlaceSkulls, value);
         }
 
-        private MantraPlacement _mantraPlacement;
+        private MantraPlacement mantraPlacement;
         public MantraPlacement MantraPlacement { 
-            get=>_mantraPlacement; 
-            set=>Set(ref _mantraPlacement, value); 
+            get=>mantraPlacement; 
+            set=>Set(ref mantraPlacement, value); 
         }
 
-        private ShopPlacement _shopPlacement;
+        private ShopPlacement shopPlacement;
         public ShopPlacement ShopPlacement { 
-            get=>_shopPlacement;
+            get=>shopPlacement;
             set 
             {
-                Set(ref _shopPlacement, value);
+                Set(ref shopPlacement, value);
                 if(value == ShopPlacement.Original)
                 {
                     RandomScanner = false;
@@ -126,7 +139,6 @@ namespace LaMulana2Randomizer
 
         public Settings()
         {
-            Seed = new Random().Next(int.MinValue, int.MaxValue);
             RandomGrail = false;
             RandomScanner = false;
             RandomCodices = true;
@@ -134,9 +146,11 @@ namespace LaMulana2Randomizer
             FDCForBacksides = false;
             RandomCurses = false;
             RandomHorizontalEntraces = false;
+            AllowVillageToCliff = true;
             RandomLadderEntraces = false;
             RandomGateEntraces = false;
             RandomSoulGateEntraces = false;
+            IncludeNineGates = false;
             HardBosses = false;
             AutoScanTablets = false;
             AutoPlaceSkulls = false;
