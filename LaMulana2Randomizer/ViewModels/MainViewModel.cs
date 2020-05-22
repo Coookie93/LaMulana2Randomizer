@@ -16,8 +16,15 @@ namespace LaMulana2Randomizer.ViewModels
             set => Set(ref _settings, value);
         }
 
+        private string title;
+        public string Title {
+            get => title;
+            set => Set(ref title, value);
+        }
+
         public MainViewModel()
         {
+            Title = LaMulana2RandomizerShared.Version.version;
             Settings = new Settings();
         }
 

@@ -9,8 +9,6 @@ using L2Flag;
 using LM2RandomiserMod.Patches;
 using LaMulana2RandomizerShared;
 
-using Version = LM2RandomizerShared.Version;
-
 namespace LM2RandomiserMod
 {
     public class L2Rando : MonoBehaviour
@@ -43,7 +41,7 @@ namespace LM2RandomiserMod
                 guistyle.fontStyle = FontStyle.Bold;
                 guistyle.fontSize = 14;
 
-                GUIContent verContent = new GUIContent(Version.version);
+                GUIContent verContent = new GUIContent(LaMulana2RandomizerShared.Version.version);
                 Vector2 verSize = guistyle.CalcSize(verContent);
                 GUI.Label(new Rect(0, 0, verSize.x, verSize.y), verContent, guistyle);
 
