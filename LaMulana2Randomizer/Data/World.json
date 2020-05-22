@@ -1772,7 +1772,7 @@
         "name": "Belial",
         "locationType": "Miniboss",
         "Logic": "Has(Cog of Antiquity) and Has(Life Sigil) and (Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(6))) and ((Has(Egg of Creation) and OrbCount(6) and (CanUse(Earth Spear) or CanUse(Rolling Shuriken) or (Has(Katana) and Has(Feather)))) or (Has(Lamp of Time) and OrbCount(3) and ((Has(Axe) and (Has(Gauntlet) or Has(Spaulder))) or (Has(Katana) and (Has(Vajra) or Has(Spaulder))) or (Has(Rapier) and Has(Vajra)) or (Has(Knife) and (Has(Vajra) or Has(Spaulder))) or ((Has(Chain Whip) or Has(Flail Whip)) and (Has(Vajra) or Has(Gauntlet) or Has(Spaulder))))))",
-        "HardLogic": "Has(Cog of Antiquity) and (Has(Claydoll Suit) or Has(Ice Cloak)) and Has(Egg of Creation) and Has(Life Sigil)",
+        "HardLogic": "Has(Cog of Antiquity) and Has(Life Sigil) and (Has(Claydoll Suit) or Has(Ice Cloak)) and Has(Egg of Creation)",
         "item": {
           "name": "Belial",
           "isRequired": true
