@@ -2,415 +2,346 @@
   {
     "name": "Hand Scanner",
     "id": 1,
-    "price": 10,
     "isRequired": true
   },
   {
     "name": "Djed Pillar",
     "id": 2,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Mjolnir",
     "id": 3,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Beherit",
     "id": 4,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Ancient Battery",
     "id": 5,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Lamp of Time",
     "id": 6,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Pochette Key",
     "id": 7,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Pyramid Crystal",
     "id": 8,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Vessel",
     "id": 10,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Pepper",
     "id": 11,
-    "price": 50,
     "isRequired": true
   },
   {
     "name": "Egg of Creation",
     "id": 12,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Giants Flute",
     "id": 13,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Cog of Antiquity",
     "id": 14,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Mulana Talisman",
     "id": 15,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Mobile Super x3+",
     "id": 16,
-    "price": 200,
     "isRequired": false
   },
   {
     "name": "Shell Horn",
     "id": 17,
-    "price": 50,
     "isRequired": false
   },
   {
     "name": "Holy Grail",
     "id": 18,
-    "price": 0,
     "isRequired": true
   },
   {
     "name": "Fairy Pass",
     "id": 19,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Gloves",
     "id": 20,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Dinosaur Figure",
     "id": 21,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Gale Fibula",
     "id": 22,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Flame Torc",
     "id": 23,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Vajra",
     "id": 24,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Power Band",
     "id": 25,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Bronze Mirror",
     "id": 26,
-    "price": 100,
     "isRequired": false
   },
   {
     "name": "Perfume",
     "id": 27,
-    "price": 100,
     "isRequired": false
   },
   {
     "name": "Ice Cloak",
     "id": 28,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Nemean Fur",
     "id": 29,
-    "price": 150,
     "isRequired": false
   },
   {
     "name": "Gauntlet",
     "id": 30,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Anchor",
     "id": 31,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Freyas Pendant",
     "id": 32,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Totem Pole",
     "id": 33,
-    "price": 100,
     "isRequired": false
   },
   {
     "name": "Grapple Claw",
     "id": 34,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Spaulder",
     "id": 35,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Scalesphere",
     "id": 36,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Crucifix",
     "id": 37,
-    "price": 100,
     "isRequired": false
   },
   {
     "name": "Ganesha Talisman",
     "id": 38,
-    "price": 100,
     "isRequired": false
   },
   {
     "name": "Maats Feather",
     "id": 39,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Ring",
     "id": 40,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Bracelet",
     "id": 41,
-    "price": 100,
     "isRequired": false
   },
   {
     "name": "Feather",
     "id": 42,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Scriptures",
     "id": 43,
-    "price": 100,
     "isRequired": false
   },
   {
     "name": "Freys Ship",
     "id": 44,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Codices",
     "id": 45,
-    "price": 50,
     "isRequired": false
   },
   {
     "name": "Snow Shoes",
     "id": 46,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Harp",
     "id": 47,
-    "price": 100,
     "isRequired": false
   },
   {
     "name": "Book of the Dead",
     "id": 48,
-    "price": 100,
     "isRequired": false
   },
   {
     "name": "Light Scythe",
     "id": 49,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Destiny Tablet",
     "id": 50,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Secret Treasure of Life",
     "id": 51,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Origin Sigil",
     "id": 52,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Birth Sigil",
     "id": 53,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Life Sigil",
     "id": 54,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Death Sigil",
     "id": 55,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Claydoll Suit",
     "id": 56,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Leather Whip",
     "id": 61,
-    "price": 50,
     "isRequired": true
   },
   {
     "name": "Chain Whip",
     "id": 62,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Flail Whip",
     "id": 63,
-    "price": 200,
     "isRequired": true
   },
   {
     "name": "Knife",
     "id": 64,
-    "price": 50,
     "isRequired": true
   },
   {
     "name": "Rapier",
     "id": 65,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Axe",
     "id": 66,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Katana",
     "id": 67,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Shuriken",
     "id": 68,
-    "price": 50,
     "isRequired": true
   },
   {
     "name": "Rolling Shuriken",
     "id": 69,
-    "price": 50,
     "isRequired": true
   },
   {
     "name": "Earth Spear",
     "id": 70,
-    "price": 50,
     "isRequired": true
   },
   {
     "name": "Flare",
     "id": 71,
-    "price": 50,
     "isRequired": true
   },
   {
     "name": "Bomb",
     "id": 72,
-    "price": 50,
     "isRequired": true
   },
   {
     "name": "Chakram",
     "id": 73,
-    "price": 50,
     "isRequired": true
   },
   {
     "name": "Caltrops",
     "id": 74,
-    "price": 50,
     "isRequired": true
   },
   {
@@ -428,697 +359,581 @@
   {
     "name": "Silver Shield",
     "id": 77,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Angel Shield",
     "id": 78,
-    "price": 200,
     "isRequired": true
   },
   {
     "name": "Xelputter",
     "id": 80,
-    "price": 150,
     "isRequired": false
   },
   {
     "name": "Yagoo Map Reader",
     "id": 81,
-    "price": 150,
     "isRequired": false
   },
   {
     "name": "Yagoo Map Street",
     "id": 82,
-    "price": 150,
     "isRequired": false
   },
   {
     "name": "TextTrax",
     "id": 83,
-    "price": 150,
     "isRequired": false
   },
   {
     "name": "Ruins Encylopedia",
     "id": 84,
-    "price": 150,
     "isRequired": false
   },
   {
     "name": "Mantra",
     "id": 85,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Guild",
     "id": 86,
-    "price": 150,
     "isRequired": false
   },
   {
     "name": "Enga Musica",
     "id": 88,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Beo Eglana",
     "id": 89,
-    "price": 150,
     "isRequired": false
   },
   {
     "name": "Alert",
     "id": 90,
-    "price": 150,
     "isRequired": false
   },
   {
     "name": "Snapshot",
     "id": 91,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Skull Reader",
     "id": 92,
-    "price": 150,
     "isRequired": false
   },
   {
     "name": "Race Scanner",
     "id": 93,
-    "price": 150,
     "isRequired": false
   },
   {
     "name": "Death Village",
     "id": 94,
-    "price": 150,
     "isRequired": false
   },
   {
     "name": "Rose and Camelia",
     "id": 95,
-    "price": 150,
     "isRequired": false
   },
   {
     "name": "Space Capstar II",
     "id": 96,
-    "price": 150,
     "isRequired": false
   },
   {
     "name": "Lonely House Moving",
     "id": 97,
-    "price": 150,
     "isRequired": false
   },
   {
     "name": "Mekuri Master",
     "id": 98,
-    "price": 150,
     "isRequired": false
   },
   {
     "name": "Bounce Shot",
     "id": 99,
-    "price": 150,
     "isRequired": false
   },
   {
     "name": "Miracle Witch",
     "id": 100,
-    "price": 150,
     "isRequired": false
   },
   {
     "name": "Future Development Company",
     "id": 101,
-    "price": 50,
     "isRequired": true
   },
   {
     "name": "La-Mulana",
     "id": 102,
-    "price": 150,
     "isRequired": false
   },
   {
     "name": "La-Mulana 2",
     "id": 103,
-    "price": 150,
     "isRequired": false
   },
   {
     "name": "Sacred Orb",
     "id": 104,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Sacred Orb",
     "id": 105,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Sacred Orb",
     "id": 106,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Sacred Orb",
     "id": 107,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Sacred Orb",
     "id": 108,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Sacred Orb",
     "id": 109,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Sacred Orb",
     "id": 110,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Sacred Orb",
     "id": 111,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Sacred Orb",
     "id": 112,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Sacred Orb",
     "id": 113,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Map",
-    "price": 200,
     "id": 114,
     "isRequired": false
   },
   {
     "name": "Map",
     "id": 115,
-    "price": 200,
     "isRequired": false
   },
   {
     "name": "Map",
     "id": 116,
-    "price": 200,
     "isRequired": false
   },
   {
     "name": "Map",
     "id": 117,
-    "price": 200,
     "isRequired": false
   },
   {
     "name": "Map",
     "id": 118,
-    "price": 200,
     "isRequired": false
   },
   {
     "name": "Map",
     "id": 119,
-    "price": 200,
     "isRequired": false
   },
   {
     "name": "Map",
     "id": 120,
-    "price": 200,
     "isRequired": false
   },
   {
     "name": "Map",
     "id": 121,
-    "price": 200,
     "isRequired": false
   },
   {
     "name": "Map",
     "id": 122,
-    "price": 200,
     "isRequired": false
   },
   {
     "name": "Map",
     "id": 123,
-    "price": 200,
     "isRequired": false
   },
   {
     "name": "Map",
     "id": 124,
-    "price": 200,
     "isRequired": false
   },
   {
     "name": "Map",
     "id": 125,
-    "price": 200,
     "isRequired": false
   },
   {
     "name": "Map",
     "id": 126,
-    "price": 200,
     "isRequired": false
   },
   {
     "name": "Map",
     "id": 127,
-    "price": 200,
     "isRequired": false
   },
   {
     "name": "Map",
     "id": 128,
-    "price": 200,
     "isRequired": false
   },
   {
     "name": "Map",
     "id": 129,
-    "price": 200,
     "isRequired": false
   },
   {
     "name": "Ankh Jewel",
     "id": 134,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Ankh Jewel",
     "id": 135,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Ankh Jewel",
     "id": 136,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Ankh Jewel",
     "id": 137,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Ankh Jewel",
     "id": 138,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Ankh Jewel",
     "id": 139,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Ankh Jewel",
     "id": 140,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Ankh Jewel",
     "id": 141,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Ankh Jewel",
     "id": 142,
-    "price": 150,
     "isRequired": true
   },
   {
     "name": "Crystal Skull",
     "id": 143,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Crystal Skull",
     "id": 144,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Crystal Skull",
     "id": 145,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Crystal Skull",
     "id": 146,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Crystal Skull",
     "id": 147,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Crystal Skull",
     "id": 148,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Crystal Skull",
     "id": 149,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Crystal Skull",
     "id": 150,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Crystal Skull",
     "id": 151,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Crystal Skull",
     "id": 152,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Crystal Skull",
     "id": 153,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Crystal Skull",
     "id": 154,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Heaven",
     "id": 155,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Earth",
     "id": 156,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Sun",
     "id": 157,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Moon",
     "id": 158,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Sea",
     "id": 159,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Fire",
     "id": 160,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Wind",
     "id": 161,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Mother",
     "id": 162,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Child",
     "id": 163,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Night",
     "id": 164,
-    "price": 100,
     "isRequired": true
   },
   {
     "name": "Shuriken Ammo",
     "id": 165,
-    "price": 10,
     "isRequired": true
   },
   {
     "name": "Shuriken Ammo",
     "id": 165,
-    "price": 10,
     "isRequired": true
   },
   {
     "name": "Shuriken Ammo",
     "id": 165,
-    "price": 10,
     "isRequired": true
   },
   {
     "name": "Shuriken Ammo",
     "id": 165,
-    "price": 10,
     "isRequired": true
   },
   {
     "name": "Rolling Shuriken Ammo",
     "id": 166,
-    "price": 10,
     "isRequired": true
   },
   {
     "name": "Earth Spear Ammo",
     "id": 167,
-    "price": 15,
     "isRequired": true
   },
   {
     "name": "Earth Spear Ammo",
     "id": 167,
-    "price": 15,
     "isRequired": true
   },
   {
     "name": "Flare Ammo",
     "id": 168,
-    "price": 15,
     "isRequired": true
   },
   {
     "name": "Flare Ammo",
     "id": 168,
-    "price": 15,
     "isRequired": true
   },
   {
     "name": "Bomb Ammo",
     "id": 169,
-    "price": 30,
     "isRequired": true
   },
   {
     "name": "Bomb Ammo",
     "id": 169,
-    "price": 30,
     "isRequired": true
   },
   {
     "name": "Chakram Ammo",
     "id": 170,
-    "price": 20,
     "isRequired": true
   },
   {
     "name": "Caltrops Ammo",
     "id": 171,
-    "price": 10,
     "isRequired": true
   },
   {
     "name": "Caltrops Ammo",
     "id": 171,
-    "price": 10,
     "isRequired": true
   },
   {
     "name": "Caltrops Ammo",
     "id": 171,
-    "price": 10,
     "isRequired": true
   },
   {
     "name": "Pistol Ammo",
     "id": 172,
-    "price": 400,
     "isRequired": false
   },
   {
     "name": "Pistol Ammo",
     "id": 172,
-    "price": 400,
     "isRequired": false
   },
   {
     "name": "Weights",
     "id": 173,
-    "price": 10,
     "isRequired": true
   },
   {
     "name": "Weights",
     "id": 173,
-    "price": 10,
     "isRequired": true
   },
   {
     "name": "Weights",
     "id": 173,
-    "price": 10,
     "isRequired": true
   },
   {
     "name": "Weights",
     "id": 173,
-    "price": 10,
     "isRequired": true
   },
   {
     "name": "Weights",
     "id": 173,
-    "price": 10,
     "isRequired": true
   },
   {
     "name": "Weights",
     "id": 173,
-    "price": 10,
     "isRequired": true
   },
   {
     "name": "Weights",
     "id": 173,
-    "price": 10,
     "isRequired": true
   },
   {
     "name": "Weights",
     "id": 173,
-    "price": 10,
     "isRequired": true
   },
   {
     "name": "Weights",
     "id": 173,
-    "price": 10,
     "isRequired": true
   },
   {
     "name": "Weights",
     "id": 173,
-    "price": 10,
     "isRequired": true
   },
   {
     "name": "Weights",
     "id": 173,
-    "price": 10,
     "isRequired": true
   },
   {
     "name": "Weights",
     "id": 173,
-    "price": 10,
     "isRequired": true
   },
   {
     "name": "Weights",
     "id": 173,
-    "price": 10,
     "isRequired": true
   },
   {
     "name": "Weights",
     "id": 173,
-    "price": 10,
     "isRequired": true
   },
   {
     "name": "Weights",
     "id": 173,
-    "price": 10,
     "isRequired": true
   },
   {
     "name": "Weights",
     "id": 173,
-    "price": 10,
     "isRequired": true
   },
   {
     "name": "Weights",
     "id": 173,
-    "price": 10,
     "isRequired": true
   }
 ]

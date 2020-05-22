@@ -7,18 +7,22 @@ namespace LaMulana2Randomizer
 {
     public class PlayerState
     {
-        readonly string[] bossNames = {"Fafnir", "Surtr", "Vritra", "Kujata", "Aten-Ra", "Jormangund", "Anu", "Echidna", "Hel"};
+        private readonly string[] bossNames = {"Fafnir", "Surtr", "Vritra", "Kujata", "Aten-Ra", "Jormangund", "Anu", "Echidna", "Hel"};
 
-        private readonly Randomiser Randomiser;
+        private readonly Randomiser randomiser;
+        private readonly bool softlockCheck;
+        private readonly bool ignoreFalseChecks;
         private readonly Dictionary<string, bool> collectedLocations;
         private readonly Dictionary<string, int> collectedItems;
         
         private Dictionary<string, bool> areaChecks;
         private Dictionary<string, bool> entraceChecks;
 
-        public PlayerState(Randomiser randomiser)
+        public PlayerState(Randomiser randomiser, bool softlockCheck = false, bool ignoreFalseChecks = false)
         {
-            Randomiser = randomiser;
+            this.randomiser = randomiser;
+            this.softlockCheck = softlockCheck;
+            this.ignoreFalseChecks = ignoreFalseChecks;
             areaChecks =  new Dictionary<string, bool>();
             entraceChecks = new Dictionary<string, bool>();
             collectedLocations = new Dictionary<string, bool>();
@@ -78,7 +82,7 @@ namespace LaMulana2Randomizer
         {
             foreach (Location guardianToSkip in randomiser.GetPlacedLocationsOfType(LocationType.Guardian))
             {
-                PlayerState state = new PlayerState(randomiser);
+                PlayerState state = new PlayerState(randomiser, true);
                 state.CollectItem(randomiser.StartingWeapon);
 
                 int guardiansEncountered = 0;
@@ -146,8 +150,8 @@ namespace LaMulana2Randomizer
 
         public bool CanReach(string areaName)
         {
-            Area area = Randomiser.GetArea(areaName);
-            if (area.Equals(Randomiser.GetArea("Village of Departure")))
+            Area area = randomiser.GetArea(areaName);
+            if (area.Equals(randomiser.GetArea("Village of Departure")))
                 return true;
 
             if (areaChecks.TryGetValue(area.Name, out bool cached))
@@ -163,7 +167,7 @@ namespace LaMulana2Randomizer
 
             //when writing the spoiler log playthrough only care about caching areas that can be reached, caching areas that can't
             //be reached sometimes leads to the playthorugh being incorrect
-            if (Randomiser.WritingSpoilers && canReach)
+            if (ignoreFalseChecks && canReach)
             {
                 areaChecks.Add(area.Name, canReach);
             }
@@ -189,7 +193,7 @@ namespace LaMulana2Randomizer
 
             //when writing the spoiler log playthrough only care about caching entrances that can be reached, caching entrances that can't
             //be reached sometimes leads to the playthorugh being incorrect
-            if (Randomiser.WritingSpoilers && canReach)
+            if (ignoreFalseChecks && canReach)
             {
                 entraceChecks.Add(entrance.Name, canReach);
             }
@@ -283,7 +287,7 @@ namespace LaMulana2Randomizer
                     return HasItem(rule.value);
 
                 case LogicType.AnkhCount:
-                    return Randomiser.SoftLockTest ? AnkhCountSoftLock() : AnkhCount(int.Parse(rule.value));
+                    return softlockCheck ? AnkhCountSoftLock() : AnkhCount(int.Parse(rule.value));
 
                 case LogicType.Dissonance:
                     return Dissonance(int.Parse(rule.value));
@@ -372,7 +376,7 @@ namespace LaMulana2Randomizer
 
         private bool CanKill(string enemy)
         {
-            return Randomiser.GetLocation(enemy).LogicTree.Evaluate(this);
+            return randomiser.GetLocation(enemy).LogicTree.Evaluate(this);
         }
 
         private bool GuardianKills(int count)
@@ -425,25 +429,25 @@ namespace LaMulana2Randomizer
             switch (settingName)
             {
                 case "AutoScan":
-                    return Randomiser.Settings.AutoScanTablets;
+                    return randomiser.Settings.AutoScanTablets;
 
                 case "Random Ladders":
-                    return Randomiser.Settings.RandomLadderEntraces;
+                    return randomiser.Settings.RandomLadderEntraces;
 
                 case "Non Random Ladders":
-                    return !Randomiser.Settings.RandomLadderEntraces;
+                    return !randomiser.Settings.RandomLadderEntraces;
 
                 case "Random Gates":
-                    return Randomiser.Settings.RandomGateEntraces;
+                    return randomiser.Settings.RandomGateEntraces;
 
                 case "Non Random Gates":
-                    return !Randomiser.Settings.RandomGateEntraces;
+                    return !randomiser.Settings.RandomGateEntraces;
 
                 case "Random Soul Gates":
-                    return Randomiser.Settings.RandomSoulGateEntraces;
+                    return randomiser.Settings.RandomSoulGateEntraces;
 
                 case "Non Random Soul Gates":
-                    return !Randomiser.Settings.RandomSoulGateEntraces;
+                    return !randomiser.Settings.RandomSoulGateEntraces;
 
                 default:
                     return false;

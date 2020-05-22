@@ -49,6 +49,9 @@
     <Reference Include="LaMulana2RandomizerShared">
       <HintPath>..\LM2RandomiserShared\bin\Release\LaMulana2RandomizerShared.dll</HintPath>
     </Reference>
+    <Reference Include="MMHOOK_Assembly-CSharp">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\MMHOOK_Assembly-CSharp.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Cecil, Version=0.10.0.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\LM2Randomiser\Monomod\Mono.Cecil.dll</HintPath>
@@ -126,6 +129,7 @@
     <Compile Include="ExitDB.cs" />
     <Compile Include="DevUI.cs" />
     <Compile Include="ItemDB.cs" />
+    <Compile Include="ItemTracker.cs" />
     <Compile Include="L2Rando.cs" />
     <Compile Include="Patches\L2SystemCore.cs" />
     <Compile Include="Patches\EventItemScript.cs" />

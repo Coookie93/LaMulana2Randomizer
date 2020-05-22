@@ -16,8 +16,6 @@ namespace LaMulana2Randomizer
         private List<JsonArea> worldData;
         private bool villageDeadEnd = false;
 
-        public bool WritingSpoilers;
-        public bool SoftLockTest { get; private set; }
         public Item StartingWeapon { get; private set; }
         public List<Location> CursedLocations { get; private set; }
         public List<string> HorizontalPairs { get; private set; }
@@ -253,10 +251,7 @@ namespace LaMulana2Randomizer
 
         public bool CanBeatGame()
         {
-            SoftLockTest = true;
-            bool result = PlayerState.CanBeatGame(this) && PlayerState.AnkhSoftlockCheck(this);
-            SoftLockTest = false;
-            return result;
+            return PlayerState.CanBeatGame(this) && PlayerState.AnkhSoftlockCheck(this);
         }
         
         public bool EntranceCheck()
@@ -266,14 +261,13 @@ namespace LaMulana2Randomizer
 
         public void AdjustShopPrices()
         {
-            WritingSpoilers = true;
-            PlayerState playthrough = new PlayerState(this);
+            PlayerState playthrough = new PlayerState(this, false, true);
             playthrough.CollectItem(StartingWeapon);
 
             List<Location> reachableLocations;
             for(int i = 0; i < 5; i++)
             {
-                float multiplier = (5 + i) / 10.0f;
+                int multiplier = 5 + i;
                 reachableLocations = playthrough.GetReachableLocations(GetPlacedRequiredItemLocations());
                 foreach (Location location in reachableLocations)
                 {
@@ -282,12 +276,11 @@ namespace LaMulana2Randomizer
                     playthrough.CollectLocation(location);
 
                     if (item.IsRequired && item.ID < ItemID.ShurikenAmmo)
-                        item.AdjustPrice(multiplier);
+                        item.PriceMultiplier = multiplier;
 
                 }
                 playthrough.ResetCheckedAreasAndEntrances();
             }
-            WritingSpoilers = false;
         }
 
         public Area GetArea(string areaName)
@@ -952,6 +945,10 @@ namespace LaMulana2Randomizer
             else if (gate1.ID == ExitID.f12GateN8)
             {
                 gate2.AppendLogicString("and (CanWarp or Has(Feather))");
+            }
+            else if(gate1.ID == ExitID.f13GateN9)
+            {
+                gate2.AppendLogicString("and False");
             }
         }
     }

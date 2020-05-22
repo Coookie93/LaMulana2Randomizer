@@ -166,7 +166,7 @@ namespace LM2RandomiserMod.Patches
 				{
 					if (!direct)
 					{
-						this.setFlagData(num3, "Pepper-b", 10);
+						this.setFlagData(num3, "Pepper-b", 100);
 					}
 				}
 				else if (L2SystemCore.getItemData(item_name).isEquipableItem())
@@ -424,10 +424,23 @@ namespace LM2RandomiserMod.Patches
         [MonoModReplace]
         public void gameFlagResets()
         {
-            this.fsys.allReset();
-            this.playerst.clearItemsNum();
-            this.menusys.menuSysReStart();
-            this.setSystemDataToClothFlag();
+			this.fsys.allReset();
+			this.playerst.clearItemsNum();
+			this.menusys.menuSysReStart();
+			this.setSystemDataToClothFlag();
+
+			L2Rando l2Rando = FindObjectOfType<L2Rando>();
+			if (l2Rando != null && l2Rando.IsRandomising)
+			{
+				if (l2Rando.MoneyStart)
+					Init_Coin_num = 100;
+
+				if (l2Rando.WeightStart)
+					Init_Weight_num = 20;
+			}
+
+			this.playerst.addCoin(Init_Coin_num);
+			this.playerst.addWait(Init_Weight_num);
             this.playerst.resetPlayerStatus(this.Init_PLayer_lv, 0, 999, this.Init_Coin_num, this.Init_Weight_num, 0, MAINWEAPON.KNIFE, 0, SUBWEAPON.NON, 0, USEITEM.NON, 0);
             this.playerst.resetExp();
             this.setFlagData(0, 42, 1);

@@ -251,6 +251,20 @@
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
+                            <CheckBox Name="MoneyStartCheck" IsChecked="{Binding Settings.MoneyStart}" Content="Start with 100 coins" Margin="2">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="." />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <CheckBox Name="WeightStartCheck" IsChecked="{Binding Settings.WeightStart}" Content="Start with 20 weights" Margin="2">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="." />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
                         </StackPanel>
                     </GroupBox>
                 </Grid>

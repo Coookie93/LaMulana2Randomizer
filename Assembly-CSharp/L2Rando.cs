@@ -17,19 +17,21 @@ namespace LM2RandomiserMod
     public class ShopItem 
     {
         public ItemID ID;
-        public int Price;
+        public int Multiplier;
 
-        public ShopItem(ItemID id, int price)
+        public ShopItem(ItemID id, int multiplier)
         {
             ID = id;
-            Price = price;
+            Multiplier = multiplier;
         }
     }
 
     public class L2Rando : MonoBehaviour
     {
-        public bool Randomising { get; private set; } = false;
+        public bool IsRandomising { get; private set; } = false;
         public bool AutoScanTablets { get; private set; } = false;
+        public bool MoneyStart { get; private set; } = false;
+        public bool WeightStart { get; private set; } = false;
 
         private Dictionary<LocationID,ItemID> locationToItemMap;
         private Dictionary<LocationID, ShopItem> shopToItemMap;
@@ -95,7 +97,7 @@ namespace LM2RandomiserMod
         {
             showText = scene.name.Equals("title");
 
-            if (Randomising)
+            if (IsRandomising)
             {
                 StartCoroutine(ChangeTreasureBoxes());
                 ChangeEventItems();
@@ -297,6 +299,7 @@ namespace LM2RandomiserMod
 #if DEV
             DevUI devUI = gameObject.AddComponent<DevUI>() as DevUI;
             devUI.Initialise(sys);
+            gameObject.AddComponent<ItemTracker>();
 #endif
             StartCoroutine(Setup());
         }
@@ -315,6 +318,8 @@ namespace LM2RandomiserMod
                 {
                     AutoScanTablets = br.ReadBoolean();
                     autoPlaceSkull = br.ReadBoolean();
+                    MoneyStart = br.ReadBoolean();
+                    WeightStart = br.ReadBoolean();
                     int itemCount = br.ReadInt32();
                     for (int i = 0; i < itemCount; i++)
                     {
@@ -322,7 +327,7 @@ namespace LM2RandomiserMod
                     }
                     if (itemCount != locationToItemMap.Count)
                     {
-                        message = $"Seed Failed to load, mismatch between the expected and actual item count, {itemCount} to {locationToItemMap.Count}.";
+                        message = $"Seed failed to load, mismatch between the expected and actual item count, {itemCount} to {locationToItemMap.Count}.";
                         return false;
                     }
 
@@ -333,7 +338,7 @@ namespace LM2RandomiserMod
                     }
                     if (shopItemCount != shopToItemMap.Count)
                     {
-                        message = $"Seed Failed to load, mismatch between the expected and actual shop item count, {shopItemCount} to {shopToItemMap.Count}.";
+                        message = $"Seed failed to load, mismatch between the expected and actual shop item count, {shopItemCount} to {shopToItemMap.Count}.";
                         return false;
                     }
 
@@ -388,7 +393,7 @@ namespace LM2RandomiserMod
                 ChangeDialogueItems();
                 MojiScriptFixes();
                 yield return StartCoroutine(GetGameObjects());
-                Randomising = true;
+                IsRandomising = true;
             }
             sys.setKeyBlock(false);
         }
@@ -485,6 +490,37 @@ namespace LM2RandomiserMod
 
                 sys.reInitSystem();
 
+                ao = SceneManager.LoadSceneAsync("field13");
+                while (!ao.isDone)
+                    yield return null;
+
+                foreach (AnimatorController controller in FindObjectsOfType<AnimatorController>())
+                {
+                    if (controller.name.Equals("soul_gate"))
+                    {
+                        if (nineSoulGatePrefab == null)
+                        {
+                            nineSoulGatePrefab = Instantiate(controller.gameObject);
+                            nineSoulGatePrefab.name = "Nine Soul Gate Prefab";
+                            DontDestroyOnLoad(nineSoulGatePrefab);
+                            nineSoulGatePrefab.SetActive(false);
+                        }
+                    }
+                    else if (controller.name.Equals("soul_cont"))
+                    {
+                        if (nineSoulPrefab == null)
+
+                        {
+                            nineSoulPrefab = Instantiate(controller.gameObject);
+                            nineSoulPrefab.name = "Nine Soul Prefab";
+                            DontDestroyOnLoad(nineSoulPrefab);
+                            nineSoulPrefab.SetActive(false);
+                        }
+                    }
+                }
+
+                sys.reInitSystem();
+
                 ao = SceneManager.LoadSceneAsync("field02");
                 while (!ao.isDone)
                     yield return null;
@@ -509,36 +545,6 @@ namespace LM2RandomiserMod
                             twoSoulPrefab.name = "Two Soul Prefab";
                             DontDestroyOnLoad(twoSoulPrefab);
                             twoSoulPrefab.SetActive(false);
-                        }
-                    }
-                }
-
-                sys.reInitSystem();
-
-                ao = SceneManager.LoadSceneAsync("field13");
-                while (!ao.isDone)
-                    yield return null;
-
-                foreach (AnimatorController controller in FindObjectsOfType<AnimatorController>())
-                {
-                    if (controller.name.Equals("soul_gate"))
-                    {
-                        if (nineSoulGatePrefab == null)
-                        {
-                            nineSoulGatePrefab = Instantiate(controller.gameObject);
-                            nineSoulGatePrefab.name = "Nine Soul Gate Prefab";
-                            DontDestroyOnLoad(nineSoulGatePrefab);
-                            nineSoulGatePrefab.SetActive(false);
-                        }
-                    }
-                    else if (controller.name.Equals("soul_cont"))
-                    {
-                        if (nineSoulPrefab == null)
-                        {
-                            nineSoulPrefab = Instantiate(controller.gameObject);
-                            nineSoulPrefab.name = "Nine Soul Prefab";
-                            DontDestroyOnLoad(nineSoulPrefab);
-                            nineSoulPrefab.SetActive(false);
                         }
                     }
                 }
@@ -833,130 +839,110 @@ namespace LM2RandomiserMod
                                 gateDoor = door;
                         }
 
-                        if (exitInfo.SheetNo != -1)
+                        flagBoxes.Add(new L2FlagBox()
+                        {
+                            seet_no1 = exitInfo.SheetNo,
+                            flag_no1 = exitInfo.FlagNo,
+                            seet_no2 = -1,
+                            flag_no2 = 0,
+                            logic = LOGIC.AND,
+                            comp = COMPARISON.Greater
+                        });
+
+                        if(exitID == ExitID.f07GateP0)
                         {
                             flagBoxes.Add(new L2FlagBox()
                             {
-                                seet_no1 = exitInfo.SheetNo,
-                                flag_no1 = exitInfo.FlagNo,
+                                seet_no1 = 11,
+                                flag_no1 = 24,
                                 seet_no2 = -1,
-                                flag_no2 = 1,
+                                flag_no2 = 0,
                                 logic = LOGIC.AND,
-                                comp = COMPARISON.GreaterEq
+                                comp = COMPARISON.Equal
                             });
-
-                            if(exitID == ExitID.f07GateP0)
-                            {
-                                flagBoxes.Add(new L2FlagBox()
-                                {
-                                    seet_no1 = 11,
-                                    flag_no1 = 24,
-                                    seet_no2 = -1,
-                                    flag_no2 = 0,
-                                    logic = LOGIC.AND,
-                                    comp = COMPARISON.Equal
-                                });
-                            }
-
-                            boxParents[0].BOX = flagBoxes.ToArray();
-                            if (gate.shdowtask != null)
-                                gate.shdowtask.startflag = boxParents;
-
-                            if (gateDoor != null)
-                                gateDoor.CheckFlags = boxParents;
-
                         }
-                        else
-                        {
-                            if (gate.shdowtask != null)
-                                gate.shdowtask.startflag = new L2FlagBoxParent[0];
-
-                            if (gateDoor != null)
-                                gateDoor.CheckFlags = new L2FlagBoxParent[0];
-                        }
-                    }
-                    else if(exitID >= ExitID.f00GateN1)
-                    {
-                        L2FlagBoxParent[] boxParents = new L2FlagBoxParent[1];
-                        boxParents[0] = new L2FlagBoxParent();
-                        List<L2FlagBox> flagBoxes = new List<L2FlagBox>();
-
-                        AnimatorController soulGateDoor = null;
-                        AnimatorController soul = null;
-
-                        soulGateValueMap.TryGetValue(exitID, out int soulValue);
-
-                        switch (soulValue)
-                        {
-                            case 1:
-                            {
-                                GameObject obj1 = Instantiate(oneSoulGatePrefab, gate.transform.position, Quaternion.identity);
-                                soulGateDoor = obj1.GetComponent<AnimatorController>();
-                                GameObject obj2 = Instantiate(oneSoulPrefab, gate.transform.position, Quaternion.identity);
-                                soul = obj2.GetComponent<AnimatorController>();
-                                break;
-                            }
-                            case 2:
-                            {
-                                GameObject obj1 = Instantiate(twoSoulGatePrefab, gate.transform.position, Quaternion.identity);
-                                soulGateDoor = obj1.GetComponent<AnimatorController>();
-                                GameObject obj2 = Instantiate(twoSoulPrefab, gate.transform.position, Quaternion.identity);
-                                soul = obj2.GetComponent<AnimatorController>();
-                                break;
-                            }
-                            case 3:
-                            {
-                                GameObject obj1 = Instantiate(threeSoulGatePrefab, gate.transform.position, Quaternion.identity);
-                                soulGateDoor = obj1.GetComponent<AnimatorController>();
-                                GameObject obj2 = Instantiate(threeSoulPrefab, gate.transform.position, Quaternion.identity);
-                                soul = obj2.GetComponent<AnimatorController>();
-                                break;
-                            }
-                            case 5:
-                            {
-                                GameObject obj1 = Instantiate(fiveSoulGatePrefab, gate.transform.position, Quaternion.identity);
-                                soulGateDoor = obj1.GetComponent<AnimatorController>();
-                                GameObject obj2 = Instantiate(fiveSoulPrefab, gate.transform.position, Quaternion.identity);
-                                soul = obj2.GetComponent<AnimatorController>();
-                                break;
-                            }
-                            case 9:
-                            {
-                                GameObject obj1 = Instantiate(nineSoulGatePrefab, gate.transform.position, Quaternion.identity);
-                                soulGateDoor = obj1.GetComponent<AnimatorController>();
-                                GameObject obj2 = Instantiate(nineSoulPrefab, gate.transform.position, Quaternion.identity);
-                                soul = obj2.GetComponent<AnimatorController>();
-                                break;
-                            }
-                        }
-
-                        soulGateDoor.transform.SetParent(gate.transform.parent);
-                        soul.transform.parent.SetParent(gate.transform.parent);
-
-                        flagBoxes.Add(new L2FlagBox()
-                        {
-                            seet_no1 = 3,
-                            flag_no1 = 0,
-                            seet_no2 = -1,
-                            flag_no2 = soulValue,
-                            logic = LOGIC.AND,
-                            comp = COMPARISON.GreaterEq
-                        });
 
                         boxParents[0].BOX = flagBoxes.ToArray();
                         if (gate.shdowtask != null)
                             gate.shdowtask.startflag = boxParents;
 
-                        if (soulGateDoor != null)
-                        {
-                            soulGateDoor.gameObject.SetActive(true);
-                            soulGateDoor.CheckFlags = boxParents;
-                        }
+                        if (gateDoor != null)
+                            gateDoor.CheckFlags = boxParents;
 
-                        if(soul != null)
+                    }
+                    else if(exitID >= ExitID.f00GateN1)
+                    {
+                        if (soulGateValueMap.TryGetValue(exitID, out int soulValue))
                         {
-                            soul.gameObject.SetActive(true);
-                            soul.CheckFlags = boxParents;
+                            L2FlagBoxParent[] boxParents = new L2FlagBoxParent[1];
+                            boxParents[0] = new L2FlagBoxParent();
+                            List<L2FlagBox> flagBoxes = new List<L2FlagBox>();
+
+                            AnimatorController soulGateDoor = null;
+                            AnimatorController soul = null;
+
+                            switch (soulValue)
+                            {
+                                case 1:
+                                {
+                                    soulGateDoor = Instantiate(oneSoulGatePrefab, gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
+                                    soul = Instantiate(oneSoulPrefab, gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
+                                    break;
+                                }
+                                case 2:
+                                {
+                                    soulGateDoor = Instantiate(twoSoulGatePrefab, gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
+                                    soul = Instantiate(twoSoulPrefab, gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
+                                    break;
+                                }
+                                case 3:
+                                {
+                                    soulGateDoor = Instantiate(threeSoulGatePrefab, gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
+                                    soul = Instantiate(threeSoulPrefab, gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
+                                    break;
+                                }
+                                case 5:
+                                {
+                                    soulGateDoor = Instantiate(fiveSoulGatePrefab, gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
+                                    soul = Instantiate(fiveSoulPrefab, gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
+                                    break;
+                                }
+                                case 9:
+                                {
+                                    soulGateDoor = Instantiate(nineSoulGatePrefab, gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
+                                    soul = Instantiate(nineSoulPrefab, gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
+                                    break;
+                                }
+                            }
+
+                            soulGateDoor.transform.SetParent(gate.transform.parent);
+                            soul.transform.SetParent(gate.transform.parent);
+
+                            flagBoxes.Add(new L2FlagBox()
+                            {
+                                seet_no1 = 3,
+                                flag_no1 = 0,
+                                seet_no2 = -1,
+                                flag_no2 = soulValue,
+                                logic = LOGIC.AND,
+                                comp = COMPARISON.GreaterEq
+                            });
+
+                            boxParents[0].BOX = flagBoxes.ToArray();
+                            if (gate.shdowtask != null)
+                                gate.shdowtask.startflag = boxParents;
+
+                            if (soulGateDoor != null)
+                            {
+                                soulGateDoor.gameObject.SetActive(true);
+                                soulGateDoor.CheckFlags = boxParents;
+                            }
+
+                            if (soul != null)
+                            {
+                                soul.gameObject.SetActive(true);
+                                soul.CheckFlags = boxParents;
+                            }
                         }
                     }
 
@@ -991,7 +977,9 @@ namespace LM2RandomiserMod
 
                     if(gateFlags.Count > 0)
                     {
-                        gateFlags.AddRange(gate.gateFlags.ToList());
+                        if(gate.gateFlags != null)
+                            gateFlags.AddRange(gate.gateFlags.ToList());
+
                         gate.gateFlags = gateFlags.ToArray();
                     }
 
@@ -1009,17 +997,19 @@ namespace LM2RandomiserMod
                         flagWatcher.AnimeData = new GameObject[0];
                         flagWatcher.ResetFlags = new L2FlagBoxEnd[0];
                         flagWatcher.CheckFlags = new L2FlagBoxParent[1];
-                        flagWatcher.CheckFlags[0] = new L2FlagBoxParent();
-                        flagWatcher.CheckFlags[0].BOX = new L2FlagBox[]
+                        flagWatcher.CheckFlags[0] = new L2FlagBoxParent
                         {
-                            new L2FlagBox()
+                            BOX = new L2FlagBox[]
                             {
-                                seet_no1 = 5,
-                                flag_no1 = 73,
-                                seet_no2 = -1,
-                                flag_no2 = 2,
-                                logic = LOGIC.NON,
-                                comp = COMPARISON.Equal
+                                new L2FlagBox()
+                                {
+                                    seet_no1 = 5,
+                                    flag_no1 = 73,
+                                    seet_no2 = -1,
+                                    flag_no2 = 2,
+                                    logic = LOGIC.NON,
+                                    comp = COMPARISON.Equal
+                                }
                             }
                         };
                         flagWatcher.ActionFlags = new L2FlagBoxEnd[]
@@ -1033,17 +1023,19 @@ namespace LM2RandomiserMod
                             }
                         };
                         flagWatcher.finishFlags = new L2FlagBoxParent[1];
-                        flagWatcher.finishFlags[0] = new L2FlagBoxParent();
-                        flagWatcher.finishFlags[0].BOX = new L2FlagBox[]
+                        flagWatcher.finishFlags[0] = new L2FlagBoxParent
                         {
-                            new L2FlagBox()
+                            BOX = new L2FlagBox[]
                             {
-                                seet_no1 = 5,
-                                flag_no1 = 73,
-                                seet_no2 = -1,
-                                flag_no2 = 1,
-                                logic = LOGIC.NON,
-                                comp = COMPARISON.Equal
+                                new L2FlagBox()
+                                {
+                                    seet_no1 = 5,
+                                    flag_no1 = 73,
+                                    seet_no2 = -1,
+                                    flag_no2 = 1,
+                                    logic = LOGIC.NON,
+                                    comp = COMPARISON.Equal
+                                }
                             }
                         };
                     }
@@ -1277,6 +1269,9 @@ namespace LM2RandomiserMod
             talkDataBase.cellData[8][3][1][0] = "[@iff,3,34,&gt;,3,freyr,5th]\n[@iff,3,34,=,3,freyr,4th]\n[@iff,3,34,=,2,freyr,3rd]\n[@iff,2,31,&gt;,0,freyr,2nd]\n" +
                 "[@iff,3,34,=,1,freyr,1stEnd]\n[@iff,3,34,=,0,freyr,1st]";
 
+            //Make Freya open left door in Mausoleum of Giants
+            talkDataBase.cellData[7][14][1][0] = "[@anim,talk,1]\n[@setf,5,12,=,1]\n[@setf,3,29,=,1]\n[@setf,3,39,=,1]\n[@setf,9,38,=,1]";
+
             //Add check to see if you have beaten 4 guardians so mulbruuk can give you the item
             talkDataBase.cellData[10][41][1][0] = "[@exit]\n[@anim,talk,1]\n[@setf,3,33,=,10]\n[@iff,3,0,&gt;,3,mulbruk2,3rd-1]\n[@p,lastC]";
 
@@ -1326,14 +1321,17 @@ namespace LM2RandomiserMod
             if (shopToItemMap.TryGetValue(locationID, out ShopItem shopItem))
             {
                 ItemInfo newItemInfo = ItemDB.GetItemInfo(shopItem.ID);
-                return string.Format("[@sitm,{0},{1},{2},{3}]", newItemInfo.shopType, newItemInfo.shopName, shopItem.Price, newItemInfo.shopAmount);
+                if (shopItem.Multiplier < 5)
+                    shopItem.Multiplier = 10;
+
+                return string.Format("[@sitm,{0},{1},{2},{3}]", newItemInfo.shopType, newItemInfo.shopName, newItemInfo.shopPrice * shopItem.Multiplier, newItemInfo.shopAmount);
             }
             return string.Empty;
         }
 
         private void ChangeShopThanks()
         {
-            //change this strings beforehand because they do stuff usually that is unwanted
+            //change these strings beforehand because they do stuff usually that is unwanted like increase score
             //Modro's thank1, remove check for shield
             shopDataBase.cellData[1][9][1][0] = "[@anim,thank,1]\n[@animp,buyF0121,1]";
 
@@ -1342,6 +1340,12 @@ namespace LM2RandomiserMod
 
             //Hiner's thank4
             shopDataBase.cellData[4][10][1][0] = "[@anim,thank,1]\n[@animp,buyF0142,1]";
+
+            //Hiro Roderick thank3
+            shopDataBase.cellData[8][10][1][0] = "[@anim,thank,1]\n[@animp,buyF032,1]";
+
+            //Hydlit thank3
+            shopDataBase.cellData[13][10][1][0] = "[@anim,wait,1]\n[@animp,buyF06,1]";
 
             ChangeThanksStrings(LocationID.SidroShop1, LocationID.SidroShop2, LocationID.SidroShop3, 0, 9);
             ChangeThanksStrings(LocationID.ModroShop1, LocationID.ModroShop2, LocationID.ModroShop3, 1, 9, 2, 3);

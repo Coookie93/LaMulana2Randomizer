@@ -194,7 +194,7 @@
       {
         "Name": "Dissonance (Mausoleum of Giants)",
         "LocationType": "Dissonance",
-        "Logic": "CanChant(Sun) and PuzzleFinished(Sakit)",
+        "Logic": "Has(Beherit) and CanChant(Sun) and PuzzleFinished(Sakit)",
         "Item": {
           "Name": "Dissonance",
           "IsRequired": true
@@ -2297,7 +2297,7 @@
       {
         "ConnectionType": "Corridor",
         "ConnectingAreaName": "Eternal Prison Doom Entrance",
-        "Logic": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and CanWarp",
+        "Logic": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and CanWarp"
       }
     ]
   },
@@ -2354,7 +2354,7 @@
       {
         "Name": "Ki-sikil-lil-la-ke",
         "LocationType": "Miniboss",
-        "Logic": "OrbCount(2) and ((Has(Knife) and Has(Feather)) or Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Axe) or Has(Katana) or Has(Claydoll Suit))",
+        "Logic": "((OrbCount(1) and Has(Ice Cloak)) or OrbCount(3)) and ((Has(Knife) and Has(Feather)) or Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Axe) or Has(Katana) or Has(Claydoll Suit))",
         "HardLogic": "True",
         "Item": {
           "Name": "Ki-sikil-lil-la-ke",
@@ -2569,7 +2569,7 @@
         "ID": "f13GateN9",
         "ConnectionType": "SoulGate",
         "ConnectingAreaName": "Immortal Battlefield Spiral Boat",
-        "Logic": "Has(Death Sigil) and Has(Earth Spear) and (GuardianKills(9) or Setting(Random Soul Gates))"
+        "Logic": "Has(Death Sigil) and Has(Earth Spear) and (CanWarp or IsDead(HoM Middle Path)) and (GuardianKills(9) or Setting(Random Soul Gates))"
       }
     ]
   },

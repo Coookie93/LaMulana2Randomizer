@@ -115,6 +115,18 @@ namespace LaMulana2Randomizer
             set => Set(ref autoPlaceSkulls, value);
         }
 
+        private bool moneyStart;
+        public bool MoneyStart {
+            get => moneyStart;
+            set => Set(ref moneyStart, value);
+        }
+
+        private bool weightStart;
+        public bool WeightStart {
+            get => weightStart;
+            set => Set(ref weightStart, value);
+        }
+
         private MantraPlacement mantraPlacement;
         public MantraPlacement MantraPlacement { 
             get=>mantraPlacement; 

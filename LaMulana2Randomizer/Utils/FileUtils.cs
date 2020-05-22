@@ -83,7 +83,6 @@ namespace LaMulana2Randomizer.Utils
         
         public static bool WriteSpoilers(Randomiser randomiser)
         {
-            randomiser.WritingSpoilers = true;
             try
             {
                 using (StreamWriter sw = File.CreateText("Seed\\spoilers.txt"))
@@ -175,7 +174,6 @@ namespace LaMulana2Randomizer.Utils
                     } while (reachableLocations.Count > 0);
                     sw.WriteLine("}");
                 }
-                randomiser.WritingSpoilers = false;
                 return true;
             }
             catch (Exception ex)
@@ -197,7 +195,7 @@ namespace LaMulana2Randomizer.Utils
                     {
                         if (location.LocationType == LocationType.Shop)
                         {
-                            shopItems.Add((location.ID, location.Item.ID, location.Item.Price));
+                            shopItems.Add((location.ID, location.Item.ID, location.Item.PriceMultiplier));
                         }
                         else
                         {
@@ -212,6 +210,8 @@ namespace LaMulana2Randomizer.Utils
                 {
                     br.Write(randomiser.Settings.AutoScanTablets);
                     br.Write(randomiser.Settings.AutoPlaceSkulls);
+                    br.Write(randomiser.Settings.MoneyStart);
+                    br.Write(randomiser.Settings.WeightStart);
                     br.Write(items.Count);
                     foreach(var p in items)
                     {
