@@ -5,7 +5,7 @@ using L2STATUS;
 using L2Menu;
 using L2Hit;
 
-#pragma warning disable 0649, 0414, 0108
+#pragma warning disable 0649, 0414, 0108, 0626
 namespace LM2RandomiserMod.Patches
 {
     [MonoModPatch("L2Base.L2System")]
@@ -166,7 +166,7 @@ namespace LM2RandomiserMod.Patches
 				{
 					if (!direct)
 					{
-						this.setFlagData(num3, "Pepper-b", 100);
+						this.setFlagData(num3, "Pepper-b", 69);
 					}
 				}
 				else if (L2SystemCore.getItemData(item_name).isEquipableItem())
@@ -237,7 +237,7 @@ namespace LM2RandomiserMod.Patches
 			else
 			{
 
-				this.setFlagData(num2, item_name, (short)(this.getItemNum(item_name) + num));
+				this.setFlagData(num2, item_name, (short)num);//(short)(this.getItemNum(item_name) + 
 			}
 			IL_3BF:
 			MAINWEAPON mainweapon = this.exchengeMainWeaponNameToEnum(item_name);
@@ -424,6 +424,10 @@ namespace LM2RandomiserMod.Patches
         [MonoModReplace]
         public void gameFlagResets()
         {
+			ItemTracker itemTracker = FindObjectOfType<ItemTracker>();
+			if (itemTracker != null)
+				itemTracker.Add(102, 0);
+
 			this.fsys.allReset();
 			this.playerst.clearItemsNum();
 			this.menusys.menuSysReStart();
@@ -437,6 +441,9 @@ namespace LM2RandomiserMod.Patches
 
 				if (l2Rando.WeightStart)
 					Init_Weight_num = 20;
+
+				if(l2Rando.RemoveITStatue)
+					this.setFlagData(8, 10, 1);
 			}
 
 			this.playerst.addCoin(Init_Coin_num);
@@ -444,12 +451,47 @@ namespace LM2RandomiserMod.Patches
             this.playerst.resetPlayerStatus(this.Init_PLayer_lv, 0, 999, this.Init_Coin_num, this.Init_Weight_num, 0, MAINWEAPON.KNIFE, 0, SUBWEAPON.NON, 0, USEITEM.NON, 0);
             this.playerst.resetExp();
             this.setFlagData(0, 42, 1);
-			this.setFlagData(4, 62, 2);
 			this.setFlagData(4, 60, 4);
+			this.setFlagData(4, 62, 2);
+		}
+
+		public extern void orig_loadInitFlagToItem();
+
+		public void loadInitFlagToItem()
+		{
+			ItemTracker itemTracker = FindObjectOfType<ItemTracker>();
+			if (itemTracker != null)
+				itemTracker.Add(100, 0);
+
+			orig_loadInitFlagToItem();
+
+			if(itemTracker != null)
+			{
+				itemTracker.Add(2, 152);
+				itemTracker.Add(2, 153);
+				itemTracker.Add(2, 154);
+				itemTracker.Add(2, 155);
+				itemTracker.Add(2, 156);
+				itemTracker.Add(2, 157);
+				itemTracker.Add(2, 158);
+				itemTracker.Add(2, 159);
+				itemTracker.Add(2, 160);
+				itemTracker.Add(2, 161);
+				itemTracker.Add(3, 10);
+				itemTracker.Add(3, 11);
+				itemTracker.Add(3, 12);
+				itemTracker.Add(3, 13);
+				itemTracker.Add(3, 14);
+				itemTracker.Add(3, 15);
+				itemTracker.Add(3, 16);
+				itemTracker.Add(3, 17);
+				itemTracker.Add(3, 18);
+				itemTracker.Add(101, 0);
+			}
 		}
 
 #if DEV
-        [MonoModIgnore]
+		[MonoModIgnore]
         private TextMesh boss_hp_text;
 
         [MonoModIgnore]

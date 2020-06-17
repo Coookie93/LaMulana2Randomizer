@@ -2,8 +2,11 @@
 using System.Text;
 using System.Net;
 using System.Net.Sockets;
-using UnityEngine;
 using System.Collections.Generic;
+using L2Base;
+using L2Flag;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace LM2RandomiserMod
 {
@@ -15,42 +18,152 @@ namespace LM2RandomiserMod
 
         private TcpListener listener;
         private List<ConnectedClient> clients = new List<ConnectedClient>();
+        private Queue<L2FlagBoxEnd> flags = new Queue<L2FlagBoxEnd>();
 
-        private Font currentFont = null;
+        private L2System sys;
+        private bool onTitle;
+        private Font currentFont;
+
         public void OnGUI()
         {
-            if (currentFont == null)
-                currentFont = Font.CreateDynamicFontFromOSFont("Consolas", 14);
+            if (onTitle)
+            {
+                if (currentFont == null)
+                    currentFont = Font.CreateDynamicFontFromOSFont("Consolas", 14);
 
-            GUIStyle guistyle = new GUIStyle(GUI.skin.label);
-            guistyle.normal.textColor = Color.white;
-            guistyle.font = currentFont;
-            guistyle.fontStyle = FontStyle.Bold;
-            guistyle.fontSize = 14;
+                GUIStyle guistyle = new GUIStyle(GUI.skin.label);
+                guistyle.normal.textColor = Color.white;
+                guistyle.font = currentFont;
+                guistyle.fontStyle = FontStyle.Bold;
+                guistyle.fontSize = 14;
 
-            GUIContent content = new GUIContent($"Total clients connected {clients.Count}");
-            Vector2 size = guistyle.CalcSize(content);
-            GUI.Label(new Rect(Screen.width - size.x, 0, size.x, size.y), content, guistyle);
+                GUIContent content = new GUIContent($"Item Tracker Enabled \nTotal clients connected {clients.Count}");
+                Vector2 size = guistyle.CalcSize(content);
+                GUI.Label(new Rect(Screen.width - size.x, 0, size.x, size.y), content, guistyle);
+            }
         }
 
         public void Start()
         {
+            sys = GameObject.Find("GameSystem").GetComponent<L2System>();
             instance = this;
             StartListener();
-            On.L2Base.L2System.setItem += OnSetItem;
         }
 
-        public void OnSetItem(On.L2Base.L2System.orig_setItem orig, L2Base.L2System sys, string item_name, int num, bool direct, bool loadcall, bool sub_add)
+        public void Update()
         {
-            orig(sys, item_name, num, direct, loadcall, sub_add);
-            Send(item_name);
+            if(flags.Count > 0)
+            {
+                L2FlagBoxEnd l2Flag = flags.Dequeue();
+                byte[] data = new byte[3];
+                data[0] = (byte)l2Flag.seet_no1;
+                data[1] = (byte)l2Flag.flag_no1;
+                data[2] = (byte)l2Flag.data;
+                Send(data);
+            }
         }
 
-        public void Send(string message)
+        public void OnEnable()
         {
-            byte[] data = Encoding.UTF8.GetBytes(message);
-            foreach (var client in clients)
-                client.Send(data);
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        public void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            onTitle = scene.name.Equals("title");
+        }
+
+        public void Add(int sheet, int flag)
+        {
+            if(sheet == 0)
+            {
+                short data = 0;
+                if (sys.getFlag(sheet, flag, ref data))
+                {
+                    if (data > 0)
+                    {
+                        if (flag == 32)
+                        {
+                            flags.Enqueue(new L2FlagBoxEnd()
+                            {
+                                seet_no1 = 2,
+                                flag_no1 = 8,
+                                data = data
+                            });
+                        }
+                        else if (flag == 3)
+                        {
+                            flags.Enqueue(new L2FlagBoxEnd()
+                            {
+                                seet_no1 = 2,
+                                flag_no1 = 76,
+                                data = data
+                            });
+                        }
+                    }
+                    else
+                    {
+                        if (flag == 3)
+                        {
+                            flags.Enqueue(new L2FlagBoxEnd()
+                            {
+                                seet_no1 = 2,
+                                flag_no1 = 76,
+                                data = data
+                            });
+                        }
+                    }
+                }
+            }
+            else if (sheet == 2)
+            {
+                if (flag == 8)
+                    return;
+
+                short data = 0;
+                if (sys.getFlag(sheet, flag, ref data))
+                {
+                    if ((data > 0 && flag != 15) || (data > 1 && flag == 15))
+                    {
+                        flags.Enqueue(new L2FlagBoxEnd()
+                        {
+                            seet_no1 = sheet,
+                            flag_no1 = flag,
+                            data = data
+                        });
+                    }
+                }
+            }
+            else if (sheet == 3 && (flag >= 10 || flag <= 18))
+            {
+                short data = 0;
+                if (sys.getFlag(sheet, flag, ref data))
+                {
+                    if (data >= 4)
+                    {
+                        flags.Enqueue(new L2FlagBoxEnd()
+                        {
+                            seet_no1 = sheet,
+                            flag_no1 = flag,
+                            data = data
+                        });
+                    }
+                }
+            }
+            else if(sheet > 99)
+            {
+                flags.Enqueue(new L2FlagBoxEnd()
+                {
+                    seet_no1 = sheet,
+                    flag_no1 = 0,
+                    data = 0
+                });
+            }
         }
 
         public void RemoveClient(ConnectedClient client)
@@ -71,17 +184,40 @@ namespace LM2RandomiserMod
         private void OnClientConnected(IAsyncResult ar)
         {
             TcpClient client = listener.EndAcceptTcpClient(ar);
-            ConnectedClient newClient = new ConnectedClient(client);
-            clients.Add(newClient);
+            ConnectedClient cClient = new ConnectedClient(client);
+            clients.Add(cClient);
             listener.BeginAcceptTcpClient(OnClientConnected, null);
+        }
+
+        private void Send(byte[] data)
+        {
+            foreach (var client in clients)
+            {
+                if (client.IsConnected)
+                    client.Send(data);
+            }
+        }
+
+        private void Send(string message)
+        {
+            byte[] data = Encoding.UTF8.GetBytes(message);
+            foreach (var client in clients)
+            {
+                if (client.IsConnected)
+                    client.Send(data);
+            }
         }
     }
 
     public class ConnectedClient
     {
-        public const int BufferSize = 1024;
-        public byte[] Buffer = new byte[BufferSize];
-        public TcpClient Client;
+        private const int BufferSize = 1024;
+        private byte[] Buffer = new byte[BufferSize];
+        private TcpClient Client;
+
+        public bool IsConnected {
+            get => Client.Connected;
+        }
 
         public ConnectedClient(TcpClient client)
         {

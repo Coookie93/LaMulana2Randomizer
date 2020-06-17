@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using L2Base;
 using L2Flag;
+using UnityEngine;
 using MonoMod;
 using MonoMod.ModInterop;
 
@@ -12,6 +13,8 @@ namespace LM2RandomiserMod.Patches
     public class patched_L2FlagSystem : L2Flag.L2FlagSystem
     {
         [NonSerialized] public Queue<string> flagWatch = new Queue<string>();
+        [NonSerialized] public Queue<L2FlagBoxEnd> flags = new Queue<L2FlagBoxEnd>();
+        [NonSerialized] private ItemTracker ItemTracker;
 
         public patched_L2FlagSystem(L2System l2sys) : base(l2sys)
         {
@@ -24,23 +27,50 @@ namespace LM2RandomiserMod.Patches
 
         public bool setFlagData(int sheet_no, string name, short data)
         {
+#if DEV
             AddFlagToWatch(sheet_no, name, data);
+#endif
+            bool result = orig_setFlagData(sheet_no, name, data);
 
-            return orig_setFlagData(sheet_no, name, data);
+            if (ItemTracker == null)
+                ItemTracker = GameObject.FindObjectOfType<ItemTracker>();
+
+            if(ItemTracker != null)
+                ItemTracker.Add(sheet_no, getFlagNo(sheet_no, name));
+
+            return result;
         }
 
         public bool setFlagData(int sheet_no, int flag_no, short data)
         {
-            AddFlagToWatch(sheet_no, flag.cellData[sheet_no][flag_no + 1][0][0], data);
+            string name = flag.cellData[sheet_no][flag_no + 1][0][0];
+#if DEV
+            AddFlagToWatch(sheet_no, name, data);
+#endif
+            bool result = orig_setFlagData(sheet_no, flag_no, data);
 
-            return orig_setFlagData(sheet_no, flag_no, data);
+            if (ItemTracker == null)
+                ItemTracker = GameObject.FindObjectOfType<ItemTracker>();
+
+            if (ItemTracker != null)
+                ItemTracker.Add(sheet_no, flag_no);
+
+            return result;
         }
 
         public void addFlag(int seet_no1, int flag_no1, short value, CALCU cul)
         {
-            AddFlagToWatch(seet_no1, flag.cellData[seet_no1][flag_no1 + 1][0][0], value, cul);
-
+            string name = flag.cellData[seet_no1][flag_no1 + 1][0][0];
+#if DEV
+            AddFlagToWatch(seet_no1, name, value, cul);
+#endif
             orig_addFlag(seet_no1, flag_no1, value, cul);
+
+            if (ItemTracker == null)
+                ItemTracker = GameObject.FindObjectOfType<ItemTracker>();
+
+            if (ItemTracker != null)
+                ItemTracker.Add(seet_no1, flag_no1);
         }
 
         public void AddFlagToWatch(int sheet_no, string name, short data, CALCU cul)
@@ -50,9 +80,7 @@ namespace LM2RandomiserMod.Patches
             if (name == "Gold" || name == "weight" || name == "Playtime") return;
 
             if (flagWatch == null)
-            {
-                flagWatch = new Queue<String>();
-            }
+                flagWatch = new Queue<string>();
 
             short oldData = 0;
             if (!getFlag(sheet_no, name, ref oldData)) return;
@@ -86,9 +114,7 @@ namespace LM2RandomiserMod.Patches
             if (name == "Gold" || name == "weight" || name == "Playtime") return;
 
             if (flagWatch == null)
-            {
-                flagWatch = new Queue<String>();
-            }
+                flagWatch = new Queue<string>();
 
             short oldData = 0;
             if (!getFlag(sheet_no, name, ref oldData)) return;
@@ -103,6 +129,11 @@ namespace LM2RandomiserMod.Patches
         public Queue<string> GetFlagWatches()
         {
             return flagWatch;
+        }
+
+        public Queue<L2FlagBoxEnd> GetFlags()
+        {
+            return flags;
         }
     }
 }

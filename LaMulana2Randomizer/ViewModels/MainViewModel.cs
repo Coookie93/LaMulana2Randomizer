@@ -126,11 +126,12 @@ namespace LaMulana2Randomizer.ViewModels
                         canBeatGame = randomiser.CanBeatGame();
                         if (!canBeatGame)
                         {
+                            FileUtils.WriteSpoilers(randomiser);
                             randomiser.ClearPlacedItems();
-                            Logger.Log($"Failed to generate beatable configuartion, retrying.");
+                            Logger.Log($"Failed to generate beatable item placement, retrying.");
                             progress.Report(new ProgressInfo
                             {
-                                Label = $"Failed to generate beatable configuartion, retrying attempt {attemptCount}.",
+                                Label = $"Failed to generate beatable item placement, retrying attempt {attemptCount}.",
                                 ProgressValue = 0,
                                 IsIndeterminate = true
                             });

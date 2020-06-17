@@ -145,7 +145,7 @@ namespace LaMulana2Randomizer
 
         public bool CanBeatGame()
         {
-            return HasItem("Winner");
+            return HasItem("Winner") && CanReach("Cliff");
         }
 
         public bool CanReach(string areaName)
@@ -448,6 +448,9 @@ namespace LaMulana2Randomizer
 
                 case "Non Random Soul Gates":
                     return !randomiser.Settings.RandomSoulGateEntraces;
+
+                case "Remove IT Statue":
+                    return randomiser.Settings.RemoveITStatue;
 
                 default:
                     return false;

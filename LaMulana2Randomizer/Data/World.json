@@ -623,7 +623,7 @@
         "Logic": "IsDead(Cetus)"
       },
       {
-        "Name": "Immortal Battlefied Up Ladder (F-1)",
+        "Name": "Immortal Battlefield Up Ladder (F-1)",
         "ID": "f03Up",
         "ConnectionType": "UpLadder",
         "ConnectingAreaName": "Annwfn Main",
@@ -1060,7 +1060,7 @@
         "Name": "Surtr",
         "LocationType": "Guardian",
         "Logic": "Has(Light Scythe) and (Has(Feather) or Has(Ice Cloak)) and (((Has(Knife) or Has(Rapier)) and OrbCount(7)) or (Has(Chain Whip) and OrbCount(6)) or ((Has(Flail Whip) or Has(Axe) or Has(Katana)) and OrbCount(5)))",
-        "HardLogic": "Has(Light Scythe) and (Has(Feather) or Has(Ice Cloak))",
+        "HardLogic": "Has(Light Scythe)",
         "Item": {
           "Name": "Surtr",
           "IsRequired": true
@@ -1068,6 +1068,11 @@
       }
     ],
     "Exits": [
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Icefire Treetop Entrance",
+        "Logic": "Setting(Remove IT Statue) and (Has(Claydoll Suit) or Has(Ice Cloak) or OrbCount(3))"
+      },
       {
         "ConnectionType": "Internal",
         "ConnectingAreaName": "Icefire Treetop Right",
@@ -1636,6 +1641,11 @@
     "Exits": [
       {
         "ConnectionType": "Internal",
+        "ConnectingAreaName": "Takamagahara Shrine Left",
+        "Logic": "Has(Katana) or CanUse(Earth Spear) or CanUse(Bomb)"
+      },
+      {
+        "ConnectionType": "Internal",
         "ConnectingAreaName": "Takamagahara Shrine Main",
         "Logic": "Has(Knife) or Has(Katana) or Has(Rapier) or Has(Axe) or CanUse(Rolling Shuriken) or CanUse(Earth Spear) or CanUse(Caltrops) or CanUse(Bomb) or Has(Spaulder) or Has(Vajra)"
       },
@@ -1688,11 +1698,6 @@
       }
     ],
     "Exits": [
-      {
-        "ConnectionType": "Internal",
-        "ConnectingAreaName": "Takamagahara Shrine Left",
-        "Logic": "Has(Katana) or CanUse(Earth Spear) or CanUse(Bomb)"
-      },
       {
         "ConnectionType": "Internal",
         "ConnectingAreaName": "Takamagahara Shrine Bottom",

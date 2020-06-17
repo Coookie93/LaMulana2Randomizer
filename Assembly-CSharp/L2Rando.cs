@@ -30,6 +30,7 @@ namespace LM2RandomiserMod
     {
         public bool IsRandomising { get; private set; } = false;
         public bool AutoScanTablets { get; private set; } = false;
+        public bool RemoveITStatue { get; private set; } = false;
         public bool MoneyStart { get; private set; } = false;
         public bool WeightStart { get; private set; } = false;
 
@@ -58,12 +59,12 @@ namespace LM2RandomiserMod
         private GameObject nineSoulPrefab;
 
         private Font currentFont = null;
-        private bool showText = false;
+        private bool onTitle = false;
         private string message;
 
         public void OnGUI()
         {
-            if (showText)
+            if (onTitle)
             {
                 if (currentFont == null)
                     currentFont = Font.CreateDynamicFontFromOSFont("Consolas", 14);
@@ -95,7 +96,7 @@ namespace LM2RandomiserMod
 
         void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            showText = scene.name.Equals("title");
+            onTitle = scene.name.Equals("title");
 
             if (IsRandomising)
             {
@@ -105,7 +106,13 @@ namespace LM2RandomiserMod
                 StartCoroutine(ChangeEntrances(scene.name));
 
                 var bgScroll = FindObjectOfType<BGScrollSystem>();
-                if (scene.name.Equals("field03"))
+                if (scene.name.Equals("field00"))
+                {
+                    GameObject obj = GameObject.Find("endPiller");
+                    if (obj != null)
+                        obj.SetActive(false);
+                }
+                else if (scene.name.Equals("field03"))
                 {
                     GameObject obj = new GameObject
                     {
@@ -129,7 +136,7 @@ namespace LM2RandomiserMod
                 }
                 else if (scene.name.Equals("fieldSpace"))
                 {
-                    foreach (var grailCanceller in FindObjectsOfType<HolyGrailCancellerScript>())
+                    foreach (HolyGrailCancellerScript grailCanceller in FindObjectsOfType<HolyGrailCancellerScript>())
                         grailCanceller.gameObject.SetActive(false);
                 }
 
@@ -296,10 +303,10 @@ namespace LM2RandomiserMod
             this.shopDataBase = shopDataBase;
             this.talkDataBase = talkDataBase;
             sys = system;
+            gameObject.AddComponent<ItemTracker>();
 #if DEV
             DevUI devUI = gameObject.AddComponent<DevUI>() as DevUI;
             devUI.Initialise(sys);
-            gameObject.AddComponent<ItemTracker>();
 #endif
             StartCoroutine(Setup());
         }
@@ -318,6 +325,7 @@ namespace LM2RandomiserMod
                 {
                     AutoScanTablets = br.ReadBoolean();
                     autoPlaceSkull = br.ReadBoolean();
+                    RemoveITStatue = br.ReadBoolean();
                     MoneyStart = br.ReadBoolean();
                     WeightStart = br.ReadBoolean();
                     int itemCount = br.ReadInt32();
@@ -769,7 +777,7 @@ namespace LM2RandomiserMod
         
         private ExitID GetExitIDFromAnchorName(string anchorName, string field)
         {
-            if(field.Equals("fieldL02") && anchorName.Equals("PlayerStart"))
+            if (field.Equals("fieldL02") && anchorName.Equals("PlayerStart"))
             {
                 return ExitID.fL02Left;
             }
@@ -784,6 +792,10 @@ namespace LM2RandomiserMod
             else if (field.Equals("field01") && anchorName.Equals("PlayerStart"))
             {
                 return ExitID.f01Down;
+            }
+            else if (field.Equals("field01") && anchorName.Equals("PlayerStart f01Right"))
+            {
+                return ExitID.None;
             }
             return ExitDB.AnchorNameToExitID(anchorName);
         }
@@ -821,8 +833,7 @@ namespace LM2RandomiserMod
 
                     ExitInfo exitInfo = ExitDB.GetExitInfo(exitID);
 
-                    if (exitInfo.FieldNo == destinationInfo.FieldNo)
-                        gate.bgmFadeOut = false;
+                    gate.bgmFadeOut = exitInfo.FieldNo == destinationInfo.FieldNo;
 
                     if (exitID >= ExitID.f00GateY0 && exitID <= ExitID.fL11GateN)
                     {
@@ -947,7 +958,7 @@ namespace LM2RandomiserMod
                     }
 
                     List<L2FlagBoxEnd> gateFlags = new List<L2FlagBoxEnd>();
-                    if (destinationID == ExitID.fL02Left)
+                    if (destinationID == ExitID.fL02Left || destinationID == ExitID.fL02Up)
                     {
                         gateFlags.Add(new L2FlagBoxEnd()
                         {

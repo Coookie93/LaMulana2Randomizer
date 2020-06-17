@@ -167,14 +167,14 @@
                             <CheckBox Name="RandomHorizontal" IsChecked="{Binding Settings.RandomHorizontalEntraces}" Content="Randomise Horizontal Entrances" Margin="2">
                                 <CheckBox.ToolTip>
                                     <ToolTip Style="{StaticResource TootltipStyle}">
-                                        <TextBlock Text="." />
+                                        <TextBlock Text="Randomises the left/right door ways, the doors are kept as pairs so a left will lead to a right." />
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
                             <CheckBox Name="VillageToCliff" IsChecked="{Binding Settings.AllowVillageToCliff}" Content="Allow Village to Cliff" Margin="20,2,2,2">
                                 <CheckBox.ToolTip>
                                     <ToolTip Style="{StaticResource TootltipStyle}">
-                                        <TextBlock Text="." />
+                                        <TextBlock Text="Allow the Village right door to lead to the Cliff wether it be directly or through the Cavern." />
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                                 <CheckBox.Style>
@@ -191,28 +191,35 @@
                             <CheckBox Name="RandomLadder" IsChecked="{Binding Settings.RandomLadderEntraces}" Content="Randomise Ladder Entrances" Margin="2">
                                 <CheckBox.ToolTip>
                                     <ToolTip Style="{StaticResource TootltipStyle}">
-                                        <TextBlock Text="." />
+                                        <TextBlock Text="Randomises the ladders and exit points of one way ladders, the ladder are kept as pairs so an up ladder will lead to a down ladder." />
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
                             <CheckBox Name="RandomGates" IsChecked="{Binding Settings.RandomGateEntraces}" Content="Randomise Gate Entrances" Margin="2">
                                 <CheckBox.ToolTip>
                                     <ToolTip Style="{StaticResource TootltipStyle}">
-                                        <TextBlock Text="." />
+                                        <TextBlock Text="Randomises the gates." />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <CheckBox Name="RemoveITStatue" IsChecked="{Binding Settings.RemoveITStatue}" Content="Remove Statue in Icefire Treetop" Margin="20,2,2,2">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="Starts the game with the statue next to the gate in Icefire Treetop removed." />
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
                             <CheckBox Name="RandomSoulGates" IsChecked="{Binding Settings.RandomSoulGateEntraces}" Content="Randomise Soul Gate Entrances" Margin="2">
                                 <CheckBox.ToolTip>
                                     <ToolTip Style="{StaticResource TootltipStyle}">
-                                        <TextBlock Text="." />
+                                        <TextBlock Text="Randomises the soul gates by shuffling around the destinations and soul values, the soul gates are kept in soul value pairs e.g. a soul gate with a value of 2 will lead to another soul gate of value 2." />
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
                             <CheckBox Name="IncludeNineGate" IsChecked="{Binding Settings.IncludeNineGates}" Content="Include Nine Soul Gates" Margin="20,2,2,2">
                                 <CheckBox.ToolTip>
                                     <ToolTip Style="{StaticResource TootltipStyle}">
-                                        <TextBlock Text="." />
+                                        <TextBlock Text="Adds the two nine gates to the pool of randomised soul gates." />
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                                 <CheckBox.Style>
@@ -225,6 +232,13 @@
                                         </Style.Triggers>
                                     </Style>
                                 </CheckBox.Style>
+                            </CheckBox>
+                            <CheckBox Name="FullRandomEntrances" IsChecked="{Binding Settings.FullRandomEntrances}" Content="Entrance Mix'n'Match" Margin="2">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="Takes all the entrances types selected to be randomised excluding soul gates and randomises them in a way where any entrance can lead to any other entrance." />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
                             </CheckBox>
                         </StackPanel>
                     </GroupBox>

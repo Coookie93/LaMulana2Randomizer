@@ -21,6 +21,7 @@ namespace LaMulana2Randomizer
         public List<string> HorizontalPairs { get; private set; }
         public List<string> LadderPairs { get; private set; }
         public List<string> GatePairs { get; private set; }
+        public List<string> EntrancePairs { get; private set; }
         public List<(ExitID, ExitID)> ExitPairs { get; private set; }
         public List<(Exit, Exit, int)> SoulGatePairs { get; private set; }
         public Settings Settings { get; private set; }
@@ -35,6 +36,7 @@ namespace LaMulana2Randomizer
             HorizontalPairs = new List<string>();
             LadderPairs = new List<string>();
             GatePairs = new List<string>();
+            EntrancePairs = new List<string>();
             ExitPairs = new List<(ExitID, ExitID)>();
             SoulGatePairs = new List<(Exit, Exit, int)>();
         }
@@ -84,14 +86,21 @@ namespace LaMulana2Randomizer
                 }
             }
 
-            if (Settings.RandomHorizontalEntraces)
-                RandomiseHorizontalEntrances();
+            if (!Settings.FullRandomEntrances)
+            {
+                if (Settings.RandomHorizontalEntraces)
+                    RandomiseHorizontalEntrances();
 
-            if (Settings.RandomLadderEntraces)
-                RandomiseLadderEntrances();
+                if (Settings.RandomLadderEntraces)
+                    RandomiseLadderEntrances();
 
-            if (Settings.RandomGateEntraces)
-                RandomiseGateEntrances();
+                if (Settings.RandomGateEntraces)
+                    RandomiseGateEntrances();
+            }
+            else
+            {
+                FullRandomEntrances();
+            }
 
             if (Settings.RandomSoulGateEntraces)
                 RandomiseSoulGateEntrances();
@@ -236,6 +245,7 @@ namespace LaMulana2Randomizer
             HorizontalPairs.Clear();
             LadderPairs.Clear();
             GatePairs.Clear();
+            EntrancePairs.Clear();
             ExitPairs.Clear();
             SoulGatePairs.Clear();
         }
@@ -603,6 +613,9 @@ namespace LaMulana2Randomizer
         {
             List<Exit> leftDoors = Shuffle.FisherYates(GetConnectionsOfType(ExitType.LeftDoor), random);
             List<Exit> rightDoors = Shuffle.FisherYates(GetConnectionsOfType(ExitType.RightDoor), random);
+
+            //place the cliff first to avoid cliff to village if needed, then place one of the cavern sides to stop it
+            //from looping on itself
             List<Exit> priorityLeftDoors = new List<Exit>
             {
                 leftDoors.Find(x => x.ID == ExitID.fP02Left),
@@ -683,12 +696,15 @@ namespace LaMulana2Randomizer
         {
             List<Exit> downLadders = Shuffle.FisherYates(GetConnectionsOfType(ExitType.DownLadder), random);
             List<Exit> upLadders = Shuffle.FisherYates(GetConnectionsOfType(ExitType.UpLadder), random);
+
+            //these are one way down ladders so they need to be placed first to avoid being placed with inferno cavern
             List<Exit> priorityDownLadders = new List<Exit>()
             {
                 downLadders.Find(x => x.ID == ExitID.f02Down),
                 downLadders.Find(x => x.ID == ExitID.f03Down2)
             };
 
+            //if the village door leads to the cliff then the ladder can't lead to inferno cavern
             if (villageDeadEnd)
                 priorityDownLadders.Add(downLadders.Find(x => x.ID == ExitID.f01Down));
 
@@ -761,21 +777,40 @@ namespace LaMulana2Randomizer
         private void RandomiseGateEntrances()
         {
             List<Exit> gates = Shuffle.FisherYates(GetConnectionsOfType(ExitType.Gate), random);
+            
+            Exit gate1 = null;
+            Exit gate2 = null;
+
+            //place one side of illusion first to avoid making it loop on itself
+            gate1 = gates.Find(x => x.ID == ExitID.fL11GateN);
+            gates.Remove(gate1);
+            do
+            {
+                gate2 = gates[random.Next(gates.Count)];
+            } while (gate2.ID == ExitID.fL11GateY0);
+            gates.Remove(gate2);
+
+            FixGateLogic(gate1, gate2);
+            FixGateLogic(gate2, gate1);
+
+            gate1.ConnectingAreaName = gate2.ParentAreaName;
+            gate2.ConnectingAreaName = gate1.ParentAreaName;
+
+            ExitPairs.Add((gate1.ID, gate2.ID));
+            GatePairs.Add($"    {gate1.Name} - {gate2.Name}");
+            
+            //these are all inaccessible unless you come through the gate itself so to they can't be placed together
             List<Exit> priorityGates = new List<Exit>()
             {
                 gates.Find(x => x.ID == ExitID.f02GateYA),
+                gates.Find(x => x.ID == ExitID.f03GateYC),
                 gates.Find(x => x.ID == ExitID.f06GateP0),
                 gates.Find(x => x.ID == ExitID.f12GateP0),
-                gates.Find(x => x.ID == ExitID.f13GateP0),
-                gates.Find(x => x.ID == ExitID.fL11GateN),
-                gates.Find(x => x.ID == ExitID.f03GateYC)
+                gates.Find(x => x.ID == ExitID.f13GateP0)
             };
 
             foreach (Exit gate in priorityGates)
                 gates.Remove(gate);
-
-            Exit gate1 = null;
-            Exit gate2 = null;
 
             while (gates.Count > 0)
             {
@@ -787,22 +822,11 @@ namespace LaMulana2Randomizer
                 else
                 {
                     gate1 = gates[random.Next(gates.Count)];
+                    gates.Remove(gate1);
                 }
 
-                if (gate1.ID == ExitID.fL11GateN)
-                {
-                    do
-                    {
-                        gate2 = gates[random.Next(gates.Count)];
-                    } while (gate2.ID == ExitID.fL11GateY0);
-                }
-                else
-                {
-                    do
-                    {
-                        gate2 = gates[random.Next(gates.Count)];
-                    } while (gate1.Equals(gate2));
-                }
+                gate2 = gates[random.Next(gates.Count)];
+                gates.Remove(gate2);
 
                 FixGateLogic(gate1, gate2);
                 FixGateLogic(gate2, gate1);
@@ -812,8 +836,6 @@ namespace LaMulana2Randomizer
 
                 ExitPairs.Add((gate1.ID, gate2.ID));
                 GatePairs.Add($"    {gate1.Name} - {gate2.Name}");
-                gates.Remove(gate1);
-                gates.Remove(gate2);
             }
         }
 
@@ -860,11 +882,280 @@ namespace LaMulana2Randomizer
             }
         }
 
+        private void FullRandomEntrances()
+        {
+            List<Exit> entrances = new List<Exit>();
+            List<Exit> priorityEntrances = new List<Exit>();
+            if (Settings.RandomHorizontalEntraces)
+            {
+                entrances.AddRange(GetConnectionsOfType(ExitType.LeftDoor));
+                entrances.AddRange(GetConnectionsOfType(ExitType.RightDoor));
+            }
+
+            if (Settings.RandomLadderEntraces)
+            {
+                entrances.AddRange(GetConnectionsOfType(ExitType.DownLadder));
+                entrances.AddRange(GetConnectionsOfType(ExitType.UpLadder));
+            }
+
+            if (Settings.RandomGateEntraces)
+            {
+                entrances.AddRange(GetConnectionsOfType(ExitType.Gate));
+            }
+
+            Exit entrance1 = null;
+            Exit entrance2 = null;
+
+            bool cavernToCliff = false;
+            bool illusionToCliff = false;
+
+            //place the cliff  first just to see if gets placed anywhere that affects any other placement logic and then
+            //place one of the cavern entrances to stop it looping on itself
+            if (Settings.RandomHorizontalEntraces)
+            {
+                entrance1 = entrances.Find(x => x.ID == ExitID.fP02Left);
+                entrances.Remove(entrance1);
+                do
+                {
+                    entrance2 = entrances[random.Next(entrances.Count)];
+                } while ((entrance2.ID == ExitID.f01Right && (!Settings.RandomLadderEntraces || !Settings.AllowVillageToCliff)) || entrance2.IsInaccessible());   
+                
+                entrances.Remove(entrance2);
+
+                if (entrance2.ID == ExitID.fP00Right || entrance2.ID == ExitID.fP00Left)
+                {
+                    cavernToCliff = true;
+                }
+                else if (entrance2.ID == ExitID.fL11GateN || entrance2.ID == ExitID.fL11GateY0)
+                {
+                    illusionToCliff = true;
+                }
+
+                if (entrance2.ID == ExitID.f01Right && (entrance1.ID == ExitID.fP02Left || (entrance1.ID == ExitID.fP00Right && cavernToCliff)))
+                    villageDeadEnd = true;
+
+                FixFullRandomEntranceLogic(entrance1, entrance2);
+                FixFullRandomEntranceLogic(entrance2, entrance1);
+
+                entrance1.ConnectingAreaName = entrance2.ParentAreaName;
+                entrance2.ConnectingAreaName = entrance1.ParentAreaName;
+
+                ExitPairs.Add((entrance1.ID, entrance2.ID));
+                EntrancePairs.Add($"    {entrance1.Name} - {entrance2.Name}");
+
+                entrance1 = entrances.Find(x => x.ID == ExitID.fP02Left);
+                if(entrance1 != null)
+                {
+                    entrances.Remove(entrance1);
+                    do
+                    {
+                        entrance2 = entrances[random.Next(entrances.Count)];
+                    } while (entrance2.ID == ExitID.fP00Right || entrance2.IsInaccessible() || ((entrance2.ID == ExitID.f01Right && (!Settings.RandomLadderEntraces || !Settings.AllowVillageToCliff)) && cavernToCliff));
+                    entrances.Remove(entrance2);
+
+                    FixFullRandomEntranceLogic(entrance1, entrance2);
+                    FixFullRandomEntranceLogic(entrance2, entrance1);
+
+                    entrance1.ConnectingAreaName = entrance2.ParentAreaName;
+                    entrance2.ConnectingAreaName = entrance1.ParentAreaName;
+
+                    ExitPairs.Add((entrance1.ID, entrance2.ID));
+                    EntrancePairs.Add($"    {entrance1.Name} - {entrance2.Name}");
+                }
+            }
+
+            if (Settings.RandomGateEntraces)
+            {
+                //try to place an illusion entrance to stop it looping on itself if its already placed it doesn't matter
+                entrance1 = entrances.Find(x => x.ID == ExitID.fL11GateN);
+                if (entrance1 != null)
+                {
+                    entrances.Remove(entrance1);
+                    do
+                    {
+                        entrance2 = entrances[random.Next(entrances.Count)];
+                    } while (entrance2.ID == ExitID.fL11GateY0);
+
+                    entrances.Remove(entrance2);
+
+                    FixFullRandomEntranceLogic(entrance1, entrance2);
+                    FixFullRandomEntranceLogic(entrance2, entrance1);
+
+                    entrance1.ConnectingAreaName = entrance2.ParentAreaName;
+                    entrance2.ConnectingAreaName = entrance1.ParentAreaName;
+
+                    ExitPairs.Add((entrance1.ID, entrance2.ID));
+                    EntrancePairs.Add($"    {entrance1.Name} - {entrance2.Name}");
+                }
+            }
+
+            if (Settings.RandomHorizontalEntraces)
+            {
+                priorityEntrances.Add(entrances.Find(x => x.ID == ExitID.fL08Right));
+            }
+
+            if (Settings.RandomLadderEntraces)
+            {
+                priorityEntrances.Add(entrances.Find(x => x.ID == ExitID.f02Down));
+                priorityEntrances.Add(entrances.Find(x => x.ID == ExitID.f03Down2));
+                priorityEntrances.Add(entrances.Find(x => x.ID == ExitID.fL05Up));
+            }
+
+            if (Settings.RandomGateEntraces)
+            {
+                priorityEntrances.Add(entrances.Find(x => x.ID == ExitID.f02GateYA));
+                priorityEntrances.Add(entrances.Find(x => x.ID == ExitID.f06GateP0));
+                priorityEntrances.Add(entrances.Find(x => x.ID == ExitID.f12GateP0));
+                priorityEntrances.Add(entrances.Find(x => x.ID == ExitID.f13GateP0));
+                priorityEntrances.Add(entrances.Find(x => x.ID == ExitID.f03GateYC));
+            }
+
+            priorityEntrances.RemoveAll(x => x == null);
+
+            foreach (Exit entrance in priorityEntrances)
+                entrances.Remove(entrance);
+
+            while (entrances.Count > 0)
+            {
+                if (priorityEntrances.Count > 0)
+                {
+                    entrance1 = priorityEntrances.First();
+                    priorityEntrances.Remove(entrance1);
+                }
+                else
+                {
+                    entrance1 = entrances[random.Next(entrances.Count)];
+                    entrances.Remove(entrance1);
+                }
+
+                if(entrance1.ID == ExitID.f01Right)
+                {
+                    do
+                    {
+                        entrance2 = entrances[random.Next(entrances.Count)];
+                    } while (((entrance2.ID == ExitID.fL08Right || entrance2.ID == ExitID.fL05Up) && !Settings.AllowVillageToCliff) || 
+                                ((entrance2.ID == ExitID.fL11GateN || entrance2.ID == ExitID.fL11GateY0) && illusionToCliff));
+                }
+                else if (entrance1.ID == ExitID.f01Down)
+                {
+                    do
+                    {
+                        entrance2 = entrances[random.Next(entrances.Count)];
+                    } while ((entrance2.ID == ExitID.fL08Right || entrance2.ID == ExitID.fL05Up) && villageDeadEnd);
+                }
+                else
+                {
+                    do
+                    {
+                        entrance2 = entrances[random.Next(entrances.Count)];
+                    } while (entrance1.ID == entrance2.ID);
+                }
+
+                entrances.Remove(entrance2);
+
+                if ((entrance1.ID == ExitID.f01Right && (entrance2.ID == ExitID.fL08Right || entrance2.ID == ExitID.fL05Up)) ||
+                    (entrance2.ID == ExitID.f01Right && (entrance1.ID == ExitID.fL08Right || entrance1.ID == ExitID.fL05Up)))
+                    villageDeadEnd = true;
+
+                FixFullRandomEntranceLogic(entrance1, entrance2);
+                FixFullRandomEntranceLogic(entrance2, entrance1);
+
+                entrance1.ConnectingAreaName = entrance2.ParentAreaName;
+                entrance2.ConnectingAreaName = entrance1.ParentAreaName;
+
+                ExitPairs.Add((entrance1.ID, entrance2.ID));
+                EntrancePairs.Add($"    {entrance1.Name} - {entrance2.Name}");
+            }
+        }
+
+        private void FixFullRandomEntranceLogic(Exit entrance1, Exit entrance2)
+        {
+            switch (entrance1.ID)
+            {
+                case ExitID.fL02Left:
+                {
+                    entrance2.AppendLogicString(" and (CanWarp or CanReach(Annwfn Main))");
+                    entrance2.BuildLogicTree();
+                    break;
+                }
+                case ExitID.f03Right:
+                {
+                    entrance2.AppendLogicString(" and (Has(Feather) or Has(Grapple Claw))");
+                    entrance2.BuildLogicTree();
+                    break;
+                }
+                case ExitID.f02Down:
+                {
+                    entrance2.AppendLogicString(" and (CanReach(Annwfn Main) or CanWarp)");
+                    entrance2.BuildLogicTree();
+                    break;
+                }
+                case ExitID.f03Down2:
+                {
+                    entrance2.AppendLogicString(" and Has(Life Sigil) and (CanWarp or CanReach(Immortal Battlefield Dinosaur))");
+                    entrance2.BuildLogicTree();
+                    break;
+                }
+
+                case ExitID.f03Up:
+                {
+                    entrance2.AppendLogicString(" and (CanWarp or CanKill(Cetus) or CanReach(Immortal Battlefield Main))");
+                    entrance2.BuildLogicTree();
+                    break;
+                }
+                case ExitID.f04Up3:
+                {
+                    entrance2.AppendLogicString(" and False");
+                    entrance2.BuildLogicTree();
+                    break;
+                }
+                case ExitID.f00GateYA:
+                {
+                    entrance2.AppendLogicString(" and False");
+                    entrance2.BuildLogicTree();
+                    break;
+                }
+                case ExitID.f00GateYB:
+                {
+                    entrance2.AppendLogicString(" and (CanWarp or CanKill(Nidhogg))");
+                    entrance2.BuildLogicTree();
+                    break;
+                }
+                case ExitID.f00GateYC:
+                {
+                    entrance2.AppendLogicString(" and (CanWarp or Has(Birth Sigil))");
+                    entrance2.BuildLogicTree();
+                    break;
+                }
+                case ExitID.f06_2GateP0:
+                {
+                    entrance2.AppendLogicString(" and (CanKill(Tezcatlipoca) and (CanWarp or Has(Grapple Claw)))");
+                    entrance2.BuildLogicTree();
+                    break;
+                }
+                case ExitID.f07GateP0:
+                {
+                    entrance2.AppendLogicString(" and (CanWarp or (Has(Pepper) and Has(Birth Sigil) and CanChant(Sun) and CanKill(Unicorn)))");
+                    entrance2.BuildLogicTree();
+                    break;
+                }
+                case ExitID.f09GateP0:
+                {
+                    entrance2.AppendLogicString(" and CanWarp");
+                    entrance2.BuildLogicTree();
+                    break;
+                }
+            }
+        }
+
         private void RandomiseSoulGateEntrances()
         {
             List<Exit> gates = Shuffle.FisherYates(GetConnectionsOfType(ExitType.SoulGate), random);
             List<int> soulAmounts = new List<int>() { 1, 2, 2, 3, 3, 5, 5, 5 };
-            List<Exit> priorityGates = new List<Exit>();
+            List<Exit> priorityGates = new List<Exit>()
+            {
+                gates.Find(x => x.ID == ExitID.f12GateN8)
+            };
 
             if (Settings.IncludeNineGates)
             {
@@ -882,9 +1173,10 @@ namespace LaMulana2Randomizer
             foreach (Exit exit in priorityGates)
                 gates.Remove(exit);
 
+            Exit gate1 = null;
+            Exit gate2 = null;
             while (gates.Count > 0)
             {
-                Exit gate1 = null;
                 if(priorityGates.Count > 0)
                 {
                     gate1 = priorityGates[random.Next(priorityGates.Count)];
@@ -896,7 +1188,17 @@ namespace LaMulana2Randomizer
                     gates.Remove(gate1);
                 }
 
-                Exit gate2 = gates[random.Next(gates.Count)];
+                if (gate1.ID == ExitID.f12GateN8) 
+                {
+                    do
+                    {
+                        gate2 = gates[random.Next(gates.Count)];
+                    } while (gate2.ID == ExitID.f03GateN9);
+                }
+                else
+                {
+                    gate2 = gates[random.Next(gates.Count)];
+                }
                 gates.Remove(gate2);
 
                 int soulAmount = soulAmounts[random.Next(soulAmounts.Count)];

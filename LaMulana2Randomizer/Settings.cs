@@ -85,6 +85,18 @@ namespace LaMulana2Randomizer
             set => Set(ref randomGateEntrances, value);
         }
 
+        private bool removeITStatue;
+        public bool RemoveITStatue {
+            get => removeITStatue;
+            set => Set(ref removeITStatue, value);
+        }
+
+        private bool fullRandomEntrances;
+        public bool FullRandomEntrances {
+            get => fullRandomEntrances;
+            set => Set(ref fullRandomEntrances, value);
+        }
+
         private bool randomSoulGateEntrances;
         public bool RandomSoulGateEntraces {
             get => randomSoulGateEntrances;
@@ -161,6 +173,8 @@ namespace LaMulana2Randomizer
             AllowVillageToCliff = true;
             RandomLadderEntraces = false;
             RandomGateEntraces = false;
+            RemoveITStatue = false;
+            FullRandomEntrances = false;
             RandomSoulGateEntraces = false;
             IncludeNineGates = false;
             HardBosses = false;

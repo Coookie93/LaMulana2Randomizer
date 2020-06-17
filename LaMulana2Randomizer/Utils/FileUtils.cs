@@ -98,33 +98,44 @@ namespace LaMulana2Randomizer.Utils
                     sw.WriteLine("}\n");
 
                     sw.WriteLine("Entrance Placement: {");
-                    if (randomiser.Settings.RandomHorizontalEntraces)
+                    if (!randomiser.Settings.FullRandomEntrances)
                     {
-                        sw.WriteLine("  Horizontal Entrances: {");
-                        foreach (string pair in randomiser.HorizontalPairs)
+                        if (randomiser.Settings.RandomHorizontalEntraces)
+                        {
+                            sw.WriteLine("  Horizontal Entrances: {");
+                            foreach (string pair in randomiser.HorizontalPairs)
+                                sw.WriteLine(pair);
+
+                            sw.WriteLine("  }");
+                        }
+
+                        if (randomiser.Settings.RandomLadderEntraces)
+                        {
+                            sw.WriteLine("  Ladders Entrances: {");
+                            foreach (string pair in randomiser.LadderPairs)
+                                sw.WriteLine(pair);
+
+                            sw.WriteLine("  }");
+                        }
+
+                        if (randomiser.Settings.RandomGateEntraces)
+                        {
+                            sw.WriteLine("  Gate Entrances: {");
+                            foreach (string pair in randomiser.GatePairs)
+                                sw.WriteLine(pair);
+
+                            sw.WriteLine("  }");
+                        }
+                    }
+                    else
+                    {
+                        sw.WriteLine("  Entrances: {");
+                        foreach (string pair in randomiser.EntrancePairs)
                             sw.WriteLine(pair);
 
                         sw.WriteLine("  }");
                     }
 
-                    if (randomiser.Settings.RandomLadderEntraces)
-                    {
-                        sw.WriteLine("  Ladders Entrances: {");
-                        foreach (string pair in randomiser.LadderPairs)
-                            sw.WriteLine(pair);
-
-                        sw.WriteLine("  }");
-                    }
-
-                    if (randomiser.Settings.RandomGateEntraces)
-                    {
-                        sw.WriteLine("  Gate Entrances: {");
-                        foreach (string pair in randomiser.GatePairs)
-                            sw.WriteLine(pair);
-
-                        sw.WriteLine("  }");
-                    }
-                        
                     if (randomiser.Settings.RandomSoulGateEntraces)
                     {
                         sw.WriteLine("  Soul Gate Entrances: {");
@@ -206,10 +217,12 @@ namespace LaMulana2Randomizer.Utils
             }
 
             try
-            {   using (BinaryWriter br = new BinaryWriter(File.Open("Seed\\seed.lm2r", FileMode.Create)))
+            {   
+                using (BinaryWriter br = new BinaryWriter(File.Open("Seed\\seed.lm2r", FileMode.Create)))
                 {
                     br.Write(randomiser.Settings.AutoScanTablets);
                     br.Write(randomiser.Settings.AutoPlaceSkulls);
+                    br.Write(randomiser.Settings.RemoveITStatue);
                     br.Write(randomiser.Settings.MoneyStart);
                     br.Write(randomiser.Settings.WeightStart);
                     br.Write(items.Count);
