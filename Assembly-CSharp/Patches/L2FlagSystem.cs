@@ -101,7 +101,7 @@ namespace LM2RandomiserMod.Patches
                     return;
             }
 
-            flagWatch.Enqueue($"{flag.seetName[sheet_no]}.{name} = {oldData + difference} (diff:{difference})");
+            flagWatch.Enqueue($"[{sheet_no},{getFlagNo(sheet_no, name)}]{flag.seetName[sheet_no]}.{name} = {oldData + difference} (diff:{difference})");
 
             if (flagWatch.Count > 12)
                 flagWatch.Dequeue();
@@ -121,7 +121,7 @@ namespace LM2RandomiserMod.Patches
 
             short difference = (short)(data - oldData);
 
-            flagWatch.Enqueue($"{flag.seetName[sheet_no]}.{name} = {data} (diff:{difference})");
+            flagWatch.Enqueue($"[{sheet_no},{getFlagNo(sheet_no, name)}]{flag.seetName[sheet_no]}.{name} = {data} (diff:{difference})");
 
             if (flagWatch.Count > 12)
                 flagWatch.Dequeue();
