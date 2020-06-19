@@ -46,17 +46,7 @@ namespace LM2RandomiserMod
         private L2ShopDataBase shopDataBase;
         private L2TalkDataBase talkDataBase;
 
-        private GameObject cursedChestPrefab;
-        private GameObject oneSoulGatePrefab;
-        private GameObject twoSoulGatePrefab;
-        private GameObject threeSoulGatePrefab;
-        private GameObject fiveSoulGatePrefab;
-        private GameObject nineSoulGatePrefab;
-        private GameObject oneSoulPrefab;
-        private GameObject twoSoulPrefab;
-        private GameObject threeSoulPrefab;
-        private GameObject fiveSoulPrefab;
-        private GameObject nineSoulPrefab;
+        private Dictionary<string, GameObject> objects;
 
         private Font currentFont = null;
         private bool onTitle = false;
@@ -112,6 +102,33 @@ namespace LM2RandomiserMod
                     if (obj != null)
                         obj.SetActive(false);
                 }
+                //else if (scene.name.Equals("field01"))
+                //{
+                //    AnimatorController controller = Instantiate(ladder, new Vector3(-320, -180, -5), Quaternion.identity).GetComponent<AnimatorController>();
+                //    controller.CheckFlags = new L2FlagBoxParent[]
+                //    {
+                //        new L2FlagBoxParent()
+                //        {
+                //            BOX = new L2FlagBox[]
+                //            {
+                //                new L2FlagBox()
+                //                {
+                //                    seet_no1 = 0,
+                //                    flag_no1 = 0,
+                //                    seet_no2 = -1,
+                //                    flag_no2 = 0,
+                //                    comp = COMPARISON.GreaterEq,
+                //                    logic = LOGIC.NON
+                //                }
+                //            }
+                //        }
+                //    };
+                //    controller.gameObject.SetActive(true);
+                //    GameObject obj = new GameObject();
+                //    obj.transform.position = new Vector3(-140, -160, 0);
+                //    BoxCollider collider = obj.AddComponent<BoxCollider>();
+                //    collider.size = new Vector3(20, 10, 0);
+                //}
                 else if (scene.name.Equals("field03"))
                 {
                     GameObject obj = new GameObject
@@ -408,157 +425,172 @@ namespace LM2RandomiserMod
 
         private IEnumerator GetGameObjects()
         {
+            objects = new Dictionary<string, GameObject>();
+
             var ao = SceneManager.LoadSceneAsync("field04");
             while (!ao.isDone)
                 yield return null;
 
             foreach (TreasureBoxScript box in FindObjectsOfType<TreasureBoxScript>())
             {
-                if (box.curseMode && cursedChestPrefab == null)
+                if (box.curseMode && !objects.ContainsKey("cursedChest"))
                 {
-                    cursedChestPrefab = Instantiate(box.gameObject);
-                    cursedChestPrefab.name = "Cursed Chest Prefab";
-                    DontDestroyOnLoad(cursedChestPrefab);
-                    cursedChestPrefab.SetActive(false);
+                    GameObject obj = Instantiate(box.gameObject);
+                    obj.name = "Cursed Chest Prefab";
+                    DontDestroyOnLoad(obj);
+                    obj.SetActive(false);
+                    objects.Add("cursedChest", obj);
                 }
             }
 
-            if (randomSoulGates)
+            foreach (AnimatorController controller in FindObjectsOfType<AnimatorController>())
             {
-                foreach (AnimatorController controller in FindObjectsOfType<AnimatorController>())
+                if (controller.name.Equals("soul_gate"))
                 {
-                    if (controller.name.Equals("soul_gate"))
+                    if (controller.CheckFlags[0].BOX[0].flag_no1 == 5 && !objects.ContainsKey("threeSoulgate"))
                     {
-                        if (controller.CheckFlags[0].BOX[0].flag_no1 == 5 && threeSoulGatePrefab == null)
-                        {
-                            threeSoulGatePrefab = Instantiate(controller.gameObject);
-                            threeSoulGatePrefab.name = "Three Soul Gate Prefab";
-                            DontDestroyOnLoad(threeSoulGatePrefab);
-                            threeSoulGatePrefab.SetActive(false);
-                        }
-                        else if (controller.CheckFlags[0].BOX[0].flag_no1 == 8 && fiveSoulGatePrefab == null)
-                        {
-                            fiveSoulGatePrefab = Instantiate(controller.gameObject);
-                            fiveSoulGatePrefab.name = "Five Soul Gate Prefab";
-                            DontDestroyOnLoad(fiveSoulGatePrefab);
-                            fiveSoulGatePrefab.SetActive(false);
-                        }
+                        GameObject obj = Instantiate(controller.gameObject);
+                        obj.name = "Three Soul Gate Prefab";
+                        DontDestroyOnLoad(obj);
+                        obj.SetActive(false);
+                        objects.Add("threeSoulGate", obj);
                     }
-                    else if (controller.name.Equals("soul_cont"))
+                    else if (controller.CheckFlags[0].BOX[0].flag_no1 == 8 && !objects.ContainsKey("fiveSoulGate"))
                     {
-                        if (controller.CheckFlags[0].BOX[0].flag_no1 == 23 && threeSoulPrefab == null)
-                        {
-                            threeSoulPrefab = Instantiate(controller.gameObject);
-                            threeSoulPrefab.name = "Three Soul Prefab";
-                            DontDestroyOnLoad(threeSoulPrefab);
-                            threeSoulPrefab.SetActive(false);
-                        }
-                        else if (controller.CheckFlags[0].BOX[0].flag_no1 == 26 && fiveSoulPrefab == null)
-                        {
-                            fiveSoulPrefab = Instantiate(controller.gameObject);
-                            fiveSoulPrefab.name = "Five Soul Prefab";
-                            DontDestroyOnLoad(fiveSoulPrefab);
-                            fiveSoulPrefab.SetActive(false);
-                        }
+                        GameObject obj = Instantiate(controller.gameObject);
+                        obj.name = "Five Soul Gate Prefab";
+                        DontDestroyOnLoad(obj);
+                        obj.SetActive(false);
+                        objects.Add("fiveSoulGate", obj);
+                    }
+                }
+                else if (controller.name.Equals("soul_cont"))
+                {
+                    if (controller.CheckFlags[0].BOX[0].flag_no1 == 23 && !objects.ContainsKey("threeSoul"))
+                    {
+                        GameObject obj = Instantiate(controller.gameObject);
+                        obj.name = "Three Soul Prefab";
+                        DontDestroyOnLoad(obj);
+                        obj.SetActive(false);
+                        objects.Add("threeSoul", obj);
+                    }
+                    else if (controller.CheckFlags[0].BOX[0].flag_no1 == 26 && !objects.ContainsKey("fiveSoul"))
+                    {
+                        GameObject obj = Instantiate(controller.gameObject);
+                        obj.name = "Five Soul Prefab";
+                        DontDestroyOnLoad(obj);
+                        obj.SetActive(false);
+                        objects.Add("fiveSoul", obj);
+                    }
+                }
+                else if (controller.name.Equals("E0Ladder", StringComparison.Ordinal))
+                {
+                    GameObject obj = Instantiate(controller.gameObject);
+                    obj.name = "Ladder Prefab";
+                    DontDestroyOnLoad(obj);
+                    obj.SetActive(false);
+                    objects.Add("ladder", obj);
+                }
+            }
+
+            sys.reInitSystem();
+
+            ao = SceneManager.LoadSceneAsync("field05");
+            while (!ao.isDone)
+                yield return null;
+
+            foreach (AnimatorController controller in FindObjectsOfType<AnimatorController>())
+            {
+                if (controller.name.Equals("soul_gate"))
+                {
+                    if (!objects.ContainsKey("oneSoulGate"))
+                    {
+                        GameObject obj = Instantiate(controller.gameObject);
+                        obj.name = "One Soul Gate Prefab";
+                        DontDestroyOnLoad(obj);
+                        obj.SetActive(false);
+                        objects.Add("oneSoulGate", obj);
+                    }
+                }
+                else if (controller.name.Equals("soul_cont"))
+                {
+                    if (!objects.ContainsKey("oneSoul"))
+                    {
+                        GameObject obj = Instantiate(controller.gameObject);
+                        obj.name = "One Soul Prefab";
+                        DontDestroyOnLoad(obj);
+                        obj.SetActive(false);
+                        objects.Add("oneSoul", obj);
                     }
                 }
             }
 
             sys.reInitSystem();
 
-            if (randomSoulGates)
+            ao = SceneManager.LoadSceneAsync("field13");
+            while (!ao.isDone)
+                yield return null;
+
+            foreach (AnimatorController controller in FindObjectsOfType<AnimatorController>())
             {
-                ao = SceneManager.LoadSceneAsync("field05");
-                while (!ao.isDone)
-                    yield return null;
-
-                foreach (AnimatorController controller in FindObjectsOfType<AnimatorController>())
+                if (controller.name.Equals("soul_gate"))
                 {
-                    if (controller.name.Equals("soul_gate"))
+                    if (!objects.ContainsKey("nineSoulGate"))
                     {
-                        if (oneSoulGatePrefab == null)
-                        {
-                            oneSoulGatePrefab = Instantiate(controller.gameObject);
-                            oneSoulGatePrefab.name = "One Soul Gate Prefab";
-                            DontDestroyOnLoad(oneSoulGatePrefab);
-                            oneSoulGatePrefab.SetActive(false);
-                        }
-                    }
-                    else if (controller.name.Equals("soul_cont"))
-                    {
-                        if (oneSoulPrefab == null)
-                        {
-                            oneSoulPrefab = Instantiate(controller.gameObject);
-                            oneSoulPrefab.name = "One Soul Prefab";
-                            DontDestroyOnLoad(oneSoulPrefab);
-                            oneSoulPrefab.SetActive(false);
-                        }
+                        GameObject obj = Instantiate(controller.gameObject);
+                        obj.name = "Nine Soul Gate Prefab";
+                        DontDestroyOnLoad(obj);
+                        obj.SetActive(false);
+                        objects.Add("nineSoulGate", obj);
                     }
                 }
-
-                sys.reInitSystem();
-
-                ao = SceneManager.LoadSceneAsync("field13");
-                while (!ao.isDone)
-                    yield return null;
-
-                foreach (AnimatorController controller in FindObjectsOfType<AnimatorController>())
+                else if (controller.name.Equals("soul_cont"))
                 {
-                    if (controller.name.Equals("soul_gate"))
-                    {
-                        if (nineSoulGatePrefab == null)
-                        {
-                            nineSoulGatePrefab = Instantiate(controller.gameObject);
-                            nineSoulGatePrefab.name = "Nine Soul Gate Prefab";
-                            DontDestroyOnLoad(nineSoulGatePrefab);
-                            nineSoulGatePrefab.SetActive(false);
-                        }
-                    }
-                    else if (controller.name.Equals("soul_cont"))
-                    {
-                        if (nineSoulPrefab == null)
+                    if (!objects.ContainsKey("nineSoul"))
 
-                        {
-                            nineSoulPrefab = Instantiate(controller.gameObject);
-                            nineSoulPrefab.name = "Nine Soul Prefab";
-                            DontDestroyOnLoad(nineSoulPrefab);
-                            nineSoulPrefab.SetActive(false);
-                        }
+                    {
+                        GameObject obj = Instantiate(controller.gameObject);
+                        obj.name = "Nine Soul Prefab";
+                        DontDestroyOnLoad(obj);
+                        obj.SetActive(false);
+                        objects.Add("nineSoul", obj);
                     }
                 }
-
-                sys.reInitSystem();
-
-                ao = SceneManager.LoadSceneAsync("field02");
-                while (!ao.isDone)
-                    yield return null;
-
-                foreach (AnimatorController controller in FindObjectsOfType<AnimatorController>())
-                {
-                    if (controller.name.Equals("soul_gate"))
-                    {
-                        if (twoSoulGatePrefab == null)
-                        {
-                            twoSoulGatePrefab = Instantiate(controller.gameObject);
-                            twoSoulGatePrefab.name = "Two Soul Gate Prefab";
-                            DontDestroyOnLoad(twoSoulGatePrefab);
-                            twoSoulGatePrefab.SetActive(false);
-                        }
-                    }
-                    else if (controller.name.Equals("soul_cont"))
-                    {
-                        if (twoSoulPrefab == null)
-                        {
-                            twoSoulPrefab = Instantiate(controller.gameObject);
-                            twoSoulPrefab.name = "Two Soul Prefab";
-                            DontDestroyOnLoad(twoSoulPrefab);
-                            twoSoulPrefab.SetActive(false);
-                        }
-                    }
-                }
-
-                sys.reInitSystem();
             }
+
+            sys.reInitSystem();
+
+            ao = SceneManager.LoadSceneAsync("field02");
+            while (!ao.isDone)
+                yield return null;
+
+            foreach (AnimatorController controller in FindObjectsOfType<AnimatorController>())
+            {
+                if (controller.name.Equals("soul_gate"))
+                {
+                    if (!objects.ContainsKey("twoSoulGate"))
+                    {
+                        GameObject obj = Instantiate(controller.gameObject);
+                        obj.name = "Two Soul Gate Prefab";
+                        DontDestroyOnLoad(obj);
+                        obj.SetActive(false);
+                        objects.Add("twoSoulGate", obj);
+                    }
+                }
+                else if (controller.name.Equals("soul_cont"))
+                {
+                    if (!objects.ContainsKey("twoSoul"))
+                    {
+                        GameObject obj = Instantiate(controller.gameObject);
+                        obj.name = "Two Soul Prefab";
+                        DontDestroyOnLoad(obj);
+                        obj.SetActive(false);
+                        objects.Add("twoSoul", obj);
+                    }
+                }
+            }
+
+            sys.reInitSystem();
         }
 
         private ItemData GetItemDataFromName(string objName)
@@ -607,7 +639,7 @@ namespace LM2RandomiserMod
                     TreasureBoxScript newBox;
                     if (IsLocationCursed(locationID))
                     {
-                        GameObject obj = Instantiate(cursedChestPrefab, box.transform.position, box.transform.rotation);
+                        GameObject obj = Instantiate(objects["cursedChest"], box.transform.position, box.transform.rotation);
                         newBox = obj.GetComponent<TreasureBoxScript>();
                         newBox.curseMode = true;
                         newBox.forceOpenFlags = box.forceOpenFlags;
@@ -896,32 +928,32 @@ namespace LM2RandomiserMod
                             {
                                 case 1:
                                 {
-                                    soulGateDoor = Instantiate(oneSoulGatePrefab, gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
-                                    soul = Instantiate(oneSoulPrefab, gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
+                                    soulGateDoor = Instantiate(objects["oneSoulGate"], gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
+                                    soul = Instantiate(objects["oneSoul"], gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
                                     break;
                                 }
                                 case 2:
                                 {
-                                    soulGateDoor = Instantiate(twoSoulGatePrefab, gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
-                                    soul = Instantiate(twoSoulPrefab, gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
+                                    soulGateDoor = Instantiate(objects["twoSoulGate"], gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
+                                    soul = Instantiate(objects["twoSoul"], gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
                                     break;
                                 }
                                 case 3:
                                 {
-                                    soulGateDoor = Instantiate(threeSoulGatePrefab, gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
-                                    soul = Instantiate(threeSoulPrefab, gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
+                                    soulGateDoor = Instantiate(objects["threeSoulGate"], gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
+                                    soul = Instantiate(objects["threeSoul"], gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
                                     break;
                                 }
                                 case 5:
                                 {
-                                    soulGateDoor = Instantiate(fiveSoulGatePrefab, gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
-                                    soul = Instantiate(fiveSoulPrefab, gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
+                                    soulGateDoor = Instantiate(objects["fiveSoulGate"], gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
+                                    soul = Instantiate(objects["fiveSoul"], gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
                                     break;
                                 }
                                 case 9:
                                 {
-                                    soulGateDoor = Instantiate(nineSoulGatePrefab, gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
-                                    soul = Instantiate(nineSoulPrefab, gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
+                                    soulGateDoor = Instantiate(objects["nineSoulGate"], gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
+                                    soul = Instantiate(objects["nineSoul"], gate.transform.position, Quaternion.identity).GetComponent<AnimatorController>();
                                     break;
                                 }
                             }
