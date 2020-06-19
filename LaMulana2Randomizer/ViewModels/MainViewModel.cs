@@ -4,11 +4,18 @@ using System.Windows;
 using System.Windows.Input;
 using LaMulana2Randomizer.UI;
 using LaMulana2Randomizer.Utils;
+using Version = LM2RandomizerShared.Version;
 
 namespace LaMulana2Randomizer.ViewModels
 {
     public class MainViewModel : BindableBase
     {
+        private string _title;
+        public string Title {
+            get => _title;
+            set => Set(ref _title, value);
+        }
+
         private Settings _settings;
         public Settings Settings 
         {
@@ -24,8 +31,20 @@ namespace LaMulana2Randomizer.ViewModels
 
         public MainViewModel()
         {
-            Title = LaMulana2RandomizerShared.Version.version;
-            Settings = new Settings();
+            Title = Version.version;
+            Settings = FileUtils.LoadSettings();
+            Reroll();
+        }
+
+        private ICommand _rerollCommand;
+        public ICommand RerollCommand {
+            get {
+                if (_rerollCommand == null)
+                {
+                    _rerollCommand = new RelayCommand((x) => true, (x) => Reroll());
+                }
+                return _rerollCommand;
+            }
         }
 
         private ICommand _generateCommand;
@@ -39,8 +58,14 @@ namespace LaMulana2Randomizer.ViewModels
             }
         }
 
+        public void Reroll()
+        {
+            Settings.Seed = new Random().Next(int.MinValue, int.MaxValue);
+        }
+
         public void Generate()
         {
+            FileUtils.SaveSettings(Settings);
             ProgressDialogViewModel dialogViewModel = new ProgressDialogViewModel();
             ProgressDialog dialog = new ProgressDialog()
             {
@@ -56,12 +81,10 @@ namespace LaMulana2Randomizer.ViewModels
         public void GenerateSeed(IProgress<ProgressInfo> progress)
         {
             const int NumSeeds = 1;
-            const int MaxAttempts = 25;
+            const int MaxAttempts = 250;
 
             for (int i = 1; i <= NumSeeds; i++)
             {
-                int attemptCount = 0;
-                bool canBeatGame;
                 Randomiser randomiser = new Randomiser(Settings);
 
                 progress.Report(new ProgressInfo 
@@ -71,56 +94,85 @@ namespace LaMulana2Randomizer.ViewModels
                     IsIndeterminate = true 
                 });
 
-                do
+                int attemptCount = 0;
+                try
                 {
-                    try
+                    randomiser.Setup();
+
+                    bool entranceCheck;
+                    do
                     {
                         attemptCount++;
-                        randomiser.Setup();
-                        randomiser.PlaceItems();
-                        canBeatGame = randomiser.CanBeatGame();
-                        if (!canBeatGame)
+                        randomiser.PlaceEntrances();
+                        entranceCheck = randomiser.EntranceCheck();
+                        if (!entranceCheck)
                         {
-                            Logger.Log($"Failed to generate beatable configuartion, retrying.");
+                            randomiser.ClearEntrances();
+                            Logger.Log($"Failed to generate beatable entrance configuartion, retrying.");
                             progress.Report(new ProgressInfo
                             {
-                                Label = $"Failed to generate beatable configuartion, retrying attempt {attemptCount}.",
+                                Label = $"Failed to generate beatable entrance configuartion, retrying attempt {attemptCount}.",
                                 ProgressValue = 0,
                                 IsIndeterminate = true
                             });
                         }
-                    }
-                    catch (RandomiserException ex)
+
+                    } while (!entranceCheck);
+
+                    randomiser.FixAnkhLogic();
+                    randomiser.FixFDCLogic();
+
+                    attemptCount = 0;
+                    bool canBeatGame;
+                    do
                     {
-                        Logger.Flush();
+                        attemptCount++;
+                        randomiser.PlaceItems();
+                        randomiser.AdjustShopPrices();
+                        canBeatGame = randomiser.CanBeatGame();
+                        if (!canBeatGame)
+                        {
+                            FileUtils.WriteSpoilers(randomiser);
+                            randomiser.ClearPlacedItems();
+                            Logger.Log($"Failed to generate beatable item placement, retrying.");
+                            progress.Report(new ProgressInfo
+                            {
+                                Label = $"Failed to generate beatable item placement, retrying attempt {attemptCount}.",
+                                ProgressValue = 0,
+                                IsIndeterminate = true
+                            });
+                        }
+                    } while (!canBeatGame && attemptCount < MaxAttempts);
+
+                    if (attemptCount == MaxAttempts && !canBeatGame)
+                    {
+                        Logger.LogAndFlush($"Failed to generate beatable configuration for seed {randomiser.Settings.Seed}");
                         progress.Report(new ProgressInfo
                         {
-                            Label = ex.Message,
+                            Label = $"Failed to generate beatable configuration stopping after {MaxAttempts} attempts.",
                             ProgressValue = 100,
                             IsIndeterminate = false
                         });
                         return;
                     }
-                    catch (Exception ex)
-                    {
-                        Logger.LogAndFlush(ex.Message);
-                        progress.Report(new ProgressInfo
-                        {
-                            Label = "Something has gone very wrong!",
-                            ProgressValue = 100,
-                            IsIndeterminate = false
-                        });
-                        return;
-                    }
-
-                } while (!canBeatGame && attemptCount < MaxAttempts);
-
-                if (attemptCount == MaxAttempts)
+                }
+                catch (RandomiserException ex)
                 {
-                    Logger.LogAndFlush($"Failed to generate beatable configuration for seed {randomiser.Settings.Seed}"); 
+                    Logger.Flush();
                     progress.Report(new ProgressInfo
                     {
-                        Label = $"Failed to generate beatable configuration stopping after {MaxAttempts} attempts.",
+                        Label = ex.Message,
+                        ProgressValue = 100,
+                        IsIndeterminate = false
+                    });
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogAndFlush(ex.Message);
+                    progress.Report(new ProgressInfo
+                    {
+                        Label = "Something has gone very wrong!",
                         ProgressValue = 100,
                         IsIndeterminate = false
                     });
@@ -150,7 +202,8 @@ namespace LaMulana2Randomizer.ViewModels
                 }
 
                 Logger.LogAndFlush($"Successfully generated for seed {randomiser.Settings.Seed}");
-                Settings.Seed = new Random(Settings.Seed).Next(int.MinValue, int.MaxValue);
+                if(NumSeeds > 1)
+                    Reroll();
             }
 
             progress.Report(new ProgressInfo

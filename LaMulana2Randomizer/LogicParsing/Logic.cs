@@ -23,18 +23,20 @@ namespace LaMulana2Randomizer.LogicParsing
         CanChant,
         CanWarp,
         CanSpinCorridor,
+        CanStopTime,
         Has,
         CanUse,
         IsDead,
+        CanKill,
         OrbCount,
         GuardianKills,
         PuzzleFinished,
         AnkhCount,
         Dissonance,
         SkullCount,
-        HasWeaponUpgrade,
         Setting,
-        True
+        True,
+        False
     }
 
     public class InvalidLogicTypeException : Exception

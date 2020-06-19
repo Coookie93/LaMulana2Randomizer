@@ -7,13 +7,12 @@
         xmlns:main="clr-namespace:LaMulana2Randomizer"
         xmlns:vm="clr-namespace:LaMulana2Randomizer.ViewModels"
         mc:Ignorable="d"
-        Title="{Binding Path=Title}"  Width="350" Height="550" MinWidth="350" MinHeight="550">
+        Title="{Binding Title}"  Width="350" Height="550" MinWidth="350" MinHeight="550">
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
     <Window.Resources>
         <local:EnumBooleanConverter x:Key="enumBooleanConverter"/>
-        <local:TextErrorBooleanConverter x:Key="textErrorBooleanConverter"/>
         <Style x:Key="OriginalShopCheck" TargetType="{x:Type CheckBox}">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsChecked, ElementName=ShopOriginal}" Value="True">
@@ -158,19 +157,129 @@
                     </GroupBox>
                 </Grid>
             </TabItem>
+            <TabItem Header="Entrances">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <GroupBox Header="Entrances" Grid.Row="0">
+                        <StackPanel>
+                            <CheckBox Name="RandomHorizontal" IsChecked="{Binding Settings.RandomHorizontalEntraces}" Content="Randomise Horizontal Entrances" Margin="2">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="Randomises the left/right door ways, the doors are kept as pairs so a left will lead to a right." />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <CheckBox Name="VillageToCliff" IsChecked="{Binding Settings.AllowVillageToCliff}" Content="Reduce Dead End Starts" Margin="20,2,2,2">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="For normal entrance randomization this will stop the main Village entrance leading to the Cliff. For Mix'n'Match this will try to stop the main entrance from the Village leading to an area with no checks available." />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                                <CheckBox.Style>
+                                    <Style TargetType="CheckBox">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=RandomHorizontal, Path=IsChecked}" Value="True">
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </CheckBox.Style>
+                            </CheckBox>
+                            <CheckBox Name="RandomLadder" IsChecked="{Binding Settings.RandomLadderEntraces}" Content="Randomise Ladder Entrances" Margin="2">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="Randomises the ladders and exit points of one way ladders, the ladder are kept as pairs so an up ladder will lead to a down ladder." />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <CheckBox Name="RandomGates" IsChecked="{Binding Settings.RandomGateEntraces}" Content="Randomise Gate Entrances" Margin="2">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="Randomises the gates." />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <CheckBox Name="RemoveITStatue" IsChecked="{Binding Settings.RemoveITStatue}" Content="Remove Statue in Icefire Treetop" Margin="20,2,2,2">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="Starts the game with the statue next to the gate in Icefire Treetop removed." />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <CheckBox Name="RandomSoulGates" IsChecked="{Binding Settings.RandomSoulGateEntraces}" Content="Randomise Soul Gate Entrances" Margin="2">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="Randomises the soul gates by shuffling around the destinations and soul values, the soul gates are kept in soul value pairs e.g. a soul gate with a value of 2 will lead to another soul gate of value 2." />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <CheckBox Name="IncludeNineGate" IsChecked="{Binding Settings.IncludeNineGates}" Content="Include Nine Soul Gates" Margin="20,2,2,2">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="Adds the two nine gates to the pool of randomised soul gates." />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                                <CheckBox.Style>
+                                    <Style TargetType="CheckBox">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=RandomSoulGates, Path=IsChecked}" Value="True">
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </CheckBox.Style>
+                            </CheckBox>
+                            <CheckBox Name="FullRandomEntrances" IsChecked="{Binding Settings.FullRandomEntrances}" Content="Entrance Mix'n'Match" Margin="2">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="Takes all the entrances types selected to be randomised excluding soul gates and randomises them in a way where any entrance can lead to any other entrance." />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                        </StackPanel>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
             <TabItem Header="Other">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <GroupBox Header="Qaulity of Life" Grid.Row="0">
-                        <CheckBox Name="AutoScanCheck" IsChecked="{Binding Settings.AutScanTablets}" Content="Autoscan Holy Tablets" Margin="2">
-                            <CheckBox.ToolTip>
-                                <ToolTip Style="{StaticResource TootltipStyle}">
-                                    <TextBlock Text="Walking in front of Holy Tablets will add them to the list of warp locations automatically." />
-                                </ToolTip>
-                            </CheckBox.ToolTip>
-                        </CheckBox>
+                        <StackPanel >
+                            <CheckBox Name="AutoScanCheck" IsChecked="{Binding Settings.AutoScanTablets}" Content="Auto-scan Holy Tablets" Margin="2">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="Walking in front of Holy Tablets will add them to the list of warp locations automatically." />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <CheckBox Name="AutoPlaceCheck" IsChecked="{Binding Settings.AutoPlaceSkulls}" Content="Auto-place Crystal Skulls" Margin="2">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="." />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <CheckBox Name="MoneyStartCheck" IsChecked="{Binding Settings.MoneyStart}" Content="Start with 100 coins" Margin="2">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="." />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <CheckBox Name="WeightStartCheck" IsChecked="{Binding Settings.WeightStart}" Content="Start with 20 weights" Margin="2">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="." />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                        </StackPanel>
                     </GroupBox>
                 </Grid>
             </TabItem>
@@ -181,6 +290,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0" Content="Seed:"/>
                     <TextBox Grid.Column="1" x:Name="InputTextBox" HorizontalAlignment="Stretch" Margin="0,5,5,5">
@@ -190,8 +300,25 @@
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox>
+                    <Button Grid.Column="2" Width="18" Height="18" Command="{Binding RerollCommand}" BorderThickness="0" Background="Snow">
+                        <Image Source="/Icons/dice.png" />
+                    </Button>
                 </Grid>
-                <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="100" Content="Generate" Command="{Binding GenerateCommand}" IsEnabled="{Binding ElementName=InputTextBox, Path=(Validation.Errors)[0], Converter={StaticResource textErrorBooleanConverter}}"/>
+                <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="100" Content="Generate" Command="{Binding GenerateCommand}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="IsEnabled" Value="False"/>
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Path=(Validation.HasError), ElementName=InputTextBox}" Value="False"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>    
+                    </Button.Style>  
+                </Button> 
             </StackPanel>
         </GroupBox>
     </Grid>

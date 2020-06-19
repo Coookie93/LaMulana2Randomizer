@@ -47,6 +47,10 @@ namespace LM2RandomiserMod.Patches
 					{
 						this.flagq[i].flag_vale++;
 					}
+					else if (sheet == 5 && id == 47)
+					{
+						this.flagq[i].flag_vale++;
+					}
 					return;
 				}
 			}

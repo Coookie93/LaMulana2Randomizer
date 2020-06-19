@@ -20,30 +20,35 @@ namespace LaMulana2Randomizer.LogicParsing
                 switch (token.Type)
                 {
                     case TokenType.RuleToken:
+                    {
                         outputQueue.Enqueue(token);
                         break;
-
+                    }
                     case TokenType.AndOperator:
+                    {
                         while (stack.Count > 0 && stack.Peek().Type == TokenType.AndOperator)
                         {
                             outputQueue.Enqueue(stack.Pop());
                         }
                         stack.Push(token);
                         break;
-
+                    }
                     case TokenType.OrOperator:
+                    { 
                         while (stack.Count > 0 && (stack.Peek().Type == TokenType.AndOperator || stack.Peek().Type == TokenType.OrOperator))
                         {
                             outputQueue.Enqueue(stack.Pop());
                         }
                         stack.Push(token);
                         break;
-
+                    }
                     case TokenType.OpenParentheses:
+                    {
                         stack.Push(token);
                         break;
-
+                    }
                     case TokenType.ClosedParentheses:
+                    {
                         while (stack.Count > 0 && stack.Peek().Type != TokenType.OpenParentheses)
                         {
                             outputQueue.Enqueue(stack.Pop());
@@ -58,6 +63,7 @@ namespace LaMulana2Randomizer.LogicParsing
                             stack.Pop();
                         }
                         break;
+                    }
 
                     default:
                         break;

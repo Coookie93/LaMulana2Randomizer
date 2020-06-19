@@ -10,11 +10,10 @@ namespace LM2RandomiserMod
     {
         private Font currentFont = null;
 
-        private L2Rando rando;
         private L2System sys;
 
-        private bool showUI = true;
-        private bool showFlagWatch = true;
+        private bool showUI = false;
+        private bool showFlagWatch = false;
 
 
         private string areaString;
@@ -33,9 +32,8 @@ namespace LM2RandomiserMod
         private string getFlagString;
         private string getValueString;
 
-        public void Initialise(L2Rando l2rando, L2System l2System)
+        public void Initialise(L2System l2System)
         {
-            rando = l2rando;
             sys = l2System;
             Cursor.visible = true;
         }
@@ -92,35 +90,26 @@ namespace LM2RandomiserMod
 
                 var flagWatch = ((patched_L2FlagSystem)sys.getFlagSys()).GetFlagWatches();
 
-                if (flagWatch == null || flagWatch.Count < 1)
+                if (flagWatch == null)
                     return;
 
                 guistyle.fontSize = 10;
-                GUIContent flw1 = new GUIContent(flagWatch[flagWatch.Count - 1] + "\r\n" + flagWatch[flagWatch.Count - 2] +
-                                                 "\r\n" + flagWatch[flagWatch.Count - 3]);
-                Vector2 flw1Size = guistyle.CalcSize(flw1);
-                GUI.Label(new Rect(0, Screen.height - flw1Size.y, flw1Size.x, flw1Size.y), flw1, guistyle);
 
                 try
                 {
-                    GUIContent flw2 = new GUIContent(flagWatch[flagWatch.Count - 4] + "\r\n" +
-                                                     flagWatch[flagWatch.Count - 5] + "\r\n" +
-                                                     flagWatch[flagWatch.Count - 6]);
-                    Vector2 flw2Size = guistyle.CalcSize(flw2);
-                    GUI.contentColor = Color.grey;
-                    GUI.Label(new Rect(flw1Size.x + 20, Screen.height - flw1Size.y, flw2Size.x, flw2Size.y), flw2,
-                        guistyle);
+                    string flags = string.Empty;
 
-                    GUIContent flw3 = new GUIContent(flagWatch[flagWatch.Count - 7] + "\r\n" +
-                                                     flagWatch[flagWatch.Count - 8] + "\r\n" +
-                                                     flagWatch[flagWatch.Count - 9]);
-                    Vector2 flw3Size = guistyle.CalcSize(flw3);
-                    GUI.contentColor = Color.grey;
-                    GUI.Label(new Rect(flw1Size.x + flw2Size.x + 40, Screen.height - flw2Size.y, flw3Size.x, flw3Size.y), flw3,
-                        guistyle);
+                    foreach(var flag in flagWatch)
+                    {
+                        flags = string.Format($"{flags}\n{flag}");
+                    }
+                    GUIContent flw1 = new GUIContent(flags);
+                    Vector2 flw1Size = guistyle.CalcSize(flw1);
+                    GUI.Label(new Rect(0, Screen.height - flw1Size.y, flw1Size.x, flw1Size.y), flw1, guistyle);
                 }
                 catch (Exception)
                 {
+                    throw;
                 }
             }
         }
@@ -235,7 +224,7 @@ namespace LM2RandomiserMod
 
         private void JumpPosition()
         {
-            if (this.sceneJump)
+            if (sceneJump)
                 return;
 
             L2SystemCore sysCore = sys.getL2SystemCore();

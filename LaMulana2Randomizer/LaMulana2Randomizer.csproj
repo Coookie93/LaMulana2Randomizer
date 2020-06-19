@@ -64,7 +64,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Area.cs" />
-    <Compile Include="Connection.cs" />
+    <Compile Include="Exit.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="Location.cs" />
@@ -83,7 +83,6 @@
     <Compile Include="UI\ProgressDialog.xaml.cs">
       <DependentUpon>ProgressDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\TextErrorBooleanConverter.cs" />
     <Compile Include="BindableBase.cs" />
     <Compile Include="Utils\FileUtils.cs" />
     <Compile Include="Utils\ItemPool.cs" />
@@ -128,12 +127,6 @@
     <None Include="Data\Items.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Data\Mantras.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Data\ShopOnlyItems.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Data\World.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -170,6 +163,7 @@
     </Content>
     <Content Include="Newtonsoft\Newtonsoft.Json.dll" />
     <Content Include="Newtonsoft\Newtonsoft.Json.pdb" />
+    <Resource Include="Icons\dice.png" />
     <None Include="Seed\spoilers.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

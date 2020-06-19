@@ -117,9 +117,10 @@ namespace LM2RandomiserMod.Patches
 
                             this.sys.setKeyBlock(true);
                             L2Rando rando = GameObject.FindObjectOfType<L2Rando>();
-                            if(rando != null && rando.Randomising)
+                            if(rando != null && rando.IsRandomising)
                             {
                                 LocationID locationID = rando.GetLocationIDForMural(SnapShotTargetSc);
+
                                 ItemID itemID = rando.GetItemIDForLocation(locationID);
                                 ItemInfo itemInfo = ItemDB.GetItemInfo(itemID);
 

@@ -192,7 +192,7 @@
   {
     "name": "Ring",
     "id": 40,
-    "isRequired": false
+    "isRequired": true
   },
   {
     "name": "Bracelet",
@@ -347,12 +347,14 @@
   {
     "name": "Pistol",
     "id": 75,
+    "price": 200,
     "isRequired": false
   },
   {
     "name": "Buckler",
     "id": 76,
-    "isRequired": true
+    "price": 10,
+    "isRequired": false
   },
   {
     "name": "Silver Shield",
@@ -712,6 +714,226 @@
   {
     "name": "Crystal Skull",
     "id": 154,
+    "isRequired": true
+  },
+  {
+    "name": "Heaven",
+    "id": 155,
+    "isRequired": true
+  },
+  {
+    "name": "Earth",
+    "id": 156,
+    "isRequired": true
+  },
+  {
+    "name": "Sun",
+    "id": 157,
+    "isRequired": true
+  },
+  {
+    "name": "Moon",
+    "id": 158,
+    "isRequired": true
+  },
+  {
+    "name": "Sea",
+    "id": 159,
+    "isRequired": true
+  },
+  {
+    "name": "Fire",
+    "id": 160,
+    "isRequired": true
+  },
+  {
+    "name": "Wind",
+    "id": 161,
+    "isRequired": true
+  },
+  {
+    "name": "Mother",
+    "id": 162,
+    "isRequired": true
+  },
+  {
+    "name": "Child",
+    "id": 163,
+    "isRequired": true
+  },
+  {
+    "name": "Night",
+    "id": 164,
+    "isRequired": true
+  },
+  {
+    "name": "Shuriken Ammo",
+    "id": 165,
+    "isRequired": true
+  },
+  {
+    "name": "Shuriken Ammo",
+    "id": 165,
+    "isRequired": true
+  },
+  {
+    "name": "Shuriken Ammo",
+    "id": 165,
+    "isRequired": true
+  },
+  {
+    "name": "Shuriken Ammo",
+    "id": 165,
+    "isRequired": true
+  },
+  {
+    "name": "Rolling Shuriken Ammo",
+    "id": 166,
+    "isRequired": true
+  },
+  {
+    "name": "Earth Spear Ammo",
+    "id": 167,
+    "isRequired": true
+  },
+  {
+    "name": "Earth Spear Ammo",
+    "id": 167,
+    "isRequired": true
+  },
+  {
+    "name": "Flare Ammo",
+    "id": 168,
+    "isRequired": true
+  },
+  {
+    "name": "Flare Ammo",
+    "id": 168,
+    "isRequired": true
+  },
+  {
+    "name": "Bomb Ammo",
+    "id": 169,
+    "isRequired": true
+  },
+  {
+    "name": "Bomb Ammo",
+    "id": 169,
+    "isRequired": true
+  },
+  {
+    "name": "Chakram Ammo",
+    "id": 170,
+    "isRequired": true
+  },
+  {
+    "name": "Caltrops Ammo",
+    "id": 171,
+    "isRequired": true
+  },
+  {
+    "name": "Caltrops Ammo",
+    "id": 171,
+    "isRequired": true
+  },
+  {
+    "name": "Caltrops Ammo",
+    "id": 171,
+    "isRequired": true
+  },
+  {
+    "name": "Pistol Ammo",
+    "id": 172,
+    "isRequired": false
+  },
+  {
+    "name": "Pistol Ammo",
+    "id": 172,
+    "isRequired": false
+  },
+  {
+    "name": "Weights",
+    "id": 173,
+    "isRequired": true
+  },
+  {
+    "name": "Weights",
+    "id": 173,
+    "isRequired": true
+  },
+  {
+    "name": "Weights",
+    "id": 173,
+    "isRequired": true
+  },
+  {
+    "name": "Weights",
+    "id": 173,
+    "isRequired": true
+  },
+  {
+    "name": "Weights",
+    "id": 173,
+    "isRequired": true
+  },
+  {
+    "name": "Weights",
+    "id": 173,
+    "isRequired": true
+  },
+  {
+    "name": "Weights",
+    "id": 173,
+    "isRequired": true
+  },
+  {
+    "name": "Weights",
+    "id": 173,
+    "isRequired": true
+  },
+  {
+    "name": "Weights",
+    "id": 173,
+    "isRequired": true
+  },
+  {
+    "name": "Weights",
+    "id": 173,
+    "isRequired": true
+  },
+  {
+    "name": "Weights",
+    "id": 173,
+    "isRequired": true
+  },
+  {
+    "name": "Weights",
+    "id": 173,
+    "isRequired": true
+  },
+  {
+    "name": "Weights",
+    "id": 173,
+    "isRequired": true
+  },
+  {
+    "name": "Weights",
+    "id": 173,
+    "isRequired": true
+  },
+  {
+    "name": "Weights",
+    "id": 173,
+    "isRequired": true
+  },
+  {
+    "name": "Weights",
+    "id": 173,
+    "isRequired": true
+  },
+  {
+    "name": "Weights",
+    "id": 173,
     "isRequired": true
   }
 ]
