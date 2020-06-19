@@ -54,11 +54,16 @@ namespace LM2RandomiserMod
         {
             if(flags.Count > 0)
             {
-                L2FlagBoxEnd l2Flag = flags.Dequeue();
-                byte[] data = new byte[3];
-                data[0] = (byte)l2Flag.seet_no1;
-                data[1] = (byte)l2Flag.flag_no1;
-                data[2] = (byte)l2Flag.data;
+                byte[] data = new byte[3 * flags.Count];
+                int index = 0;
+                while (flags.Count > 0)
+                {
+                    L2FlagBoxEnd l2Flag = flags.Dequeue();
+                    data[index + 0] = (byte)l2Flag.seet_no1;
+                    data[index + 1] = (byte)l2Flag.flag_no1;
+                    data[index + 2] = (byte)l2Flag.data;
+                    index += 3;
+                }
                 Send(data);
             }
         }
