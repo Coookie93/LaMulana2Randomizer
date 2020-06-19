@@ -171,10 +171,10 @@
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
-                            <CheckBox Name="VillageToCliff" IsChecked="{Binding Settings.AllowVillageToCliff}" Content="Allow Village to Cliff" Margin="20,2,2,2">
+                            <CheckBox Name="VillageToCliff" IsChecked="{Binding Settings.AllowVillageToCliff}" Content="Reduce Dead End Starts" Margin="20,2,2,2">
                                 <CheckBox.ToolTip>
                                     <ToolTip Style="{StaticResource TootltipStyle}">
-                                        <TextBlock Text="Allow the Village right door to lead to the Cliff wether it be directly or through the Cavern." />
+                                        <TextBlock Text="For normal entrance randomization this will stop the main Village entrance leading to the Cliff. For Mix'n'Match this will try to stop the main entrance from the Village leading to an area with no checks available." />
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                                 <CheckBox.Style>
