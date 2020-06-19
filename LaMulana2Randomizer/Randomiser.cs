@@ -1033,8 +1033,8 @@ namespace LaMulana2Randomizer
                     do
                     {
                         entrance2 = entrances[random.Next(entrances.Count)];
-                    } while (((entrance2.ID == ExitID.fL08Right || entrance2.ID == ExitID.fL05Up) && !Settings.AllowVillageToCliff) || 
-                                ((entrance2.ID == ExitID.fL11GateN || entrance2.ID == ExitID.fL11GateY0) && illusionToCliff));
+                    } while (((entrance2.ID == ExitID.fL08Right || entrance2.ID == ExitID.fL05Up || entrance2.ID == ExitID.fLGate || entrance2.ID == ExitID.f00GateYA) 
+                                && !Settings.AllowVillageToCliff) || ((entrance2.ID == ExitID.fL11GateN || entrance2.ID == ExitID.fL11GateY0) && illusionToCliff));
                 }
                 else if (entrance1.ID == ExitID.f01Down)
                 {
