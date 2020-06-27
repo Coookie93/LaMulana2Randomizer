@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using LaMulana2Randomizer.UI;
 using LaMulana2Randomizer.Utils;
-using Version = LM2RandomizerShared.Version;
+using Version = LaMulana2RandomizerShared.Version;
 
 namespace LaMulana2Randomizer.ViewModels
 {
@@ -21,12 +21,6 @@ namespace LaMulana2Randomizer.ViewModels
         {
             get => _settings;
             set => Set(ref _settings, value);
-        }
-
-        private string title;
-        public string Title {
-            get => title;
-            set => Set(ref title, value);
         }
 
         public MainViewModel()

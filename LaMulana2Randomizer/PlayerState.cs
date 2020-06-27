@@ -140,7 +140,8 @@ namespace LaMulana2Randomizer
 
             } while (reachableLocations.Count > 0);
 
-            return state.CanBeatGame();
+            //add a check for annwfn right because its the only place that can be inaccessable and the game is still beatable and this is the easiest way to ensure that
+            return state.CanBeatGame() && state.CanReach("Annwfn Right");
         }
 
         public bool CanBeatGame()
@@ -250,62 +251,25 @@ namespace LaMulana2Randomizer
         {
             switch (rule.logicType)
             {
-                case LogicType.CanReach:
-                    return CanReach(rule.value);
-
-                case LogicType.CanChant:
-                    return CanChant(rule.value);
-
-                case LogicType.CanWarp:
-                    return HasItem("Holy Grail");
-
-                case LogicType.CanSpinCorridor:
-                    return CanSpinCorridor();
-
-                case LogicType.CanStopTime:
-                    return CanStopTime();
-
-                case LogicType.Has:
-                    return HasItem(rule.value);
-
-                case LogicType.CanUse:
-                    return CanUse(rule.value);
-
-                case LogicType.IsDead:
-                    return HasItem(rule.value);
-
-                case LogicType.CanKill:
-                    return CanKill(rule.value);
-
-                case LogicType.OrbCount:
-                    return OrbCount(int.Parse(rule.value));
-
-                case LogicType.GuardianKills:
-                    return GuardianKills(int.Parse(rule.value));
-
-                case LogicType.PuzzleFinished:
-                    return HasItem(rule.value);
-
-                case LogicType.AnkhCount:
-                    return softlockCheck ? AnkhCountSoftLock() : AnkhCount(int.Parse(rule.value));
-
-                case LogicType.Dissonance:
-                    return Dissonance(int.Parse(rule.value));
-
-                case LogicType.SkullCount:
-                    return SkullCount(int.Parse(rule.value));
-
-                case LogicType.Setting:
-                    return Settings(rule.value);
-
-                case LogicType.True:
-                    return true;
-
-                case LogicType.False:
-                    return false;
-
-                default:
-                    return false;
+                case LogicType.CanReach: return CanReach(rule.value);
+                case LogicType.CanChant: return CanChant(rule.value);
+                case LogicType.CanWarp: return HasItem("Holy Grail");
+                case LogicType.CanSpinCorridor: return CanSpinCorridor();
+                case LogicType.CanStopTime: return CanStopTime();
+                case LogicType.Has: return HasItem(rule.value);
+                case LogicType.CanUse: return CanUse(rule.value);
+                case LogicType.IsDead: return HasItem(rule.value);
+                case LogicType.CanKill: return CanKill(rule.value);
+                case LogicType.OrbCount: return OrbCount(int.Parse(rule.value));
+                case LogicType.GuardianKills: return GuardianKills(int.Parse(rule.value));
+                case LogicType.PuzzleFinished: return HasItem(rule.value);
+                case LogicType.AnkhCount: return softlockCheck ? AnkhCountSoftLock() : AnkhCount(int.Parse(rule.value));
+                case LogicType.Dissonance: return Dissonance(int.Parse(rule.value));
+                case LogicType.SkullCount: return SkullCount(int.Parse(rule.value));
+                case LogicType.Setting: return Settings(rule.value);
+                case LogicType.True: return true;
+                case LogicType.False: return false;
+                default: return false;
             }
         }
         

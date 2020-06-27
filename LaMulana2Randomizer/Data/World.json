@@ -566,7 +566,7 @@
       {
         "Name": "Kujata",
         "LocationType": "Guardian",
-        "Logic": "Has(Freys Ship) and (IsDead(Ixtab) or Has(Feather)) and (((Has(Flail Whip) or Has(Axe)) and OrbCount(2)) or ((Has(Chain Whip) or Has(Katana)) and OrbCount(3)) or ((Has(Knife) or Has(Rapier)) and OrbCount(3) and Has(Feather)))",
+        "Logic": "Has(Freys Ship) and (IsDead(Ixtab) or Has(Feather)) and (((Has(Flail Whip) or Has(Axe)) and OrbCount(2)) or ((Has(Chain Whip) or Has(Katana)) and OrbCount(3)) or ((Has(Knife) or Has(Rapier)) and OrbCount(3) and Has(Feather)) or (Has(Leather Whip) and OrbCount(4)))",
         "HardLogic": "Has(Freys Ship) and (IsDead(Ixtab) or Has(Feather))",
         "Item": {
           "Name": "Kujata",
@@ -660,7 +660,7 @@
         "Name": "Map Chest IB",
         "LocationType": "Chest",
         "Logic": "True"
-      },
+      },bad
       {
         "Name": "Ice Cloak Chest",
         "LocationType": "Chest",
@@ -2452,7 +2452,7 @@
       {
         "Name": "Anu",
         "LocationType": "Guardian",
-        "Logic": "Has(Gloves) and IsDead(Ki-sikil-lil-la-ke) and (((Has(Chain Whip) or Has(Rapier) or Has(Axe)) and OrbCount(6)) or (Has(Flail Whip) and OrbCount(5)))",
+        "Logic": "Has(Gloves) and IsDead(Ki-sikil-lil-la-ke) and ((Has(Leather Whip) and OrbCount(6)) or ((Has(Chain Whip) or Has(Rapier) or Has(Axe)) and OrbCount(5)) or (Has(Flail Whip) and OrbCount(4)))",
         "HardLogic": "Has(Gloves) and IsDead(Ki-sikil-lil-la-ke)",
         "Item": {
           "Name": "Anu",

@@ -918,7 +918,8 @@ namespace LaMulana2Randomizer
                 do
                 {
                     entrance2 = entrances[random.Next(entrances.Count)];
-                } while ((entrance2.ID == ExitID.f01Right && (!Settings.RandomLadderEntraces || !Settings.AllowVillageToCliff)) || entrance2.IsInaccessible());   
+                } while ((entrance2.ID == ExitID.f01Right && (!Settings.RandomLadderEntraces || !Settings.AllowVillageToCliff)) || entrance2.IsInaccessible() 
+                            || entrance2.ID == ExitID.f06_2GateP0);   
                 
                 entrances.Remove(entrance2);
 
@@ -931,7 +932,7 @@ namespace LaMulana2Randomizer
                     illusionToCliff = true;
                 }
 
-                if (entrance2.ID == ExitID.f01Right && (entrance1.ID == ExitID.fP02Left || (entrance1.ID == ExitID.fP00Right && cavernToCliff)))
+                if (entrance2.ID == ExitID.f01Right)
                     villageDeadEnd = true;
 
                 FixFullRandomEntranceLogic(entrance1, entrance2);
@@ -943,15 +944,18 @@ namespace LaMulana2Randomizer
                 ExitPairs.Add((entrance1.ID, entrance2.ID));
                 EntrancePairs.Add($"    {entrance1.Name} - {entrance2.Name}");
 
-                entrance1 = entrances.Find(x => x.ID == ExitID.fP02Left);
+                entrance1 = entrances.Find(x => x.ID == ExitID.fP00Left);
                 if(entrance1 != null)
                 {
                     entrances.Remove(entrance1);
                     do
                     {
                         entrance2 = entrances[random.Next(entrances.Count)];
-                    } while (entrance2.ID == ExitID.fP00Right || entrance2.IsInaccessible() || ((entrance2.ID == ExitID.f01Right && (!Settings.RandomLadderEntraces || !Settings.AllowVillageToCliff)) && cavernToCliff));
+                    } while (entrance2.ID == ExitID.fP00Right || (entrance2.ID == ExitID.f01Right && cavernToCliff && (!Settings.RandomLadderEntraces || !Settings.AllowVillageToCliff)));
                     entrances.Remove(entrance2);
+
+                    if (entrance2.ID == ExitID.f01Right && cavernToCliff)
+                        villageDeadEnd = true;
 
                     FixFullRandomEntranceLogic(entrance1, entrance2);
                     FixFullRandomEntranceLogic(entrance2, entrance1);
@@ -964,9 +968,9 @@ namespace LaMulana2Randomizer
                 }
             }
 
+            //try to place an illusion entrance to stop it looping on itself if its already placed it doesn't matter
             if (Settings.RandomGateEntraces)
             {
-                //try to place an illusion entrance to stop it looping on itself if its already placed it doesn't matter
                 entrance1 = entrances.Find(x => x.ID == ExitID.fL11GateN);
                 if (entrance1 != null)
                 {
@@ -974,7 +978,7 @@ namespace LaMulana2Randomizer
                     do
                     {
                         entrance2 = entrances[random.Next(entrances.Count)];
-                    } while (entrance2.ID == ExitID.fL11GateY0);
+                    } while (entrance2.ID == ExitID.fL11GateY0 || (entrance2.ID == ExitID.f01Right && illusionToCliff && (!Settings.RandomLadderEntraces || !Settings.AllowVillageToCliff)));
 
                     entrances.Remove(entrance2);
 
@@ -996,6 +1000,9 @@ namespace LaMulana2Randomizer
 
             if (Settings.RandomLadderEntraces)
             {
+                if(villageDeadEnd)
+                    priorityEntrances.Add(entrances.Find(x => x.ID == ExitID.f01Down));
+
                 priorityEntrances.Add(entrances.Find(x => x.ID == ExitID.f02Down));
                 priorityEntrances.Add(entrances.Find(x => x.ID == ExitID.f03Down2));
                 priorityEntrances.Add(entrances.Find(x => x.ID == ExitID.fL05Up));
@@ -1041,7 +1048,7 @@ namespace LaMulana2Randomizer
                     do
                     {
                         entrance2 = entrances[random.Next(entrances.Count)];
-                    } while ((entrance2.ID == ExitID.fL08Right || entrance2.ID == ExitID.fL05Up) && villageDeadEnd);
+                    } while ((entrance2.ID == ExitID.fL08Right || entrance2.ID == ExitID.fL05Up || entrance2.ID == ExitID.fLGate || entrance2.ID == ExitID.f00GateYA) && villageDeadEnd);
                 }
                 else
                 {
