@@ -660,7 +660,7 @@
         "Name": "Map Chest IB",
         "LocationType": "Chest",
         "Logic": "True"
-      },bad
+      },
       {
         "Name": "Ice Cloak Chest",
         "LocationType": "Chest",

@@ -545,7 +545,6 @@ namespace LM2RandomiserMod
                 else if (controller.name.Equals("soul_cont"))
                 {
                     if (!objects.ContainsKey("nineSoul"))
-
                     {
                         GameObject obj = Instantiate(controller.gameObject);
                         obj.name = "Nine Soul Prefab";

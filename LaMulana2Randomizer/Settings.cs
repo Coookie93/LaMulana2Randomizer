@@ -67,10 +67,10 @@ namespace LaMulana2Randomizer
             set => Set(ref randomHorizontalEntrances, value);
         }
 
-        private bool allowVillageToCliff;
-        public bool AllowVillageToCliff {
-            get => allowVillageToCliff;
-            set => Set(ref allowVillageToCliff, value);
+        private bool reduceDeadEndStarts;
+        public bool ReduceDeadEndStarts {
+            get => reduceDeadEndStarts;
+            set => Set(ref reduceDeadEndStarts, value);
         }
 
         private bool randomLadderEntrances;
@@ -170,7 +170,7 @@ namespace LaMulana2Randomizer
             FDCForBacksides = false;
             RandomCurses = false;
             RandomHorizontalEntraces = false;
-            AllowVillageToCliff = true;
+            ReduceDeadEndStarts = true;
             RandomLadderEntraces = false;
             RandomGateEntraces = false;
             RemoveITStatue = false;
