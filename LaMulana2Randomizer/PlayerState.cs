@@ -140,8 +140,18 @@ namespace LaMulana2Randomizer
 
             } while (reachableLocations.Count > 0);
 
-            //add a check for annwfn right because its the only place that can be inaccessable and the game is still beatable and this is the easiest way to ensure that
-            return state.CanBeatGame() && state.CanReach("Annwfn Right");
+            //check to see if its possible to beat the game with this configuration
+            if (!state.CanBeatGame())
+                return false;
+
+            //check to see if all locations are accessable
+            foreach (Location location in reachableLocations)
+            {
+                if (!location.CanReach(state))
+                    return false;
+            }
+
+            return true;
         }
 
         public bool CanBeatGame()
@@ -392,32 +402,15 @@ namespace LaMulana2Randomizer
         {
             switch (settingName)
             {
-                case "AutoScan":
-                    return randomiser.Settings.AutoScanTablets;
-
-                case "Random Ladders":
-                    return randomiser.Settings.RandomLadderEntraces;
-
-                case "Non Random Ladders":
-                    return !randomiser.Settings.RandomLadderEntraces;
-
-                case "Random Gates":
-                    return randomiser.Settings.RandomGateEntraces;
-
-                case "Non Random Gates":
-                    return !randomiser.Settings.RandomGateEntraces;
-
-                case "Random Soul Gates":
-                    return randomiser.Settings.RandomSoulGateEntraces;
-
-                case "Non Random Soul Gates":
-                    return !randomiser.Settings.RandomSoulGateEntraces;
-
-                case "Remove IT Statue":
-                    return randomiser.Settings.RemoveITStatue;
-
-                default:
-                    return false;
+                case "AutoScan": return randomiser.Settings.AutoScanTablets;
+                case "Random Ladders": return randomiser.Settings.RandomLadderEntraces;
+                case "Non Random Ladders": return !randomiser.Settings.RandomLadderEntraces;
+                case "Random Gates": return randomiser.Settings.RandomGateEntraces;
+                case "Non Random Gates": return !randomiser.Settings.RandomGateEntraces;
+                case "Random Soul Gates": return randomiser.Settings.RandomSoulGateEntraces;
+                case "Non Random Soul Gates": return !randomiser.Settings.RandomSoulGateEntraces;
+                case "Remove IT Statue": return randomiser.Settings.RemoveITStatue;
+                default: return false;
             }
         }
     }
