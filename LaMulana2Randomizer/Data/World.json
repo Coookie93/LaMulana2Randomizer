@@ -261,8 +261,8 @@
         "Name": "Gate of Illusion Right Gate (C-1)",
         "ID": "fL11GateY0",
         "ConnectionType": "Gate",
-        "ConnectingAreaName": "Roots of Yggdrasil",
-        "Logic": " True"
+        "ConnectingAreaName": "Roots of Yggdrasil Middle",
+        "Logic": " HorizontalAttack"
       },
       {
         "Name": "Gate of Illusion Left Gate (A-1)",
@@ -277,29 +277,19 @@
     "Name": "Roots of Yggdrasil",
     "Locations": [
       {
-        "Name": "Sacred Orb Chest RoY",
-        "LocationType": "Chest",
-        "Logic": "True"
-      },
-      {
         "Name": "Map Chest RoY",
         "LocationType": "Chest",
-        "Logic": "True"
+        "Logic": "HorizontalAttack"
       },
       {
         "Name": "Ankh Chest RoY",
         "LocationType": "Chest",
-        "Logic": "Has(Feather) or Has(Katana) or Has(Axe) or CanUse(Bomb) or CanUse(Shuriken) or CanUse(Chakram) or CanUse(Earth Spear) or CanUse(Flare) or Has(Claydoll Suit) or CanStopTime or (Has(Gale Fibula) and Has(Grapple Claw))"
-      },
-      {
-        "Name": "Pyramid Crystal Chest",
-        "LocationType": "Chest",
-        "Logic": "Has(Life Sigil) and (Has(Knife) or Has(Spaulder) or Has(Gauntlet) or Has(Mjolnir) or (Has(Earth Spear) and Has(Ring)))"
+        "Logic": "Has(Feather) or Has(Katana) or Has(Axe) or CanUse(Bomb) or CanUse(Shuriken) or CanUse(Chakram) or CanUse(Earth Spear) or (CanUse(Flare) and HorizontalAttack) or Has(Claydoll Suit) or CanStopTime or (Has(Gale Fibula) and Has(Grapple Claw))"
       },
       {
         "Name": "Crystal Skull Chest RoY",
         "LocationType": "Chest",
-        "Logic": "IsDead(Fafnir)"
+        "Logic": "IsDead(Fafnir) and HorizontalAttack"
       },
       {
         "Name": "Shuriken Puzzle Reward",
@@ -315,21 +305,6 @@
         "Name": "Mantra Mural",
         "LocationType": "Mural",
         "Logic": "Has(Snapshot)"
-      },
-      {
-        "Name": "Korobok Shop 1",
-        "LocationType": "Shop",
-        "Logic": "True"
-      },
-      {
-        "Name": "Korobok Shop 2",
-        "LocationType": "Shop",
-        "Logic": "True"
-      },
-      {
-        "Name": "Korobok Shop 3",
-        "LocationType": "Shop",
-        "Logic": "True"
       },
       {
         "Name": "Ratatoskr 1",
@@ -364,25 +339,6 @@
     ],
     "Exits": [
       {
-        "Name": "Roots of Yggdrasil Main (D-4)",
-        "ID": "f00GateY0",
-        "ConnectionType": "Gate",
-        "ConnectingAreaName": "Gate of Illusion",
-        "Logic": "False or Setting(Random Gates)"
-      },
-      {
-        "Name": "Roots of Yggdrasil Soul Gate (D-6)",
-        "ID": "f00GateN1",
-        "ConnectionType": "SoulGate",
-        "ConnectingAreaName": "Divine Fortress Entrance",
-        "Logic": "GuardianKills(1) or Setting(Random Soul Gates)"
-      },
-      {
-        "ConnectionType": "Internal",
-        "ConnectingAreaName": "Roots of Yggdrasil Bottom",
-        "Logic": "Has(Origin Sigil)"
-      },
-      {
         "Name": "Roots of Yggdrasil Top Left Gate (A-1)",
         "ID": "f00GateYA",
         "ConnectionType": "Gate",
@@ -402,11 +358,89 @@
         "ConnectionType": "Gate",
         "ConnectingAreaName": "Immortal Battlefield Left",
         "Logic": "Has(Birth Sigil) and (Has(Feather) or Has(Grapple Claw))"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Roots of Yggdrasil Middle",
+        "Logic": "True"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Roots of Yggdrasil Bottom",
+        "Logic": "True"
+      }
+    ]
+  },
+  {
+    "Name": "Roots of Yggdrasil Middle",
+    "Locations": [
+      {
+        "Name": "Sacred Orb Chest RoY",
+        "LocationType": "Chest",
+        "Logic": "True"
+      }
+    ],
+    "Exits": [
+      {
+        "Name": "Roots of Yggdrasil Main (D-4)",
+        "ID": "f00GateY0",
+        "ConnectionType": "Gate",
+        "ConnectingAreaName": "Gate of Illusion",
+        "Logic": "False or Setting(Random Gates)"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Roots of Yggdrasil",
+        "Logic": "HorizontalAttack"
       }
     ]
   },
   {
     "Name": "Roots of Yggdrasil Bottom",
+    "Locations": [
+      {
+        "Name": "Pyramid Crystal Chest",
+        "LocationType": "Chest",
+        "Logic": "Has(Life Sigil) and (Has(Knife) or (Has(Spaulder) and (Has(Leather Whip) or Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Katana))) or (Has(Gauntlet) and (Has(Leather Whip) or Has(Chain Whip) or Has(Flail Whip))) or Has(Mjolnir) or (Has(Earth Spear) and Has(Ring)))"
+      },
+      {
+        "Name": "Korobok Shop 1",
+        "LocationType": "Shop",
+        "Logic": "True"
+      },
+      {
+        "Name": "Korobok Shop 2",
+        "LocationType": "Shop",
+        "Logic": "True"
+      },
+      {
+        "Name": "Korobok Shop 3",
+        "LocationType": "Shop",
+        "Logic": "True"
+      }
+    ],
+    "Exits": [
+      {
+        "Name": "Roots of Yggdrasil Soul Gate (D-6)",
+        "ID": "f00GateN1",
+        "ConnectionType": "SoulGate",
+        "ConnectingAreaName": "Divine Fortress Entrance",
+        "Logic": "GuardianKills(1) or Setting(Random Soul Gates)"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Roots of Yggdrasil Middle",
+        "Logic": "True"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Roots of Yggdrasil Bottom Left",
+        "Logic": "Has(Origin Sigil)"
+      }
+    ]
+  },
+  {
+    "Name": "Roots of Yggdrasil Bottom Left",
     "Locations": [],
     "Exits": [
       {
@@ -434,7 +468,7 @@
       {
         "Name": "Crystal Skull Chest Annwfn",
         "LocationType": "Chest",
-        "Logic": "Has(Birth Sigil)"
+        "Logic": "Has(Birth Sigil) and HorizontalAttack"
       },
       {
         "Name": "Rolling Shuriken Puzzle Reward",
@@ -477,7 +511,7 @@
         "Name": "Annwfn Ladder (C-1)",
         "ID": "f02Up",
         "ConnectionType": "UpLadder",
-        "ConnectingAreaName": "Roots of Yggdrasil Bottom",
+        "ConnectingAreaName": "Roots of Yggdrasil Bottom Left",
         "Logic": "True"
       },
       {
@@ -541,7 +575,7 @@
       {
         "Name": "Sacred Orb Chest Annwfn",
         "LocationType": "Chest",
-        "Logic": "Has(Life Sigil) and Has(Feather)"
+        "Logic": "Has(Life Sigil) and Has(Feather) and ((Has(Leather Whip) or Has(Chain Whip) or Has(Flail Whip) or CanUse(Shuriken) or CanUse(Chakram) or CanUse(Flare) or CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Pistol) or Has(Claydoll suit)) or (Has(Knife) and (Has(Spaulder) or Has(Gauntlet) or Has(Bracelet))) or (CanUse(Caltrops) and Has(Ring)) or (Has(Bracelet) and (Has(Rapier) or Has(Katana) or CanUse(Rolling Shuriken))))"
       },
       {
         "Name": "Silver Shield Puzzle Reward",
@@ -556,7 +590,7 @@
       {
         "Name": "Ixtab",
         "LocationType": "Miniboss",
-        "Logic": "((Has(Leather Whip) or Has(Rapier)) and OrbCount(2)) or ((Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana) or Has(Claydoll Suit)) and OrbCount(1))",
+        "Logic": "((Has(Leather Whip) or Has(Rapier) or CanUse(Rolling Shuriken) or CanUse(Caltrops)) and OrbCount(2)) or ((Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana) or Has(Claydoll Suit) or CanUse(Shuriken) or CanUse(Earth Spear) or CanUse(Chakram) or CanUse(Bomb)) and OrbCount(1)) or CanUse(Flare) or CanUse(Pistol)",
         "HardLogic": "True",
         "Item": {
           "Name": "Ixtab",
@@ -566,7 +600,7 @@
       {
         "Name": "Kujata",
         "LocationType": "Guardian",
-        "Logic": "Has(Freys Ship) and (IsDead(Ixtab) or Has(Feather)) and (((Has(Flail Whip) or Has(Axe)) and OrbCount(2)) or ((Has(Chain Whip) or Has(Katana)) and OrbCount(3)) or ((Has(Knife) or Has(Rapier)) and OrbCount(3) and Has(Feather)) or (Has(Leather Whip) and OrbCount(4)))",
+        "Logic": "Has(Freys Ship) and (IsDead(Ixtab) or Has(Feather)) and ((CanUse(Pistol) and OrbCount(1)) or ((Has(Flail Whip) or Has(Axe) or CanUse(Bombs)) and OrbCount(2)) or ((Has(Chain Whip) or Has(Katana) or CanUse(Earth Spear) or CanUse(Chakram)) and OrbCount(3)) or ((Has(Knife) or Has(Rapier) and (CanUse(Shuriken) and Has(Ring))) and OrbCount(3) and Has(Feather)) or ((Has(Leather Whip) and CanUse(Rolling Shuriken)) and OrbCount(4)))",
         "HardLogic": "Has(Freys Ship) and (IsDead(Ixtab) or Has(Feather))",
         "Item": {
           "Name": "Kujata",
@@ -603,8 +637,8 @@
       {
         "Name": "Cetus",
         "LocationType": "Miniboss",
-        "Logic": "CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Rolling Shuriken) or CanUse(Caltrops) or Has(Claydoll Suit)",
-        "HardLogic": "CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Rolling Shuriken) or CanUse(Caltrops) or Has(Claydoll Suit)",
+        "Logic": "CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Rolling Shuriken) or CanUse(Caltrops) or Has(Claydoll Suit) or (CanUse(Flare) and Has(Anchor)) or (CanUse(Shuriken) and (Has(Scalesphere) or OrbCount(2))) or (Has(Leather Whip) and Has(anchor) and (Has(ScaleSphere) or OrbCount(2))) or ((Has(Chain Whip) or Has(Flail Whip) or Has(Katana)) and Has(anchor) and (Has(ScaleSphere) or OrbCount(1)))",
+        "HardLogic": "True",
         "Item": {
           "Name": "Cetus",
           "IsRequired": true
@@ -664,7 +698,7 @@
       {
         "Name": "Ice Cloak Chest",
         "LocationType": "Chest",
-        "Logic": "Has(Life Sigil) and (Has(Feather) or CanUse(Shuriken) or CanUse(Rolling Shuriken) or CanUse(Flare) or CanUse(Chakram) or CanUse(Bomb) or Has(Claydoll Suit))"
+        "Logic": "Has(Life Sigil) and (Has(Feather) or CanUse(Shuriken) or CanUse(Earth Spear) or CanUse(Rolling Shuriken) or CanUse(Flare) or CanUse(Chakram) or CanUse(Bomb) or Has(Claydoll Suit) or CanUse(Caltrops) or CanUse(Pistol))"
       },
       {
         "Name": "Totem Pole Chest",
@@ -685,11 +719,6 @@
         "Name": "Mjolnir Chest",
         "LocationType": "Chest",
         "Logic": "IsDead(Jormangund)"
-      },
-      {
-        "Name": "Chain Whip Puzzle Reward",
-        "LocationType": "FreeStanding",
-        "Logic": "Has(Gloves) and (Has(Claydoll Suit) or OrbCount(1) or Has(Ice Cloak))"
       },
       {
         "Name": "Chakram Puzzle Reward",
@@ -749,7 +778,7 @@
       {
         "Name": "Jormangund",
         "LocationType": "Guardian",
-        "Logic": "IsDead(Cetus) and Has(Dinosaur Figure) and Has(Pochette Key) and (((Has(Chain Whip) or Has(Rapier) or Has(Axe)) and OrbCount(5)) or ((Has(Flail Whip) or Has(Katana)) and OrbCount(4)))",
+        "Logic": "IsDead(Cetus) and Has(Dinosaur Figure) and Has(Pochette Key) and (((Has(Chain Whip) or Has(Rapier) or Has(Axe) or CanUse(Rolling Shuriken) or (CanUse(Shuriken) and Has(Ring))) and OrbCount(5)) or ((Has(Flail Whip) or Has(Katana) or CanUse(Bomb) or CanUse(Earth Spear) or CanUse(Flare) or CanUse(Chakram)) and OrbCount(4)) or (CanUse(pistol) and OrbCount(2)))",
         "HardLogic": "IsDead(Cetus) and Has(Dinosaur Figure) and Has(Pochette Key)",
         "Item": {
           "Name": "Jormangund",
@@ -769,6 +798,11 @@
         "Logic": "(Has(Anchor) or Has(Claydoll Suit)) and (IsDead(Cetus) or Has(Feather) or CanWarp)"
       },
       {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Immortal Battlefield Bottom",
+        "Logic": "True"
+      },
+      {
         "Name": "Immortal Battlefield Right Door (H-4)",
         "ID": "f03Right",
         "ConnectionType": "RightDoor",
@@ -776,16 +810,33 @@
         "Logic": "True"
       },
       {
-        "ConnectionType": "Internal",
-        "ConnectingAreaName": "Immortal Battlefield Ladder",
-        "Logic": "IsDead(Cetus)"
-      },
-      {
         "Name": "Immortal Battlefield Two Soul Gate (H-2)",
         "ID": "f03GateN3",
         "ConnectionType": "SoulGate",
         "ConnectingAreaName": "Gate of the Dead",
         "Logic": "GuardianKills(2) or Setting(Random Soul Gates)"
+      }
+    ]
+  },
+  {
+    "Name": "Immortal Battlefield Bottom",
+    "Locations": [
+      {
+        "Name": "Chain Whip Puzzle Reward",
+        "LocationType": "FreeStanding",
+        "Logic": "Has(Gloves) and (Has(Claydoll Suit) or OrbCount(1) or Has(Ice Cloak))"
+      }
+    ],
+    "Exits": [
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Immortal Battlefield Main",
+        "Logic": "HorizontalAttack"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Immortal Battlefield Ladder",
+        "Logic": "IsDead(Cetus)"
       }
     ]
   },
@@ -802,7 +853,7 @@
       },
       {
         "ConnectionType": "Internal",
-        "ConnectingAreaName": "Immortal Battlefield Main",
+        "ConnectingAreaName": "Immortal Battlefield Bottom",
         "Logic": "True"
       },
       {
@@ -825,7 +876,7 @@
       },
       {
         "ConnectionType": "Internal",
-        "ConnectingAreaName": "Immortal Battlefield Main",
+        "ConnectingAreaName": "Immortal Battlefield Bottom",
         "Logic": "True"
       }
     ]
@@ -1009,12 +1060,12 @@
       {
         "Name": "Life Sigil Chest",
         "LocationType": "Chest",
-        "Logic": "Has(Birth Sigil) and CanWarp"
+        "Logic": "Has(Birth Sigil) and CanWarp and ((Has(Leather Whip) or Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or CanUse(Shuriken) or CanUse(Rolling Shuriken) or CanUse(Earth Spear) or CanUse(Chakram) or CanUse(Bomb) or CanUse(Caltrops) or CanUse(Pistol)) or (Has(Knife) and (Has(Feather) or Has(Spaulder) or Has(Gauntlet) or Has(Bracelet))) or (Has(Axe) and (Has(Bracelet) or (Has(Spaulder) and (Has(Feather) or Has(Gauntlet))))))"
       },
       {
         "Name": "Flame Torc Chest",
         "LocationType": "Chest",
-        "Logic": "IsDead(Surtr)"
+        "Logic": "IsDead(Surtr) and HorizontalAttack"
       },
       {
         "Name": "Btk Shop 1",
@@ -1059,7 +1110,7 @@
       {
         "Name": "Surtr",
         "LocationType": "Guardian",
-        "Logic": "Has(Light Scythe) and (Has(Feather) or Has(Ice Cloak)) and (((Has(Knife) or Has(Rapier)) and OrbCount(7)) or (Has(Chain Whip) and OrbCount(6)) or ((Has(Flail Whip) or Has(Axe) or Has(Katana)) and OrbCount(5)))",
+        "Logic": "Has(Light Scythe) and (Has(Feather) or Has(Ice Cloak)) and (((Has(Knife) or Has(Rapier)) and OrbCount(7)) or ((Has(Chain Whip) or (CanUse(Earth Spear) and Has(Ring))) and OrbCount(6)) or ((Has(Flail Whip) or Has(Axe) or Has(Katana) or (CanUse(Bomb) and Has(Ring))) and OrbCount(5)) or (CanUse(Pistol) and OrbCount(4)))",
         "HardLogic": "Has(Light Scythe)",
         "Item": {
           "Name": "Surtr",
@@ -1108,12 +1159,12 @@
       {
         "Name": "Sacred Orb Chest IT",
         "LocationType": "Chest",
-        "Logic": "Has(Claydoll Suit) or (Has(Anchor) and (OrbCount(1) or Has(Scalesphere)))"
+        "Logic": "(Has(Claydoll Suit) or (Has(Anchor) and (OrbCount(1) or Has(Scalesphere)))) and HorizontalAttack"
       },
       {
         "Name": "Ratatoskr 3",
         "LocationType": "Miniboss",
-        "Logic": "IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2) and CanReach(Icefire Treetop Left) and ((Has(Leather Whip) and OrbCount(3)) or ((Has(Chain Whip) or Has(Flail Whip) or Has(Knife) or Has(Rapier) or Has(Axe) or Has(Katana)) and OrbCount(2)))",
+        "Logic": "IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2) and CanReach(Icefire Treetop Left) and (((Has(Leather Whip) or CanUse(Rolling Shuriken) or CanUse(Caltrops)) and OrbCount(3)) or ((Has(Chain Whip) or Has(Flail Whip) or Has(Knife) or Has(Rapier) or Has(Axe) or Has(Katana) or CanUse(Shuriken) or CanUse(Earth Spear) or CanUse(Flare) or CanUse(Bomb) or CanUse(Chakram)) and OrbCount(2)) or (CanUse(Psitol) and OrbCount(1)))",
         "HardLogic": "IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2)",
         "Item": {
           "Name": "Ratatoskr 3",
@@ -1192,7 +1243,7 @@
         "Name": "Divine Fortress Soul Gate (C-5)",
         "ID": "f05GateN1",
         "ConnectionType": "SoulGate",
-        "ConnectingAreaName": "Roots of Yggdrasil",
+        "ConnectingAreaName": "Roots of Yggdrasil Middle",
         "Logic": "GuardianKills(1) or Setting(Random Soul Gates)"
       }
     ]
@@ -1282,7 +1333,7 @@
       {
         "ConnectionType": "Internal",
         "ConnectingAreaName": "Divine Fortress Right",
-        "Logic": "True"
+        "Logic": "Has(Leather Whip) or Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Katana) or CanUse(Shuriken) or CanUse(Rolling Shuriken) or CanUse(Earth Spear) or CanUse(Chakram) or CanUse(Bomb) or CanUse(Caltrops) or CanUse(Pistol) or Has(Claydoll Suit)"
       },
       {
         "Name": "Divine Fortress Gate (A-3)",
@@ -1326,7 +1377,7 @@
       {
         "Name": "Birth Sigil Chest",
         "LocationType": "Chest",
-        "Logic": "Has(Origin Sigil)"
+        "Logic": "Has(Origin Sigil) and HorizontalAttack"
       },
       {
         "Name": "Ankh Chest SotFG",
@@ -1336,7 +1387,7 @@
       {
         "Name": "Pochette Key Chest",
         "LocationType": "Chest",
-        "Logic": "IsDead(Badhbh Cath) and Has(Life Sigil) and Has(Grapple Claw)"
+        "Logic": "IsDead(Badhbh Cath) and Has(Life Sigil) and Has(Grapple Claw) and (HorizontalAttack or (CanUse(Flare) and (CanWarp or Has(Feather))))"
       },
       {
         "Name": "Rapier Puzzle Reward",
@@ -1355,7 +1406,7 @@
       {
         "Name": "Badhbh Cath",
         "LocationType": "Miniboss",
-        "Logic": "((Has(Leather Whip) or Has(Knife) or Has(Rapier)) and OrbCount(1)) or (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana))",
+        "Logic": "((Has(Leather Whip) or Has(Knife) or Has(Rapier) or CanUse(Earth Spear) or CanUse(Chakram)) and OrbCount(1)) or (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana) or CanUse(Pistol) or CanUse(Bomb) or CanUse(Flare))",
         "HardLogic": "True",
         "Item": {
           "Name": "Badhbh Cath",
@@ -1430,7 +1481,7 @@
       {
         "Name": "Balor",
         "LocationType": "Miniboss",
-        "Logic": "((Has(Knife) or Has(Rapier) or Has(Katana)) and Has(Feather) and OrbCount(2)) or ((Has(Chain Whip) or Has(Flail Whip) or Has(Axe)) and OrbCount(2))",
+        "Logic": "((Has(Knife) or Has(Rapier) or Has(Katana)) and Has(Feather) and OrbCount(2)) or ((Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or CanUse(Flare) or CanUse(Earth Spear) or CanUse(Chakram) or CanUse(Bomb) or CanUse(Pistol)) and OrbCount(2))",
         "HardLogic": "True",
         "Item": {
           "Name": "Balor",
@@ -1503,7 +1554,7 @@
       {
         "Name": "Gauntlet Chest",
         "LocationType": "Chest",
-        "Logic": "Has(Feather) and Has(Life Sigil)"
+        "Logic": "Has(Feather) and Has(Life Sigil) and ((HorizontalAttack and CanUse(Flare)) or Has(Leather Whip) or Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana) or CanUse(Earth Spear) or CanUse(Bomb))"
       },
       {
         "Name": "Hydlit Shop 1",
@@ -1551,7 +1602,7 @@
       {
         "Name": "Map Chest GotD",
         "LocationType": "Chest",
-        "Logic": "True"
+        "Logic": "HorizontalAttack"
       },
       {
         "Name": "Yagoo Map Street Chest",
@@ -1561,7 +1612,7 @@
       {
         "Name": "Vajra Chest",
         "LocationType": "Chest",
-        "Logic": "True"
+        "Logic": "HorizontalAttack"
       },
       {
         "Name": "Sacred Orb Chest GotD",
@@ -1571,12 +1622,12 @@
       {
         "Name": "Anchor Chest",
         "LocationType": "Chest",
-        "Logic": "CanReach(Divine Fortress Main) and Has(Gloves) and CanReach(Annwfn Right) and (IsDead(Ixtab) or Has(Feather)) and Has(Hand Scanner)"
+        "Logic": "HorizontalAttack and CanReach(Divine Fortress Main) and Has(Gloves) and CanReach(Annwfn Right) and (IsDead(Ixtab) or Has(Feather)) and Has(Hand Scanner)"
       },
       {
         "Name": "Crystal Skull Chest GotD",
         "LocationType": "Chest",
-        "Logic": "True"
+        "Logic": "HorizontalAttack"
       },
       {
         "Name": "Katana Puzzle Reward",
@@ -1610,7 +1661,7 @@
       {
         "Name": "Unicorn",
         "LocationType": "Miniboss",
-        "Logic": "OrbCount(1) and ((Has(Katana) and Has(Vajra)) or Has(Leather Whip) or Has(Chain Whip) or Has(Flail Whip) or Has(Axe))",
+        "Logic": "OrbCount(1) and ((Has(Katana) and Has(Vajra)) or Has(Leather Whip) or Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or CanUse(Rolling Shuriken) or CanUse(Earth Spear) or CanUse(Flare) or CanUse(Bomb) or CanUse(Chakram) or CanUse(Pistol))",
         "HardLogic": "True",
         "Item": {
           "Name": "Unicorn",
@@ -1743,7 +1794,7 @@
       {
         "Name": "Crystal Skull Chest TS",
         "LocationType": "Chest",
-        "Logic": "Has(Life Sigil) and (Has(Feather) or CanWarp)"
+        "Logic": "Has(Life Sigil) and (Has(Feather) or CanWarp) and HorizontalAttack"
       },
       {
         "Name": "Egg of Creation Chest",
@@ -1753,8 +1804,8 @@
       {
         "Name": "Daji",
         "LocationType": "Miniboss",
-        "Logic": "OrbCount(2) and ((Has(Chain Whip) and (Has(Gauntlet) or Has(Spaulder))) or (Has(Knife) and Has(Spaulder) and Has(Feather)) or (Has(Rapier) and Has(Gauntlet) and Has(Spaulder) and Has(Feather)) or (Has(Flail Whip) or Has(Axe) or Has(Katana)))",
-        "HardLogic": "(Has(Chain Whip) and (Has(Gauntlet) or Has(Spaulder))) or (Has(Knife) and Has(Spaulder) and Has(Feather)) or (Has(Rapier) and Has(Gauntlet) and Has(Spaulder) and Has(Feather)) or (Has(Flail Whip) or Has(Axe) or Has(Katana))",
+        "Logic": "OrbCount(2) and ((Has(Chain Whip) and (Has(Gauntlet) or Has(Spaulder))) or (Has(Knife) and Has(Spaulder) and Has(Feather)) or (Has(Rapier) and Has(Gauntlet) and Has(Spaulder) and Has(Feather)) or Has(Flail Whip) or Has(Axe) or Has(Katana) or (CanUse(Pistol) and Has(Feather)) or (CanUse(Rolling Shuriken) and Has(Ring) and Has(Feather)) or (CanUse(Chakram) and (Has(Ring) or Has(Feather))) or CanUse(Bomb) or ((CanUse(Earth Spear) or CanUse(Caltrops))and Has(Ring)))",
+        "HardLogic": "(Has(Chain Whip) and (Has(Gauntlet) or Has(Spaulder))) or (Has(Knife) and Has(Spaulder) and Has(Feather)) or (Has(Rapier) and Has(Gauntlet) and Has(Spaulder) and Has(Feather)) or Has(Flail Whip) or Has(Axe) or Has(Katana) or (CanUse(Pistol) and Has(Feather)) or (CanUse(Rolling Shuriken) and Has(Ring) and Has(Feather)) or (CanUse(Chakram) and (Has(Ring) or Has(Feather))) or CanUse(Bomb) or ((CanUse(Earth Spear) or CanUse(Caltrops))and Has(Ring)))",
         "Item": {
           "Name": "Daji",
           "IsRequired": true
@@ -1811,7 +1862,7 @@
       {
         "Name": "Map Chest HL",
         "LocationType": "Chest",
-        "Logic": "True"
+        "Logic": "HorizontalAttack"
       },
       {
         "Name": "Crystal Skull Chest HL",
@@ -1902,7 +1953,7 @@
       {
         "Name": "Glasya-Labolas",
         "LocationType": "Miniboss",
-        "Logic": "CanWarp and OrbCount(1) and ((Has(Rapier) and (Has(Spaulder) or Has(Gauntlet) or Has(Vajra))) or Has(Chain Whip) or Has(Flail Whip) or Has(Knife) or Has(Axe) or Has(Katana))",
+        "Logic": "CanWarp and OrbCount(1) and ((Has(Rapier) and (Has(Spaulder) or Has(Gauntlet) or Has(Vajra))) or Has(Chain Whip) or Has(Flail Whip) or Has(Knife) or Has(Axe) or Has(Katana) or CanUse(Pistol) or CanUse(Chakrams) or CanUse(Earth Spear) or CanUse(Bomb))",
         "HardLogic": "CanWarp",
         "Item": {
           "Name": "Glasya-Labolas",
@@ -1937,14 +1988,14 @@
       {
         "Name": "Cog of Antiquity Chest",
         "LocationType": "Chest",
-        "Logic": "Has(Ancient Battery) and CanReach(Heavens Labyrinth) and CanWarp"
+        "Logic": "Has(Ancient Battery) and CanReach(Heavens Labyrinth) and CanWarp and HorizontalAttack"
       }
     ],
     "Exits": []
   },
   {
     "Name": "Valhalla Main",
-    "IsBackside" : true,
+    "IsBackside": true,
     "Locations": [
       {
         "Name": "Map Chest Valhalla",
@@ -1954,12 +2005,12 @@
       {
         "Name": "Scalesphere Chest",
         "LocationType": "Chest",
-        "Logic": "IsDead(Vritra)"
+        "Logic": "IsDead(Vritra) and HorizontalAttack"
       },
       {
         "Name": "Crystal Skull Chest Valhalla",
         "LocationType": "Chest",
-        "Logic": "(Has(Anchor) or Has(Claydoll Suit)) and Has(Death Sigil) and CanChant(Fire) and CanChant(Earth) and IsDead(Jalandhara)"
+        "Logic": "(Has(Anchor) or Has(Claydoll Suit)) and Has(Death Sigil) and CanChant(Fire) and CanChant(Earth) and IsDead(Jalandhara) and HorizontalAttack"
       },
       {
         "Name": "Caltrop Puzzle Reward",
@@ -1984,7 +2035,7 @@
       {
         "Name": "Vucub-Caquiz",
         "LocationType": "Miniboss",
-        "Logic": "Has(Origin Sigil) and ((Has(Leather Whip) and OrbCount(1)) or (Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Axe) or Has(Katana) or Has(Claydoll Suit)))",
+        "Logic": "Has(Origin Sigil) and (((Has(Leather Whip) or CanUse(Rolling Shuriken)) and OrbCount(1)) or (Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Axe) or Has(Katana) or Has(Claydoll Suit) or CanUse(Pistol) or CanUse(Shuriken) or CanUse(Earth Spear) or CanUse(Caltrops) or CanUse(Bomb)))",
         "HardLogic": "Has(Origin Sigil)",
         "Item": {
           "Name": "Vucub-Caquiz",
@@ -1994,7 +2045,7 @@
       {
         "Name": "Jalandhara",
         "LocationType": "Miniboss",
-        "Logic": "Has(Life Sigil) and Has(Feather) and OrbCount(4) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana))",
+        "Logic": "Has(Life Sigil) and Has(Feather) and OrbCount(4) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana) or CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Chakram) or (CanUse(Pistol) and Has(Mjolnir)))",
         "HardLogic": "Has(Life Sigil) and Has(Feather)",
         "Item": {
           "Name": "Jalandhara",
@@ -2004,7 +2055,7 @@
       {
         "Name": "Vritra",
         "LocationType": "Guardian",
-        "Logic": "CanReach(Roots of Yggdrasil) and IsDead(Vucub-Caquiz) and (((Has(Leather Whip) or Has(Knife) or Has(Rapier)) and OrbCount(2)) or ((Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana)) and OrbCount(1)))",
+        "Logic": "CanReach(Roots of Yggdrasil) and IsDead(Vucub-Caquiz) and (((Has(Leather Whip) or Has(Knife) or Has(Rapier) or CanUse(Rolling Shuriken) or CanUse(Caltrops)) and OrbCount(2)) or ((Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana) or CanUse(Bomb) or CanUse(Earth Spear) or CanUse(Shuriken)) and OrbCount(1)) or CanUse(Pistol))",
         "HardLogic": "CanReach(Roots of Yggdrasil) and IsDead(Vucub-Caquiz)",
         "Item": {
           "Name": "Vritra",
@@ -2119,7 +2170,7 @@
       {
         "Name": "Feather Chest",
         "LocationType": "Chest",
-        "Logic": "Has(Feather) or IsDead(Angra Mainyu)"
+        "Logic": "(Has(Feather) or IsDead(Angra Mainyu)) and HorizontalAttack"
       },
       {
         "Name": "Ankh Chest DLM",
@@ -2134,12 +2185,12 @@
       {
         "Name": "Crucifix Chest",
         "LocationType": "Chest",
-        "Logic": "IsDead(Aten-Ra)"
+        "Logic": "IsDead(Aten-Ra) and HorizontalAttack"
       },
       {
         "Name": "Maats Feather Chest",
         "LocationType": "Chest",
-        "Logic": "CanReach(Ancient Chaos Tablet) and IsDead(Annit) and Has(Feather) and PuzzleFinished(Judgement Puzzle)"
+        "Logic": "CanReach(Ancient Chaos Tablet) and IsDead(Ammit) and Has(Feather) and PuzzleFinished(Judgement Puzzle)"
       },
       {
         "Name": "Kero Shop 1",
@@ -2186,7 +2237,7 @@
       {
         "Name": "Sekhmet",
         "LocationType": "Miniboss",
-        "Logic": "PuzzleFinished(Footstep Puzzle) and OrbCount(3) and (Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Axe) or Has(Katana))",
+        "Logic": "PuzzleFinished(Footstep Puzzle) and OrbCount(3) and (Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Axe) or Has(Katana) or CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Chakram) or CanUse(Pistol))",
         "HardLogic": "PuzzleFinished(Footstep Puzzle)",
         "Item": {
           "Name": "Sekhmet",
@@ -2196,7 +2247,7 @@
       {
         "Name": "Aten-Ra",
         "LocationType": "Guardian",
-        "Logic": "IsDead(Sekhmet) and PuzzleFinished(White Pedestals) and (((Has(Chain Whip) or Has(Axe)) and OrbCount(6)) or ((Has(Flail Whip) or Has(Katana)) and OrbCount(5)))",
+        "Logic": "IsDead(Sekhmet) and PuzzleFinished(White Pedestals) and (((Has(Chain Whip) or Has(Axe) or CanUse(Earth Spear) or CanUse(Flare) or CanUse(Chakrams) or CanUse(Bomb)) and OrbCount(6)) or ((Has(Flail Whip) or Has(Katana)) and OrbCount(5)) or (CanUse(Pistol) and OrbCount(4)))",
         "HardLogic": "IsDead(Sekhmet) and PuzzleFinished(White Pedestals)",
         "Item": {
           "Name": "Aten-Ra",
@@ -2250,7 +2301,7 @@
       {
         "Name": "Vessel Chest",
         "LocationType": "Chest",
-        "Logic": "IsDead(Annit)"
+        "Logic": "IsDead(Ammit) and HorizontalAttack"
       },
       {
         "Name": "Angra Mainyu",
@@ -2263,12 +2314,12 @@
         }
       },
       {
-        "Name": "Annit",
+        "Name": "Ammit",
         "LocationType": "Miniboss",
-        "Logic": "Has(Feather) and Has(Pyramid Crystal) and (Has(Silver Shield) or Has(Angel Shield)) and OrbCount(3) and (Has(Chain Whip) or Has(Flail Whip) or Has(Knife) or Has(Axe) or Has(Katana))",
+        "Logic": "Has(Feather) and Has(Pyramid Crystal) and (Has(Silver Shield) or Has(Angel Shield)) and OrbCount(3) and (Has(Chain Whip) or Has(Flail Whip) or Has(Knife) or Has(Axe) or Has(Katana) or CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Chakram) or CanUse(Pistol))",
         "HardLogic": "Has(Feather) and Has(Pyramid Crystal)",
         "Item": {
-          "Name": "Annit",
+          "Name": "Ammit",
           "IsRequired": true
         }
       }
@@ -2339,7 +2390,7 @@
       {
         "Name": "Map Chest AC",
         "LocationType": "Chest",
-        "Logic": " True"
+        "Logic": "Has(Leather Whip) or Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Earth Spear) or (Has(Katana) and Has(Vajra)) or (CanUse(Flare) and HorizontalAttack)"
       },
       {
         "Name": "Venom Shop 1",
@@ -2359,7 +2410,7 @@
       {
         "Name": "Ki-sikil-lil-la-ke",
         "LocationType": "Miniboss",
-        "Logic": "((OrbCount(1) and Has(Ice Cloak)) or OrbCount(3)) and ((Has(Knife) and Has(Feather)) or Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Axe) or Has(Katana) or Has(Claydoll Suit))",
+        "Logic": "Has(Ice Cloak) and OrbCount(2)",
         "HardLogic": "True",
         "Item": {
           "Name": "Ki-sikil-lil-la-ke",
@@ -2437,12 +2488,12 @@
       {
         "Name": "Scriptures Chest",
         "LocationType": "Chest",
-        "Logic": "IsDead(Anu)"
+        "Logic": "IsDead(Anu) and HorizontalAttack"
       },
       {
         "Name": "Anzu",
         "LocationType": "Miniboss",
-        "Logic": "CanStopTime and Has(Claydoll Suit) and (Has(Silver Shield) or Has(Angel Shield)) and OrbCount(6) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana))",
+        "Logic": "CanStopTime and Has(Claydoll Suit) and (Has(Silver Shield) or Has(Angel Shield)) and OrbCount(6) and (Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana) or CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Chakram) or CanUse(Pistol))",
         "HardLogic": "CanStopTime and Has(Claydoll Suit)",
         "Item": {
           "Name": "Anzu",
@@ -2452,7 +2503,7 @@
       {
         "Name": "Anu",
         "LocationType": "Guardian",
-        "Logic": "Has(Gloves) and IsDead(Ki-sikil-lil-la-ke) and ((Has(Leather Whip) and OrbCount(6)) or ((Has(Chain Whip) or Has(Rapier) or Has(Axe)) and OrbCount(5)) or (Has(Flail Whip) and OrbCount(4)))",
+        "Logic": "Has(Gloves) and IsDead(Ki-sikil-lil-la-ke) and ((Has(Leather Whip) and OrbCount(6)) or ((Has(Chain Whip) or Has(Rapier) or Has(Axe) or CanUse(Earth Spear) and ((CanUse(Shuriken) or CanUse(Flare)) and Has(Ring))) and OrbCount(5)) or (Has(Flail Whip) and OrbCount(4)) or (CanUse(Pistol) and OrbCount(3)))",
         "HardLogic": "Has(Gloves) and IsDead(Ki-sikil-lil-la-ke)",
         "Item": {
           "Name": "Anu",
@@ -2644,7 +2695,7 @@
       {
         "Name": "Echidna",
         "LocationType": "Guardian",
-        "Logic": "IsDead(Orthrus) and IsDead(HoM Left Path) and IsDead(HoM Middle Path) and Has(Feather) and OrbCount(8) and (Has(Flail Whip) or Has(Axe))",
+        "Logic": "IsDead(Orthrus) and IsDead(HoM Left Path) and IsDead(HoM Middle Path) and Has(Feather) and ((OrbCount(8) and (Has(Flail Whip) or Has(Axe))) or (OrbCount(6) and CanUse(Pistol)))",
         "HardLogic": "IsDead(Orthrus) and IsDead(HoM Left Path) and IsDead(HoM Middle Path) and Has(Feather)",
         "Item": {
           "Name": "Echidna",
@@ -2661,7 +2712,7 @@
       {
         "Name": "Crystal Skull Chest EPD",
         "LocationType": "Chest",
-        "Logic": "Has(Feather)"
+        "Logic": "Has(Feather) and HorizontalAttack"
       }
     ],
     "Exits": [
@@ -2688,7 +2739,7 @@
       {
         "Name": "Map Chest EPD",
         "LocationType": "Chest",
-        "Logic": "True"
+        "Logic": "HorizontalAttack"
       },
       {
         "Name": "La Mulana 2 Chest",
@@ -2767,7 +2818,7 @@
       {
         "Name": "Hel",
         "LocationType": "Guardian",
-        "Logic": "OrbCount(8) and (Has(Flail Whip) or Has(Axe) or Has(Katana))",
+        "Logic": "(OrbCount(8) and (Has(Flail Whip) or Has(Axe) or Has(Katana))) or (CanUse(Pistol) and (OrbCount(6)))",
         "HardLogic": "True",
         "Item": {
           "Name": "Hel",
@@ -2855,7 +2906,7 @@
       {
         "Name": "Ratatoskr 4",
         "LocationType": "Miniboss",
-        "Logic": "Has(Enga Musica) and Has(Feather) and IsDead(Ratatoskr 3) and (((Has(Chain Whip) or Has(Axe)) and OrbCount(7)) or ((Has(Flail Whip) or Has(Katana)) and OrbCount(6)))",
+        "Logic": "Has(Enga Musica) and Has(Feather) and IsDead(Ratatoskr 3) and (((Has(Chain Whip) or Has(Axe)) and OrbCount(7)) or ((Has(Flail Whip) or Has(Katana)) and OrbCount(6)) or (CanUse(Pistol) and OrbCount(5)))",
         "HardLogic": "Has(Enga Musica) and Has(Feather) and IsDead(Ratatoskr 3)",
         "Item": {
           "Name": "Ratatoskr 4",

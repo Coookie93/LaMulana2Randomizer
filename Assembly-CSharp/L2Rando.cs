@@ -27,6 +27,7 @@ namespace LM2RandomiserMod
     public class L2Rando : MonoBehaviour
     {
         public bool IsRandomising { get; private set; } = false;
+        public ItemID StartingWeapon { get; private set; }
         public bool AutoScanTablets { get; private set; } = false;
         public bool RemoveITStatue { get; private set; } = false;
         public bool MoneyStart { get; private set; } = false;
@@ -94,7 +95,12 @@ namespace LM2RandomiserMod
                 StartCoroutine(ChangeEntrances(scene.name));
 
                 var bgScroll = FindObjectOfType<BGScrollSystem>();
-                if (scene.name.Equals("field00"))
+                if (scene.name.Equals("field01-2"))
+                {
+                    foreach(ItemPotScript pot in FindObjectsOfType<ItemPotScript>())
+                        pot.transform.position= new Vector3(pot.transform.position.x - 100, pot.transform.position.y, pot.transform.position.z);
+                }
+                else if (scene.name.Equals("field00"))
                 {
                     GameObject obj = GameObject.Find("endPiller");
                     if (obj != null)
@@ -338,6 +344,7 @@ namespace LM2RandomiserMod
                 using (BinaryReader br = new BinaryReader(File.Open(Path.Combine(Directory.GetCurrentDirectory(),
                     "LaMulana2Randomizer\\Seed\\seed.lm2r"), FileMode.Open)))
                 {
+                    StartingWeapon = (ItemID)br.ReadInt32();
                     AutoScanTablets = br.ReadBoolean();
                     autoPlaceSkull = br.ReadBoolean();
                     RemoveITStatue = br.ReadBoolean();
@@ -1364,9 +1371,27 @@ namespace LM2RandomiserMod
                 if (shopItem.Multiplier < 5)
                     shopItem.Multiplier = 10;
 
-                return string.Format("[@sitm,{0},{1},{2},{3}]", newItemInfo.shopType, newItemInfo.shopName, newItemInfo.shopPrice * shopItem.Multiplier, newItemInfo.shopAmount);
+                return string.Format("[@sitm,{0},{1},{2},{3}]", newItemInfo.shopType, newItemInfo.shopName, 
+                                        IsStartWeaponAmmo(shopItem.ID) ? 0 : newItemInfo.shopPrice * shopItem.Multiplier, 
+                                        IsStartWeaponAmmo(shopItem.ID) ? newItemInfo.maxShopAmount : newItemInfo.shopAmount);
             }
             return string.Empty;
+        }
+
+        private bool IsStartWeaponAmmo(ItemID ammoID) 
+        {
+            switch (ammoID)
+            {
+                case ItemID.ShurikenAmmo: return StartingWeapon == ItemID.Shuriken;
+                case ItemID.RollingShurikenAmmo: return StartingWeapon == ItemID.RollingShuriken;
+                case ItemID.EarthSpearAmmo: return StartingWeapon == ItemID.EarthSpear;
+                case ItemID.FlareAmmo: return StartingWeapon == ItemID.Flare;
+                case ItemID.CaltropsAmmo: return StartingWeapon == ItemID.Caltrops;
+                case ItemID.ChakramAmmo: return StartingWeapon == ItemID.Chakram;
+                case ItemID.BombAmmo: return StartingWeapon == ItemID.Bomb;
+                case ItemID.PistolAmmo: return StartingWeapon == ItemID.Pistol;
+                default: return false;
+            }
         }
 
         private void ChangeShopThanks()

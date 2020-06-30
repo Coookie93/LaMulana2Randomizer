@@ -220,6 +220,7 @@ namespace LaMulana2Randomizer.Utils
             {   
                 using (BinaryWriter br = new BinaryWriter(File.Open("Seed\\seed.lm2r", FileMode.Create)))
                 {
+                    br.Write((int)randomiser.StartingWeaponID);
                     br.Write(randomiser.Settings.AutoScanTablets);
                     br.Write(randomiser.Settings.AutoPlaceSkulls);
                     br.Write(randomiser.Settings.RemoveITStatue);

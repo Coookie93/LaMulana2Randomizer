@@ -144,6 +144,31 @@
                             </CheckBox>
                         </StackPanel>
                     </GroupBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Combat">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <GroupBox Header="Starting Weapon" Grid.Row="0">
+                        <StackPanel Margin="2">
+                            <CheckBox Content="Leather Whip" IsChecked="{Binding Settings.Weapons[0]}"/>
+                            <CheckBox Content="Knife" IsChecked="{Binding Settings.Weapons[1]}"/>
+                            <CheckBox Content="Rapier" IsChecked="{Binding Settings.Weapons[2]}"/>
+                            <CheckBox Content="Axe" IsChecked="{Binding Settings.Weapons[3]}"/>
+                            <CheckBox Content="Katana" IsChecked="{Binding Settings.Weapons[4]}"/>
+                            <CheckBox Content="Shurikens" IsChecked="{Binding Settings.Weapons[5]}"/>
+                            <CheckBox Content="Rolling Shurikens" IsChecked="{Binding Settings.Weapons[6]}"/>
+                            <CheckBox Content="Earth Spears" IsChecked="{Binding Settings.Weapons[7]}"/>
+                            <CheckBox Content="Flares" IsChecked="{Binding Settings.Weapons[8]}"/>
+                            <CheckBox Content="Caltrops" IsChecked="{Binding Settings.Weapons[9]}"/>
+                            <CheckBox Content="Chakrams" IsChecked="{Binding Settings.Weapons[10]}"/>
+                            <CheckBox Content="Bombs" IsChecked="{Binding Settings.Weapons[11]}"/>
+                            <CheckBox Content="Pistol" IsChecked="{Binding Settings.Weapons[12]}"/>
+                        </StackPanel>
+                    </GroupBox>
                     <GroupBox Header="Bosses" Grid.Row="1">
                         <StackPanel Margin="2">
                             <CheckBox Name="DifficultyCheck" Content="Hard Guardian/Room Guarders requirements" IsChecked="{Binding Settings.HardBosses}">

@@ -140,6 +140,7 @@
     <Compile Include="Patches\L2System.cs" />
     <Compile Include="Patches\MenuSystem.cs" />
     <Compile Include="Patches\SnapMenu.cs" />
+    <Compile Include="Patches\Status.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Patches\ShopScript.cs" />
   </ItemGroup>

@@ -191,14 +191,14 @@ namespace LM2RandomiserMod
             {ItemID.Child,                      new ItemInfo("Mantra9",          "Mantra9",           "menu",        160,     10,    1)},
             {ItemID.Night,                      new ItemInfo("Mantra10",         "Mantra10",          "menu",        161,     10,    1)},
                                                                                                                                       
-            {ItemID.ShurikenAmmo,               new ItemInfo("Shuriken-b",       "Shuriken-b",        "weapon",      -1,       1,    10)},
-            {ItemID.RollingShurikenAmmo,        new ItemInfo("R-Shuriken-b",     "R-Shuriken-b",      "weapon",      -1,       1,    10)},
-            {ItemID.EarthSpearAmmo,             new ItemInfo("E-Spear-b",        "E-Spear-b",         "weapon",      -1,       2,    10)},
-            {ItemID.FlareAmmo,                  new ItemInfo("Flare Gun-b",      "Flare Gun-b",       "weapon",      -1,       2,    10)},
-            {ItemID.BombAmmo,                   new ItemInfo("Bomb-b",           "Bomb-b",            "weapon",      -1,       3,    5)},
-            {ItemID.ChakramAmmo,                new ItemInfo("Chakram-b",        "Chakram-b",         "weapon",      -1,       2,    1)},
-            {ItemID.CaltropsAmmo,               new ItemInfo("Caltrops-b",       "Caltrops-b",        "weapon",      -1,       1,    10)},
-            {ItemID.PistolAmmo,                 new ItemInfo("Pistol-b",         "Pistol-b",          "weapon",      -1,      40,    1)},
+            {ItemID.ShurikenAmmo,               new ItemInfo("Shuriken-b",       "Shuriken-b",        "weapon",      -1,       1,    10,    200)},
+            {ItemID.RollingShurikenAmmo,        new ItemInfo("R-Shuriken-b",     "R-Shuriken-b",      "weapon",      -1,       1,    10,    100)},
+            {ItemID.EarthSpearAmmo,             new ItemInfo("E-Spear-b",        "E-Spear-b",         "weapon",      -1,       2,    10,    100)},
+            {ItemID.FlareAmmo,                  new ItemInfo("Flare Gun-b",      "Flare Gun-b",       "weapon",      -1,       2,    10,    50)},
+            {ItemID.BombAmmo,                   new ItemInfo("Bomb-b",           "Bomb-b",            "weapon",      -1,       3,    5,     30)},
+            {ItemID.ChakramAmmo,                new ItemInfo("Chakram-b",        "Chakram-b",         "weapon",      -1,       2,    1,     12)},
+            {ItemID.CaltropsAmmo,               new ItemInfo("Caltrops-b",       "Caltrops-b",        "weapon",      -1,       1,    10,    100)},
+            {ItemID.PistolAmmo,                 new ItemInfo("Pistol-b",         "Pistol-b",          "weapon",      -1,      40,    1,     1)},
             {ItemID.Weights,                    new ItemInfo("Weight",           "Weight",            "item",        -1,       1,    5)}
         };                                                                                                               
 
@@ -212,8 +212,9 @@ namespace LM2RandomiserMod
         public int itemFlag;
         public int shopPrice;
         public int shopAmount;
+        public int maxShopAmount;
         
-        public ItemInfo(string boxName, string shopName, string type, int itemFlag, int price, int amount)
+        public ItemInfo(string boxName, string shopName, string type, int itemFlag, int price, int amount, int maxAmount = -1)
         {
             this.boxName = boxName;
             this.shopName = shopName;
@@ -221,6 +222,7 @@ namespace LM2RandomiserMod
             this.itemFlag = itemFlag;
             this.shopPrice = price;
             this.shopAmount = amount;
+            this.maxShopAmount = maxAmount;
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using LaMulana2Randomizer.Utils;
 using LaMulana2Randomizer.LogicParsing;
+using LaMulana2RandomizerShared;
 
 namespace LaMulana2Randomizer
 {
@@ -268,6 +269,7 @@ namespace LaMulana2Randomizer
                 case LogicType.CanStopTime: return CanStopTime();
                 case LogicType.Has: return HasItem(rule.value);
                 case LogicType.CanUse: return CanUse(rule.value);
+                case LogicType.HorizontalAttack: return HorizontalAttack();
                 case LogicType.IsDead: return HasItem(rule.value);
                 case LogicType.CanKill: return CanKill(rule.value);
                 case LogicType.OrbCount: return OrbCount(int.Parse(rule.value));
@@ -282,7 +284,7 @@ namespace LaMulana2Randomizer
                 default: return false;
             }
         }
-        
+
         public void ResetCheckedAreasAndEntrances()
         {
             //reset areas
@@ -330,9 +332,19 @@ namespace LaMulana2Randomizer
 
         private bool CanUse(string subWeapon)
         {
-            return HasItem(subWeapon) && HasItem(subWeapon + " Ammo");
+            if (subWeapon.Equals("Pistol"))
+                return HasItem(subWeapon) && HasItem(subWeapon + " Ammo") && (HasItem("Money Fairy") || randomiser.StartingWeaponID == ItemID.Pistol);
+            else
+                return HasItem(subWeapon) && HasItem(subWeapon + " Ammo");
         }
-        
+
+        private bool HorizontalAttack()
+        {
+            return HasItem("Leather Whip") || HasItem("Chain Whip") || HasItem("Flail Whip") || HasItem("Axe") || HasItem("Katana") || CanUse("Shuriken") 
+                    || CanUse("Rolling Shuriken") || CanUse("Earth Spear") || CanUse("Caltrops") || CanUse("Chakram") || CanUse("Bomb") || CanUse("Pistol") 
+                    || HasItem("Claydoll Suit");
+        }
+
         private bool CanSpinCorridor()
         {
             return HasItem("Beherit") && Dissonance(1);

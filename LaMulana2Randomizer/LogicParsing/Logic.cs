@@ -26,6 +26,7 @@ namespace LaMulana2Randomizer.LogicParsing
         CanStopTime,
         Has,
         CanUse,
+        HorizontalAttack,
         IsDead,
         CanKill,
         OrbCount,

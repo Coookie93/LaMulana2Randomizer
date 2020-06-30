@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.ObjectModel;
 
 namespace LaMulana2Randomizer
 {
@@ -109,6 +110,12 @@ namespace LaMulana2Randomizer
             set => Set(ref includeNineGates, value);
         }
 
+        private ObservableCollection<bool> weapons;
+        public ObservableCollection<bool> Weapons {
+            get => weapons;
+            set => Set(ref weapons, value);
+        }
+
         private bool hardBosses;
         public bool HardBosses { 
             get=>hardBosses; 
@@ -182,6 +189,47 @@ namespace LaMulana2Randomizer
             AutoPlaceSkulls = false;
             MantraPlacement = MantraPlacement.Original;
             ShopPlacement = ShopPlacement.Original;
+            Weapons = new ObservableCollection<bool>()
+            {
+                true, false, false, false, false,
+                false, false, false, false, false, false, false, false
+            };
+        }
+
+        [JsonConstructor]
+        public Settings(ObservableCollection<bool> weapons)
+        {
+            RandomGrail = false;
+            RandomScanner = false;
+            RandomCodices = true;
+            RandomFDC = true;
+            FDCForBacksides = false;
+            RandomCurses = false;
+            RandomHorizontalEntraces = false;
+            ReduceDeadEndStarts = true;
+            RandomLadderEntraces = false;
+            RandomGateEntraces = false;
+            RemoveITStatue = false;
+            FullRandomEntrances = false;
+            RandomSoulGateEntraces = false;
+            IncludeNineGates = false;
+            HardBosses = false;
+            AutoScanTablets = false;
+            AutoPlaceSkulls = false;
+            MantraPlacement = MantraPlacement.Original;
+            ShopPlacement = ShopPlacement.Original;
+            if (weapons != null)
+            {
+                Weapons = weapons;
+            }
+            else
+            {
+                Weapons = new ObservableCollection<bool>()
+                {
+                    true, false, false, false, false,
+                    false, false, false, false, false, false, false, false
+                };
+            }
         }
     }
 }

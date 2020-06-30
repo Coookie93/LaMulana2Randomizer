@@ -4,6 +4,7 @@ using L2Word;
 using L2STATUS;
 using L2Menu;
 using L2Hit;
+using LaMulana2RandomizerShared;
 
 #pragma warning disable 0649, 0414, 0108, 0626
 namespace LM2RandomiserMod.Patches
@@ -433,6 +434,9 @@ namespace LM2RandomiserMod.Patches
 			this.menusys.menuSysReStart();
 			this.setSystemDataToClothFlag();
 
+			MAINWEAPON mainWeapon = MAINWEAPON.NON;
+			SUBWEAPON subWeapon = SUBWEAPON.NON;
+
 			L2Rando l2Rando = FindObjectOfType<L2Rando>();
 			if (l2Rando != null && l2Rando.IsRandomising)
 			{
@@ -444,11 +448,16 @@ namespace LM2RandomiserMod.Patches
 
 				if(l2Rando.RemoveITStatue)
 					this.setFlagData(8, 10, 1);
+
+				ItemID itemID = l2Rando.StartingWeapon;
+				ItemInfo itemInfo = ItemDB.GetItemInfo(itemID);
+				mainWeapon = exchengeMainWeaponNameToEnum(itemInfo.boxName);
+				subWeapon = exchengeSubWeaponNameToEnum(itemInfo.boxName);
 			}
 
 			this.playerst.addCoin(Init_Coin_num);
 			this.playerst.addWait(Init_Weight_num);
-            this.playerst.resetPlayerStatus(this.Init_PLayer_lv, 0, 999, this.Init_Coin_num, this.Init_Weight_num, 0, MAINWEAPON.KNIFE, 0, SUBWEAPON.NON, 0, USEITEM.NON, 0);
+            this.playerst.resetPlayerStatus(this.Init_PLayer_lv, 0, 999, this.Init_Coin_num, this.Init_Weight_num, 0, mainWeapon, 0, subWeapon, 0, USEITEM.NON, 0);
             this.playerst.resetExp();
             this.setFlagData(0, 42, 1);
 			this.setFlagData(4, 60, 4);

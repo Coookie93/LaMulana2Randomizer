@@ -16,6 +16,7 @@ namespace LaMulana2Randomizer
         private List<JsonArea> worldData;
         private bool villageDeadEnd = false;
 
+        public ItemID StartingWeaponID { get; private set; }
         public Item StartingWeapon { get; private set; }
         public List<Location> CursedLocations { get; private set; }
         public List<string> HorizontalPairs { get; private set; }
@@ -186,14 +187,28 @@ namespace LaMulana2Randomizer
             }
         }
 
+        public void PickStartingWeapon()
+        {
+            ItemID[] weapons = new ItemID[]{ ItemID.Whip, ItemID.Knife, ItemID.Rapier, ItemID.Axe, ItemID.Katana, ItemID.Shuriken,
+                ItemID.RollingShuriken, ItemID.EarthSpear, ItemID.Flare, ItemID.Caltrops, ItemID.Chakram, ItemID.Bomb, ItemID.Pistol };
+
+            List<ItemID> selectedWeapons = weapons.Zip(Settings.Weapons, Tuple.Create).Where(w => w.Item2).Select(w => w.Item1).ToList();
+            StartingWeaponID = selectedWeapons[random.Next(selectedWeapons.Count)];
+        }
+
         public void PlaceItems()
         {
             List<Item> items = FileUtils.GetItemsFromJson();
 
-            StartingWeapon = ItemPool.GetAndRemove(ItemID.Whip, items);
+            StartingWeapon = ItemPool.GetAndRemove(StartingWeaponID, items);
 
             //Places weights at a starting shop so the player can buy them at the start of the game
             GetLocation("Nebur Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Weights, items));
+            GetLocation("Xelpud Item").PlaceItem(ItemPool.GetAndRemove(ItemID.Shuriken, items));
+
+            //if we have a subweapon need to give the player ammo at a shop
+            if(StartingWeaponID > ItemID.Katana)
+                GetLocation("Nebur Shop 2").PlaceItem(ItemPool.GetAndRemove(GetAmmoItemID(StartingWeaponID), items));
 
             if (Settings.ShopPlacement != ShopPlacement.Original)
             {
@@ -308,7 +323,12 @@ namespace LaMulana2Randomizer
 
             return location;
         }
-        
+
+        public List<Location> GetLocationsOfType(LocationType type)
+        {
+            return locations.Values.Where(location => location.LocationType == type).ToList();
+        }
+
         public List<Location> GetPlacedLocations()
         {
             return locations.Values.Where(location => location.Item != null).ToList();
@@ -334,6 +354,22 @@ namespace LaMulana2Randomizer
             return locations.Values.Where(location => location.Item != null && location.Item.IsRequired).ToList();
         }
 
+        private ItemID GetAmmoItemID(ItemID itemID)
+        {
+            switch (itemID)
+            {
+                case ItemID.Shuriken: return ItemID.ShurikenAmmo;
+                case ItemID.RollingShuriken: return ItemID.RollingShurikenAmmo;
+                case ItemID.EarthSpear: return ItemID.EarthSpearAmmo;
+                case ItemID.Flare: return ItemID.FlareAmmo;
+                case ItemID.Caltrops: return ItemID.CaltropsAmmo;
+                case ItemID.Chakram: return ItemID.ChakramAmmo;
+                case ItemID.Bomb: return ItemID.BombAmmo;
+                case ItemID.Pistol: return ItemID.PistolAmmo;
+                default: return ItemID.None;
+            }
+        }
+
         private void PlaceShopItems(List<Item> shopItems, List<Item> items)
         {
             if(Settings.ShopPlacement == ShopPlacement.Random)
@@ -342,49 +378,17 @@ namespace LaMulana2Randomizer
             }
             else if(Settings.ShopPlacement == ShopPlacement.AtLeastOne)
             {
-                //lock the first slot of each shop so there will be atleast one item in to buy in each shop
-                GetLocation("Nebur Shop 2").IsLocked = true;
-                GetLocation("Modro Shop 1").IsLocked = true;
-                GetLocation("Sidro Shop 1").IsLocked = true;
-                GetLocation("Hiner Shop 1").IsLocked = true;
-                GetLocation("Korobok Shop 1").IsLocked = true;
-                GetLocation("Shuhoka Shop 1").IsLocked = true;
-                GetLocation("Pym Shop 1").IsLocked = true;
-                GetLocation("Btk Shop 1").IsLocked = true;
-                GetLocation("Mino Shop 1").IsLocked = true;
-                GetLocation("Bargain Duck Shop 1").IsLocked = true;
-                GetLocation("Peibalusa Shop 1").IsLocked = true;
-                GetLocation("Hiro Roderick Shop 1").IsLocked = true;
-                GetLocation("Hydlit Shop 1").IsLocked = true;
-                GetLocation("Aytum Shop 1").IsLocked = true;
-                GetLocation("Kero Shop 1").IsLocked = true;
-                GetLocation("Ash Geen Shop 1").IsLocked = true;
-                GetLocation("Venom Shop 1").IsLocked = true;
-                GetLocation("Megarock Shop 1").IsLocked = true;
-                GetLocation("FairyLan Shop 1").IsLocked = true;
+                //lock the third slot of each shop so there will be atleast one item in to buy in each shop
+                foreach(var location in GetUnplacedLocationsOfType(LocationType.Shop)) {
+                    if (location.Name.Contains("3"))
+                        location.IsLocked = true;
+                }
 
                 RandomiseWithChecks(GetUnplacedLocationsOfType(LocationType.Shop), shopItems, items);
 
                 //now unlock all the shop slots that were locked
-                GetLocation("Nebur Shop 2").IsLocked = false;
-                GetLocation("Modro Shop 1").IsLocked = false;
-                GetLocation("Sidro Shop 1").IsLocked = false;
-                GetLocation("Hiner Shop 1").IsLocked = false;
-                GetLocation("Korobok Shop 1").IsLocked = false;
-                GetLocation("Shuhoka Shop 1").IsLocked = false;
-                GetLocation("Pym Shop 1").IsLocked = false;
-                GetLocation("Btk Shop 1").IsLocked = false;
-                GetLocation("Mino Shop 1").IsLocked = false;
-                GetLocation("Bargain Duck Shop 1").IsLocked = false;
-                GetLocation("Peibalusa Shop 1").IsLocked = false;
-                GetLocation("Hiro Roderick Shop 1").IsLocked = false;
-                GetLocation("Hydlit Shop 1").IsLocked = false;
-                GetLocation("Aytum Shop 1").IsLocked = false;
-                GetLocation("Kero Shop 1").IsLocked = false;
-                GetLocation("Ash Geen Shop 1").IsLocked = false;
-                GetLocation("Venom Shop 1").IsLocked = false;
-                GetLocation("Megarock Shop 1").IsLocked = false;
-                GetLocation("FairyLan Shop 1").IsLocked = false;
+                foreach (var location in GetLocationsOfType(LocationType.Shop))
+                        location.IsLocked = false;
             }
             else 
             {
@@ -918,7 +922,7 @@ namespace LaMulana2Randomizer
                 do
                 {
                     entrance2 = entrances[random.Next(entrances.Count)];
-                } while ((entrance2.ID == ExitID.f01Right && (!Settings.RandomLadderEntraces || !Settings.ReduceDeadEndStarts)) || entrance2.IsInaccessible() 
+                } while ((entrance2.ID == ExitID.f01Right && (!Settings.RandomLadderEntraces || Settings.ReduceDeadEndStarts)) || entrance2.IsInaccessible() 
                             || entrance2.ID == ExitID.f06_2GateP0);   
                 
                 entrances.Remove(entrance2);
@@ -951,7 +955,7 @@ namespace LaMulana2Randomizer
                     do
                     {
                         entrance2 = entrances[random.Next(entrances.Count)];
-                    } while (entrance2.ID == ExitID.fP00Right || (entrance2.ID == ExitID.f01Right && cavernToCliff && (!Settings.RandomLadderEntraces || !Settings.ReduceDeadEndStarts)));
+                    } while (entrance2.ID == ExitID.fP00Right || (entrance2.ID == ExitID.f01Right && cavernToCliff && (!Settings.RandomLadderEntraces || Settings.ReduceDeadEndStarts)));
                     entrances.Remove(entrance2);
 
                     if (entrance2.ID == ExitID.f01Right && cavernToCliff)
@@ -967,7 +971,7 @@ namespace LaMulana2Randomizer
                     EntrancePairs.Add($"    {entrance1.Name} - {entrance2.Name}");
                 }
 
-                if (!Settings.ReduceDeadEndStarts)
+                if (Settings.ReduceDeadEndStarts)
                 {
                     entrance1 = entrances.Find(x => x.ID == ExitID.f01Right);
                     if (entrance1 != null)

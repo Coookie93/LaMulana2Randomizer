@@ -92,7 +92,7 @@ namespace LaMulana2Randomizer.ViewModels
                 try
                 {
                     randomiser.Setup();
-
+                    randomiser.PickStartingWeapon();
                     bool entranceCheck;
                     do
                     {
