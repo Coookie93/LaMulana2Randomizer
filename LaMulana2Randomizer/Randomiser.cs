@@ -648,14 +648,14 @@ namespace LaMulana2Randomizer
                     do
                     {
                         rightDoor = rightDoors[random.Next(rightDoors.Count)];
-                    } while ((rightDoor.ID == ExitID.f01Right && (!Settings.RandomLadderEntraces || !Settings.ReduceDeadEndStarts)) || rightDoor.ID == ExitID.fL08Right);
+                    } while ((rightDoor.ID == ExitID.f01Right && (!Settings.RandomLadderEntraces || Settings.ReduceDeadEndStarts)) || rightDoor.ID == ExitID.fL08Right);
                 }
                 else if (leftDoor.ID == ExitID.fP00Left)
                 {
                     do
                     {
                         rightDoor = rightDoors[random.Next(rightDoors.Count)];
-                    } while (rightDoor.ID == ExitID.fP00Right || (((rightDoor.ID == ExitID.f01Right && (!Settings.RandomLadderEntraces || !Settings.ReduceDeadEndStarts))
+                    } while (rightDoor.ID == ExitID.fP00Right || (((rightDoor.ID == ExitID.f01Right && (!Settings.RandomLadderEntraces || Settings.ReduceDeadEndStarts))
                                 || rightDoor.ID == ExitID.fL08Right) && cavernToCliff));
                 }
                 else
@@ -981,8 +981,8 @@ namespace LaMulana2Randomizer
                         {
                             entrance2 = entrances[random.Next(entrances.Count)];
                         } while (entrance2.ID == ExitID.fL08Right || entrance2.ID == ExitID.fL05Up || entrance2.ID == ExitID.fLGate || entrance2.ID == ExitID.f00GateYA
-                                    || entrance2.ID == ExitID.f04Up3 || entrance2.ID == ExitID.f06_2GateP0 || entrance2.ID == ExitID.f03Down3
-                                    || ((entrance2.ID == ExitID.fL11GateN || entrance2.ID == ExitID.fL11GateY0) && illusionToCliff));
+                                    || entrance2.ID == ExitID.f04Up3 || entrance2.ID == ExitID.f06_2GateP0 || entrance2.ID == ExitID.f03Down3 || entrance2.ID == ExitID.f00Down
+                                    || entrance2.ID == ExitID.f03Down1 || ((entrance2.ID == ExitID.fL11GateN || entrance2.ID == ExitID.fL11GateY0) && illusionToCliff));
                         entrances.Remove(entrance2);
 
                         FixFullRandomEntranceLogic(entrance1, entrance2);
@@ -1007,7 +1007,7 @@ namespace LaMulana2Randomizer
                     do
                     {
                         entrance2 = entrances[random.Next(entrances.Count)];
-                    } while (entrance2.ID == ExitID.fL11GateY0 || (entrance2.ID == ExitID.f01Right && illusionToCliff && (!Settings.RandomLadderEntraces || !Settings.ReduceDeadEndStarts)));
+                    } while (entrance2.ID == ExitID.fL11GateY0 || (entrance2.ID == ExitID.f01Right && illusionToCliff && (!Settings.RandomLadderEntraces || Settings.ReduceDeadEndStarts)));
 
                     entrances.Remove(entrance2);
 
