@@ -862,7 +862,11 @@ namespace LM2RandomiserMod
 
                     ExitInfo exitInfo = ExitDB.GetExitInfo(exitID);
 
-                    gate.bgmFadeOut = exitInfo.FieldNo == destinationInfo.FieldNo;
+                    if((exitInfo.FieldNo == 17 && destinationInfo.FieldNo == 18) || (exitInfo.FieldNo == 18 && destinationInfo.FieldNo == 18) 
+                        || exitInfo.FieldNo == destinationInfo.FieldNo)
+                        gate.bgmFadeOut = false;
+                    else
+                        gate.bgmFadeOut = true;
 
                     if (exitID >= ExitID.f00GateY0 && exitID <= ExitID.fL11GateN)
                     {

@@ -126,7 +126,6 @@ namespace LaMulana2Randomizer.ViewModels
                         canBeatGame = randomiser.CanBeatGame();
                         if (!canBeatGame)
                         {
-                            FileUtils.WriteSpoilers(randomiser);
                             randomiser.ClearPlacedItems();
                             Logger.Log($"Failed to generate beatable item placement, retrying.");
                             progress.Report(new ProgressInfo
@@ -140,6 +139,7 @@ namespace LaMulana2Randomizer.ViewModels
 
                     if (attemptCount == MaxAttempts && !canBeatGame)
                     {
+                        FileUtils.WriteSpoilers(randomiser);
                         Logger.LogAndFlush($"Failed to generate beatable configuration for seed {randomiser.Settings.Seed}");
                         progress.Report(new ProgressInfo
                         {
