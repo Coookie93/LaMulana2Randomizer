@@ -726,17 +726,7 @@ namespace LM2RandomiserMod
                     item.itemLabel = newItemInfo.boxName;
 
                     //Change the sprite to correspond to new item
-                    Sprite sprite;
-                    //Mantras don't have an icon so use the Mantra software icon
-                    if (newItemID >= ItemID.Heaven && newItemID <= ItemID.Night)
-                    {
-                        sprite = L2SystemCore.getMapIconSprite(L2SystemCore.getItemData("Mantra"));
-                    }
-                    else
-                    {
-                        sprite = L2SystemCore.getMapIconSprite(L2SystemCore.getItemData(newItemInfo.boxName));
-                    }
-                    item.gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
+                    item.gameObject.GetComponent<SpriteRenderer>().sprite = GetItemSprite(newItemInfo.boxName, newItemID);
                 }
             }
 
@@ -795,22 +785,30 @@ namespace LM2RandomiserMod
                     item.itemLabel = newItemInfo.boxName;
 
                     //Change the sprite to correspond to new item
-                    Sprite sprite;
-                    //Mantras don't have an icon so use the Mantra software icon
-                    if (newItemID >= ItemID.Heaven && newItemID <= ItemID.Night)
-                    {
-                        sprite = L2SystemCore.getMapIconSprite(L2SystemCore.getItemData("Mantra"));
-                    }
-                    else
-                    {
-                        sprite = L2SystemCore.getMapIconSprite(L2SystemCore.getItemData(newItemInfo.boxName));
-                    }
-                    item.gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
+                    item.gameObject.GetComponent<SpriteRenderer>().sprite = GetItemSprite(newItemInfo.boxName, newItemID);
                 }
             }
         }
 
-        
+        private Sprite GetItemSprite(string itemName, ItemID itemID)
+        {
+            //leather whip doesnt have a map icon
+            if (itemID == ItemID.Whip)
+            {
+                return L2SystemCore.getMenuIconSprite(L2SystemCore.getItemData(itemName));
+            }
+            //Mantras don't have an icon so use the Mantra software icon 
+            else if (itemID >= ItemID.Heaven && itemID <= ItemID.Night)
+            {
+                return L2SystemCore.getMapIconSprite(L2SystemCore.getItemData("Mantra"));
+            }
+            else
+            {
+                return L2SystemCore.getMapIconSprite(L2SystemCore.getItemData(itemName));
+            }
+        }
+
+
         private ExitID GetExitIDFromAnchorName(string anchorName, string field)
         {
             if (field.Equals("fieldL02") && anchorName.Equals("PlayerStart"))
@@ -869,7 +867,7 @@ namespace LM2RandomiserMod
 
                     ExitInfo exitInfo = ExitDB.GetExitInfo(exitID);
 
-                    if((exitInfo.FieldNo == 17 && destinationInfo.FieldNo == 18) || (exitInfo.FieldNo == 18 && destinationInfo.FieldNo == 18) 
+                    if((exitInfo.FieldNo == 17 && destinationInfo.FieldNo == 18) || (exitInfo.FieldNo == 18 && destinationInfo.FieldNo == 17) 
                         || exitInfo.FieldNo == destinationInfo.FieldNo)
                         gate.bgmFadeOut = false;
                     else

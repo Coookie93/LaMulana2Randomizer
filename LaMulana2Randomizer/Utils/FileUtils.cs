@@ -158,7 +158,10 @@ namespace LaMulana2Randomizer.Utils
                     sw.WriteLine("}\n");
                     sw.WriteLine("Expected Playthrough {");
 
-                    PlayerState playthrough = new PlayerState(randomiser);
+                    PlayerState playthrough = new PlayerState(randomiser)
+                    {
+                        IgnoreFalseChecks = true
+                    };
                     playthrough.CollectItem(randomiser.StartingWeapon);
 
                     List<Location> reachableLocations;
@@ -179,7 +182,7 @@ namespace LaMulana2Randomizer.Utils
                         if (playthrough.CanBeatGame())
                             break;
 
-                        playthrough.ResetCheckedAreasAndEntrances();
+                        playthrough.RemoveFalseCheckedAreasAndEntrances();
                         sphere++;
 
                     } while (reachableLocations.Count > 0);

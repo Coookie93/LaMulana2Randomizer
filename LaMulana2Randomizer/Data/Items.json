@@ -348,7 +348,7 @@
     "name": "Pistol",
     "id": 75,
     "price": 200,
-    "isRequired": false
+    "isRequired": true
   },
   {
     "name": "Buckler",

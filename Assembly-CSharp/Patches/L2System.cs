@@ -5,6 +5,7 @@ using L2STATUS;
 using L2Menu;
 using L2Hit;
 using LaMulana2RandomizerShared;
+using L2Base;
 
 #pragma warning disable 0649, 0414, 0108, 0626
 namespace LM2RandomiserMod.Patches
@@ -419,6 +420,94 @@ namespace LM2RandomiserMod.Patches
         [MonoModIgnore]
         private Status playerst;
 
+		public int getItemNum(string item_name)
+		{
+			short num = 0;
+			int num2 = this.SeetNametoNo("02Items");
+			if (num2 < 0)
+			{
+				return -1;
+			}
+			if (item_name == "Weight")
+			{
+				return this.playerst.getWait();
+			}
+			if (item_name == "Gold")
+			{
+				return this.playerst.getCoin();
+			}
+			if (item_name == "Whip2")
+			{
+				this.getFlag(num2, "Whip", ref num);
+				if (num == 2)
+				{
+					return 1;
+				}
+				return 0;
+			}
+			else if (item_name == "Whip3")
+			{
+				this.getFlag(num2, "Whip", ref num);
+				if (num == 3)
+				{
+					return 1;
+				}
+				return 0;
+			}
+			else if (item_name == "Shield2")
+			{
+				this.getFlag(num2, "Shield", ref num);
+				if (num == 2)
+				{
+					return 1;
+				}
+				return 0;
+			}
+			else if (item_name == "Shield3")
+			{
+				this.getFlag(num2, "Shield", ref num);
+				if (num == 3)
+				{
+					return 1;
+				}
+				return 0;
+			}
+			else if (item_name == "MSX")
+			{
+				this.getFlag(num2, "MSX", ref num);
+				return num == 2 ? 1 : 0;
+			}
+			else
+			{
+				if (item_name == "A_Jewel" || item_name == "Ankh Jewel")
+				{
+					this.getFlag(this.SeetNametoNo("00system"), "A_Jewel", ref num);
+					return (int)num;
+				}
+				if (!this.getFlag(num2, item_name, ref num))
+				{
+					num = -1;
+				}
+				MAINWEAPON mainweapon = this.exchengeMainWeaponNameToEnum(item_name);
+				if (mainweapon != MAINWEAPON.NON)
+				{
+					this.getFlag(num2, item_name, ref num);
+					return num > 0 ? 1 : 0;
+				}
+				SUBWEAPON subweapon = this.exchengeSubWeaponNameToEnum(item_name);
+				if (subweapon != SUBWEAPON.NON && subweapon > SUBWEAPON.SUB_ANKJEWEL)
+				{
+					num = (short)this.getSubWeaponNum(subweapon);
+				}
+				USEITEM useitem = this.exchengeUseItemNameToEnum(item_name);
+				if (useitem != USEITEM.NON)
+				{
+					num = (short)this.getUseItemNum(useitem);
+				}
+				return (int)num;
+			}
+		}
+
         [MonoModIgnore]
         private MenuSystem menusys;
 
@@ -462,6 +551,54 @@ namespace LM2RandomiserMod.Patches
             this.setFlagData(0, 42, 1);
 			this.setFlagData(4, 60, 4);
 			this.setFlagData(4, 62, 2);
+		}
+
+		[MonoModIgnore]
+		private int[] Systemflagbuffer;
+
+		[MonoModIgnore]
+		private float gamespeed;
+
+		[MonoModIgnore]
+		private int RINGBUFF_MAX;
+
+		[MonoModIgnore]
+		private NewPlayer playerobject;
+
+		[MonoModIgnore]
+		private L2SystemCore l2core;
+
+		[MonoModReplace]
+		public void reInitSystem(bool callTitle = true)
+		{
+			this.fsys.allReset();
+			for (int i = 0; i < 16; i++)
+			{
+				this.Systemflagbuffer[i] = 0;
+			}
+			this.setSysFlag(SYSTEMFLAG.LOADSTATUS);
+			this.setSysFlag(SYSTEMFLAG.INISTATUS);
+			this.setSysFlag(SYSTEMFLAG.SYSTEMINI);
+			this.setSysFlag(SYSTEMFLAG.LIVEPLAYER);
+			this.gamespeed = 1f;
+			this.axisRingIndex = 0;
+			for (int i = 0; i < this.RINGBUFF_MAX; i++)
+			{
+				this.axisRingH[i] = 0f;
+				this.axisRingV[i] = 0f;
+			}
+			this.setSysFlag(SYSTEMFLAG.SYSTEMSTART);
+			this.playerst.resetPlayerStatus(this.Init_PLayer_lv, 0, 999, this.Init_Coin_num, this.Init_Weight_num, 0, MAINWEAPON.NON, 0, SUBWEAPON.NON, 0, USEITEM.NON, 0);
+			BGCharacterTraceCamera component = this.playerobject.GetComponent<BGCharacterTraceCamera>();
+			this.delTask(component);
+			this.delTask(this.playerobject);
+			this.deletePlayer();
+			this.clearSceneTasks();
+			this.reSetAlertMessNo();
+			if (callTitle)
+			{
+				this.l2core.loadDemoSceane("Title");
+			}
 		}
 
 		public extern void orig_loadInitFlagToItem();

@@ -110,12 +110,6 @@ namespace LaMulana2Randomizer
             set => Set(ref includeNineGates, value);
         }
 
-        private ObservableCollection<bool> weapons;
-        public ObservableCollection<bool> Weapons {
-            get => weapons;
-            set => Set(ref weapons, value);
-        }
-
         private bool hardBosses;
         public bool HardBosses { 
             get=>hardBosses; 
@@ -166,6 +160,12 @@ namespace LaMulana2Randomizer
                     FDCForBacksides = false;
                 }
              }
+        }
+
+        private ObservableCollection<bool> weapons;
+        public ObservableCollection<bool> Weapons {
+            get => weapons;
+            set => Set(ref weapons, value);
         }
 
         public Settings()
@@ -221,6 +221,8 @@ namespace LaMulana2Randomizer
             if (weapons != null)
             {
                 Weapons = weapons;
+                while (weapons.Count < 13)
+                    Weapons.Add(false);
             }
             else
             {

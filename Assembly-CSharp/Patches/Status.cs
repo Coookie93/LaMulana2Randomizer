@@ -22,20 +22,25 @@ namespace LM2RandomiserMod.Patches
 		[MonoModReplace]
 		public void resetPlayerStatus(int lv, int hp, int mcoin, int coin, int wait, int exp, MAINWEAPON now_wea, int now_wea_num, SUBWEAPON now_sub, int now_sub_num, USEITEM now_use, int now_use_num)
 		{
+			sys.setFlagData(2, 62, 0);
 			this.clearItemsNum();
 			string weaponName = string.Empty;
 			if (now_wea != MAINWEAPON.NON)
 			{
 				weaponName = sys.exchengeMainWeaponEnumToName(now_wea);
-				haveMainWeapon(now_wea, true);
+				//haveMainWeapon(now_wea, true);
 			}
 			else if (now_sub != SUBWEAPON.NON)
 			{
 				weaponName = sys.exchengeSubWeaponEnumToName(now_sub);
-				sys.haveSubWeapon(now_sub, true, true);
+				//sys.haveSubWeapon(now_sub, true, true);
 			}
-			sys.setItem(weaponName, 1, false, false, true);
-			sys.equipItem(weaponName, true);
+
+			if (!string.IsNullOrEmpty(weaponName))
+			{
+				sys.setItem(weaponName, 1, false, false, true);
+				sys.equipItem(weaponName, true);
+			}
 
 			this.player_level = lv;
 			if (this.player_level < 1)
@@ -79,9 +84,8 @@ namespace LM2RandomiserMod.Patches
 		[MonoModReplace]
 		public MAINWEAPON changeMainWeapon(int slide_vector)
 		{
-			int num = 0;
 			MAINWEAPON mainweapon = this.getMainWeapon();
-			for (;;)
+			for(int i = 0; i < 4; i++)
 			{
 				if (slide_vector == 1)
 				{
@@ -106,6 +110,7 @@ namespace LM2RandomiserMod.Patches
 							mainweapon = MAINWEAPON.SWORD;
 							break;
 						case MAINWEAPON.SWORD:
+						case MAINWEAPON.NON:
 							if (this.isMainWeapon(MAINWEAPON.HWHIP))
 							{
 								mainweapon = MAINWEAPON.HWHIP;
@@ -126,12 +131,9 @@ namespace LM2RandomiserMod.Patches
 					switch (mainweapon)
 					{
 						case MAINWEAPON.LWHIP:
-							mainweapon = MAINWEAPON.SWORD;
-							break;
 						case MAINWEAPON.MWIHP:
-							mainweapon = MAINWEAPON.SWORD;
-							break;
 						case MAINWEAPON.HWHIP:
+						case MAINWEAPON.NON:
 							mainweapon = MAINWEAPON.SWORD;
 							break;
 						case MAINWEAPON.KNIFE:
@@ -161,17 +163,10 @@ namespace LM2RandomiserMod.Patches
 				}
 
 				if (isMainWeapon(mainweapon))
-					break;
-
-				num++;
-				if (num > 4)
-				{
-					mainweapon = MAINWEAPON.NON;
 					return mainweapon;
-				}
 			}
 
-			return mainweapon;
+			return MAINWEAPON.NON;
 		}
 	}
 }

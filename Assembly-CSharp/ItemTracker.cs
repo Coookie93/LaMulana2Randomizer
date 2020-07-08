@@ -35,9 +35,9 @@ namespace LM2RandomiserMod
                 guistyle.normal.textColor = Color.white;
                 guistyle.font = currentFont;
                 guistyle.fontStyle = FontStyle.Bold;
-                guistyle.fontSize = 14;
+                guistyle.fontSize = 10;
 
-                GUIContent content = new GUIContent($"Item Tracker Enabled \nTotal clients connected {clients.Count}");
+                GUIContent content = new GUIContent($"Item Tracker Enabled \nClients connected: {clients.Count}");
                 Vector2 size = guistyle.CalcSize(content);
                 GUI.Label(new Rect(Screen.width - size.x, 0, size.x, size.y), content, guistyle);
             }

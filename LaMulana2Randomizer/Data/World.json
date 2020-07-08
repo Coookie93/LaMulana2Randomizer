@@ -294,7 +294,7 @@
       {
         "Name": "Shuriken Puzzle Reward",
         "LocationType": "FreeStanding",
-        "Logic": "True"
+        "Logic": "HorizontalAttack"
       },
       {
         "Name": "Knife Puzzle Reward",
@@ -309,8 +309,8 @@
       {
         "Name": "Ratatoskr 1",
         "LocationType": "Miniboss",
-        "Logic": "True",
-        "HardLogic": "True",
+        "Logic": "MeleeAttack",
+        "HardLogic": "MeleeAttack",
         "Item": {
           "Name": "Ratatoskr 1",
           "IsRequired": true
@@ -319,8 +319,8 @@
       {
         "Name": "Nidhogg",
         "LocationType": "Miniboss",
-        "Logic": "CanUse(Flare) or ((CanUse(Shuriken) or Has(Claydoll Suit)) and OrbCount(1))",
-        "HardLogic": "True",
+        "Logic": "MeleeAttack and (CanUse(Flare) or ((CanUse(Shuriken) or Has(Claydoll Suit)) and OrbCount(1)))",
+        "HardLogic": "MeleeAttack",
         "Item": {
           "Name": "Nidhogg",
           "IsRequired": true
@@ -330,7 +330,7 @@
         "Name": "Fafnir",
         "LocationType": "Guardian",
         "Logic": "((OrbCount(1) and (Has(Leather Whip) or Has(Knife))) or Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Axe) or Has(Katana))",
-        "HardLogic": "True",
+        "HardLogic": "MeleeAttack",
         "Item": {
           "Name": "Fafnir",
           "IsRequired": true
@@ -401,7 +401,7 @@
       {
         "Name": "Pyramid Crystal Chest",
         "LocationType": "Chest",
-        "Logic": "Has(Life Sigil) and (Has(Knife) or (Has(Spaulder) and (Has(Leather Whip) or Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Katana))) or (Has(Gauntlet) and (Has(Leather Whip) or Has(Chain Whip) or Has(Flail Whip))) or Has(Mjolnir) or (Has(Earth Spear) and Has(Ring)))"
+        "Logic": "Has(Life Sigil) and (Has(Knife) or (Has(Mjolnir) and HorizontalAttack) or (Has(Earth Spear) and Has(Ring) and HorizontalAttack) or (Has(Spaulder) and (Has(Leather Whip) or Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Katana))) or (Has(Gauntlet) and (Has(Leather Whip) or Has(Chain Whip) or Has(Flail Whip))))"
       },
       {
         "Name": "Korobok Shop 1",
@@ -661,7 +661,7 @@
         "ID": "f03Up",
         "ConnectionType": "UpLadder",
         "ConnectingAreaName": "Annwfn Main",
-        "Logic": "IsDead(Cetus)"
+        "Logic": "IsDead(Cetus) and (HorizontalAttack or Setting(Random Ladders))"
       }
     ]
   },
@@ -1055,7 +1055,7 @@
       {
         "Name": "Grapple Claw Chest",
         "LocationType": "Chest",
-        "Logic": "True"
+        "Logic": "HorizontalAttack or CanReach(Icefire Treetop Entrance)"
       },
       {
         "Name": "Life Sigil Chest",
@@ -1417,7 +1417,7 @@
         "Name": "Fenrir",
         "LocationType": "Miniboss",
         "Logic": "PuzzleFinished(Bergelmir) and Has(Flame Torc) and (Has(Silver Shield) or Has(Angel Shield)) and OrbCount(7) and (Has(Flail Whip) or Has(Axe) or Has(Katana))",
-        "HardLogic": "PuzzleFinished(Bergelmir) and Has(Flame Torc) and (Has(Silver Shield) or Has(Angel Shield))",
+        "HardLogic": "PuzzleFinished(Bergelmir) and Has(Flame Torc)",
         "Item": {
           "Name": "Fenrir",
           "IsRequired": true
@@ -1715,7 +1715,7 @@
       {
         "Name": "Sacred Orb Chest TS",
         "LocationType": "Chest",
-        "Logic": "True"
+        "Logic": "MeleeAttack or Has(Earth Spear) or Has(Bomb) or Has(Caltrops) or Has(Rolling Shuriken) or (Has(Flare) and HorizontalAttack)"
       },
       {
         "Name": "Flare Puzzle Reward",
@@ -1804,8 +1804,8 @@
       {
         "Name": "Daji",
         "LocationType": "Miniboss",
-        "Logic": "OrbCount(2) and ((Has(Chain Whip) and (Has(Gauntlet) or Has(Spaulder))) or (Has(Knife) and Has(Spaulder) and Has(Feather)) or (Has(Rapier) and Has(Gauntlet) and Has(Spaulder) and Has(Feather)) or Has(Flail Whip) or Has(Axe) or Has(Katana) or (CanUse(Pistol) and Has(Feather)) or (CanUse(Rolling Shuriken) and Has(Ring) and Has(Feather)) or (CanUse(Chakram) and (Has(Ring) or Has(Feather))) or CanUse(Bomb) or ((CanUse(Earth Spear) or CanUse(Caltrops))and Has(Ring)))",
-        "HardLogic": "(Has(Chain Whip) and (Has(Gauntlet) or Has(Spaulder))) or (Has(Knife) and Has(Spaulder) and Has(Feather)) or (Has(Rapier) and Has(Gauntlet) and Has(Spaulder) and Has(Feather)) or Has(Flail Whip) or Has(Axe) or Has(Katana) or (CanUse(Pistol) and Has(Feather)) or (CanUse(Rolling Shuriken) and Has(Ring) and Has(Feather)) or (CanUse(Chakram) and (Has(Ring) or Has(Feather))) or CanUse(Bomb) or ((CanUse(Earth Spear) or CanUse(Caltrops))and Has(Ring)))",
+        "Logic": "OrbCount(2) and ((Has(Chain Whip) and (Has(Gauntlet) or Has(Spaulder))) or (Has(Knife) and Has(Spaulder) and Has(Feather)) or (Has(Rapier) and Has(Gauntlet) and Has(Spaulder) and Has(Feather)) or Has(Flail Whip) or Has(Axe) or Has(Katana) or (CanUse(Pistol) and Has(Feather)) or (CanUse(Rolling Shuriken) and Has(Ring) and Has(Feather)) or (CanUse(Chakram) and (Has(Ring) or Has(Feather))) or CanUse(Bomb) or CanUse(Flare) or ((CanUse(Earth Spear) or CanUse(Caltrops))and Has(Ring)))",
+        "HardLogic": "(Has(Chain Whip) and (Has(Gauntlet) or Has(Spaulder))) or (Has(Knife) and Has(Spaulder) and Has(Feather)) or (Has(Rapier) and Has(Gauntlet) and Has(Spaulder) and Has(Feather)) or Has(Flail Whip) or Has(Axe) or Has(Katana) or (CanUse(Pistol) and Has(Feather)) or (CanUse(Rolling Shuriken) and Has(Ring) and Has(Feather)) or (CanUse(Chakram) and (Has(Ring) or Has(Feather))) or CanUse(Bomb) or CanUse(Flare) or ((CanUse(Earth Spear) or CanUse(Caltrops))and Has(Ring))",
         "Item": {
           "Name": "Daji",
           "IsRequired": true
@@ -1838,7 +1838,7 @@
       {
         "Name": "Belial",
         "LocationType": "Miniboss",
-        "Logic": "Has(Life Sigil) and Has(Cog of Antiquity) and (Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(6))) and ((Has(Egg of Creation) and OrbCount(6) and (CanUse(Earth Spear) or CanUse(Rolling Shuriken) or (Has(Katana) and Has(Feather)))) or (CanStopTime and OrbCount(3) and ((Has(Axe) and (Has(Gauntlet) or Has(Spaulder))) or (Has(Katana) and (Has(Vajra) or Has(Spaulder))) or (Has(Rapier) and Has(Vajra)) or (Has(Knife) and (Has(Vajra) or Has(Spaulder))) or ((Has(Chain Whip) or Has(Flail Whip)) and (Has(Vajra) or Has(Gauntlet) or Has(Spaulder))))))",
+        "Logic": "Has(Life Sigil) and Has(Cog of Antiquity) and (Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(6))) and ((Has(Egg of Creation) and OrbCount(6) and (Has(Claydoll Suit) or CanUse(Pistol) or CanUse(Earth Spear) or (CanUse(Rolling Shuriken) and Has(Ring)) or (Has(Katana) and Has(Feather)))) or (CanStopTime and OrbCount(3) and ((Has(Axe) and (Has(Gauntlet) or Has(Spaulder))) or (Has(Katana) and (Has(Vajra) or Has(Spaulder))) or (Has(Rapier) and Has(Vajra)) or (Has(Knife) and (Has(Vajra) or Has(Spaulder))) or ((Has(Chain Whip) or Has(Flail Whip)) and (Has(Vajra) or Has(Gauntlet) or Has(Spaulder))))))",
         "HardLogic": "Has(Life Sigil) and Has(Cog of Antiquity) and (Has(Claydoll Suit) or Has(Ice Cloak)) and Has(Egg of Creation)",
         "Item": {
           "Name": "Belial",
@@ -2055,8 +2055,8 @@
       {
         "Name": "Vritra",
         "LocationType": "Guardian",
-        "Logic": "CanReach(Roots of Yggdrasil) and IsDead(Vucub-Caquiz) and (((Has(Leather Whip) or Has(Knife) or Has(Rapier) or CanUse(Rolling Shuriken) or CanUse(Caltrops)) and OrbCount(2)) or ((Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana) or CanUse(Bomb) or CanUse(Earth Spear) or CanUse(Shuriken)) and OrbCount(1)) or CanUse(Pistol))",
-        "HardLogic": "CanReach(Roots of Yggdrasil) and IsDead(Vucub-Caquiz)",
+        "Logic": "IsDead(Fafnir) and IsDead(Vucub-Caquiz) and (((Has(Leather Whip) or Has(Knife) or Has(Rapier) or CanUse(Rolling Shuriken) or CanUse(Caltrops)) and OrbCount(2)) or ((Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana) or CanUse(Bomb) or CanUse(Earth Spear) or CanUse(Shuriken)) and OrbCount(1)) or CanUse(Pistol))",
+        "HardLogic": "IsDead(Fafnir) and IsDead(Vucub-Caquiz)",
         "Item": {
           "Name": "Vritra",
           "IsRequired": true
@@ -2779,17 +2779,17 @@
         "Logic": "Has(Grapple Claw) and (Has(Gale Fibula) or CanStopTime) and (Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(1) and Has(Anchor)))"
       },
       {
-        "ConnectionType": "Unique",
+        "ConnectionType": "PrisonExit",
         "ConnectingAreaName": "Divine Fortress Top",
         "Logic": "True"
       },
       {
-        "ConnectionType": "Unique",
+        "ConnectionType": "PrisonExit",
         "ConnectingAreaName": "Icefire Treetop Right",
         "Logic": "True"
       },
       {
-        "ConnectionType": "Unique",
+        "ConnectionType": "PrisonExit",
         "ConnectingAreaName": "Takamagahara Shrine Bottom",
         "Logic": "True"
       }
@@ -2933,17 +2933,17 @@
         "Logic": "GuardianKills(5) or Setting(Random Soul Gates)"
       },
       {
-        "ConnectionType": "Unique",
+        "ConnectionType": "PrisonExit",
         "ConnectingAreaName": "Divine Fortress Top",
         "Logic": "True"
       },
       {
-        "ConnectionType": "Unique",
+        "ConnectionType": "PrisonExit",
         "ConnectingAreaName": "Icefire Treetop Right",
         "Logic": "True"
       },
       {
-        "ConnectionType": "Unique",
+        "ConnectionType": "PrisonExit",
         "ConnectingAreaName": "Takamagahara Shrine Bottom",
         "Logic": "True"
       }

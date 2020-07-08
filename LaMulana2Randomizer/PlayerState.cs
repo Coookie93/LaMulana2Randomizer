@@ -11,19 +11,21 @@ namespace LaMulana2Randomizer
         private readonly string[] bossNames = {"Fafnir", "Surtr", "Vritra", "Kujata", "Aten-Ra", "Jormangund", "Anu", "Echidna", "Hel"};
 
         private readonly Randomiser randomiser;
-        private readonly bool softlockCheck;
-        private readonly bool ignoreFalseChecks;
         private readonly Dictionary<string, bool> collectedLocations;
         private readonly Dictionary<string, int> collectedItems;
         
         private Dictionary<string, bool> areaChecks;
         private Dictionary<string, bool> entraceChecks;
 
-        public PlayerState(Randomiser randomiser, bool softlockCheck = false, bool ignoreFalseChecks = false)
+        public bool SoftlockCheck;
+        public bool IgnoreFalseChecks;
+        public bool EscapeCheck;
+        public Area StartingArea;
+
+        public PlayerState(Randomiser randomiser)
         {
             this.randomiser = randomiser;
-            this.softlockCheck = softlockCheck;
-            this.ignoreFalseChecks = ignoreFalseChecks;
+            StartingArea = randomiser.GetArea("Village of Departure");
             areaChecks =  new Dictionary<string, bool>();
             entraceChecks = new Dictionary<string, bool>();
             collectedLocations = new Dictionary<string, bool>();
@@ -49,7 +51,7 @@ namespace LaMulana2Randomizer
                     state.collectedLocations.Add(location.Name, true);
                 }
 
-                state.ResetCheckedAreasAndEntrances();
+                state.RemoveFalseCheckedAreasAndEntrances();
 
             } while (reachableLocations.Count > 0);
 
@@ -72,7 +74,7 @@ namespace LaMulana2Randomizer
                     state.collectedLocations.Add(location.Name, true);
                 }
 
-                state.ResetCheckedAreasAndEntrances();
+                state.RemoveFalseCheckedAreasAndEntrances();
 
             } while (reachableLocations.Count > 0);
 
@@ -83,7 +85,10 @@ namespace LaMulana2Randomizer
         {
             foreach (Location guardianToSkip in randomiser.GetPlacedLocationsOfType(LocationType.Guardian))
             {
-                PlayerState state = new PlayerState(randomiser, true);
+                PlayerState state = new PlayerState(randomiser)
+                {
+                    SoftlockCheck = true
+                };
                 state.CollectItem(randomiser.StartingWeapon);
 
                 int guardiansEncountered = 0;
@@ -110,7 +115,7 @@ namespace LaMulana2Randomizer
                         }
                     }
 
-                    state.ResetCheckedAreasAndEntrances();
+                    state.RemoveFalseCheckedAreasAndEntrances();
 
                 } while (reachableLocations.Count > 0);
 
@@ -137,7 +142,7 @@ namespace LaMulana2Randomizer
                     state.collectedLocations.Add(location.Name, true);
                 }
 
-                state.ResetCheckedAreasAndEntrances();
+                state.RemoveFalseCheckedAreasAndEntrances();
 
             } while (reachableLocations.Count > 0);
 
@@ -146,47 +151,52 @@ namespace LaMulana2Randomizer
                 return false;
 
             //check to see if all locations are accessable
-            foreach (Location location in reachableLocations)
+            foreach (Location location in randomiser.GetPlacedLocations())
             {
                 if (!location.CanReach(state))
                     return false;
             }
 
-            return true;
+            //check to see if its possible to actually escape
+            state.EscapeCheck = true;
+            state.StartingArea = randomiser.GetArea("Immortal Battlefield Main");
+            List<string> exitNames = new List<string>() { "Cliff", "Gate of Guidance", "Mausoleum of Giants", "Village of Departure", "Gate of Illusion", "Nibiru"};
+            foreach(string exitName in exitNames)
+            {
+                state.ClearCheckedAreasAndEntrances();
+                if (state.CanReach(exitName))
+                    return true;
+            }
+            return false;
         }
 
         public bool CanBeatGame()
         {
-            return HasItem("Winner") && CanReach("Cliff");
+            return HasItem("Winner");
         }
 
         public bool CanReach(string areaName)
         {
             Area area = randomiser.GetArea(areaName);
-            if (area.Equals(randomiser.GetArea("Village of Departure")))
+            if (area.Equals(StartingArea))
                 return true;
 
             if (areaChecks.TryGetValue(area.Name, out bool cached))
                 return cached;
 
             if (area.Checking)
-            {
                 return false;
-            }
+
             area.Checking = true;
-            bool canReach = area.CanReach(this);
+            bool canReach = area.CanReach(this, EscapeCheck);
             area.Checking = false;
 
             //when writing the spoiler log playthrough only care about caching areas that can be reached, caching areas that can't
             //be reached sometimes leads to the playthorugh being incorrect
-            if (ignoreFalseChecks && canReach)
-            {
+            if (IgnoreFalseChecks && canReach)
                 areaChecks.Add(area.Name, canReach);
-            }
             else
-            {
                 areaChecks.Add(area.Name, canReach);
-            }
 
             return canReach;
         }
@@ -205,14 +215,10 @@ namespace LaMulana2Randomizer
 
             //when writing the spoiler log playthrough only care about caching entrances that can be reached, caching entrances that can't
             //be reached sometimes leads to the playthorugh being incorrect
-            if (ignoreFalseChecks && canReach)
-            {
+            if (IgnoreFalseChecks && canReach)
                 entraceChecks.Add(entrance.Name, canReach);
-            }
             else
-            {
                 entraceChecks.Add(entrance.Name, canReach);
-            }
 
             return canReach;
         }
@@ -220,37 +226,25 @@ namespace LaMulana2Randomizer
         public void CollectItem(Item item)
         {
             if (collectedItems.ContainsKey(item.Name))
-            {
                 collectedItems[item.Name]++;
-            }
             else
-            {
                 collectedItems.Add(item.Name, 1);
-            }
 
             if (bossNames.Contains(item.Name))
             {
                 if (collectedItems.ContainsKey("Guardians"))
-                {
                     collectedItems["Guardians"]++;
-                }
                 else
-                {
                     collectedItems.Add("Guardians", 1);
-                }
             }
         }
 
         public void CollectItem(string itemName)
         {
             if (collectedItems.ContainsKey(itemName))
-            {
                 collectedItems[itemName]++;
-            }
             else
-            {
                 collectedItems.Add(itemName, 1);
-            }
         }
 
         public void CollectLocation(Location location)
@@ -269,13 +263,14 @@ namespace LaMulana2Randomizer
                 case LogicType.CanStopTime: return CanStopTime();
                 case LogicType.Has: return HasItem(rule.value);
                 case LogicType.CanUse: return CanUse(rule.value);
+                case LogicType.MeleeAttack: return MeleeAttack();
                 case LogicType.HorizontalAttack: return HorizontalAttack();
                 case LogicType.IsDead: return HasItem(rule.value);
                 case LogicType.CanKill: return CanKill(rule.value);
                 case LogicType.OrbCount: return OrbCount(int.Parse(rule.value));
                 case LogicType.GuardianKills: return GuardianKills(int.Parse(rule.value));
                 case LogicType.PuzzleFinished: return HasItem(rule.value);
-                case LogicType.AnkhCount: return softlockCheck ? AnkhCountSoftLock() : AnkhCount(int.Parse(rule.value));
+                case LogicType.AnkhCount: return SoftlockCheck ? AnkhCountSoftLock() : AnkhCount(int.Parse(rule.value));
                 case LogicType.Dissonance: return Dissonance(int.Parse(rule.value));
                 case LogicType.SkullCount: return SkullCount(int.Parse(rule.value));
                 case LogicType.Setting: return Settings(rule.value);
@@ -285,7 +280,7 @@ namespace LaMulana2Randomizer
             }
         }
 
-        public void ResetCheckedAreasAndEntrances()
+        public void RemoveFalseCheckedAreasAndEntrances()
         {
             //reset areas
             Dictionary<string, bool> temp = new Dictionary<string, bool>();
@@ -306,6 +301,12 @@ namespace LaMulana2Randomizer
             entraceChecks = temp;
         }
 
+        public void ClearCheckedAreasAndEntrances()
+        {
+            areaChecks.Clear();
+            entraceChecks.Clear();
+        }
+
         public List<Location> GetReachableLocations(List<Location> requiredLocations)
         {
             List<Location> locations = new List<Location>();
@@ -313,9 +314,7 @@ namespace LaMulana2Randomizer
             foreach(Location location in requiredLocations)
             {
                 if(!collectedLocations.ContainsKey(location.Name) && location.CanReach(this))
-                {
                     locations.Add(location);
-                }
             }
             return locations;
         }
@@ -338,11 +337,17 @@ namespace LaMulana2Randomizer
                 return HasItem(subWeapon) && HasItem(subWeapon + " Ammo");
         }
 
+        private bool MeleeAttack()
+        {
+            return HasItem("Leather Whip") || HasItem("Chain Whip") || HasItem("Flail Whip") || HasItem("Knife") 
+                    || HasItem("Rapier") || HasItem("Axe") || HasItem("Katana");
+        }
+
         private bool HorizontalAttack()
         {
-            return HasItem("Leather Whip") || HasItem("Chain Whip") || HasItem("Flail Whip") || HasItem("Axe") || HasItem("Katana") || CanUse("Shuriken") 
-                    || CanUse("Rolling Shuriken") || CanUse("Earth Spear") || CanUse("Caltrops") || CanUse("Chakram") || CanUse("Bomb") || CanUse("Pistol") 
-                    || HasItem("Claydoll Suit");
+            return HasItem("Leather Whip") || HasItem("Chain Whip") || HasItem("Flail Whip") || HasItem("Knife") || HasItem("Rapier") || HasItem("Axe") 
+                    || HasItem("Katana") || CanUse("Shuriken") || CanUse("Rolling Shuriken") || CanUse("Earth Spear") || CanUse("Caltrops") || CanUse("Chakram") 
+                    || CanUse("Bomb") || CanUse("Pistol") || HasItem("Claydoll Suit");
         }
 
         private bool CanSpinCorridor()
@@ -353,10 +358,8 @@ namespace LaMulana2Randomizer
         private bool CanStopTime()
         {
             if(collectedItems.ContainsKey("Lamp of Time"))
-            {
-                return CanReach("Roots of Yggdrasil") || CanReach("Immortal Battlefield Main") 
-                        || CanReach("Icefire Treetop Left") || CanReach("Dark Lords Mausoleum Main");
-            }
+                return CanReach("Roots of Yggdrasil") || CanReach("Immortal Battlefield Main") || CanReach("Icefire Treetop Left") || CanReach("Dark Lords Mausoleum Main");
+            
             return false;
         }
 

@@ -72,6 +72,7 @@ namespace LaMulana2Randomizer
         SoulGate,
         Corridor,
         Internal,
+        PrisonExit,
         Unique
     }
 }
