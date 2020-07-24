@@ -84,6 +84,14 @@ namespace LM2RandomiserMod
             { ExitID.f12GateN8,       new ExitInfo("PlayerStart f12GateN8",      12, -1, -1)},
             { ExitID.f13GateN9,       new ExitInfo("PlayerStart f13GateN9",      13, -1, -1)},
             { ExitID.f14GateN6,       new ExitInfo("PlayerStart f14GateN6",      14, -1, -1)},
+
+            //other
+            { ExitID.f02Bifrost,      new ExitInfo("PlayerStart f02Bifrost",      2, -1, -1)},
+            { ExitID.f03In,           new ExitInfo("PlayerStart f03In",           3, -1, -1)},
+            { ExitID.f08Neck,         new ExitInfo("PlayerStart f08Neck",         8, -1, -1)},
+            { ExitID.f09In,           new ExitInfo("PlayerStart f09In",           9, -1, -1)},
+            { ExitID.f11Pyramid,      new ExitInfo("PlayerStart f11Pyramid",     11, -1, -1)},
+            { ExitID.fNibiru,         new ExitInfo("PlayerStart",                27, -1, -1)},
         };
 
 
@@ -159,7 +167,12 @@ namespace LM2RandomiserMod
             {"PlayerStart f08GateN8",      ExitID.f12GateN8 },
             {"PlayerStart f03GateN9",      ExitID.f13GateN9 },
             {"PlayerStart f04GateN6",      ExitID.f14GateN6 },
-            {"PlayerStart f04GateN62",     ExitID.f14GateN6 }    
+            {"PlayerStart f04GateN62",     ExitID.f14GateN6 },
+            
+            //other
+            {"PlayerStart f03In",          ExitID.f02Bifrost },
+            {"PlayerStart f09In",          ExitID.f08Neck },
+            {"PlayerStart f11Pyramid",     ExitID.fNibiru },
         };
     }
 

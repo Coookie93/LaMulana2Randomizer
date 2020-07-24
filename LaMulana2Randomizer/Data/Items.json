@@ -197,7 +197,7 @@
   {
     "name": "Bracelet",
     "id": 41,
-    "isRequired": false
+    "isRequired": true
   },
   {
     "name": "Feather",
@@ -935,5 +935,55 @@
     "name": "Weights",
     "id": 173,
     "isRequired": true
+  },
+  {
+    "name": "Research",
+    "id": 174,
+    "isRequired": false
+  },
+  {
+    "name": "Research",
+    "id": 175,
+    "isRequired": false
+  },
+  {
+    "name": "Research",
+    "id": 176,
+    "isRequired": false
+  },
+  {
+    "name": "Research",
+    "id": 177,
+    "isRequired": false
+  },
+  {
+    "name": "Research",
+    "id": 178,
+    "isRequired": false
+  },
+  {
+    "name": "Research",
+    "id": 179,
+    "isRequired": false
+  },
+  {
+    "name": "Research",
+    "id": 180,
+    "isRequired": false
+  },
+  {
+    "name": "Research",
+    "id": 181,
+    "isRequired": false
+  },
+  {
+    "name": "Research",
+    "id": 182,
+    "isRequired": false
+  },
+  {
+    "name": "Research",
+    "id": 183,
+    "isRequired": false
   }
 ]

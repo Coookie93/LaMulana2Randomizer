@@ -124,13 +124,13 @@ namespace LM2RandomiserMod.Patches
                                 ItemID itemID = rando.GetItemIDForLocation(locationID);
                                 ItemInfo itemInfo = ItemDB.GetItemInfo(itemID);
 
-                                this.GetItemID = itemInfo.boxName;
+                                this.GetItemID = itemInfo.BoxName;
 
                                 int flagValue = 0;
                                 if (itemID == ItemID.MobileSuperx3P)
                                     flagValue = 1;
 
-                                if (this.sys.isHaveItem(itemInfo.shopName) > flagValue)
+                                if (this.sys.isHaveItem(itemInfo.ShopName) > flagValue)
                                 {
                                     this.HaveItems = true;
                                 }

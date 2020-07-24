@@ -540,8 +540,8 @@ namespace LM2RandomiserMod.Patches
 
 				ItemID itemID = l2Rando.StartingWeapon;
 				ItemInfo itemInfo = ItemDB.GetItemInfo(itemID);
-				mainWeapon = exchengeMainWeaponNameToEnum(itemInfo.boxName);
-				subWeapon = exchengeSubWeaponNameToEnum(itemInfo.boxName);
+				mainWeapon = exchengeMainWeaponNameToEnum(itemInfo.BoxName);
+				subWeapon = exchengeSubWeaponNameToEnum(itemInfo.BoxName);
 			}
 
 			this.playerst.addCoin(Init_Coin_num);

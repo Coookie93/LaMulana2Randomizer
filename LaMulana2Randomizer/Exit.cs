@@ -54,11 +54,9 @@ namespace LaMulana2Randomizer
 
         public bool IsInaccessible()
         {
-            return ID == ExitID.fL08Right || ID == ExitID.f02Down ||
-                    ID == ExitID.f03Down2 || ID == ExitID.fL05Up ||
-                    ID == ExitID.f02GateYA || ID == ExitID.f06GateP0 ||
-                    ID == ExitID.f12GateP0 || ID == ExitID.f13GateP0 ||
-                    ID == ExitID.f03GateYC;
+            return ID == ExitID.fL08Right || ID == ExitID.f02Down || ID == ExitID.f03Down2 || ID == ExitID.fL05Up ||
+                    ID == ExitID.f02GateYA || ID == ExitID.f06GateP0 || ID == ExitID.f12GateP0 || ID == ExitID.f13GateP0 ||
+                    ID == ExitID.f03GateYC || ID == ExitID.f09In || ID == ExitID.f03In || ID == ExitID.fNibiru;
         }
     }
 
@@ -70,6 +68,7 @@ namespace LaMulana2Randomizer
         UpLadder,
         Gate,
         SoulGate,
+        OneWay,
         Corridor,
         Internal,
         PrisonExit,

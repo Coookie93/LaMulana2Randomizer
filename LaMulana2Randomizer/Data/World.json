@@ -284,7 +284,7 @@
       {
         "Name": "Ankh Chest RoY",
         "LocationType": "Chest",
-        "Logic": "Has(Feather) or Has(Katana) or Has(Axe) or CanUse(Bomb) or CanUse(Shuriken) or CanUse(Chakram) or CanUse(Earth Spear) or (CanUse(Flare) and HorizontalAttack) or Has(Claydoll Suit) or CanStopTime or (Has(Gale Fibula) and Has(Grapple Claw))"
+        "Logic": "Has(Feather) or Has(Katana) or Has(Axe) or CanUse(Bomb) or CanUse(Shuriken) or CanUse(Chakram) or CanUse(Earth Spear) or (CanUse(Flare) and HorizontalAttack) or Has(Claydoll Suit) or CanStopTime or (Has(Gale Fibula) and Has(Grapple Claw) and HorizontalAttack)"
       },
       {
         "Name": "Crystal Skull Chest RoY",
@@ -401,7 +401,7 @@
       {
         "Name": "Pyramid Crystal Chest",
         "LocationType": "Chest",
-        "Logic": "Has(Life Sigil) and (Has(Knife) or (Has(Mjolnir) and HorizontalAttack) or (Has(Earth Spear) and Has(Ring) and HorizontalAttack) or (Has(Spaulder) and (Has(Leather Whip) or Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Katana))) or (Has(Gauntlet) and (Has(Leather Whip) or Has(Chain Whip) or Has(Flail Whip))))"
+        "Logic": "Has(Life Sigil) and (Has(Knife) or (Has(Mjolnir) and MeleeAttack) or (Has(Earth Spear) and Has(Ring) and MeleeAttack) or (Has(Spaulder) and (Has(Leather Whip) or Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Katana))) or (Has(Gauntlet) and (Has(Leather Whip) or Has(Chain Whip) or Has(Flail Whip))))"
       },
       {
         "Name": "Korobok Shop 1",
@@ -476,6 +476,11 @@
         "Logic": " Has(Gloves)"
       },
       {
+        "Name": "Research Annwfn",
+        "LocationType": "FreeStanding",
+        "Logic": "True"
+      },
+      {
         "Name": "Pym Shop 1",
         "LocationType": "Shop",
         "Logic": "(IsDead(Kaliya) or Has(Feather)) and Has(Gloves)"
@@ -520,7 +525,14 @@
         "Logic": "Has(Gloves) or Has(Feather)"
       },
       {
-        "ConnectionType": "Unique",
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Annwfn Right",
+        "Logic": "Has(Annwfn Right Shortcut)"
+      },
+      {
+        "Name": "Annwfn Bifrost",
+        "ID": "f02Bifrost",
+        "ConnectionType": "OneWay",
         "ConnectingAreaName": "Immortal Battlefield Top",
         "Logic": "CanWarp or CanReach(Immortal Battlefield Main) or (CanKill(Cetus) and Setting(Non Random Ladders))"
       },
@@ -606,6 +618,15 @@
           "Name": "Kujata",
           "IsRequired": true
         }
+      },
+      {
+        "Name": "Annwfn Right Shortcut",
+        "LocationType": "Puzzle",
+        "Logic": "IsDead(Ixtab) or Has(Feather)",
+        "Item": {
+          "Name": "Annwfn Right Shortcut",
+          "IsRequired": false
+        }
       }
     ],
     "Exits": [
@@ -613,6 +634,11 @@
         "ConnectionType": "Internal",
         "ConnectingAreaName": "Annwfn Main",
         "Logic": "IsDead(Ixtab) or Has(Feather)"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Annwfn Poison",
+        "Logic": "True"
       }
     ]
   },
@@ -657,6 +683,13 @@
         "Logic": "IsDead(Cetus)"
       },
       {
+        "Name": "Immortal Battlefield Bifrost Exit",
+        "ID": "f03In",
+        "ConnectionType": "OneWay",
+        "ConnectingAreaName": "Annwfn Main",
+        "Logic": "False"
+      },
+      {
         "Name": "Immortal Battlefield Up Ladder (F-1)",
         "ID": "f03Up",
         "ConnectionType": "UpLadder",
@@ -677,6 +710,11 @@
         "Name": "Earth Spear Puzzle Reward",
         "LocationType": "FreeStanding",
         "Logic": "Has(Gloves) or Has(Feather)"
+      },
+      {
+        "Name": "Research IB Top Left",
+        "LocationType": "FreeStanding",
+        "Logic": "Has(Feather) or (CanReach(Immortal Battlefield Top) and (CanWarp or (Has(Gloves) and (CanUse(Earth Spear) or CanUse(Chakram) or CanUse(Bomb) or CanUse(Rolling Shuriken) or CanUse(Caltrops))))) or (Has(Gloves) and (CanUse(Earth Spear) or CanUse(Chakram) or CanUse(Bomb)))"
       }
     ],
     "Exits": [
@@ -734,6 +772,26 @@
         "Name": "Secret Treasure of Life Item",
         "LocationType": "FreeStanding",
         "Logic": "IsDead(Jormangund) and IsDead(Anu) and Dissonance(6) and CanChant(Night)"
+      },
+      {
+        "Name": "Research IB Top Right",
+        "LocationType": "FreeStanding",
+        "Logic": "True"
+      },
+      {
+        "Name": "Research IB Tent 1",
+        "LocationType": "FreeStanding",
+        "Logic": "(Has(Gale Fibula) or CanStopTime)"
+      },
+      {
+        "Name": "Research IB Tent 2",
+        "LocationType": "FreeStanding",
+        "Logic": "(Has(Gale Fibula) or CanStopTime) and GuardianKills(7)"
+      },
+      {
+        "Name": "Research IB Tent 3",
+        "LocationType": "FreeStanding",
+        "Logic": "(Has(Gale Fibula) or CanStopTime) and (IsDead(Jormangund) and IsDead(Anu) and Dissonance(6) and CanChant(Night))"
       },
       {
         "Name": "Hiro Roderick Shop 1",
@@ -814,7 +872,7 @@
         "ID": "f03GateN3",
         "ConnectionType": "SoulGate",
         "ConnectingAreaName": "Gate of the Dead",
-        "Logic": "GuardianKills(2) or Setting(Random Soul Gates)"
+        "Logic": "(GuardianKills(2) or Setting(Random Soul Gates)) and HorizontalAttack"
       }
     ]
   },
@@ -825,6 +883,11 @@
         "Name": "Chain Whip Puzzle Reward",
         "LocationType": "FreeStanding",
         "Logic": "Has(Gloves) and (Has(Claydoll Suit) or OrbCount(1) or Has(Ice Cloak))"
+      },
+      {
+        "Name": "Research IB Pit",
+        "LocationType": "FreeStanding",
+        "Logic": "True"
       }
     ],
     "Exits": [
@@ -837,12 +900,32 @@
         "ConnectionType": "Internal",
         "ConnectingAreaName": "Immortal Battlefield Ladder",
         "Logic": "IsDead(Cetus)"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Immortal Battlefield Left",
+        "Logic": "Has(IB Left Shortcut)"
       }
     ]
   },
   {
     "Name": "Immortal Battlefield Left",
-    "Locations": [],
+    "Locations": [
+      {
+        "Name": "IB Left Shortcut",
+        "LocationType": "Puzzle",
+        "Logic": "Has(Birth Sigil)",
+        "Item": {
+          "Name": "IB Left Shortcut",
+          "IsRequired": false
+        }
+      },
+      {
+        "Name": "Research IB Left",
+        "LocationType": "FreeStanding",
+        "Logic": "True"
+      }
+    ],
     "Exits": [
       {
         "Name": "Immortal Battlefield Gate (A-6)",
@@ -928,7 +1011,7 @@
       {
         "Name": "Moon Mantra Mural",
         "LocationType": "Mural",
-        "Logic": "CanChant(Sun) and Has(Snapshot)"
+        "Logic": "CanChant(Sun) and Has(Snapshot) and HorizontalAttack"
       }
     ],
     "Exits": [
@@ -1018,7 +1101,13 @@
   },
   {
     "Name": "Icefire Treetop Entrance",
-    "Locations": [],
+    "Locations": [
+      {
+        "Name": "Research IT",
+        "LocationType": "FreeStanding",
+        "Logic": "CanWarp or Has(Feather) or Has(Claydoll Suit) or Has(Ice Cloak) or OrbCount(2) or ((Has(Feather) or Has(Gale Fibula)) and CanReach(Icefire Treetop Right))"
+      }
+    ],
     "Exits": [
       {
         "Name": "Icefire Treetop Gate (D-3)",
@@ -1029,13 +1118,55 @@
       },
       {
         "ConnectionType": "Internal",
-        "ConnectingAreaName": "Icefire Treetop Left",
-        "Logic": "CanWarp or Has(Claydoll Suit) or Has(Ice Cloak) or OrbCount(3) or ((Has(Feather) or Has(Gale Fibula)) and CanReach(Icefire Treetop Right))"
+        "ConnectingAreaName": "Icefire Treetop Bottom",
+        "Logic": "CanWarp or Has(Claydoll Suit) or Has(Ice Cloak) or OrbCount(2) or ((Has(Feather) or Has(Gale Fibula)) and CanReach(Icefire Treetop Right))"
       },
       {
         "ConnectionType": "Internal",
         "ConnectingAreaName": "Icefire Treetop Right",
         "Logic": "Has(Grapple Claw) and (CanWarp or Has(Feather) or CanReach(Icefire Treetop Left))"
+      }
+    ]
+  },
+  {
+    "Name": "Icefire Treetop Bottom",
+    "Locations": [
+      {
+        "Name": "Mino Shop 1",
+        "LocationType": "Shop",
+        "Logic": "Has(Feather)"
+      },
+      {
+        "Name": "Mino Shop 2",
+        "LocationType": "Shop",
+        "Logic": "Has(Feather)"
+      },
+      {
+        "Name": "Mino Shop 3",
+        "LocationType": "Shop",
+        "Logic": "Has(Feather)"
+      },
+      {
+        "Name": "Grapple Claw Chest",
+        "LocationType": "Chest",
+        "Logic": "True"
+      }
+    ],
+    "Exits": [
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Icefire Treetop Left",
+        "Logic": "True"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Icefire Treetop Right",
+        "Logic": "Has(Feather) or (Has(Gale Fibula) and (Has(Leather Whip) or Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Shuriken) or Has(Bomb) or Has(Earth Spear) or Has(Flare) or (Has(Chakram) and Has(Ring))))"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Icefire Treetop Vidofnir",
+        "Logic": "CanChant(Moon) and CanChant(Sun) and CanWarp"
       }
     ]
   },
@@ -1051,11 +1182,6 @@
         "Name": "Ankh Chest IT",
         "LocationType": "Chest",
         "Logic": "(Has(Claydoll Suit) or Has(Ice Cloak) or OrbCount(1)) and IsDead(Vedfolnir)"
-      },
-      {
-        "Name": "Grapple Claw Chest",
-        "LocationType": "Chest",
-        "Logic": "HorizontalAttack or CanReach(Icefire Treetop Entrance)"
       },
       {
         "Name": "Life Sigil Chest",
@@ -1083,21 +1209,6 @@
         "Logic": "True"
       },
       {
-        "Name": "Mino Shop 1",
-        "LocationType": "Shop",
-        "Logic": "Has(Feather)"
-      },
-      {
-        "Name": "Mino Shop 2",
-        "LocationType": "Shop",
-        "Logic": "Has(Feather)"
-      },
-      {
-        "Name": "Mino Shop 3",
-        "LocationType": "Shop",
-        "Logic": "Has(Feather)"
-      },
-      {
         "Name": "Vedfolnir",
         "LocationType": "Miniboss",
         "Logic": " OrbCount(1)",
@@ -1122,17 +1233,12 @@
       {
         "ConnectionType": "Internal",
         "ConnectingAreaName": "Icefire Treetop Entrance",
-        "Logic": "Setting(Remove IT Statue) and (Has(Claydoll Suit) or Has(Ice Cloak) or OrbCount(3))"
+        "Logic": "Setting(Remove IT Statue) and (Has(Claydoll Suit) or Has(Ice Cloak) or OrbCount(2))"
       },
       {
         "ConnectionType": "Internal",
-        "ConnectingAreaName": "Icefire Treetop Right",
-        "Logic": "Has(Feather) or Has(Gale Fibula)"
-      },
-      {
-        "ConnectionType": "Internal",
-        "ConnectingAreaName": "Icefire Treetop Vidofnir",
-        "Logic": "CanChant(Moon) and CanChant(Sun) and CanWarp"
+        "ConnectingAreaName": "Icefire Treetop Bottom",
+        "Logic": "HorizontalAttack"
       },
       {
         "Name": "Icefire Treetop Ladder Fire Side (C-1)",
@@ -1175,8 +1281,8 @@
     "Exits": [
       {
         "ConnectionType": "Internal",
-        "ConnectingAreaName": "Icefire Treetop Left",
-        "Logic": "CanWarp or Has(Feather) or Has(Gale Fibula)"
+        "ConnectingAreaName": "Icefire Treetop Bottom",
+        "Logic": "CanWarp or Has(Feather) or (Has(Gale Fibula) and (Has(Leather Whip) or Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Shuriken) or Has(Bomb) or Has(Earth Spear) or Has(Flare) or (Has(Chakram) and Has(Ring))))"
       },
       {
         "ConnectionType": "Internal",
@@ -1627,7 +1733,7 @@
       {
         "Name": "Crystal Skull Chest GotD",
         "LocationType": "Chest",
-        "Logic": "HorizontalAttack"
+        "Logic": "MeleeAttack or Has(Rolling Shuriken) or Has(Earth Spear) or Has(Bomb) or Has(Caltrops) or (Has(Flare) and HorizontalAttack)"
       },
       {
         "Name": "Katana Puzzle Reward",
@@ -1755,7 +1861,9 @@
         "Logic": "Has(Katana) or CanUse(Earth Spear) or CanUse(Bomb)"
       },
       {
-        "ConnectionType": "Unique",
+        "Name": "Takamagahara Shrine Neck",
+        "ID": "f08Neck",
+        "ConnectionType": "OneWay",
         "ConnectingAreaName": "Heavens Labyrinth Cog",
         "Logic": "IsDead(Raijin and Fujin) and CanChant(Earth) and CanChant(Wind) and CanChant(Fire) and CanChant(Sea) and CanChant(Heaven) and CanWarp"
       },
@@ -1991,7 +2099,15 @@
         "Logic": "Has(Ancient Battery) and CanReach(Heavens Labyrinth) and CanWarp and HorizontalAttack"
       }
     ],
-    "Exits": []
+    "Exits": [
+      {
+        "Name": "Heavens Labyrinth Cog",
+        "ID": "f09In",
+        "ConnectionType": "OneWay",
+        "ConnectingAreaName": "Takamagahara Shrine Main",
+        "Logic": "False"
+      }
+    ]
   },
   {
     "Name": "Valhalla Main",
@@ -2190,7 +2306,12 @@
       {
         "Name": "Maats Feather Chest",
         "LocationType": "Chest",
-        "Logic": "CanReach(Ancient Chaos Tablet) and IsDead(Ammit) and Has(Feather) and PuzzleFinished(Judgement Puzzle)"
+        "Logic": "CanReach(Ancient Chaos Tablet) and IsDead(Ammit) and Has(Feather) and CanChant(Heaven) and CanChant(Sun) and CanChant(Earth) and CanChant(Fire) and IsDead(Sekhmet)"
+      },
+      {
+        "Name": "Research DSLM",
+        "LocationType": "FreeStanding",
+        "Logic": "True"
       },
       {
         "Name": "Kero Shop 1",
@@ -2217,28 +2338,10 @@
         }
       },
       {
-        "Name": "Footstep Puzzle",
-        "LocationType": "Puzzle",
-        "Logic": "CanChant(Heaven) and CanChant(Sun) and CanChant(Earth)",
-        "Item": {
-          "Name": "Footstep Puzzle",
-          "IsRequired": true
-        }
-      },
-      {
-        "Name": "Judgement Puzzle",
-        "LocationType": "Puzzle",
-        "Logic": "CanChant(Heaven) and CanChant(Sun) and CanChant(Earth) and CanChant(Fire) and IsDead(Sekhmet)",
-        "Item": {
-          "Name": "Judgement Puzzle",
-          "IsRequired": true
-        }
-      },
-      {
         "Name": "Sekhmet",
         "LocationType": "Miniboss",
-        "Logic": "PuzzleFinished(Footstep Puzzle) and OrbCount(3) and (Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Axe) or Has(Katana) or CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Chakram) or CanUse(Pistol))",
-        "HardLogic": "PuzzleFinished(Footstep Puzzle)",
+        "Logic": "CanChant(Heaven) and CanChant(Sun) and CanChant(Earth) and OrbCount(3) and (Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Axe) or Has(Katana) or CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Chakram) or CanUse(Pistol))",
+        "HardLogic": "CanChant(Heaven) and CanChant(Sun) and CanChant(Earth)",
         "Item": {
           "Name": "Sekhmet",
           "IsRequired": true
@@ -2278,9 +2381,11 @@
         "Logic": "False or Setting(Random Gates)"
       },
       {
-        "ConnectionType": "Unique",
+        "Name": "Dark Star Lord's Mausoleum Pyramid",
+        "ID": "f11Pyramid",
+        "ConnectionType": "OneWay",
         "ConnectingAreaName": "Nibiru",
-        "Logic": "Has(Grapple Claw) and Has(Mjolnir) and Has(Claydoll Suit) and Has(Pyramid Crystal) and Has(Destiny Tablet) and CanChant(Heaven) and CanChant(Moon) and CanChant(Fire) and CanChant(Sea) and CanChant(Sun)"
+        "Logic": "Has(Grapple Claw) and Has(Mjolnir) and Has(Pyramid Crystal) and Has(Destiny Tablet) and CanChant(Heaven) and CanChant(Moon) and CanChant(Fire) and CanChant(Sea) and CanChant(Sun)"
       }
     ]
   },
@@ -2363,12 +2468,12 @@
       {
         "Name": "Night Mantra Mural",
         "LocationType": "Mural",
-        "Logic": "Has(Death Sigil) and Has(Snapshot)"
+        "Logic": "Has(Death Sigil) and Has(Snapshot) and Has(Claydoll Suit)"
       },
       {
         "Name": "Dissonance (Nibiru)",
         "LocationType": "Dissonance",
-        "Logic": "Has(Beherit) and SkullCount(12) and Has(Power Band) and Has(Mjolnir)",
+        "Logic": "Has(Beherit) and SkullCount(12) and Has(Power Band) and Has(Mjolnir) and Has(Claydoll Suit)",
         "Item": {
           "Name": "Dissonance",
           "IsRequired": true
@@ -2377,7 +2482,9 @@
     ],
     "Exits": [
       {
-        "ConnectionType": "Unique",
+        "Name": "Nibiru Spaceship",
+        "ID": "fNibiru",
+        "ConnectionType": "OneWay",
         "ConnectingAreaName": "Dark Lords Mausoleum Main",
         "Logic": "False"
       }
@@ -2808,7 +2915,7 @@
       {
         "ConnectionType": "Internal",
         "ConnectingAreaName": "Eternal Prison Doom Hel",
-        "Logic": "((IsDead(Vidofnir) and GuardianKills(5)) or Setting(Random Soul Gates)) and IsDead(Hraesvelgr) and PuzzleFinished(Garm) and CanUse(Bomb) and Has(Holy Grail) and Has(Grapple Claw) and Has(Gale Fibula) and Has(Claydoll Suit) and Has(Gloves) and Has(Anchor) and Has(Feather) and Has(Life Sigil) and (Has(Hand Scanner) or Setting(AutoScan))"
+        "Logic": "((IsDead(Vidofnir) and GuardianKills(5)) or Setting(Random Soul Gates)) and IsDead(Hraesvelgr) and PuzzleFinished(Garm) and CanUse(Bomb) and Has(Holy Grail) and Has(Grapple Claw) and Has(Gale Fibula) and Has(Claydoll Suit) and Has(Gloves) and Has(Anchor) and Has(Feather) and (Has(Hand Scanner) or Setting(AutoScan))"
       }
     ]
   },
@@ -2859,7 +2966,7 @@
       {
         "Name": "Death Sigil Chest",
         "LocationType": "Chest",
-        "Logic": "Has(Mjolnir) and Has(Life Sigil) and (Has(Death Sigil) or ((Has(Hand Scanner) or Setting(AutoScan)) and Has(Future Development Company) and CanWarp))"
+        "Logic": "Has(Mjolnir) and Has(Life Sigil) and ((Has(Death Sigil) and Has(Feather)) or ((Has(Hand Scanner) or Setting(AutoScan)) and Has(Future Development Company) and CanWarp))"
       },
       {
         "Name": "Mother Mantra Mural",
@@ -2923,7 +3030,7 @@
       {
         "ConnectionType": "Internal",
         "ConnectingAreaName": "Eternal Prison Doom Top",
-        "Logic": "Has(Death Sigil)"
+        "Logic": "Has(Death Sigil) and (Has(Feather) or ((Has(Hand Scanner) or Setting(AutoScan)) and Has(Future Development Company) and CanWarp))"
       },
       {
         "Name": "Eternal Prison Gloom Soul Gate (D-2)",

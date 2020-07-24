@@ -131,7 +131,7 @@ namespace LaMulana2Randomizer
             foreach (Item item in FileUtils.GetItemsFromJson())
                 state.CollectItem(item);
 
-            List<Location> requiredLocations = randomiser.GetPlacedRequiredItemLocations();
+            List<Location> requiredLocations = randomiser.GetPlacedLocations();
             List<Location> reachableLocations;
             do
             {
@@ -151,7 +151,7 @@ namespace LaMulana2Randomizer
                 return false;
 
             //check to see if all locations are accessable
-            foreach (Location location in randomiser.GetPlacedLocations())
+            foreach (Location location in randomiser.GetLocations())
             {
                 if (!location.CanReach(state))
                     return false;
@@ -160,7 +160,7 @@ namespace LaMulana2Randomizer
             //check to see if its possible to actually escape
             state.EscapeCheck = true;
             state.StartingArea = randomiser.GetArea("Immortal Battlefield Main");
-            List<string> exitNames = new List<string>() { "Cliff", "Gate of Guidance", "Mausoleum of Giants", "Village of Departure", "Gate of Illusion", "Nibiru"};
+            List<string> exitNames = new List<string>() { "Cliff", "Gate of Guidance", "Mausoleum of Giants", "Village of Departure", "Gate of Illusion"};
             foreach(string exitName in exitNames)
             {
                 state.ClearCheckedAreasAndEntrances();

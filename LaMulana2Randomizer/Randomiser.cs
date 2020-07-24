@@ -84,7 +84,11 @@ namespace LaMulana2Randomizer
                 }
             }
 
-            if (!Settings.FullRandomEntrances)
+            if (Settings.FullRandomEntrances)
+            {
+                FullRandomEntrances();
+            }
+            else
             {
                 if (Settings.RandomHorizontalEntraces)
                     RandomiseHorizontalEntrances();
@@ -94,10 +98,6 @@ namespace LaMulana2Randomizer
 
                 if (Settings.RandomGateEntraces)
                     RandomiseGateEntrances();
-            }
-            else
-            {
-                FullRandomEntrances();
             }
 
             if (Settings.RandomSoulGateEntraces)
@@ -197,6 +197,7 @@ namespace LaMulana2Randomizer
         {
             List<Item> items = FileUtils.GetItemsFromJson();
 
+            //remove the starting weapon from the item pool
             StartingWeapon = ItemPool.GetAndRemove(StartingWeaponID, items);
 
             //Places weights at a starting shop so the player can buy them at the start of the game
@@ -213,6 +214,7 @@ namespace LaMulana2Randomizer
                 GetLocation("Hiner Shop 4").PlaceItem(ItemPool.GetAndRemove(ItemID.Map2, items));
             }
 
+            //get all the ammo/weights from the item pool
             List<Item> shopOnlyItems = Shuffle.FisherYates(ItemPool.GetAndRemoveShopOnlyItems(items), random);
             //place the weights and ammo in shops first since they can only be in shops
             PlaceShopItems(shopOnlyItems, items);
@@ -228,13 +230,16 @@ namespace LaMulana2Randomizer
             if (!Settings.RandomFDC && Settings.ShopPlacement != ShopPlacement.Original) 
                 earlyItems.Add(ItemPool.GetAndRemove(ItemID.FutureDevelopmentCompany, items));
 
-            earlyItems = Shuffle.FisherYates(earlyItems, random);
+            //place these items now before anythting else
             RandomiseWithChecks(GetUnplacedLocations(), earlyItems, new List<Item>());
 
             //place mantras if they are not fully randomised
             PlaceMantras(items);
 
-            //split the remaining item it required/non required
+            //place research if it is not randomised
+            PlaceResearch(items);
+
+            //split the remaining items into required/non required
             List<Item> requiredItems = Shuffle.FisherYates(ItemPool.GetRequiredItems(items), random);
             List<Item> nonRequiredItems = Shuffle.FisherYates(ItemPool.GetNonRequiredItems(items), random);
 
@@ -301,7 +306,6 @@ namespace LaMulana2Randomizer
 
                     if (item.IsRequired && item.ID < ItemID.ShurikenAmmo)
                         item.PriceMultiplier = multiplier;
-
                 }
                 playthrough.RemoveFalseCheckedAreasAndEntrances();
             }
@@ -321,6 +325,11 @@ namespace LaMulana2Randomizer
                 throw new InvalidLocationException($"Location does not exist: {locationName}");
 
             return location;
+        }
+
+        public List<Location> GetLocations()
+        {
+            return locations.Values.ToList();
         }
 
         public List<Location> GetLocationsOfType(LocationType type)
@@ -387,12 +396,15 @@ namespace LaMulana2Randomizer
 
                 //now unlock all the shop slots that were locked
                 foreach (var location in GetLocationsOfType(LocationType.Shop))
-                        location.IsLocked = false;
+                    location.IsLocked = false;
             }
             else 
             {
                 //otherwise place items how they are originally
-                GetLocation("Nebur Shop 2").PlaceItem(ItemPool.GetAndRemove(ItemID.YagooMapReader, items));
+                //if we start with a subweapon this item has to go somewhere else since ammo is placed in slot 2
+                if (StartingWeaponID <= ItemID.Katana)
+                    GetLocation("Nebur Shop 2").PlaceItem(ItemPool.GetAndRemove(ItemID.YagooMapReader, items));
+
                 GetLocation("Nebur Shop 3").PlaceItem(ItemPool.GetAndRemove(ItemID.TextTrax, items));
 
                 GetLocation("Modro Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Buckler, items));
@@ -490,6 +502,23 @@ namespace LaMulana2Randomizer
             {
                 List<Item> mantras = Shuffle.FisherYates(ItemPool.GetAndRemoveMantras(items), random);
                 RandomiseWithChecks(GetUnplacedLocationsOfType(LocationType.Mural), mantras, items);
+            }
+        }
+
+        private void PlaceResearch(List<Item> items)
+        {
+            if (!Settings.RandomResearch)
+            {
+                GetLocation("Research Annwfn").PlaceItem(ItemPool.GetAndRemove(ItemID.Research1, items));
+                GetLocation("Research IB Top Left").PlaceItem(ItemPool.GetAndRemove(ItemID.Research2, items));
+                GetLocation("Research IB Top Right").PlaceItem(ItemPool.GetAndRemove(ItemID.Research3, items));
+                GetLocation("Research IB Tent 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Research4, items));
+                GetLocation("Research IB Tent 2").PlaceItem(ItemPool.GetAndRemove(ItemID.Research5, items));
+                GetLocation("Research IB Tent 3").PlaceItem(ItemPool.GetAndRemove(ItemID.Research6, items));
+                GetLocation("Research IB Pit").PlaceItem(ItemPool.GetAndRemove(ItemID.Research7, items));
+                GetLocation("Research IB Left").PlaceItem(ItemPool.GetAndRemove(ItemID.Research8, items));
+                GetLocation("Research IT").PlaceItem(ItemPool.GetAndRemove(ItemID.Research9, items));
+                GetLocation("Research DSLM").PlaceItem(ItemPool.GetAndRemove(ItemID.Research10, items));
             }
         }
 
@@ -911,23 +940,27 @@ namespace LaMulana2Randomizer
                 entrances.AddRange(GetConnectionsOfType(ExitType.Gate));
             }
 
+            if (Settings.IncludeUniqueTransitions)
+            {
+                entrances.AddRange(GetConnectionsOfType(ExitType.OneWay));
+            }
+
             Exit entrance1 = null;
             Exit entrance2 = null;
 
             bool cavernToCliff = false;
             bool illusionToCliff = false;
 
-            //place the cliff  first just to see if gets placed anywhere that affects any other placement logic and then
-            //place one of the cavern entrances to stop it looping on itself
             if (Settings.RandomHorizontalEntraces)
             {
+                //place the cliff  first just to see if gets placed anywhere that affects any other placement logic and then
                 entrance1 = entrances.Find(x => x.ID == ExitID.fP02Left);
                 entrances.Remove(entrance1);
                 do
                 {
                     entrance2 = entrances[random.Next(entrances.Count)];
                 } while ((entrance2.ID == ExitID.f01Right && (!Settings.RandomLadderEntraces || Settings.ReduceDeadEndStarts)) || entrance2.IsInaccessible() 
-                            || entrance2.ID == ExitID.f06_2GateP0);   
+                            || entrance2.ID == ExitID.f06_2GateP0 || entrance2.ID == ExitID.fNibiru);   
                 
                 entrances.Remove(entrance2);
 
@@ -952,6 +985,7 @@ namespace LaMulana2Randomizer
                 ExitPairs.Add((entrance1.ID, entrance2.ID));
                 EntrancePairs.Add($"    {entrance1.Name} - {entrance2.Name}");
 
+                //place one of the cavern entrances to stop it looping on itself
                 entrance1 = entrances.Find(x => x.ID == ExitID.fP00Left);
                 if(entrance1 != null)
                 {
@@ -975,6 +1009,7 @@ namespace LaMulana2Randomizer
                     EntrancePairs.Add($"    {entrance1.Name} - {entrance2.Name}");
                 }
 
+                //place main village entrance now if reduce dead end starts is on
                 if (Settings.ReduceDeadEndStarts)
                 {
                     entrance1 = entrances.Find(x => x.ID == ExitID.f01Right);
@@ -1050,6 +1085,13 @@ namespace LaMulana2Randomizer
                 priorityEntrances.Add(entrances.Find(x => x.ID == ExitID.f03GateYC));
             }
 
+            if (Settings.IncludeUniqueTransitions)
+            {
+                priorityEntrances.Add(entrances.Find(x => x.ID == ExitID.f03In));
+                priorityEntrances.Add(entrances.Find(x => x.ID == ExitID.f09In));
+                priorityEntrances.Add(entrances.Find(x => x.ID == ExitID.fNibiru));
+            }
+
             priorityEntrances.RemoveAll(x => x == null);
 
             foreach (Exit entrance in priorityEntrances)
@@ -1068,26 +1110,13 @@ namespace LaMulana2Randomizer
                     entrances.Remove(entrance1);
                 }
 
-                if (entrance1.ID == ExitID.f01Down)
+                do
                 {
-                    do
-                    {
-                        entrance2 = entrances[random.Next(entrances.Count)];
-                    } while ((entrance2.ID == ExitID.fL08Right || entrance2.ID == ExitID.fL05Up || entrance2.ID == ExitID.fLGate || entrance2.ID == ExitID.f00GateYA) && villageDeadEnd);
-                }
-                else
-                {
-                    do
-                    {
-                        entrance2 = entrances[random.Next(entrances.Count)];
-                    } while (entrance1.ID == entrance2.ID);
-                }
+                    entrance2 = entrances[random.Next(entrances.Count)];
+                } while (entrance1.ID == entrance2.ID);
 
                 entrances.Remove(entrance2);
 
-                if ((entrance1.ID == ExitID.f01Right && (entrance2.ID == ExitID.fL08Right || entrance2.ID == ExitID.fL05Up)) ||
-                    (entrance2.ID == ExitID.f01Right && (entrance1.ID == ExitID.fL08Right || entrance1.ID == ExitID.fL05Up)))
-                    villageDeadEnd = true;
 
                 FixFullRandomEntranceLogic(entrance1, entrance2);
                 FixFullRandomEntranceLogic(entrance2, entrance1);
@@ -1171,9 +1200,21 @@ namespace LaMulana2Randomizer
                     entrance2.BuildLogicTree();
                     break;
                 }
+                case ExitID.f08Neck:
+                {
+                    entrance2.AppendLogicString(" and CanKill(Raijin and Fujin) and CanWarp");
+                    entrance2.BuildLogicTree();
+                    break;
+                }
                 case ExitID.f09GateP0:
                 {
                     entrance2.AppendLogicString(" and CanWarp");
+                    entrance2.BuildLogicTree();
+                    break;
+                }
+                case ExitID.f11Pyramid:
+                {
+                    entrance2.AppendLogicString(" and False");
                     entrance2.BuildLogicTree();
                     break;
                 }
@@ -1289,7 +1330,6 @@ namespace LaMulana2Randomizer
                 gate2.AppendLogicString("and False");
             }
         }
-
 
         private void VanillaItemPlacement(List<Item> items)
         {

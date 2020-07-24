@@ -7,7 +7,7 @@
         xmlns:main="clr-namespace:LaMulana2Randomizer"
         xmlns:vm="clr-namespace:LaMulana2Randomizer.ViewModels"
         mc:Ignorable="d"
-        Title="{Binding Title}"  Width="350" Height="550" MinWidth="350" MinHeight="550">
+        Title="{Binding Title}"  Width="350" Height="550" MinWidth="350" MinHeight="600">
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
@@ -50,6 +50,7 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
@@ -115,6 +116,9 @@
                                 </ToolTip>
                             </StackPanel.ToolTip>
                         </StackPanel>
+                    </GroupBox>
+                    <GroupBox Header="Research" Grid.Row="3">
+                        <CheckBox Name="ResearchCheck" Content="Randomised" IsChecked="{Binding Settings.RandomResearch}"/>
                     </GroupBox>
                 </Grid>
             </TabItem>
@@ -264,6 +268,23 @@
                                         <TextBlock Text="Takes all the entrances types selected to be randomised excluding soul gates and randomises them in a way where any entrance can lead to any other entrance." />
                                     </ToolTip>
                                 </CheckBox.ToolTip>
+                            </CheckBox>
+                            <CheckBox Name="IncludeOneWays" IsChecked="{Binding Settings.IncludeUniqueTransitions}" Content="Include Unique Transitions" Margin="20,2,2,2">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="Adds the Annwfn to Immortal Battlefield, Takamagahara Shrine to Heavens Labyrinth, and Dark Star Lord's Mausoleum to Nibiru transitions to the entrance pool." />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                                <CheckBox.Style>
+                                    <Style TargetType="CheckBox">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=FullRandomEntrances, Path=IsChecked}" Value="True">
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </CheckBox.Style>
                             </CheckBox>
                         </StackPanel>
                     </GroupBox>

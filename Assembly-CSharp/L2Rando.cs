@@ -133,6 +133,18 @@ namespace LM2RandomiserMod
                 //    BoxCollider collider = obj.AddComponent<BoxCollider>();
                 //    collider.size = new Vector3(20, 10, 0);
                 //}
+                else if (scene.name.Equals("field02"))
+                {
+                    GameObject obj = new GameObject
+                    {
+                        name = "PlayerStart f02Bifrost"
+                    };
+                    obj.transform.SetParent(bgScroll.transform);
+                    PlayerAnchor2 playerAnchor = obj.AddComponent<PlayerAnchor2>();
+                    playerAnchor.transform.position = new Vector3(-480, -460, 0);
+                    bgScroll.WarpAnchors.Add(playerAnchor);
+
+                }
                 else if (scene.name.Equals("field03"))
                 {
                     GameObject obj = new GameObject
@@ -155,11 +167,170 @@ namespace LM2RandomiserMod
                     playerAnchor.transform.position = new Vector3(840, 640, 0);
                     bgScroll.WarpAnchors.Add(playerAnchor);
                 }
+                else if (scene.name.Equals("field08"))
+                {
+                    GameObject obj = new GameObject
+                    {
+                        name = "PlayerStart f08Neck"
+                    };
+                    obj.transform.SetParent(bgScroll.transform);
+                    PlayerAnchor2 playerAnchor = obj.AddComponent<PlayerAnchor2>();
+                    playerAnchor.transform.position = new Vector3(910, 170, 0);
+                    bgScroll.WarpAnchors.Add(playerAnchor);
+                }
+                else if (scene.name.Equals("field10"))
+                {
+                    GameObject obj = new GameObject()
+                    {
+                        name = "CorridorSealFlagWatcher"
+                    };
+                    obj.transform.position = new Vector3(48, 258, 0);
+                    FlagWatcherScript flagWatcher = obj.AddComponent<FlagWatcherScript>();
+                    flagWatcher.actionWaitFrames = 300;
+                    flagWatcher.autoFinish = false;
+                    flagWatcher.characterEfxType = MoveCharacterBase.CharacterEffectType.NONE;
+                    flagWatcher.startAreaMode = MoveCharacterBase.ActionstartAreaMode.VIEW;
+                    flagWatcher.taskLayerNo = 2;
+                    flagWatcher.AnimeData = new GameObject[0];
+                    flagWatcher.ResetFlags = new L2FlagBoxEnd[0];
+                    flagWatcher.CheckFlags = new L2FlagBoxParent[1];
+                    flagWatcher.CheckFlags[0] = new L2FlagBoxParent
+                    {
+                        BOX = new L2FlagBox[]
+                        {
+                            new L2FlagBox()
+                            {
+                                seet_no1 = 3,
+                                flag_no1 = 93,
+                                seet_no2 = -1,
+                                flag_no2 = 0,
+                                logic = LOGIC.AND,
+                                comp = COMPARISON.Equal
+                            },
+                            new L2FlagBox()
+                            {
+                                seet_no1 = 3,
+                                flag_no1 = 15,
+                                seet_no2 = -1,
+                                flag_no2 = 4,
+                                logic = LOGIC.AND,
+                                comp = COMPARISON.Equal
+                            },
+                            new L2FlagBox()
+                            {
+                                seet_no1 = 2,
+                                flag_no1 = 3,
+                                seet_no2 = -1,
+                                flag_no2 = 7,
+                                logic = LOGIC.AND,
+                                comp = COMPARISON.Equal
+                            },
+                        }
+                    };
+                    flagWatcher.ActionFlags = new L2FlagBoxEnd[]
+                    {
+                        new L2FlagBoxEnd()
+                        {
+                            seet_no1 = 3,
+                            flag_no1 = 87,
+                            data = 1,
+                            calcu = CALCU.EQR
+                        },
+                        new L2FlagBoxEnd()
+                        {
+                            seet_no1 = 3,
+                            flag_no1 = 88,
+                            data = 1,
+                            calcu = CALCU.EQR
+                        },
+                        new L2FlagBoxEnd()
+                        {
+                            seet_no1 = 3,
+                            flag_no1 = 89,
+                            data = 1,
+                            calcu = CALCU.EQR
+                        },
+                        new L2FlagBoxEnd()
+                        {
+                            seet_no1 = 3,
+                            flag_no1 = 90,
+                            data = 1,
+                            calcu = CALCU.EQR
+                        },
+                        new L2FlagBoxEnd()
+                        {
+                            seet_no1 = 3,
+                            flag_no1 = 91,
+                            data = 1,
+                            calcu = CALCU.EQR
+                        },
+                        new L2FlagBoxEnd()
+                        {
+                            seet_no1 = 3,
+                            flag_no1 = 92,
+                            data = 1,
+                            calcu = CALCU.EQR
+                        },
+                        new L2FlagBoxEnd()
+                        {
+                            seet_no1 = 3,
+                            flag_no1 = 93,
+                            data = 1,
+                            calcu = CALCU.EQR
+                        }
+                    };
+                    flagWatcher.finishFlags = new L2FlagBoxParent[1];
+                    flagWatcher.finishFlags[0] = new L2FlagBoxParent
+                    {
+                        BOX = new L2FlagBox[]
+                        {
+                            new L2FlagBox()
+                            {
+                                seet_no1 = 3,
+                                flag_no1 = 93,
+                                seet_no2 = -1,
+                                flag_no2 = 1,
+                                logic = LOGIC.NON,
+                                comp = COMPARISON.Equal
+                            }
+                        }
+                    };
+                }
                 else if (scene.name.Equals("fieldSpace"))
                 {
                     foreach (HolyGrailCancellerScript grailCanceller in FindObjectsOfType<HolyGrailCancellerScript>())
                         grailCanceller.gameObject.SetActive(false);
                 }
+                else if (scene.name.Equals("fieldL08"))
+                {
+                    foreach (ShopGateScript talkGate in FindObjectsOfType<ShopGateScript>())
+                    {
+                        if (talkGate.shdowtask != null)
+                        {
+                            foreach (L2FlagBoxParent flagBoxParent in talkGate.shdowtask.startflag)
+                            {
+                                foreach (L2FlagBox flagBox in flagBoxParent.BOX)
+                                {
+                                    ItemID itemID = GetItemIDForLocation(LocationID.FreyasItem);
+                                    ItemInfo itemInfo = ItemDB.GetItemInfo(itemID);
+                                    flagBox.comp = COMPARISON.Less;
+                                    flagBox.seet_no1 = itemInfo.ItemSheet;
+                                    flagBox.flag_no1 = itemInfo.ItemFlag;
+                                    flagBox.flag_no2 = 1;
+                                    if (itemID == ItemID.ChainWhip || itemID == ItemID.SilverShield || itemID == ItemID.MobileSuperx3P)
+                                    {
+                                        flagBox.flag_no2 = 2;
+                                    }
+                                    else if (itemID == ItemID.FlailWhip || itemID == ItemID.AngelShield)
+                                    {
+                                        flagBox.flag_no2 = 3;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
 
                 //these cause the message to popup when you record a mantra for the first time, so just deactivate
                 //the gameobject so they don't appear
@@ -176,6 +347,7 @@ namespace LM2RandomiserMod
                     if (locationID != LocationID.None)
                         snapTarget.mode = SnapShotTargetScript.SnapShotMode.SOFTWARE;
                 }
+
 
                 foreach (FlagWatcherScript flagWatcher in FindObjectsOfType<FlagWatcherScript>())
                 {
@@ -234,6 +406,20 @@ namespace LM2RandomiserMod
                             }
                         }
                     }
+
+                    if (scene.name.Equals("field02"))
+                    {
+                        foreach (L2FlagBoxParent flagBoxParent in flagWatcher.CheckFlags)
+                        {
+                            foreach (L2FlagBox flagBox in flagBoxParent.BOX)
+                            {
+                                if (flagBox.seet_no1 == 3 && flagBox.flag_no1 == 30 && flagBox.flag_no2 == 80)
+                                {
+                                    flagBox.flag_no2 = 255;
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -282,12 +468,12 @@ namespace LM2RandomiserMod
             List<L2FlagBoxEnd> getFlags = new List<L2FlagBoxEnd>();
             if (itemID >= ItemID.SacredOrb0 && itemID <= ItemID.SacredOrb9)
             {
-                getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = itemInfo.itemFlag, data = 1 });
+                getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = itemInfo.ItemFlag, data = 1 });
                 getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 0, flag_no1 = 2, data = 1 });
             }
             else if (itemID >= ItemID.CrystalSkull1 && itemID <= ItemID.CrystalSkull12)
             {
-                getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = itemInfo.itemFlag, data = 1 });
+                getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = itemInfo.ItemFlag, data = 1 });
                 getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 0, flag_no1 = 32, data = 1 });
                 getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 3, flag_no1 = 30, data = 4 });
                 if (autoPlaceSkull)
@@ -298,13 +484,17 @@ namespace LM2RandomiserMod
             }
             else if ((itemID >= ItemID.AnkhJewel1 && itemID <= ItemID.AnkhJewel9) || Array.IndexOf(storyItems, itemID) > -1)
             {
-                getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = itemInfo.itemFlag, data = 1 });
-                getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 3, flag_no1 = 30, data = 4 });
+                short data = 4;
+                if (itemID == ItemID.GrappleClaw || itemID == ItemID.HolyGrail)
+                    data = 2;
+
+                getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = itemInfo.ItemFlag, data = 1 });
+                getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 3, flag_no1 = 30, data = data });
             }
             else
             {
                 short flagValue = 1;
-                if (itemID == ItemID.ChainWhip || itemID == ItemID.SilverShield || itemID == ItemID.MobileSuperx3P)
+                if (itemID == ItemID.ChainWhip || itemID == ItemID.SilverShield || itemID == ItemID.MobileSuperx3P || itemID == ItemID.LampofTime)
                 {
                     flagValue = 2;
                 }
@@ -313,7 +503,7 @@ namespace LM2RandomiserMod
                     flagValue = 3;
                 }
 
-                getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = 2, flag_no1 = itemInfo.itemFlag, data = flagValue });
+                getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = itemInfo.ItemSheet, flag_no1 = itemInfo.ItemFlag, data = flagValue });
             }
 
             return getFlags.ToArray();
@@ -342,7 +532,7 @@ namespace LM2RandomiserMod
             try
             {
                 using (BinaryReader br = new BinaryReader(File.Open(Path.Combine(Directory.GetCurrentDirectory(),
-                    "LaMulana2Randomizer\\Seed\\seed.lm2r"), FileMode.Open)))
+                    Path.Combine("LaMulana2Randomizer", Path.Combine("Seed", "seed.lm2r"))), FileMode.Open)))
                 {
                     StartingWeapon = (ItemID)br.ReadInt32();
                     AutoScanTablets = br.ReadBoolean();
@@ -616,6 +806,27 @@ namespace LM2RandomiserMod
             return null;
         }
 
+        private LocationID GetLocationIDForResearch(L2FlagBoxParent[] flags)
+        {
+            foreach (L2FlagBoxParent flagBoxParent in flags)
+            {
+                foreach (L2FlagBox flagBox in flagBoxParent.BOX)
+                {
+                    if (flagBox.seet_no1 == 6 && flagBox.flag_no1 == 43) return LocationID.ResearchAnnwfn;
+                    else if (flagBox.seet_no1 == 8 && flagBox.flag_no1 == 45) return LocationID.ResearchIT;
+                    else if (flagBox.seet_no1 == 7 && flagBox.flag_no1 == 78) return LocationID.ResearchIBTopLeft;
+                    else if (flagBox.seet_no1 == 7 && flagBox.flag_no1 == 79) return LocationID.ResearchIBTopRight;
+                    else if (flagBox.seet_no1 == 7 && flagBox.flag_no1 == 80) return LocationID.ResearchIBTent1;
+                    else if (flagBox.seet_no1 == 7 && flagBox.flag_no1 == 81) return LocationID.ResearchIBPit;
+                    else if (flagBox.seet_no1 == 7 && flagBox.flag_no1 == 83) return LocationID.ResearchIBLeft;
+                    else if (flagBox.seet_no1 == 7 && flagBox.flag_no1 == 85) return LocationID.ResearchIBTent2;
+                    else if (flagBox.seet_no1 == 7 && flagBox.flag_no1 == 86) return LocationID.ResearchIBTent3;
+                    else if (flagBox.seet_no1 == 15 && flagBox.flag_no1 == 44) return LocationID.ResearchDSLM;
+                }
+            }
+            return LocationID.None;
+        }
+
         private bool IsLocationCursed(LocationID locationID)
         {
             foreach (LocationID cursedID in cursedChests)
@@ -636,8 +847,7 @@ namespace LM2RandomiserMod
                     continue;
 
                 LocationID locationID = (LocationID)oldItemData.getItemName();
-
-                if (oldItemData != null && locationToItemMap.TryGetValue(locationID, out ItemID newItemID))
+                if (locationToItemMap.TryGetValue(locationID, out ItemID newItemID))
                 {
                     ItemInfo newItemInfo = ItemDB.GetItemInfo(newItemID);
                     TreasureBoxScript newBox;
@@ -670,7 +880,8 @@ namespace LM2RandomiserMod
                         {
                             if (flagBox.seet_no1 == 2)
                             {
-                                flagBox.flag_no1 = newItemInfo.itemFlag;
+                                flagBox.seet_no1 = newItemInfo.ItemSheet;
+                                flagBox.flag_no1 = newItemInfo.ItemFlag;
                                 flagBox.flag_no2 = 1;
 
                                 //the whips and shields use the same flag just increment higher with each upgrade cant just use the same as other items
@@ -696,7 +907,8 @@ namespace LM2RandomiserMod
                         {
                             if (flagBox.seet_no1 == 2)
                             {
-                                flagBox.flag_no1 = newItemInfo.itemFlag;
+                                flagBox.seet_no1 = newItemInfo.ItemSheet;
+                                flagBox.flag_no1 = newItemInfo.ItemFlag;
                                 flagBox.comp = COMPARISON.Equal;
                                 flagBox.flag_no2 = 0;
 
@@ -723,10 +935,10 @@ namespace LM2RandomiserMod
                     item.itemGetFlags = CreateGetFlags(newItemID, newItemInfo);
 
                     //Change the name used when calling setitem to correspond to new item
-                    item.itemLabel = newItemInfo.boxName;
+                    item.itemLabel = newItemInfo.BoxName;
 
                     //Change the sprite to correspond to new item
-                    item.gameObject.GetComponent<SpriteRenderer>().sprite = GetItemSprite(newItemInfo.boxName, newItemID);
+                    item.gameObject.GetComponent<SpriteRenderer>().sprite = GetItemSprite(newItemInfo.BoxName, newItemID);
                 }
             }
 
@@ -739,53 +951,128 @@ namespace LM2RandomiserMod
         {
             foreach (EventItemScript item in FindObjectsOfType<EventItemScript>())
             {
-                ItemData oldItemData = GetItemDataFromName(item.name);
-                if (oldItemData == null)
-                    continue;
+                LocationID locationID;
+                if (item.name.Contains("Research"))
+                {
+                    locationID = GetLocationIDForResearch(item.itemActiveFlag);
+                }
+                else
+                {
+                    ItemData oldItemData = GetItemDataFromName(item.name);
+                    if (oldItemData == null)
+                        continue;
+                    locationID = (LocationID)oldItemData.getItemName();
+                }
 
-                if (oldItemData != null && locationToItemMap.TryGetValue((LocationID)oldItemData.getItemName(), out ItemID newItemID))
+                ItemID newItemID;
+                if (locationToItemMap.TryGetValue(locationID, out newItemID))
                 {
                     ItemInfo newItemInfo = ItemDB.GetItemInfo(newItemID);
-
-                    //Change the Event Items active flags to correspond to the new item
-                    //These flags are used to set the item inactive after you have got it
-                    foreach (L2FlagBoxParent flagBoxParent in item.itemActiveFlag)
+                    if (locationID >= LocationID.ResearchAnnwfn && locationID <= LocationID.ResearchDSLM)
                     {
-                        foreach (L2FlagBox flagBox in flagBoxParent.BOX)
-                        {
-                            if (flagBox.seet_no1 == 2)
-                            {
-                                flagBox.flag_no1 = newItemInfo.itemFlag;
-                                flagBox.comp = COMPARISON.Equal;
-                                flagBox.flag_no2 = 0;
+                        if (locationID == LocationID.ResearchIBPit)
+                            item.gameObject.transform.position = item.gameObject.transform.position + new Vector3(0,20,0);
 
-                                //the whips and shields use the same flag just increment higher with each upgrade cant just use the same as other items
-                                if (newItemID == ItemID.ChainWhip || newItemID == ItemID.SilverShield || newItemID == ItemID.MobileSuperx3P)
+                        List<L2FlagBox> flags = new List<L2FlagBox>();
+                        L2FlagBox flagBox = new L2FlagBox()
+                        {
+                            seet_no1 = newItemInfo.ItemSheet,
+                            flag_no1 = newItemInfo.ItemFlag,
+                            seet_no2 = -1,
+                            flag_no2 = 0,
+                            comp = COMPARISON.Equal,
+                            logic = LOGIC.AND
+                        };
+
+                        //the whips and shields use the same flag just increment higher with each upgrade cant just use the same as other items
+                        if (newItemID == ItemID.ChainWhip || newItemID == ItemID.SilverShield || newItemID == ItemID.MobileSuperx3P)
+                        {
+                            flagBox.flag_no2 = 1;
+                            flagBox.comp = COMPARISON.LessEq;
+                        }
+                        else if (newItemID == ItemID.FlailWhip || newItemID == ItemID.AngelShield)
+                        {
+                            flagBox.flag_no2 = 2;
+                            flagBox.comp = COMPARISON.LessEq;
+                        }
+                        else if (newItemID == ItemID.Buckler)
+                        {
+                            flagBox.comp = COMPARISON.LessEq;
+                        }
+
+                        flags.Add(flagBox);
+
+                        if (locationID == LocationID.ResearchIBTent2)
+                        {
+                            flags.Add(new L2FlagBox()
+                            {
+                                seet_no1 = 3,
+                                flag_no1 = 0,
+                                seet_no2 = -1,
+                                flag_no2 = 7,
+                                comp = COMPARISON.GreaterEq,
+                                logic = LOGIC.AND
+                            });
+                        }
+                        else if (locationID == LocationID.ResearchIBTent3)
+                        {
+                            flags.Add(new L2FlagBox()
+                            {
+                                seet_no1 = 3,
+                                flag_no1 = 86,
+                                seet_no2 = -1,
+                                flag_no2 = 1,
+                                comp = COMPARISON.Equal,
+                                logic = LOGIC.AND
+                            });
+                        }
+
+                        item.itemActiveFlag[0].BOX = flags.ToArray();
+                    }
+                    else
+                    {
+                        //Change the Event Items active flags to correspond to the new item
+                        //These flags are used to set the item inactive after you have got it
+                        foreach (L2FlagBoxParent flagBoxParent in item.itemActiveFlag)
+                        {
+                            foreach (L2FlagBox flagBox in flagBoxParent.BOX)
+                            {
+                                if (flagBox.seet_no1 == 2)
                                 {
-                                    flagBox.flag_no2 = 1;
-                                    flagBox.comp = COMPARISON.LessEq;
-                                }
-                                else if (newItemID == ItemID.FlailWhip || newItemID == ItemID.AngelShield)
-                                {
-                                    flagBox.flag_no2 = 2;
-                                    flagBox.comp = COMPARISON.LessEq;
-                                }
-                                else if (newItemID == ItemID.Buckler)
-                                {
-                                    flagBox.comp = COMPARISON.LessEq;
+                                    flagBox.seet_no1 = newItemInfo.ItemSheet;
+                                    flagBox.flag_no1 = newItemInfo.ItemFlag;
+                                    flagBox.comp = COMPARISON.Equal;
+                                    flagBox.flag_no2 = 0;
+
+                                    //the whips and shields use the same flag just increment higher with each upgrade cant just use the same as other items
+                                    if (newItemID == ItemID.ChainWhip || newItemID == ItemID.SilverShield || newItemID == ItemID.MobileSuperx3P)
+                                    {
+                                        flagBox.flag_no2 = 1;
+                                        flagBox.comp = COMPARISON.LessEq;
+                                    }
+                                    else if (newItemID == ItemID.FlailWhip || newItemID == ItemID.AngelShield)
+                                    {
+                                        flagBox.flag_no2 = 2;
+                                        flagBox.comp = COMPARISON.LessEq;
+                                    }
+                                    else if (newItemID == ItemID.Buckler)
+                                    {
+                                        flagBox.comp = COMPARISON.LessEq;
+                                    }
                                 }
                             }
                         }
                     }
+
                     //Change the Event Items get flags to correspond to the new item
                     //These are flags that are set when the item is gotten
                     item.itemGetFlags = CreateGetFlags(newItemID, newItemInfo);
 
                     //Change the name used when calling setitem to correspond to new item
-                    item.itemLabel = newItemInfo.boxName;
+                    item.itemLabel = newItemInfo.BoxName;
 
                     //Change the sprite to correspond to new item
-                    item.gameObject.GetComponent<SpriteRenderer>().sprite = GetItemSprite(newItemInfo.boxName, newItemID);
+                    item.gameObject.GetComponent<SpriteRenderer>().sprite = GetItemSprite(newItemInfo.BoxName, newItemID);
                 }
             }
         }
@@ -831,6 +1118,10 @@ namespace LM2RandomiserMod
             {
                 return ExitID.None;
             }
+            else if (field.Equals("field11") && anchorName.Equals("PlayerStart"))
+            {
+                return ExitID.f11Pyramid;
+            }
             return ExitDB.AnchorNameToExitID(anchorName);
         }
 
@@ -864,6 +1155,7 @@ namespace LM2RandomiserMod
                     ExitInfo destinationInfo = ExitDB.GetExitInfo(destinationID);
                     gate.AnchorName = destinationInfo.AnchorName;
                     gate.FieldNo = destinationInfo.FieldNo;
+                    gate.AnchorID = -1;
 
                     ExitInfo exitInfo = ExitDB.GetExitInfo(exitID);
 
@@ -1121,24 +1413,24 @@ namespace LM2RandomiserMod
                 "{0}[@setf,1,54,=,1]\n[@anim,talk,1]\n[@p,1st-3]");
 
             //Check to see if you can get Giltoriyo's item
-            talkDataBase.cellData[3][4][1][0] = ChangeTalkFlagCheck(LocationID.GiltoriyoItem, COMPARISON.Greater, "[@iff,2,{0},&gt;,{1},giltoriyo,1st-3]\n[@anim,talk,1]\n[@p,1st-2]");
+            talkDataBase.cellData[3][4][1][0] = ChangeTalkFlagCheck(LocationID.GiltoriyoItem, COMPARISON.Greater, "[@iff,{0},{1},&gt;,{2},giltoriyo,1st-3]\n[@anim,talk,1]\n[@p,1st-2]");
 
             //Alsedana's itemf from Giltoriyo if didn't talk to Alsedana after vritra or vritra was after 6 guardians
             talkDataBase.cellData[3][7][1][0] = ChangeTalkStringAndFlagCheck(LocationID.AlsedanaItem,
-                "[@iff,2,{0},&gt;,{1},giltoriyo,2nd]\n[@exit]\n{2}[@anim,talk,1]\n[@p,1st-5]");
+                "[@iff,{0},{1},&gt;,{2},giltoriyo,2nd]\n[@exit]\n{3}[@anim,talk,1]\n[@p,1st-5]");
 
             //Fobos' 1st item
             talkDataBase.cellData[6][9][1][0] = ChangeTalkString(LocationID.FobosItem, "[@setf,5,16,=,5]\n[@anim,talk,1]\n{0}[@p,3rd-2]");
 
             //Fobos' 1st item check to see if you don't have the item
-            talkDataBase.cellData[5][3][1][0] = ChangeTalkFlagCheck(LocationID.FobosItem, COMPARISON.Less, "[@iff,5,16,=,0,fobos,1st]\n[@iff,2,{0},&lt;,{1},fobos,2nd]\n[@p,gS1]");
+            talkDataBase.cellData[5][3][1][0] = ChangeTalkFlagCheck(LocationID.FobosItem, COMPARISON.Less, "[@iff,5,16,=,0,fobos,1st]\n[@iff,{0},{1},&lt;,{2},fobos,2nd]\n[@p,gS1]");
             
             //Fobos' 1st item
             talkDataBase.cellData[5][16][1][0] = ChangeTalkString(LocationID.FobosItem, "[@exit]\n[@anim,talk,1]\n[@setf,5,17,=,1]\n{0}[@p,lastC]");
 
             //Fobos' 2nd item check
             talkDataBase.cellData[5][22][1][0] = ChangeTalkFlagCheck(LocationID.FobosItem2, COMPARISON.Less,
-                "[@setf,5,17,=,1]\n[@iff,2,{0},&lt;,{1},fobos,gS2]\n[@anim,stalk2,1]\n[@setf,23,15,=,2]\n[@anifla,mnext,swait]\n[@out]");
+                "[@setf,5,17,=,1]\n[@iff,{0},{1},&lt;,{2},fobos,gS2]\n[@anim,stalk2,1]\n[@setf,23,15,=,2]\n[@anifla,mnext,swait]\n[@out]");
 
             //Fobos' 2nd item
             talkDataBase.cellData[5][24][1][0] = ChangeTalkString(LocationID.FobosItem2, "[@exit]\n[@anim,talk,1]\n[@setf,23,15,=,4]\n{0}[@p,lastC]");
@@ -1148,7 +1440,7 @@ namespace LM2RandomiserMod
                 "[@anim,talk,1]\n{0}[@setf,5,67,=,1]\n[@p,lastC]");
 
             //Add check too Freya's starting mojiscript so she gives the item if you havent got it yet
-            talkDataBase.cellData[7][3][1][0] = ChangeTalkFlagCheck(LocationID.FreyasItem, COMPARISON.Less, "[@anifla,mfanim,wait2]\n[@iff,2,{0},&lt;,{1},freyja,1st-1]\n[@iff,3,95,&gt;,0,freyja,escape]\n" +
+            talkDataBase.cellData[7][3][1][0] = ChangeTalkFlagCheck(LocationID.FreyasItem, COMPARISON.Less, "[@anifla,mfanim,wait2]\n[@iff,{0},{1},&lt;,{2},freyja,1st-1]\n[@iff,3,95,&gt;,0,freyja,escape]\n" +
                 "[@anifla,mfanim,wait]\n[@iff,3,35,&gt;,7,freyja,8th]\n[@iff,3,35,=,6,freyja,7th3]\n[@iff,3,35,&gt;,3,freyja,7th2]\n[@iff,3,35,=,3,freyja,ragna]\n[@iff,3,35,=,2,freyja,4th]\n" +
                 "[@iff,3,35,=,1,freyja,3rd]\n[@iff,5,67,=,1,freyja,2nd]\n[@exit]\n[@anim,talk,1]\n[@p,2nd]");
 
@@ -1157,7 +1449,7 @@ namespace LM2RandomiserMod
                 "{0}[@setf,5,101,=,2]\n[@anim,talk,1]\n[@p,3rd-2]");
 
             //Add check too Mulbruk to see if you have her item
-            talkDataBase.cellData[10][3][1][0] = ChangeTalkFlagCheck(LocationID.MulbrukItem, COMPARISON.Less, "[@iff,2,{0},&lt;,{1},mulbruk2,3rd]\n[@iff,5,61,=,1,mulbruk2,mirror]\n" +
+            talkDataBase.cellData[10][3][1][0] = ChangeTalkFlagCheck(LocationID.MulbrukItem, COMPARISON.Less, "[@iff,{0},{1},&lt;,{2},mulbruk2,3rd]\n[@iff,5,61,=,1,mulbruk2,mirror]\n" +
                 "[@iff,5,86,=,1,mulbruk2,hint2]\n[@iff,5,87,=,1,mulbruk2,hint3]\n[@iff,5,88,=,1,mulbruk2,hint4]\n[@iff,5,89,=,1,mulbruk2,hint5]\n[@iff,5,90,=,1,mulbruk2,hint6]\n" +
                 "[@iff,5,91,=,1,mulbruk2,hint7]\n[@iff,5,92,=,1,mulbruk2,hint8]\n[@iff,5,93,=,1,mulbruk2,hint9]\n[@iff,5,94,=,1,mulbruk2,hint10]\n[@iff,5,95,=,1,mulbruk2,hint11]\n" +
                 "[@iff,3,33,&gt;,10,mulbruk2,5th]\n[@iff,5,0,=,2,mulbruk2,4th]\n[@anifla,mfanim,wait]\n[@iff,5,78,=,5,mulbruk2,hint1]\n[@anifla,mfanim,wait4]\n" +
@@ -1167,7 +1459,7 @@ namespace LM2RandomiserMod
 
             //Osiris' item
             talkDataBase.cellData[78][7][1][0] = ChangeTalkStringAndFlagCheck(LocationID.OsirisItem,
-                "[@iff,2,{0},&gt;,{1},f15-3,2nd]\n{2}[@anim,talk,1]\n[@p,lastC]");
+                "[@iff,{0},{1},&gt;,{2},f15-3,2nd]\n{3}[@anim,talk,1]\n[@p,lastC]");
         }
 
         private string ChangeTalkString(LocationID locationID, string original)
@@ -1177,13 +1469,13 @@ namespace LM2RandomiserMod
                 ItemInfo newItemInfo = ItemDB.GetItemInfo(newItemID);
                 
                 string take;
-                if (newItemInfo.boxName.Equals("Crystal S") || newItemInfo.boxName.Equals("Sacred Orb") || newItemInfo.boxName.Equals("MSX3p"))
+                if (newItemInfo.BoxName.Equals("Crystal S") || newItemInfo.BoxName.Equals("Sacred Orb") || newItemInfo.BoxName.Equals("MSX3p"))
                 {
-                    take = string.Format("[@take,{0},02item,1]\n", newItemInfo.boxName);
+                    take = string.Format("[@take,{0},02item,1]\n", newItemInfo.BoxName);
                 }
                 else
                 {
-                    take = string.Format("[@take,{0},02item,1]\n", newItemInfo.shopName);
+                    take = string.Format("[@take,{0},02item,1]\n", newItemInfo.ShopName);
                 }
 
                 //if the item has more than just its set flags add the flags to the mojiscript string
@@ -1242,7 +1534,7 @@ namespace LM2RandomiserMod
                     }
                 }
 
-                return string.Format(original, newItemInfo.itemFlag, flagValue);
+                return string.Format(original, newItemInfo.ItemSheet, newItemInfo.ItemFlag, flagValue);
             }
             return string.Empty;
         }
@@ -1266,13 +1558,13 @@ namespace LM2RandomiserMod
 
                 //TODO:put this is into a method to remove redundancy
                 string takeString;
-                if (newItemInfo.boxName.Equals("Crystal S") || newItemInfo.boxName.Equals("Sacred Orb") || newItemInfo.boxName.Equals("MSX3p"))
+                if (newItemInfo.BoxName.Equals("Crystal S") || newItemInfo.BoxName.Equals("Sacred Orb") || newItemInfo.BoxName.Equals("MSX3p"))
                 {
-                    takeString = string.Format("[@take,{0},02item,1]\n", newItemInfo.boxName);
+                    takeString = string.Format("[@take,{0},02item,1]\n", newItemInfo.BoxName);
                 }
                 else
                 {
-                    takeString = string.Format("[@take,{0},02item,1]\n", newItemInfo.shopName);
+                    takeString = string.Format("[@take,{0},02item,1]\n", newItemInfo.ShopName);
                 }
 
                 //if the item has more than just its set flags add the flags to the mojiscript string
@@ -1293,7 +1585,7 @@ namespace LM2RandomiserMod
                     }
                 }
 
-                return string.Format(original, newItemInfo.itemFlag, flagValue, takeString);
+                return string.Format(original, newItemInfo.ItemSheet, newItemInfo.ItemFlag, flagValue, takeString);
             }
             return string.Empty;
         }
@@ -1373,9 +1665,9 @@ namespace LM2RandomiserMod
                 if (shopItem.Multiplier < 5)
                     shopItem.Multiplier = 10;
 
-                return string.Format("[@sitm,{0},{1},{2},{3}]", newItemInfo.shopType, newItemInfo.shopName, 
-                                        IsStartWeaponAmmo(shopItem.ID) ? 0 : newItemInfo.shopPrice * shopItem.Multiplier, 
-                                        IsStartWeaponAmmo(shopItem.ID) ? newItemInfo.maxShopAmount : newItemInfo.shopAmount);
+                return string.Format("[@sitm,{0},{1},{2},{3}]", newItemInfo.ShopType, newItemInfo.ShopName, 
+                                        IsStartWeaponAmmo(shopItem.ID) ? 0 : newItemInfo.ShopPrice * shopItem.Multiplier, 
+                                        IsStartWeaponAmmo(shopItem.ID) ? newItemInfo.MaxShopAmount : newItemInfo.ShopAmount);
             }
             return string.Empty;
         }
@@ -1452,7 +1744,7 @@ namespace LM2RandomiserMod
             {
                 ItemInfo newItemInfo = ItemDB.GetItemInfo(shopItem.ID);
 
-                if (newItemInfo.boxName.Equals("Crystal S"))
+                if (newItemInfo.BoxName.Equals("Crystal S"))
                 {
                     flagString = "\n[@take,Crystal S,02item,1]";
                 }

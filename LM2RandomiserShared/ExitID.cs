@@ -69,5 +69,12 @@
         f12GateN8,
         f13GateN9,
         f14GateN6,
+
+        f02Bifrost,
+        f03In,
+        f08Neck,
+        f09In,
+        f11Pyramid,
+        fNibiru,
     }
 }
