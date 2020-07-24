@@ -127,6 +127,17 @@ namespace LaMulana2RandomizerShared
         FlailWhipPuzzleReward = 154,
         SilverShieldPuzzleReward = 156,
 
+        ResearchAnnwfn,
+        ResearchIT,
+        ResearchIBTopLeft,
+        ResearchIBTopRight,
+        ResearchIBLeft,
+        ResearchIBPit,
+        ResearchIBTent1,
+        ResearchIBTent2,
+        ResearchIBTent3,
+        ResearchDSLM,
+
         NeburShop1 = 256,
         NeburShop2,
         NeburShop3,

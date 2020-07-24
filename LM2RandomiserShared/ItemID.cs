@@ -178,7 +178,17 @@ namespace LaMulana2RandomizerShared
         ChakramAmmo,
         CaltropsAmmo,
         PistolAmmo,
-        Weights,
+        Weights, 
+        Research1,
+        Research2,
+        Research3,
+        Research4,
+        Research5,
+        Research6,
+        Research7,
+        Research8,
+        Research9,
+        Research10,
         Empty
     }
 }

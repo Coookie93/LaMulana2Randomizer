@@ -50,6 +50,12 @@ namespace LaMulana2Randomizer
             set => Set(ref randomFDC, value);
         }
 
+        private bool randomResearch;
+        public bool RandomResearch {
+            get => randomResearch;
+            set => Set(ref randomResearch, value);
+        }
+
         private bool fDCForBacksides;
         public bool FDCForBacksides { 
             get=>fDCForBacksides; 
@@ -96,6 +102,12 @@ namespace LaMulana2Randomizer
         public bool FullRandomEntrances {
             get => fullRandomEntrances;
             set => Set(ref fullRandomEntrances, value);
+        }
+
+        private bool includeOneWays;
+        public bool IncludeUniqueTransitions {
+            get => includeOneWays;
+            set => Set(ref includeOneWays, value);
         }
 
         private bool randomSoulGateEntrances;
@@ -174,6 +186,7 @@ namespace LaMulana2Randomizer
             RandomScanner = false;
             RandomCodices = true;
             RandomFDC = true;
+            randomResearch = false;
             FDCForBacksides = false;
             RandomCurses = false;
             RandomHorizontalEntraces = false;
@@ -182,6 +195,7 @@ namespace LaMulana2Randomizer
             RandomGateEntraces = false;
             RemoveITStatue = false;
             FullRandomEntrances = false;
+            IncludeUniqueTransitions = false;
             RandomSoulGateEntraces = false;
             IncludeNineGates = false;
             HardBosses = false;
@@ -203,6 +217,7 @@ namespace LaMulana2Randomizer
             RandomScanner = false;
             RandomCodices = true;
             RandomFDC = true;
+            randomResearch = false;
             FDCForBacksides = false;
             RandomCurses = false;
             RandomHorizontalEntraces = false;
@@ -211,6 +226,7 @@ namespace LaMulana2Randomizer
             RandomGateEntraces = false;
             RemoveITStatue = false;
             FullRandomEntrances = false;
+            IncludeUniqueTransitions = false;
             RandomSoulGateEntraces = false;
             IncludeNineGates = false;
             HardBosses = false;
