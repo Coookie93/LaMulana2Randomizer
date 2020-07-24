@@ -2808,7 +2808,7 @@
       {
         "Name": "Death Sigil Chest",
         "LocationType": "Chest",
-        "Logic": "Has(Mjolnir) and Has(Life Sigil) and (Has(Death Sigil) or ((Has(Hand Scanner) or Setting(AutoScan)) and Has(Future Development Company) and CanWarp))"
+        "Logic": "Has(Mjolnir) and Has(Life Sigil) and ((Has(Death Sigil) and Has(Feather)) or ((Has(Hand Scanner) or Setting(AutoScan)) and Has(Future Development Company) and CanWarp))"
       },
       {
         "Name": "Mother Mantra Mural",
@@ -2872,7 +2872,7 @@
       {
         "ConnectionType": "Internal",
         "ConnectingAreaName": "Eternal Prison Doom Top",
-        "Logic": "Has(Death Sigil)"
+        "Logic": "Has(Death Sigil) and (Has(Feather) or ((Has(Hand Scanner) or Setting(AutoScan)) and Has(Future Development Company) and CanWarp))"
       },
       {
         "Name": "Eternal Prison Gloom Soul Gate (D-2)",

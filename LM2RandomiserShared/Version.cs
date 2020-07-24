@@ -2,6 +2,6 @@
 {
     public static class Version
     {
-        public static string version = "La-Mulana 2 Randomizer v2.0.2";
+        public static string version = "La-Mulana 2 Randomizer 2.0.3";
     }
 }
