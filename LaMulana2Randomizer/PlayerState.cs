@@ -172,7 +172,7 @@ namespace LaMulana2Randomizer
 
         public bool CanBeatGame()
         {
-            return HasItem("Winner");
+            return HasItem("Winner") && CanReach("Cliff");
         }
 
         public bool CanReach(string areaName)
@@ -188,7 +188,7 @@ namespace LaMulana2Randomizer
                 return false;
 
             area.Checking = true;
-            bool canReach = area.CanReach(this, EscapeCheck);
+            bool canReach = area.CanReach(this);
             area.Checking = false;
 
             //when writing the spoiler log playthrough only care about caching areas that can be reached, caching areas that can't
@@ -425,6 +425,7 @@ namespace LaMulana2Randomizer
                 case "Random Soul Gates": return randomiser.Settings.RandomSoulGateEntraces;
                 case "Non Random Soul Gates": return !randomiser.Settings.RandomSoulGateEntraces;
                 case "Remove IT Statue": return randomiser.Settings.RemoveITStatue;
+                case "Not Life for HoM": return !randomiser.Settings.LifeForHoM;
                 default: return false;
             }
         }

@@ -523,7 +523,7 @@ namespace LM2RandomiserMod.Patches
 			this.menusys.menuSysReStart();
 			this.setSystemDataToClothFlag();
 
-			MAINWEAPON mainWeapon = MAINWEAPON.NON;
+			MAINWEAPON mainWeapon = MAINWEAPON.LWHIP;
 			SUBWEAPON subWeapon = SUBWEAPON.NON;
 
 			L2Rando l2Rando = FindObjectOfType<L2Rando>();

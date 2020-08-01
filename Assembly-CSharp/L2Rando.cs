@@ -40,6 +40,7 @@ namespace LM2RandomiserMod
         private Dictionary<ExitID, int> soulGateValueMap;
         private bool randomSoulGates = false;
         private bool autoPlaceSkull = false;
+        private bool fastCorridor = false;
 
         private patched_L2System sys;
         private L2ShopDataBase shopDataBase;
@@ -91,218 +92,118 @@ namespace LM2RandomiserMod
             {
                 StartCoroutine(ChangeTreasureBoxes());
                 ChangeEventItems();
-
                 StartCoroutine(ChangeEntrances(scene.name));
+                AddAnchorPoints(scene.name);
+                ChangeFlagWatchers(scene.name);
 
-                var bgScroll = FindObjectOfType<BGScrollSystem>();
                 if (scene.name.Equals("field01-2"))
                 {
-                    foreach(ItemPotScript pot in FindObjectsOfType<ItemPotScript>())
-                        pot.transform.position= new Vector3(pot.transform.position.x - 100, pot.transform.position.y, pot.transform.position.z);
+                    //move the pots on the starting screen
+                    foreach (ItemPotScript pot in FindObjectsOfType<ItemPotScript>())
+                        pot.transform.position = new Vector3(pot.transform.position.x - 100, pot.transform.position.y, pot.transform.position.z);
                 }
                 else if (scene.name.Equals("field00"))
                 {
+                    //remove the pillar that falls infront of Roots main gate during escape
                     GameObject obj = GameObject.Find("endPiller");
                     if (obj != null)
                         obj.SetActive(false);
                 }
-                //else if (scene.name.Equals("field01"))
-                //{
-                //    AnimatorController controller = Instantiate(ladder, new Vector3(-320, -180, -5), Quaternion.identity).GetComponent<AnimatorController>();
-                //    controller.CheckFlags = new L2FlagBoxParent[]
-                //    {
-                //        new L2FlagBoxParent()
-                //        {
-                //            BOX = new L2FlagBox[]
-                //            {
-                //                new L2FlagBox()
-                //                {
-                //                    seet_no1 = 0,
-                //                    flag_no1 = 0,
-                //                    seet_no2 = -1,
-                //                    flag_no2 = 0,
-                //                    comp = COMPARISON.GreaterEq,
-                //                    logic = LOGIC.NON
-                //                }
-                //            }
-                //        }
-                //    };
-                //    controller.gameObject.SetActive(true);
-                //    GameObject obj = new GameObject();
-                //    obj.transform.position = new Vector3(-140, -160, 0);
-                //    BoxCollider collider = obj.AddComponent<BoxCollider>();
-                //    collider.size = new Vector3(20, 10, 0);
-                //}
-                else if (scene.name.Equals("field02"))
-                {
-                    GameObject obj = new GameObject
-                    {
-                        name = "PlayerStart f02Bifrost"
-                    };
-                    obj.transform.SetParent(bgScroll.transform);
-                    PlayerAnchor2 playerAnchor = obj.AddComponent<PlayerAnchor2>();
-                    playerAnchor.transform.position = new Vector3(-480, -460, 0);
-                    bgScroll.WarpAnchors.Add(playerAnchor);
-
-                }
-                else if (scene.name.Equals("field03"))
-                {
-                    GameObject obj = new GameObject
-                    {
-                        name = "PlayerStart f03Up"
-                    };
-                    obj.transform.SetParent(bgScroll.transform);
-                    PlayerAnchor2 playerAnchor = obj.AddComponent<PlayerAnchor2>();
-                    playerAnchor.transform.position = new Vector3(488, 756, 0);
-                    bgScroll.WarpAnchors.Add(playerAnchor);
-                }
-                else if (scene.name.Equals("field04"))
-                {
-                    GameObject obj = new GameObject
-                    {
-                        name = "PlayerStart f04Up3"
-                    };
-                    obj.transform.SetParent(bgScroll.transform);
-                    PlayerAnchor2 playerAnchor = obj.AddComponent<PlayerAnchor2>();
-                    playerAnchor.transform.position = new Vector3(840, 640, 0);
-                    bgScroll.WarpAnchors.Add(playerAnchor);
-                }
-                else if (scene.name.Equals("field08"))
-                {
-                    GameObject obj = new GameObject
-                    {
-                        name = "PlayerStart f08Neck"
-                    };
-                    obj.transform.SetParent(bgScroll.transform);
-                    PlayerAnchor2 playerAnchor = obj.AddComponent<PlayerAnchor2>();
-                    playerAnchor.transform.position = new Vector3(910, 170, 0);
-                    bgScroll.WarpAnchors.Add(playerAnchor);
-                }
                 else if (scene.name.Equals("field10"))
                 {
-                    GameObject obj = new GameObject()
+                    if (fastCorridor)
                     {
-                        name = "CorridorSealFlagWatcher"
-                    };
-                    obj.transform.position = new Vector3(48, 258, 0);
-                    FlagWatcherScript flagWatcher = obj.AddComponent<FlagWatcherScript>();
-                    flagWatcher.actionWaitFrames = 300;
-                    flagWatcher.autoFinish = false;
-                    flagWatcher.characterEfxType = MoveCharacterBase.CharacterEffectType.NONE;
-                    flagWatcher.startAreaMode = MoveCharacterBase.ActionstartAreaMode.VIEW;
-                    flagWatcher.taskLayerNo = 2;
-                    flagWatcher.AnimeData = new GameObject[0];
-                    flagWatcher.ResetFlags = new L2FlagBoxEnd[0];
-                    flagWatcher.CheckFlags = new L2FlagBoxParent[1];
-                    flagWatcher.CheckFlags[0] = new L2FlagBoxParent
-                    {
-                        BOX = new L2FlagBox[]
+                        //setup the flagwatcher to seal the corridor in valhalla
+                        GameObject obj = new GameObject()
                         {
-                            new L2FlagBox()
+                            name = "CorridorSealFlagWatcher"
+                        };
+                        obj.transform.position = new Vector3(48, 258, 0);
+                        FlagWatcherScript flagWatcher = obj.AddComponent<FlagWatcherScript>();
+                        flagWatcher.actionWaitFrames = 90;
+                        flagWatcher.autoFinish = false;
+                        flagWatcher.characterEfxType = MoveCharacterBase.CharacterEffectType.NONE;
+                        flagWatcher.startAreaMode = MoveCharacterBase.ActionstartAreaMode.VIEW;
+                        flagWatcher.taskLayerNo = 2;
+                        flagWatcher.AnimeData = new GameObject[0];
+                        flagWatcher.ResetFlags = new L2FlagBoxEnd[0];
+                        flagWatcher.CheckFlags = new L2FlagBoxParent[1];
+                        flagWatcher.CheckFlags[0] = new L2FlagBoxParent
+                        {
+                            BOX = new L2FlagBox[]
                             {
-                                seet_no1 = 3,
-                                flag_no1 = 93,
-                                seet_no2 = -1,
-                                flag_no2 = 0,
-                                logic = LOGIC.AND,
-                                comp = COMPARISON.Equal
-                            },
-                            new L2FlagBox()
-                            {
-                                seet_no1 = 3,
-                                flag_no1 = 15,
-                                seet_no2 = -1,
-                                flag_no2 = 4,
-                                logic = LOGIC.AND,
-                                comp = COMPARISON.Equal
-                            },
-                            new L2FlagBox()
-                            {
-                                seet_no1 = 2,
-                                flag_no1 = 3,
-                                seet_no2 = -1,
-                                flag_no2 = 7,
-                                logic = LOGIC.AND,
-                                comp = COMPARISON.Equal
-                            },
-                        }
-                    };
-                    flagWatcher.ActionFlags = new L2FlagBoxEnd[]
-                    {
-                        new L2FlagBoxEnd()
-                        {
-                            seet_no1 = 3,
-                            flag_no1 = 87,
-                            data = 1,
-                            calcu = CALCU.EQR
-                        },
-                        new L2FlagBoxEnd()
-                        {
-                            seet_no1 = 3,
-                            flag_no1 = 88,
-                            data = 1,
-                            calcu = CALCU.EQR
-                        },
-                        new L2FlagBoxEnd()
-                        {
-                            seet_no1 = 3,
-                            flag_no1 = 89,
-                            data = 1,
-                            calcu = CALCU.EQR
-                        },
-                        new L2FlagBoxEnd()
-                        {
-                            seet_no1 = 3,
-                            flag_no1 = 90,
-                            data = 1,
-                            calcu = CALCU.EQR
-                        },
-                        new L2FlagBoxEnd()
-                        {
-                            seet_no1 = 3,
-                            flag_no1 = 91,
-                            data = 1,
-                            calcu = CALCU.EQR
-                        },
-                        new L2FlagBoxEnd()
-                        {
-                            seet_no1 = 3,
-                            flag_no1 = 92,
-                            data = 1,
-                            calcu = CALCU.EQR
-                        },
-                        new L2FlagBoxEnd()
-                        {
-                            seet_no1 = 3,
-                            flag_no1 = 93,
-                            data = 1,
-                            calcu = CALCU.EQR
-                        }
-                    };
-                    flagWatcher.finishFlags = new L2FlagBoxParent[1];
-                    flagWatcher.finishFlags[0] = new L2FlagBoxParent
-                    {
-                        BOX = new L2FlagBox[]
-                        {
-                            new L2FlagBox()
-                            {
-                                seet_no1 = 3,
-                                flag_no1 = 93,
-                                seet_no2 = -1,
-                                flag_no2 = 1,
-                                logic = LOGIC.NON,
-                                comp = COMPARISON.Equal
+                                new L2FlagBox()
+                                {
+                                    seet_no1 = 3,
+                                    flag_no1 = 93,
+                                    seet_no2 = -1,
+                                    flag_no2 = 0,
+                                    logic = LOGIC.AND,
+                                    comp = COMPARISON.Equal
+                                },
+                                new L2FlagBox()
+                                {
+                                    seet_no1 = 3,
+                                    flag_no1 = 15,
+                                    seet_no2 = -1,
+                                    flag_no2 = 4,
+                                    logic = LOGIC.AND,
+                                    comp = COMPARISON.Equal
+                                },
+                                new L2FlagBox()
+                                {
+                                    seet_no1 = 2,
+                                    flag_no1 = 3,
+                                    seet_no2 = -1,
+                                    flag_no2 = 7,
+                                    logic = LOGIC.AND,
+                                    comp = COMPARISON.Equal
+                                },
                             }
-                        }
-                    };
+                        };
+                        flagWatcher.ActionFlags = new L2FlagBoxEnd[]
+                        {
+                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 44, data = 2, calcu = CALCU.EQR },
+                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 45, data = 2, calcu = CALCU.EQR },
+                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 46, data = 2, calcu = CALCU.EQR },
+                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 47, data = 0, calcu = CALCU.EQR },
+                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 48, data = 2, calcu = CALCU.EQR },
+                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 49, data = 8, calcu = CALCU.EQR },
+                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 87, data = 1, calcu = CALCU.EQR },
+                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 88, data = 1, calcu = CALCU.EQR },
+                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 89, data = 1, calcu = CALCU.EQR },
+                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 90, data = 1, calcu = CALCU.EQR },
+                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 91, data = 1, calcu = CALCU.EQR },
+                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 92, data = 1, calcu = CALCU.EQR },
+                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 93, data = 1, calcu = CALCU.EQR },
+                        };
+                        flagWatcher.finishFlags = new L2FlagBoxParent[1];
+                        flagWatcher.finishFlags[0] = new L2FlagBoxParent
+                        {
+                            BOX = new L2FlagBox[]
+                            {
+                                new L2FlagBox()
+                                {
+                                    seet_no1 = 3,
+                                    flag_no1 = 93,
+                                    seet_no2 = -1,
+                                    flag_no2 = 1,
+                                    logic = LOGIC.NON,
+                                    comp = COMPARISON.Equal
+                                }
+                            }
+                        };
+                    }
                 }
                 else if (scene.name.Equals("fieldSpace"))
                 {
+                    //disable the object that stop the holy grail working in space
                     foreach (HolyGrailCancellerScript grailCanceller in FindObjectsOfType<HolyGrailCancellerScript>())
                         grailCanceller.gameObject.SetActive(false);
                 }
                 else if (scene.name.Equals("fieldL08"))
                 {
+                    //change the shadowtask that makes Freya stop talking in endless corridor to only happen after you get the item from her
                     foreach (ShopGateScript talkGate in FindObjectsOfType<ShopGateScript>())
                     {
                         if (talkGate.shdowtask != null)
@@ -348,75 +249,17 @@ namespace LM2RandomiserMod
                         snapTarget.mode = SnapShotTargetScript.SnapShotMode.SOFTWARE;
                 }
 
-
-                foreach (FlagWatcherScript flagWatcher in FindObjectsOfType<FlagWatcherScript>())
+                //change it so the corridor of blood can be entered even after sealing it
+                foreach (AnchorGateZ anchorGate in FindObjectsOfType<AnchorGateZ>())
                 {
-                    //Change funeral event start conditions so they can reliably be in logic
-                    if (flagWatcher.name.Equals("sougiOn"))
+                    if (anchorGate.shdowtask != null)
                     {
-                        //Change the timer so don't have to wait 2 minutes for the funeral event flags to be set
-                        flagWatcher.actionWaitFrames = 60;
-
-                        foreach (L2FlagBoxParent flagBoxParent in flagWatcher.CheckFlags)
+                        foreach (L2FlagBoxParent flagBoxParent in anchorGate.shdowtask.startflag)
                         {
                             foreach (L2FlagBox flagBox in flagBoxParent.BOX)
                             {
-                                if (flagBox.seet_no1 == 3 && flagBox.flag_no1 == 30)
-                                {
-                                    //Change these flags so it is now checking if guardians killed is >=6
-                                    flagBox.flag_no1 = 0;
-                                    flagBox.flag_no2 = 6;
+                                if (flagBox.seet_no1 == 3 && flagBox.flag_no1 == 93 && flagBox.flag_no2 == 0)
                                     flagBox.comp = COMPARISON.GreaterEq;
-                                }
-                            }
-                        }
-                    }
-                    //add a check to avoid soflock of triggering the rescue event without first summoning Jormangund's Ankh
-                    else if (flagWatcher.name.Equals("ragnarok"))
-                    {
-                        foreach (L2FlagBoxParent flagBoxParent in flagWatcher.CheckFlags)
-                        {
-                            L2FlagBox[] flagBoxes = new L2FlagBox[3];
-                            flagBoxes[0] = flagBoxParent.BOX[0];
-                            flagBoxes[1] = flagBoxParent.BOX[1];
-
-                            //this checks to see if Jormangund's Ankh has atleast been summoned
-                            flagBoxes[2] = new L2FlagBox()
-                            {
-                                seet_no1 = 3,
-                                flag_no1 = 14,
-                                seet_no2 = -1,
-                                flag_no2 = 2,
-                                comp = COMPARISON.GreaterEq,
-                                logic = LOGIC.AND
-                            };
-                            flagBoxParent.BOX = flagBoxes;
-                        }
-                    }
-
-                    //stops nebur from disappearing
-                    foreach (L2FlagBoxParent flagBoxParent in flagWatcher.CheckFlags)
-                    {
-                        foreach (L2FlagBox flagBox in flagBoxParent.BOX)
-                        {
-                            if (flagBox.seet_no1 == 5 && flagBox.flag_no1 == 3 && flagBox.flag_no2 == 2)
-                            {
-                                flagBox.flag_no2 = 1;
-                                flagBox.comp = COMPARISON.GreaterEq;
-                            }
-                        }
-                    }
-
-                    if (scene.name.Equals("field02"))
-                    {
-                        foreach (L2FlagBoxParent flagBoxParent in flagWatcher.CheckFlags)
-                        {
-                            foreach (L2FlagBox flagBox in flagBoxParent.BOX)
-                            {
-                                if (flagBox.seet_no1 == 3 && flagBox.flag_no1 == 30 && flagBox.flag_no2 == 80)
-                                {
-                                    flagBox.flag_no2 = 255;
-                                }
                             }
                         }
                     }
@@ -522,7 +365,7 @@ namespace LM2RandomiserMod
             StartCoroutine(Setup());
         }
 
-        bool LoadSeed()
+        private bool LoadSeed()
         {
             locationToItemMap = new Dictionary<LocationID, ItemID>();
             shopToItemMap = new Dictionary<LocationID, ShopItem>();
@@ -537,6 +380,7 @@ namespace LM2RandomiserMod
                     StartingWeapon = (ItemID)br.ReadInt32();
                     AutoScanTablets = br.ReadBoolean();
                     autoPlaceSkull = br.ReadBoolean();
+                    fastCorridor = br.ReadBoolean();
                     RemoveITStatue = br.ReadBoolean();
                     MoneyStart = br.ReadBoolean();
                     WeightStart = br.ReadBoolean();
@@ -600,7 +444,7 @@ namespace LM2RandomiserMod
             return true;
         }
 
-        public IEnumerator Setup()
+        private IEnumerator Setup()
         {
             yield return new WaitForSeconds(0.1f);
             sys.setKeyBlock(true);
@@ -1079,14 +923,14 @@ namespace LM2RandomiserMod
 
         private Sprite GetItemSprite(string itemName, ItemID itemID)
         {
-            //leather whip doesnt have a map icon
             if (itemID == ItemID.Whip)
             {
+                //leather whip doesnt have a map icon
                 return L2SystemCore.getMenuIconSprite(L2SystemCore.getItemData(itemName));
             }
-            //Mantras don't have an icon so use the Mantra software icon 
             else if (itemID >= ItemID.Heaven && itemID <= ItemID.Night)
             {
+                //Mantras don't have an icon so use the Mantra software icon 
                 return L2SystemCore.getMapIconSprite(L2SystemCore.getItemData("Mantra"));
             }
             else
@@ -1095,6 +939,170 @@ namespace LM2RandomiserMod
             }
         }
 
+        private void ChangeFlagWatchers(string fieldName) 
+        {
+            foreach (FlagWatcherScript flagWatcher in FindObjectsOfType<FlagWatcherScript>())
+            {
+                if (flagWatcher.name.Equals("sougiOn"))
+                {
+                    //Change funeral event start conditions so they can reliably be in logic
+                    foreach (L2FlagBoxParent flagBoxParent in flagWatcher.CheckFlags)
+                    {
+                        foreach (L2FlagBox flagBox in flagBoxParent.BOX)
+                        {
+                            if (flagBox.seet_no1 == 3 && flagBox.flag_no1 == 30)
+                            {
+                                //Change these flags so it is now checking if guardians killed is >=6
+                                flagBox.flag_no1 = 0;
+                                flagBox.flag_no2 = 6;
+                                flagBox.comp = COMPARISON.GreaterEq;
+                            }
+                        }
+                    }
+                    //Change the timer so don't have to wait 2 minutes for the funeral event flags to be set
+                    flagWatcher.actionWaitFrames = 60;
+                }
+                else if (flagWatcher.name.Equals("ragnarok"))
+                {
+                    //add a check to avoid soflock of triggering the rescue event without first summoning Jormangund's Ankh
+                    foreach (L2FlagBoxParent flagBoxParent in flagWatcher.CheckFlags)
+                    {
+                        L2FlagBox[] flagBoxes = new L2FlagBox[3];
+                        flagBoxes[0] = flagBoxParent.BOX[0];
+                        flagBoxes[1] = flagBoxParent.BOX[1];
+
+                        //this checks to see if Jormangund's Ankh has atleast been summoned
+                        flagBoxes[2] = new L2FlagBox()
+                        {
+                            seet_no1 = 3,
+                            flag_no1 = 14,
+                            seet_no2 = -1,
+                            flag_no2 = 2,
+                            comp = COMPARISON.GreaterEq,
+                            logic = LOGIC.AND
+                        };
+                        flagBoxParent.BOX = flagBoxes;
+                    }
+                }
+
+                if (fieldName.Equals("fieldL00"))
+                {
+                    //stops Nebur from disappearing
+                    foreach (L2FlagBoxParent flagBoxParent in flagWatcher.CheckFlags)
+                    {
+                        foreach (L2FlagBox flagBox in flagBoxParent.BOX)
+                        {
+                            if (flagBox.seet_no1 == 5 && flagBox.flag_no1 == 3 && flagBox.flag_no2 == 2)
+                            {
+                                flagBox.flag_no2 = 1;
+                                flagBox.comp = COMPARISON.GreaterEq;
+                            }
+                        }
+                    }
+                }
+                else if (fieldName.Equals("field02"))
+                {
+                    //stop Freya moving to Annwfn
+                    foreach (L2FlagBoxParent flagBoxParent in flagWatcher.CheckFlags)
+                    {
+                        foreach (L2FlagBox flagBox in flagBoxParent.BOX)
+                        {
+                            if (flagBox.seet_no1 == 3 && flagBox.flag_no1 == 30 && flagBox.flag_no2 == 80)
+                            {
+                                flagBox.flag_no2 = 255;
+                            }
+                        }
+                    }
+                }
+                else if (fieldName.Equals("fieldL08"))
+                {
+                    //disable this FlagWatcher as it messes with the elevator when this Endless Corridor leads to the Gate of Guidance gate
+                    if (flagWatcher.name.Equals("FlagWatcher (8)"))
+                        flagWatcher.gameObject.SetActive(false);
+                }
+                else if (fieldName.Equals("field06-2") || fieldName.Equals("field10") || fieldName.Equals("field11") || 
+                            fieldName.Equals("field12") || fieldName.Equals("field13") || fieldName.Equals("field15"))
+                {
+                    //change the flagwatchers that seal the corridor of blood so that they only seal it when the player has all 6 dissonance
+                    bool isCorridorSealer = false;
+                    foreach (L2FlagBoxParent flagBoxParent in flagWatcher.CheckFlags)
+                    {
+                        foreach (L2FlagBox flagBox in flagBoxParent.BOX)
+                        {
+                            if (flagBox.seet_no1 == 5 && flagBox.flag_no1 == 48 && flagBox.flag_no2 == 1)
+                                isCorridorSealer = true;
+                        }
+
+                        if (isCorridorSealer)
+                        {
+                            List<L2FlagBox> checkFlags = new List<L2FlagBox>();
+                            checkFlags.AddRange(flagBoxParent.BOX);
+                            checkFlags.Add(new L2FlagBox()
+                            {
+                                seet_no1 = 2,
+                                flag_no1 = 3,
+                                seet_no2 = -1,
+                                flag_no2 = 7,
+                                comp = COMPARISON.GreaterEq,
+                                logic = LOGIC.AND
+                            });
+
+                            flagBoxParent.BOX = checkFlags.ToArray();
+                        }
+                    }
+                }
+                   
+            }
+        }
+        private void AddAnchorPoints(string fieldName)
+        {
+            BGScrollSystem bgScroll = FindObjectOfType<BGScrollSystem>();
+            if (fieldName.Equals("field02"))
+            {
+                GameObject obj = new GameObject
+                {
+                    name = "PlayerStart f02Bifrost"
+                };
+                obj.transform.SetParent(bgScroll.transform);
+                PlayerAnchor2 playerAnchor = obj.AddComponent<PlayerAnchor2>();
+                playerAnchor.transform.position = new Vector3(-480, -460, 0);
+                bgScroll.WarpAnchors.Add(playerAnchor);
+
+            }
+            else if (fieldName.Equals("field03"))
+            {
+                GameObject obj = new GameObject
+                {
+                    name = "PlayerStart f03Up"
+                };
+                obj.transform.SetParent(bgScroll.transform);
+                PlayerAnchor2 playerAnchor = obj.AddComponent<PlayerAnchor2>();
+                playerAnchor.transform.position = new Vector3(488, 756, 0);
+                bgScroll.WarpAnchors.Add(playerAnchor);
+            }
+            else if (fieldName.Equals("field04"))
+            {
+                GameObject obj = new GameObject
+                {
+                    name = "PlayerStart f04Up3"
+                };
+                obj.transform.SetParent(bgScroll.transform);
+                PlayerAnchor2 playerAnchor = obj.AddComponent<PlayerAnchor2>();
+                playerAnchor.transform.position = new Vector3(840, 640, 0);
+                bgScroll.WarpAnchors.Add(playerAnchor);
+            }
+            else if (fieldName.Equals("field08"))
+            {
+                GameObject obj = new GameObject
+                {
+                    name = "PlayerStart f08Neck"
+                };
+                obj.transform.SetParent(bgScroll.transform);
+                PlayerAnchor2 playerAnchor = obj.AddComponent<PlayerAnchor2>();
+                playerAnchor.transform.position = new Vector3(910, 170, 0);
+                bgScroll.WarpAnchors.Add(playerAnchor);
+            }
+        }
 
         private ExitID GetExitIDFromAnchorName(string anchorName, string field)
         {
@@ -1159,11 +1167,7 @@ namespace LM2RandomiserMod
 
                     ExitInfo exitInfo = ExitDB.GetExitInfo(exitID);
 
-                    if((exitInfo.FieldNo == 17 && destinationInfo.FieldNo == 18) || (exitInfo.FieldNo == 18 && destinationInfo.FieldNo == 17) 
-                        || exitInfo.FieldNo == destinationInfo.FieldNo)
-                        gate.bgmFadeOut = false;
-                    else
-                        gate.bgmFadeOut = true;
+                    gate.bgmFadeOut = exitInfo.FieldNo == destinationInfo.FieldNo;
 
                     if (exitID >= ExitID.f00GateY0 && exitID <= ExitID.fL11GateN)
                     {
@@ -1211,7 +1215,7 @@ namespace LM2RandomiserMod
                             gateDoor.CheckFlags = boxParents;
 
                     }
-                    else if(exitID >= ExitID.f00GateN1)
+                    else if(exitID >= ExitID.f00GateN1 && exitID <= ExitID.f14GateN6)
                     {
                         if (soulGateValueMap.TryGetValue(exitID, out int soulValue))
                         {

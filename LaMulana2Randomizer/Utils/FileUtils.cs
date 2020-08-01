@@ -226,6 +226,7 @@ namespace LaMulana2Randomizer.Utils
                     br.Write((int)randomiser.StartingWeaponID);
                     br.Write(randomiser.Settings.AutoScanTablets);
                     br.Write(randomiser.Settings.AutoPlaceSkulls);
+                    br.Write(randomiser.Settings.FastCorridor);
                     br.Write(randomiser.Settings.RemoveITStatue);
                     br.Write(randomiser.Settings.MoneyStart);
                     br.Write(randomiser.Settings.WeightStart);

@@ -184,7 +184,7 @@ namespace LaMulana2Randomizer
             }
         }
 
-        public void PickStartingWeapon()
+        public void ChooseStartingWeapon()
         {
             ItemID[] weapons = new ItemID[]{ ItemID.Whip, ItemID.Knife, ItemID.Rapier, ItemID.Axe, ItemID.Katana, ItemID.Shuriken,
                 ItemID.RollingShuriken, ItemID.EarthSpear, ItemID.Flare, ItemID.Caltrops, ItemID.Chakram, ItemID.Bomb, ItemID.Pistol };
@@ -936,14 +936,10 @@ namespace LaMulana2Randomizer
             }
 
             if (Settings.RandomGateEntraces)
-            {
                 entrances.AddRange(GetConnectionsOfType(ExitType.Gate));
-            }
 
             if (Settings.IncludeUniqueTransitions)
-            {
                 entrances.AddRange(GetConnectionsOfType(ExitType.OneWay));
-            }
 
             Exit entrance1 = null;
             Exit entrance2 = null;
@@ -960,18 +956,14 @@ namespace LaMulana2Randomizer
                 {
                     entrance2 = entrances[random.Next(entrances.Count)];
                 } while ((entrance2.ID == ExitID.f01Right && (!Settings.RandomLadderEntraces || Settings.ReduceDeadEndStarts)) || entrance2.IsInaccessible() 
-                            || entrance2.ID == ExitID.f06_2GateP0 || entrance2.ID == ExitID.fNibiru);   
+                            || entrance2.ID == ExitID.f11Pyramid);   
                 
                 entrances.Remove(entrance2);
 
                 if (entrance2.ID == ExitID.fP00Right || entrance2.ID == ExitID.fP00Left)
-                {
                     cavernToCliff = true;
-                }
                 else if (entrance2.ID == ExitID.fL11GateN || entrance2.ID == ExitID.fL11GateY0)
-                {
                     illusionToCliff = true;
-                }
 
                 if (entrance2.ID == ExitID.f01Right)
                     villageDeadEnd = true;
@@ -1202,7 +1194,7 @@ namespace LaMulana2Randomizer
                 }
                 case ExitID.f08Neck:
                 {
-                    entrance2.AppendLogicString(" and CanKill(Raijin and Fujin) and CanWarp");
+                    entrance2.AppendLogicString("and (CanWarp or (CanChant(Heaven) and CanChant(Earth) and CanChant(Sea) and CanChant(Fire) and CanChant(Wind)))");
                     entrance2.BuildLogicTree();
                     break;
                 }
@@ -1224,7 +1216,16 @@ namespace LaMulana2Randomizer
         private void RandomiseSoulGateEntrances()
         {
             List<Exit> gates = Shuffle.FisherYates(GetConnectionsOfType(ExitType.SoulGate), random);
-            List<int> soulAmounts = new List<int>() { 1, 2, 2, 3, 3, 5, 5, 5 };
+            List<int> soulAmounts;
+
+            //if we are doing random souls pairs we only need one of each soul value amount as we will just pick from this each time but never remove
+            //otherwise we'll use the vanilla soul value amounts and remove after each one is picked
+            if (Settings.RandomSoulPairs)
+                soulAmounts = new List<int>() { 1, 2, 3, 5 };
+            else
+                soulAmounts = new List<int>() { 1, 2, 2, 3, 3, 5, 5, 5 };
+
+            //the ancient chaos soul gate can't lead to the spiral boat so it has to be placed first to avoid this
             List<Exit> priorityGates = new List<Exit>()
             {
                 gates.Find(x => x.ID == ExitID.f12GateN8)
@@ -1233,10 +1234,9 @@ namespace LaMulana2Randomizer
             Exit gate1 = null;
             Exit gate2 = null;
 
+            //including the nine gates means we need to add the 9 into the list of soul amounts otherwise we'll place the nine gates like its vanilla
             if (Settings.IncludeNineGates)
             {
-                gates.Find(x => x.ID == ExitID.f03GateN9);
-                gates.Find(x => x.ID == ExitID.f08GateN8);
                 soulAmounts.Add(9);
             }
             else
@@ -1279,7 +1279,9 @@ namespace LaMulana2Randomizer
                 gates.Remove(gate2);
 
                 int soulAmount = soulAmounts[random.Next(soulAmounts.Count)];
-                soulAmounts.Remove(soulAmount);
+                //only remove if we are using the vanilla list of soul pair values
+                if(!Settings.RandomSoulPairs)
+                    soulAmounts.Remove(soulAmount);
 
                 gate1.AppendLogicString($" and GuardianKills({soulAmount})");
                 gate2.AppendLogicString($" and GuardianKills({soulAmount})");

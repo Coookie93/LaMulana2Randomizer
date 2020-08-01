@@ -62,6 +62,12 @@ namespace LaMulana2Randomizer
             set=>Set(ref fDCForBacksides, value); 
         }
 
+        private bool lifeForHoM;
+        public bool LifeForHoM {
+            get => lifeForHoM;
+            set => Set(ref lifeForHoM, value);
+        }
+
         private bool randomCurses;
         public bool RandomCurses {
             get => randomCurses;
@@ -122,6 +128,12 @@ namespace LaMulana2Randomizer
             set => Set(ref includeNineGates, value);
         }
 
+        private bool randomSoulPairs;
+        public bool RandomSoulPairs {
+            get => randomSoulPairs;
+            set => Set(ref randomSoulPairs, value);
+        }
+
         private bool hardBosses;
         public bool HardBosses { 
             get=>hardBosses; 
@@ -138,6 +150,12 @@ namespace LaMulana2Randomizer
         public bool AutoPlaceSkulls {
             get => autoPlaceSkulls;
             set => Set(ref autoPlaceSkulls, value);
+        }
+
+        private bool fastCorridor;
+        public bool FastCorridor {
+            get => fastCorridor;
+            set => Set(ref fastCorridor, value);
         }
 
         private bool moneyStart;
@@ -188,6 +206,7 @@ namespace LaMulana2Randomizer
             RandomFDC = true;
             randomResearch = false;
             FDCForBacksides = false;
+            LifeForHoM = false;
             RandomCurses = false;
             RandomHorizontalEntraces = false;
             ReduceDeadEndStarts = true;
@@ -198,6 +217,7 @@ namespace LaMulana2Randomizer
             IncludeUniqueTransitions = false;
             RandomSoulGateEntraces = false;
             IncludeNineGates = false;
+            RandomSoulPairs = false;
             HardBosses = false;
             AutoScanTablets = false;
             AutoPlaceSkulls = false;
@@ -213,41 +233,17 @@ namespace LaMulana2Randomizer
         [JsonConstructor]
         public Settings(ObservableCollection<bool> weapons)
         {
-            RandomGrail = false;
-            RandomScanner = false;
-            RandomCodices = true;
-            RandomFDC = true;
-            randomResearch = false;
-            FDCForBacksides = false;
-            RandomCurses = false;
-            RandomHorizontalEntraces = false;
-            ReduceDeadEndStarts = true;
-            RandomLadderEntraces = false;
-            RandomGateEntraces = false;
-            RemoveITStatue = false;
-            FullRandomEntrances = false;
-            IncludeUniqueTransitions = false;
-            RandomSoulGateEntraces = false;
-            IncludeNineGates = false;
-            HardBosses = false;
-            AutoScanTablets = false;
-            AutoPlaceSkulls = false;
-            MantraPlacement = MantraPlacement.Original;
-            ShopPlacement = ShopPlacement.Original;
-            if (weapons != null)
+            Weapons = weapons;
+            if (Weapons == null)
             {
-                Weapons = weapons;
-                while (weapons.Count < 13)
-                    Weapons.Add(false);
-            }
-            else
-            {
-                Weapons = new ObservableCollection<bool>()
+                Weapons = new ObservableCollection<bool>
                 {
-                    true, false, false, false, false,
-                    false, false, false, false, false, false, false, false
+                    true
                 };
             }
+
+            while (weapons.Count < 13)
+                Weapons.Add(false);
         }
     }
 }

@@ -27,11 +27,11 @@ namespace LaMulana2Randomizer
             Exits = new List<Exit>();
         }
 
-        public bool CanReach(PlayerState state, bool escapeCheck = false)
+        public bool CanReach(PlayerState state)
         {
             foreach(Exit entrance in Entrances)
             {
-                if (escapeCheck && (entrance.ExitType == ExitType.Corridor || entrance.ExitType == ExitType.PrisonExit))
+                if (state.EscapeCheck && (entrance.ExitType == ExitType.PrisonExit || entrance.ExitType == ExitType.Corridor))
                     continue;
 
                 if(state.CanReach(entrance))

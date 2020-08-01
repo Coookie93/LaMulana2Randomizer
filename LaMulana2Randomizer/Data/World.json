@@ -771,7 +771,7 @@
       {
         "Name": "Secret Treasure of Life Item",
         "LocationType": "FreeStanding",
-        "Logic": "IsDead(Jormangund) and IsDead(Anu) and Dissonance(6) and CanChant(Night)"
+        "Logic": "Has(Dinosaur Figure) and IsDead(Anu) and Dissonance(6) and CanChant(Night)"
       },
       {
         "Name": "Research IB Top Right",
@@ -1196,17 +1196,17 @@
       {
         "Name": "Btk Shop 1",
         "LocationType": "Shop",
-        "Logic": "True"
+        "Logic": "MeleeAttack or Has(Claydoll Suit) or Has(Shuriken) or Has(Rolling Shuriken) or Has(Earth Spear) or Has(Caltrops) or Has(Bomb) or ((Has(Chakram) or Has(Flare)) and Has(Feather))"
       },
       {
         "Name": "Btk Shop 2",
         "LocationType": "Shop",
-        "Logic": "True"
+        "Logic": "MeleeAttack or Has(Claydoll Suit) or Has(Shuriken) or Has(Rolling Shuriken) or Has(Earth Spear) or Has(Caltrops) or Has(Bomb) or ((Has(Chakram) or Has(Flare)) and Has(Feather))"
       },
       {
         "Name": "Btk Shop 3",
         "LocationType": "Shop",
-        "Logic": "True"
+        "Logic": "MeleeAttack or Has(Claydoll Suit) or Has(Shuriken) or Has(Rolling Shuriken) or Has(Earth Spear) or Has(Caltrops) or Has(Bomb) or ((Has(Chakram) or Has(Flare)) and Has(Feather))"
       },
       {
         "Name": "Vedfolnir",
@@ -1528,15 +1528,6 @@
           "Name": "Fenrir",
           "IsRequired": true
         }
-      },
-      {
-        "Name": "Liquour",
-        "LocationType": "Puzzle",
-        "Logic": "IsDead(Fenrir) and CanChant(Moon) and CanChant(Mother) and CanChant(Child) and Has(Vessel)",
-        "Item": {
-          "Name": "Liquour",
-          "IsRequired": true
-        }
       }
     ],
     "Exits": [
@@ -1550,7 +1541,7 @@
       {
         "ConnectionType": "Internal",
         "ConnectingAreaName": "Shrine of the Frost Giants Top",
-        "Logic": "IsDead(Badhbh Cath) and Has(Grapple Claw)"
+        "Logic": "IsDead(Badhbh Cath) and Has(Grapple Claw) and HorizontalAttack"
       }
     ]
   },
@@ -1648,7 +1639,7 @@
         "Logic": "CanSpinCorridor"
       },
       {
-        "ConnectionType": "Corridor",
+        "ConnectionType": "CorridorSealed",
         "ConnectingAreaName": "Eternal Prison Doom Entrance",
         "Logic": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and CanWarp"
       }
@@ -1824,11 +1815,6 @@
         "Logic": "MeleeAttack or Has(Earth Spear) or Has(Bomb) or Has(Caltrops) or Has(Rolling Shuriken) or (Has(Flare) and HorizontalAttack)"
       },
       {
-        "Name": "Flare Puzzle Reward",
-        "LocationType": "FreeStanding",
-        "Logic": "IsDead(Raijin and Fujin) and Has(Birth Sigil) and (CanStopTime or Has(Gale Fibula))"
-      },
-      {
         "Name": "Ash Geen Shop 1",
         "LocationType": "Shop",
         "Logic": "True"
@@ -1861,11 +1847,9 @@
         "Logic": "Has(Katana) or CanUse(Earth Spear) or CanUse(Bomb)"
       },
       {
-        "Name": "Takamagahara Shrine Neck",
-        "ID": "f08Neck",
-        "ConnectionType": "OneWay",
-        "ConnectingAreaName": "Heavens Labyrinth Cog",
-        "Logic": "IsDead(Raijin and Fujin) and CanChant(Earth) and CanChant(Wind) and CanChant(Fire) and CanChant(Sea) and CanChant(Heaven) and CanWarp"
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Takamagahara Shrine Neck",
+        "Logic": "IsDead(Raijin and Fujin)"
       },
       {
         "ConnectionType": "Internal",
@@ -1893,6 +1877,30 @@
         "ConnectionType": "Internal",
         "ConnectingAreaName": "Takamagahara Shrine Main",
         "Logic": "True"
+      }
+    ]
+  },
+  {
+    "Name": "Takamagahara Shrine Neck",
+    "Locations": [
+      {
+        "Name": "Flare Puzzle Reward",
+        "LocationType": "FreeStanding",
+        "Logic": "Has(Birth Sigil) and (CanStopTime or Has(Gale Fibula))"
+      }
+    ],
+    "Exits": [
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Takamagahara Shrine Main",
+        "Logic": "CanKill(Raijin and Fujin)"
+      },
+      {
+        "Name": "Takamagahara Shrine Neck",
+        "ID": "f08Neck",
+        "ConnectionType": "OneWay",
+        "ConnectingAreaName": "Heavens Labyrinth Cog",
+        "Logic": "CanChant(Earth) and CanChant(Wind) and CanChant(Fire) and CanChant(Sea) and CanChant(Heaven) and CanWarp"
       }
     ]
   },
@@ -2096,7 +2104,7 @@
       {
         "Name": "Cog of Antiquity Chest",
         "LocationType": "Chest",
-        "Logic": "Has(Ancient Battery) and CanReach(Heavens Labyrinth) and CanWarp and HorizontalAttack"
+        "Logic": "Has(Ancient Battery) and CanWarp and HorizontalAttack and (CanReach(Heavens Labyrinth) or Has(Feather))"
       }
     ],
     "Exits": [
@@ -2104,7 +2112,7 @@
         "Name": "Heavens Labyrinth Cog",
         "ID": "f09In",
         "ConnectionType": "OneWay",
-        "ConnectingAreaName": "Takamagahara Shrine Main",
+        "ConnectingAreaName": "Takamagahara Shrine Neck",
         "Logic": "False"
       }
     ]
@@ -2207,7 +2215,7 @@
         "Logic": "CanWarp or CanSpinCorridor or (CanReach(Shrine of the Frost Giants Main) and CanKill(Tezcatlipoca) and Setting(Non Random Gates))"
       },
       {
-        "ConnectionType": "Corridor",
+        "ConnectionType": "CorridorSealed",
         "ConnectingAreaName": "Ancient Chaos Blood",
         "Logic": "CanSpinCorridor"
       },
@@ -2422,7 +2430,7 @@
         "Name": "Ammit",
         "LocationType": "Miniboss",
         "Logic": "Has(Feather) and Has(Pyramid Crystal) and (Has(Silver Shield) or Has(Angel Shield)) and OrbCount(3) and (Has(Chain Whip) or Has(Flail Whip) or Has(Knife) or Has(Axe) or Has(Katana) or CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Chakram) or CanUse(Pistol))",
-        "HardLogic": "Has(Feather) and Has(Pyramid Crystal)",
+        "HardLogic": "Has(Feather) and Has(Pyramid Crystal) and (MeleeAttack or CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Chakram) or CanUse(Pistol) or ((CanUse(Shuriken) or CanUse(Rolling Shuriken) or CanUse(Caltrops)) and Has(Ring)))",
         "Item": {
           "Name": "Ammit",
           "IsRequired": true
@@ -2441,7 +2449,7 @@
         "Logic": "CanWarp or CanSpinCorridor"
       },
       {
-        "ConnectionType": "Corridor",
+        "ConnectionType": "CorridorSealed",
         "ConnectingAreaName": "Shrine of the Frost Giants Blood",
         "Logic": "CanSpinCorridor"
       },
@@ -2628,6 +2636,11 @@
         "ConnectionType": "Internal",
         "ConnectingAreaName": "Ancient Chaos Wind",
         "Logic": "True"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaName": "Ancient Chaos Blood",
+        "Logic": "Has(Winner) and Has(Bomb)"
       }
     ]
   },
@@ -2649,7 +2662,7 @@
         "Logic": "CanSpinCorridor"
       },
       {
-        "ConnectionType": "Corridor",
+        "ConnectionType": "CorridorSealed",
         "ConnectingAreaName": "Hall of Malice",
         "Logic": "CanWarp or CanSpinCorridor"
       },
@@ -2674,7 +2687,7 @@
       {
         "ConnectionType": "Internal",
         "ConnectingAreaName": "Hall of Malice Awoken",
-        "Logic": "Has(Cog of Antiquity)"
+        "Logic": "Has(Cog of Antiquity) and (Has(Life Sigil) or Setting(Not Life for HoM))"
       },
       {
         "ConnectionType": "Internal",
@@ -2762,8 +2775,8 @@
       {
         "Name": "HoM Left Path",
         "LocationType": "Miniboss",
-        "Logic": "((Has(Silver Shield) and Has(Feather)) or Has(Angel Shield)) and ((Has(Chain Whip) and OrbCount(7)) or ((Has(Axe) or Has(Katana)) and OrbCount(6)) or (Has(Flail Whip) and OrbCount(5)))",
-        "HardLogic": "True",
+        "Logic": "(Has(Silver Shield) or Has(Angel Shield)) and ((Has(Chain Whip) and OrbCount(7)) or ((Has(Axe) or Has(Katana)) and OrbCount(6)) or (Has(Flail Whip) and OrbCount(5)))",
+        "HardLogic": "MeleeAttack",
         "Item": {
           "Name": "HoM Left Path",
           "IsRequired": true
@@ -2772,8 +2785,8 @@
       {
         "Name": "HoM Middle Path",
         "LocationType": "Miniboss",
-        "Logic": "(Has(Silver Shield) or Has(Angel Shield)) and ((Has(Chain Whip) and OrbCount(7)) or ((Has(Flail Whip) or Has(Axe) or Has(Katana)) and OrbCount(6)))",
-        "HardLogic": "True",
+        "Logic": "((Has(Silver Shield) and Has(Feather)) or Has(Angel Shield)) and ((Has(Chain Whip) and OrbCount(7)) or ((Has(Flail Whip) or Has(Axe) or Has(Katana)) and OrbCount(6)))",
+        "HardLogic": "((Has(Silver Shield) and Has(Feather)) or Has(Angel Shield)) and MeleeAttack",
         "Item": {
           "Name": "HoM Middle Path",
           "IsRequired": true
@@ -2783,7 +2796,7 @@
         "Name": "HoM Right Path",
         "LocationType": "Miniboss",
         "Logic": "(Has(Silver Shield) or Has(Angel Shield)) and ((Has(Chain Whip) and OrbCount(7)) or ((Has(Flail Whip) or Has(Axe) or Has(Katana)) and OrbCount(6)))",
-        "HardLogic": "True",
+        "HardLogic": "MeleeAttack",
         "Item": {
           "Name": "HoM Right Path",
           "IsRequired": true
@@ -3004,7 +3017,7 @@
       {
         "Name": "Sakit Puzzle",
         "LocationType": "Puzzle",
-        "Logic": "Has(Enga Musica) and Has(Feather) and IsDead(Vidofnir) and CanChant(Moon) and Has(Giants Flute) and Has(Liquour) and Has(Hand Scanner)",
+        "Logic": "Has(Enga Musica) and Has(Feather) and Has(Giants Flute) and Has(Vessel) and Has(Hand Scanner) and CanChant(Moon) and CanChant(Mother) and CanChant(Child) and IsDead(Vidofnir) and IsDead(Fenrir)",
         "Item": {
           "Name": "Sakit",
           "IsRequired": true

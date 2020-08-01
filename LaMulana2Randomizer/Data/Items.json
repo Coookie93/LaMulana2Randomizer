@@ -792,6 +792,21 @@
     "isRequired": true
   },
   {
+    "name": "Rolling Shuriken Ammo",
+    "id": 166,
+    "isRequired": true
+  },
+  {
+    "name": "Rolling Shuriken Ammo",
+    "id": 166,
+    "isRequired": true
+  },
+  {
+    "name": "Earth Spear Ammo",
+    "id": 167,
+    "isRequired": true
+  },
+  {
     "name": "Earth Spear Ammo",
     "id": 167,
     "isRequired": true
@@ -812,6 +827,11 @@
     "isRequired": true
   },
   {
+    "name": "Flare Ammo",
+    "id": 168,
+    "isRequired": true
+  },
+  {
     "name": "Bomb Ammo",
     "id": 169,
     "isRequired": true
@@ -819,6 +839,21 @@
   {
     "name": "Bomb Ammo",
     "id": 169,
+    "isRequired": true
+  },
+  {
+    "name": "Bomb Ammo",
+    "id": 169,
+    "isRequired": true
+  },
+  {
+    "name": "Chakram Ammo",
+    "id": 170,
+    "isRequired": true
+  },
+  {
+    "name": "Chakram Ammo",
+    "id": 170,
     "isRequired": true
   },
   {
@@ -852,44 +887,9 @@
     "isRequired": false
   },
   {
-    "name": "Weights",
-    "id": 173,
-    "isRequired": true
-  },
-  {
-    "name": "Weights",
-    "id": 173,
-    "isRequired": true
-  },
-  {
-    "name": "Weights",
-    "id": 173,
-    "isRequired": true
-  },
-  {
-    "name": "Weights",
-    "id": 173,
-    "isRequired": true
-  },
-  {
-    "name": "Weights",
-    "id": 173,
-    "isRequired": true
-  },
-  {
-    "name": "Weights",
-    "id": 173,
-    "isRequired": true
-  },
-  {
-    "name": "Weights",
-    "id": 173,
-    "isRequired": true
-  },
-  {
-    "name": "Weights",
-    "id": 173,
-    "isRequired": true
+    "name": "Pistol Ammo",
+    "id": 172,
+    "isRequired": false
   },
   {
     "name": "Weights",

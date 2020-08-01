@@ -138,8 +138,14 @@
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
-                            <CheckBox Name="RandomCurseCheck" IsChecked="{Binding Settings.RandomCurses}" Margin="0,2">
-                                <TextBlock Text="Randomise Curses"/>
+                            <CheckBox Name="LifeForHoMCheck" IsChecked="{Binding Settings.LifeForHoM}" Margin="0,2" Content="Require Life Sigil for Awoken Hall of Malice">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="Requires Life Sigil for Awoken Hall of Malice to be in logic."/>
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <CheckBox Name="RandomCurseCheck" IsChecked="{Binding Settings.RandomCurses}" Margin="0,2" Content="Randomise Curses">
                                 <CheckBox.ToolTip>
                                     <ToolTip Style="{StaticResource TootltipStyle}">
                                         <TextBlock Text="Randomises which chests will have the curse the Mulana Talsiman is needed to break."/>
@@ -262,6 +268,23 @@
                                     </Style>
                                 </CheckBox.Style>
                             </CheckBox>
+                            <CheckBox Name="RandomSoulPairs" IsChecked="{Binding Settings.RandomSoulPairs}" Content="Random Soul Pairs" Margin="20,2,2,2">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="Randomly chooses the soul pairs rather than uses the vanilla ones. E.g. there can be multiple pairs of Soul Gates that have the value of one" />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                                <CheckBox.Style>
+                                    <Style TargetType="CheckBox">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=RandomSoulGates, Path=IsChecked}" Value="True">
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </CheckBox.Style>
+                            </CheckBox>
                             <CheckBox Name="FullRandomEntrances" IsChecked="{Binding Settings.FullRandomEntrances}" Content="Entrance Mix'n'Match" Margin="2">
                                 <CheckBox.ToolTip>
                                     <ToolTip Style="{StaticResource TootltipStyle}">
@@ -307,24 +330,19 @@
                             <CheckBox Name="AutoPlaceCheck" IsChecked="{Binding Settings.AutoPlaceSkulls}" Content="Auto-place Crystal Skulls" Margin="2">
                                 <CheckBox.ToolTip>
                                     <ToolTip Style="{StaticResource TootltipStyle}">
-                                        <TextBlock Text="." />
+                                        <TextBlock Text="Automatically places the Crystal Skulls on the corresponding bust in Nibiru when picked up." />
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
-                            <CheckBox Name="MoneyStartCheck" IsChecked="{Binding Settings.MoneyStart}" Content="Start with 100 coins" Margin="2">
+                            <CheckBox Name="FastCorridorCheck" IsChecked="{Binding Settings.FastCorridor}" Content="Fast Corridor of Blood Sealing" Margin="2">
                                 <CheckBox.ToolTip>
                                     <ToolTip Style="{StaticResource TootltipStyle}">
-                                        <TextBlock Text="." />
+                                        <TextBlock Text="Going to the Valhalla Corridor of Blood Gate seals every Gate if the requirements to seal it are meet." />
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
-                            <CheckBox Name="WeightStartCheck" IsChecked="{Binding Settings.WeightStart}" Content="Start with 20 weights" Margin="2">
-                                <CheckBox.ToolTip>
-                                    <ToolTip Style="{StaticResource TootltipStyle}">
-                                        <TextBlock Text="." />
-                                    </ToolTip>
-                                </CheckBox.ToolTip>
-                            </CheckBox>
+                            <CheckBox Name="MoneyStartCheck" IsChecked="{Binding Settings.MoneyStart}" Content="Start with 100 coins" Margin="2"/>
+                            <CheckBox Name="WeightStartCheck" IsChecked="{Binding Settings.WeightStart}" Content="Start with 20 weights" Margin="2"/>
                         </StackPanel>
                     </GroupBox>
                 </Grid>
