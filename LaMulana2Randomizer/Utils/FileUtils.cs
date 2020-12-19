@@ -38,6 +38,7 @@ namespace LaMulana2Randomizer.Utils
                         NullValueHandling = NullValueHandling.Ignore,
                         Formatting = Formatting.Indented
                     };
+
                     serializer.Serialize(jw, settings);
                 }
             }
@@ -47,7 +48,7 @@ namespace LaMulana2Randomizer.Utils
             }
         }
 
-        public static List<JsonArea> GetWorldData()
+        public static List<JsonArea> LoadWorldData()
         {
             try
             {
@@ -64,11 +65,11 @@ namespace LaMulana2Randomizer.Utils
             }
         }
 
-        public static List<Item> GetItemsFromJson()
+        public static List<Item> LoadItemFile()
         {
             try
             {
-                using (StreamReader sr = File.OpenText("Data//Items.json"))
+                using (StreamReader sr = File.OpenText("Data\\items.json"))
                 {
                     JsonSerializer serializer = new JsonSerializer();
                     return (List<Item>)serializer.Deserialize(sr, typeof(List<Item>));
@@ -76,12 +77,12 @@ namespace LaMulana2Randomizer.Utils
             }
             catch (Exception ex)
             {
-                Logger.Log($"Failed to deserialise Data//Items.json.\n{ex.Message}");
-                throw new RandomiserException($"Failed to parse Data//Items.json.");
+                Logger.Log($"Failed to deserialise Data\\items.json.\n{ex.Message}");
+                throw new RandomiserException($"Failed to parse Data\\items.json.");
             }
         }
         
-        public static bool WriteSpoilers(Randomiser randomiser)
+        public static bool WriteSpoilerLog(Randomiser randomiser)
         {
             try
             {
@@ -89,7 +90,7 @@ namespace LaMulana2Randomizer.Utils
                 {
                     sw.WriteLine($"Seed: {randomiser.Settings.Seed}\n");
 
-                    sw.WriteLine($"Starting Weapon: {randomiser.StartingWeapon.Name}\n");
+                    sw.WriteLine($"Starting Weapon: {randomiser.StartingWeapon?.Name}\n");
 
                     sw.WriteLine("Curse Locations: {");
                     foreach (Location location in randomiser.CursedLocations)
@@ -224,12 +225,15 @@ namespace LaMulana2Randomizer.Utils
                 using (BinaryWriter br = new BinaryWriter(File.Open("Seed\\seed.lm2r", FileMode.Create)))
                 {
                     br.Write((int)randomiser.StartingWeaponID);
+                    br.Write(randomiser.Settings.RequiredSkulls);
+                    br.Write(randomiser.Settings.RemoveITStatue);
+                    br.Write(randomiser.Settings.EasyEchidna);
                     br.Write(randomiser.Settings.AutoScanTablets);
                     br.Write(randomiser.Settings.AutoPlaceSkulls);
                     br.Write(randomiser.Settings.FastCorridor);
-                    br.Write(randomiser.Settings.RemoveITStatue);
-                    br.Write(randomiser.Settings.MoneyStart);
-                    br.Write(randomiser.Settings.WeightStart);
+                    br.Write(randomiser.Settings.StartingMoney);
+                    br.Write(randomiser.Settings.StartingWeights);
+                    br.Write(randomiser.Settings.AlwaysShellHorn);
                     br.Write(items.Count);
                     foreach(var p in items)
                     {

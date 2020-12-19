@@ -44,7 +44,7 @@ namespace LaMulana2Randomizer
         
         public void Setup()
         {
-            worldData = FileUtils.GetWorldData();
+            worldData = FileUtils.LoadWorldData();
 
             foreach (JsonArea areaData in worldData)
             {
@@ -54,11 +54,9 @@ namespace LaMulana2Randomizer
                 {
                     Location location = new Location(locationData, area.Name);
 
-                    if (Settings.HardBosses && (location.LocationType == LocationType.Guardian 
-                        || location.LocationType == LocationType.Miniboss))
-                    {
+                    if (Settings.HardBosses && (location.LocationType == LocationType.Guardian || 
+                                                location.LocationType == LocationType.Miniboss))
                         location.UseHardRules();
-                    }
 
                     location.BuildLogicTree();
                     locations.Add(location.Name, location);
@@ -67,6 +65,11 @@ namespace LaMulana2Randomizer
             }
 
             RandomiseCurses();
+
+            //Set the amount of Skull required for Nibiru Dissonance
+            var nibiruDiss = GetLocation("Dissonance (Nibiru)");
+            nibiruDiss.AppendLogicString($" and SkullCount({Settings.RequiredSkulls})");
+            nibiruDiss.BuildLogicTree();
         }
 
         public void PlaceEntrances()
@@ -118,7 +121,15 @@ namespace LaMulana2Randomizer
             List<List<Location>> guardianGroups = new List<List<Location>>();
 
             PlayerState state = new PlayerState(this);
-            foreach (Item item in FileUtils.GetItemsFromJson())
+            ItemPool itemPool = new ItemPool(FileUtils.LoadItemFile());
+
+            if (Settings.ShopPlacement == ShopPlacement.Original)
+                PlaceShopItems(itemPool);
+
+            if (Settings.MantraPlacement == MantraPlacement.Original)
+                PlaceMantras(itemPool);
+
+            foreach (Item item in itemPool)
                 state.CollectItem(item);
 
             List<Location> requiredLocations = GetPlacedRequiredItemLocations();
@@ -186,65 +197,71 @@ namespace LaMulana2Randomizer
 
         public void ChooseStartingWeapon()
         {
-            ItemID[] weapons = new ItemID[]{ ItemID.Whip, ItemID.Knife, ItemID.Rapier, ItemID.Axe, ItemID.Katana, ItemID.Shuriken,
+            ItemID[] weapons = new ItemID[]{ ItemID.Whip1, ItemID.Knife, ItemID.Rapier, ItemID.Axe, ItemID.Katana, ItemID.Shuriken,
                 ItemID.RollingShuriken, ItemID.EarthSpear, ItemID.Flare, ItemID.Caltrops, ItemID.Chakram, ItemID.Bomb, ItemID.Pistol };
 
-            List<ItemID> selectedWeapons = weapons.Zip(Settings.Weapons, Tuple.Create).Where(w => w.Item2).Select(w => w.Item1).ToList();
-            StartingWeaponID = selectedWeapons[random.Next(selectedWeapons.Count)];
+            List<ItemID> selectedWeapons = weapons.Zip(Settings.GetWeaponChoices(), Tuple.Create).Where(w => w.Item2).Select(w => w.Item1).ToList();
+
+            if (selectedWeapons.Count > 0)
+                StartingWeaponID = selectedWeapons[random.Next(selectedWeapons.Count)];
+            else
+                StartingWeaponID = ItemID.None;
         }
 
         public void PlaceItems()
         {
-            List<Item> items = FileUtils.GetItemsFromJson();
+            ItemPool itemPool = new ItemPool(FileUtils.LoadItemFile());
 
             //remove the starting weapon from the item pool
-            StartingWeapon = ItemPool.GetAndRemove(StartingWeaponID, items);
+            if (StartingWeaponID != ItemID.None)
+                StartingWeapon = itemPool.GetAndRemove(StartingWeaponID);
+            else
+                StartingWeapon = new Item("No Weapon", ItemID.None, false);
 
             //Places weights at a starting shop so the player can buy them at the start of the game
-            GetLocation("Nebur Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Weights, items));
+            GetLocation("Nebur Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.Weights));
 
             //if we have a subweapon need to give the player ammo at a shop
             if (StartingWeaponID > ItemID.Katana)
-                GetLocation("Nebur Shop 2").PlaceItem(ItemPool.GetAndRemove(GetAmmoItemID(StartingWeaponID), items));
+                GetLocation("Nebur Shop 2").PlaceItem(itemPool.GetAndRemove(GetAmmoItemID(StartingWeaponID)));
 
-            if (Settings.ShopPlacement != ShopPlacement.Original)
-            {
-                //these locations cant be included properly atm since the reason the shop switches is unknown
-                GetLocation("Hiner Shop 3").PlaceItem(ItemPool.GetAndRemove(ItemID.Map1, items));
-                GetLocation("Hiner Shop 4").PlaceItem(ItemPool.GetAndRemove(ItemID.Map2, items));
-            }
+            //if (Settings.ShopPlacement != ShopPlacement.Original)
+            //{
+            //    //these locations cant be included properly atm since the reason the shop switches is unknown
+            //    GetLocation("Hiner Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.Map1));
+            //    GetLocation("Hiner Shop 4").PlaceItem(itemPool.GetAndRemove(ItemID.Map2));
+            //}
 
-            //get all the ammo/weights from the item pool
-            List<Item> shopOnlyItems = Shuffle.FisherYates(ItemPool.GetAndRemoveShopOnlyItems(items), random);
             //place the weights and ammo in shops first since they can only be in shops
-            PlaceShopItems(shopOnlyItems, items);
+            PlaceShopItems(itemPool);
 
             //create a list of the items we want to place that are accessible from the start
-            List<Item> earlyItems = new List<Item>();
+            ItemPool earlyItems = new ItemPool();
             if (!Settings.RandomGrail) 
-                earlyItems.Add(ItemPool.GetAndRemove(ItemID.HolyGrail, items));
+                earlyItems.Add(itemPool.GetAndRemove(ItemID.HolyGrail));
             if (!Settings.RandomScanner && Settings.ShopPlacement != ShopPlacement.Original) 
-                earlyItems.Add(ItemPool.GetAndRemove(ItemID.HandScanner, items));
+                earlyItems.Add(itemPool.GetAndRemove(ItemID.HandScanner));
             if (!Settings.RandomCodices && Settings.ShopPlacement != ShopPlacement.Original) 
-                earlyItems.Add(ItemPool.GetAndRemove(ItemID.Codices, items));
+                earlyItems.Add(itemPool.GetAndRemove(ItemID.Codices));
             if (!Settings.RandomFDC && Settings.ShopPlacement != ShopPlacement.Original) 
-                earlyItems.Add(ItemPool.GetAndRemove(ItemID.FutureDevelopmentCompany, items));
+                earlyItems.Add(itemPool.GetAndRemove(ItemID.FutureDevelopmentCompany));
 
             //place these items now before anythting else
-            RandomiseWithChecks(GetUnplacedLocations(), earlyItems, new List<Item>());
+            RandomiseWithChecks(GetUnplacedLocations(), earlyItems, new ItemPool());
 
             //place mantras if they are not fully randomised
-            PlaceMantras(items);
+            PlaceMantras(itemPool);
 
             //place research if it is not randomised
-            PlaceResearch(items);
+            PlaceResearch(itemPool);
 
             //split the remaining items into required/non required
-            List<Item> requiredItems = Shuffle.FisherYates(ItemPool.GetRequiredItems(items), random);
-            List<Item> nonRequiredItems = Shuffle.FisherYates(ItemPool.GetNonRequiredItems(items), random);
+            ItemPool requiredItems = new ItemPool(itemPool.GetandRemoveRequiredItems());
+            ItemPool nonRequiredItems = new ItemPool(itemPool.GetandRemoveNonRequiredItems());
 
             //place required items
-            RandomiseAssumedFill(GetUnplacedLocations(), requiredItems);
+            if (!RandomiseAssumedFill(GetUnplacedLocations(), requiredItems))
+                return;
 
             //place non requires items
             RandomiseWithoutChecks(GetUnplacedLocations(), nonRequiredItems);
@@ -362,6 +379,143 @@ namespace LaMulana2Randomizer
             return locations.Values.Where(location => location.Item != null && location.Item.IsRequired).ToList();
         }
 
+        public void PlaceShopItems(ItemPool itemPool)
+        {
+            if(Settings.ShopPlacement == ShopPlacement.Random)
+            {
+                //remove all the weights and ammo since a pool of those is randomly generated
+                itemPool.GetAndRemoveShopOnlyItems();
+
+                //lock this shop only items can go here since there is a forth slot
+                GetLocation("Hiner Shop 3").IsLocked = true;
+
+                RandomiseWithChecks(GetUnplacedLocationsOfType(LocationType.Shop), ItemPool.CreateRandomShopPool(random, StartingWeaponID > ItemID.Katana), itemPool);
+
+                GetLocation("Hiner Shop 3").IsLocked = false;
+            }
+            else if(Settings.ShopPlacement == ShopPlacement.AtLeastOne)
+            {
+                //remove all the weights and ammo since a pool of those is randomly generated
+                itemPool.GetAndRemoveShopOnlyItems();
+
+                //lock the third slot of each shop so there will be atleast one item in to buy in each shop
+                foreach (var location in GetUnplacedLocationsOfType(LocationType.Shop)) {
+                    if (location.Name.Contains("3"))
+                        location.IsLocked = true;
+                }
+
+                RandomiseWithChecks(GetUnplacedLocationsOfType(LocationType.Shop), ItemPool.CreateRandomShopPool(random, StartingWeaponID > ItemID.Katana), itemPool);
+
+                //now unlock all the shop slots that were locked
+                foreach (var location in GetLocationsOfType(LocationType.Shop))
+                    location.IsLocked = false;
+            }
+            else 
+            {
+                //place items how they are originally
+                //if we start with a subweapon this item has to go somewhere else since ammo is placed in slot 2
+                if (StartingWeaponID <= ItemID.Katana)
+                    GetLocation("Nebur Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.YagooMapReader));
+
+                GetLocation("Nebur Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.TextTrax));
+
+                GetLocation("Modro Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.Shield1));
+                GetLocation("Modro Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.Pistol));
+                GetLocation("Modro Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.PistolAmmo));
+
+                GetLocation("Sidro Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.HandScanner));
+                GetLocation("Sidro Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.ShurikenAmmo));
+                GetLocation("Sidro Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.Pepper));
+
+                GetLocation("Hiner Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.Weights));
+                GetLocation("Hiner Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.Codices));
+                GetLocation("Hiner Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.AnkhJewel1));
+                GetLocation("Hiner Shop 4").PlaceItem(itemPool.GetAndRemove(ItemID.AnkhJewel8));
+
+                GetLocation("Korobok Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.Weights));
+                GetLocation("Korobok Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.ShurikenAmmo));
+                GetLocation("Korobok Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.Guild));
+
+                GetLocation("Shuhoka Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.Weights));
+                GetLocation("Shuhoka Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.ShurikenAmmo));
+                GetLocation("Shuhoka Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.Alert));
+
+                GetLocation("Pym Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.Weights));
+                GetLocation("Pym Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.RollingShurikenAmmo));
+                GetLocation("Pym Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.Snapshot));
+
+                GetLocation("Btk Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.Weights));
+                GetLocation("Btk Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.CaltropsAmmo));
+                GetLocation("Btk Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.EngaMusica));
+
+                GetLocation("Mino Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.Weights));
+                GetLocation("Mino Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.BombAmmo));
+                GetLocation("Mino Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.LonelyHouseMoving));
+
+                GetLocation("Bargain Duck Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.Weights));
+                GetLocation("Bargain Duck Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.CaltropsAmmo));
+                GetLocation("Bargain Duck Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.FutureDevelopmentCompany));
+
+                GetLocation("Peibalusa Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.Weights));
+                GetLocation("Peibalusa Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.EarthSpearAmmo));
+                GetLocation("Peibalusa Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.RaceScanner));
+
+                GetLocation("Hiro Roderick Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.Weights));
+                GetLocation("Hiro Roderick Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.FlareAmmo));
+                GetLocation("Hiro Roderick Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.Harp));
+
+                GetLocation("Hydlit Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.Weights));
+                GetLocation("Hydlit Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.BombAmmo));
+                GetLocation("Hydlit Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.GaneshaTalisman));
+
+                GetLocation("Aytum Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.Weights));
+                GetLocation("Aytum Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.ShurikenAmmo));
+                GetLocation("Aytum Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.BounceShot));
+
+                GetLocation("Kero Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.Weights));
+                GetLocation("Kero Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.PistolAmmo));
+                GetLocation("Kero Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.RoseandCamelia));
+
+                GetLocation("Ash Geen Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.Weights));
+                GetLocation("Ash Geen Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.FlareAmmo));
+                GetLocation("Ash Geen Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.MekuriMaster));
+
+                GetLocation("Venom Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.Weights));
+                GetLocation("Venom Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.CaltropsAmmo));
+                GetLocation("Venom Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.SpaceCapstarII));
+
+                GetLocation("Megarock Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.Weights));
+                GetLocation("Megarock Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.EarthSpearAmmo));
+                GetLocation("Megarock Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.Bracelet));
+
+                GetLocation("FairyLan Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.Weights));
+                GetLocation("FairyLan Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.ChakramAmmo));
+                GetLocation("FairyLan Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.Shield3));
+            }
+        }
+
+        public void PlaceMantras(ItemPool itemPool)
+        {
+            if(Settings.MantraPlacement == MantraPlacement.Original)
+            {
+                //put the mantras where they are originally if they arent randomised
+                GetLocation("Heaven Mantra Mural").PlaceItem(itemPool.GetAndRemove(ItemID.Heaven));
+                GetLocation("Earth Mantra Mural").PlaceItem(itemPool.GetAndRemove(ItemID.Earth));
+                GetLocation("Sun Mantra Mural").PlaceItem(itemPool.GetAndRemove(ItemID.Sun));
+                GetLocation("Moon Mantra Mural").PlaceItem(itemPool.GetAndRemove(ItemID.Moon));
+                GetLocation("Sea Mantra Mural").PlaceItem(itemPool.GetAndRemove(ItemID.Sea));
+                GetLocation("Fire Mantra Mural").PlaceItem(itemPool.GetAndRemove(ItemID.Fire));
+                GetLocation("Wind Mantra Mural").PlaceItem(itemPool.GetAndRemove(ItemID.Wind));
+                GetLocation("Mother Mantra Mural").PlaceItem(itemPool.GetAndRemove(ItemID.Mother));
+                GetLocation("Child Mantra Mural").PlaceItem(itemPool.GetAndRemove(ItemID.Child));
+                GetLocation("Night Mantra Mural").PlaceItem(itemPool.GetAndRemove(ItemID.Night));
+            }
+            else if(Settings.MantraPlacement == MantraPlacement.OnlyMurals)
+            {
+                RandomiseWithChecks(GetUnplacedLocationsOfType(LocationType.Mural), new ItemPool(itemPool.GetAndRemoveMantras()), itemPool);
+            }
+        }
+
         private ItemID GetAmmoItemID(ItemID itemID)
         {
             switch (itemID)
@@ -378,158 +532,30 @@ namespace LaMulana2Randomizer
             }
         }
 
-        private void PlaceShopItems(List<Item> shopItems, List<Item> items)
-        {
-            if(Settings.ShopPlacement == ShopPlacement.Random)
-            {
-                RandomiseWithChecks(GetUnplacedLocationsOfType(LocationType.Shop), shopItems, items);
-            }
-            else if(Settings.ShopPlacement == ShopPlacement.AtLeastOne)
-            {
-                //lock the third slot of each shop so there will be atleast one item in to buy in each shop
-                foreach(var location in GetUnplacedLocationsOfType(LocationType.Shop)) {
-                    if (location.Name.Contains("3"))
-                        location.IsLocked = true;
-                }
-
-                RandomiseWithChecks(GetUnplacedLocationsOfType(LocationType.Shop), shopItems, items);
-
-                //now unlock all the shop slots that were locked
-                foreach (var location in GetLocationsOfType(LocationType.Shop))
-                    location.IsLocked = false;
-            }
-            else 
-            {
-                //otherwise place items how they are originally
-                //if we start with a subweapon this item has to go somewhere else since ammo is placed in slot 2
-                if (StartingWeaponID <= ItemID.Katana)
-                    GetLocation("Nebur Shop 2").PlaceItem(ItemPool.GetAndRemove(ItemID.YagooMapReader, items));
-
-                GetLocation("Nebur Shop 3").PlaceItem(ItemPool.GetAndRemove(ItemID.TextTrax, items));
-
-                GetLocation("Modro Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Buckler, items));
-                GetLocation("Modro Shop 2").PlaceItem(ItemPool.GetAndRemove(ItemID.Pistol, items));
-                GetLocation("Modro Shop 3").PlaceItem(ItemPool.GetAndRemove(ItemID.PistolAmmo, shopItems));
-
-                GetLocation("Sidro Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.HandScanner, items));
-                GetLocation("Sidro Shop 2").PlaceItem(ItemPool.GetAndRemove(ItemID.ShurikenAmmo, shopItems));
-                GetLocation("Sidro Shop 3").PlaceItem(ItemPool.GetAndRemove(ItemID.Pepper, items));
-
-                GetLocation("Hiner Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Weights, shopItems));
-                GetLocation("Hiner Shop 2").PlaceItem(ItemPool.GetAndRemove(ItemID.Codices, items));
-                GetLocation("Hiner Shop 3").PlaceItem(ItemPool.GetAndRemove(ItemID.AnkhJewel1, items));
-                GetLocation("Hiner Shop 4").PlaceItem(ItemPool.GetAndRemove(ItemID.AnkhJewel8, items));
-
-                GetLocation("Korobok Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Weights, shopItems));
-                GetLocation("Korobok Shop 2").PlaceItem(ItemPool.GetAndRemove(ItemID.ShurikenAmmo, shopItems));
-                GetLocation("Korobok Shop 3").PlaceItem(ItemPool.GetAndRemove(ItemID.Guild, items));
-
-                GetLocation("Shuhoka Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Weights, shopItems));
-                GetLocation("Shuhoka Shop 2").PlaceItem(ItemPool.GetAndRemove(ItemID.ShurikenAmmo, shopItems));
-                GetLocation("Shuhoka Shop 3").PlaceItem(ItemPool.GetAndRemove(ItemID.Alert, items));
-
-                GetLocation("Pym Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Weights, shopItems));
-                GetLocation("Pym Shop 2").PlaceItem(ItemPool.GetAndRemove(ItemID.RollingShurikenAmmo, shopItems));
-                GetLocation("Pym Shop 3").PlaceItem(ItemPool.GetAndRemove(ItemID.Snapshot, items));
-
-                GetLocation("Btk Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Weights, shopItems));
-                GetLocation("Btk Shop 2").PlaceItem(ItemPool.GetAndRemove(ItemID.CaltropsAmmo, shopItems));
-                GetLocation("Btk Shop 3").PlaceItem(ItemPool.GetAndRemove(ItemID.EngaMusica, items));
-
-                GetLocation("Mino Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Weights, shopItems));
-                GetLocation("Mino Shop 2").PlaceItem(ItemPool.GetAndRemove(ItemID.BombAmmo, shopItems));
-                GetLocation("Mino Shop 3").PlaceItem(ItemPool.GetAndRemove(ItemID.LonelyHouseMoving, items));
-
-                GetLocation("Bargain Duck Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Weights, shopItems));
-                GetLocation("Bargain Duck Shop 2").PlaceItem(ItemPool.GetAndRemove(ItemID.CaltropsAmmo, shopItems));
-                GetLocation("Bargain Duck Shop 3").PlaceItem(ItemPool.GetAndRemove(ItemID.FutureDevelopmentCompany, items));
-
-                GetLocation("Peibalusa Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Weights, shopItems));
-                GetLocation("Peibalusa Shop 2").PlaceItem(ItemPool.GetAndRemove(ItemID.EarthSpearAmmo, shopItems));
-                GetLocation("Peibalusa Shop 3").PlaceItem(ItemPool.GetAndRemove(ItemID.RaceScanner, items));
-
-                GetLocation("Hiro Roderick Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Weights, shopItems));
-                GetLocation("Hiro Roderick Shop 2").PlaceItem(ItemPool.GetAndRemove(ItemID.FlareAmmo, shopItems));
-                GetLocation("Hiro Roderick Shop 3").PlaceItem(ItemPool.GetAndRemove(ItemID.Harp, items));
-
-                GetLocation("Hydlit Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Weights, shopItems));
-                GetLocation("Hydlit Shop 2").PlaceItem(ItemPool.GetAndRemove(ItemID.BombAmmo, shopItems));
-                GetLocation("Hydlit Shop 3").PlaceItem(ItemPool.GetAndRemove(ItemID.GaneshaTalisman, items));
-
-                GetLocation("Aytum Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Weights, shopItems));
-                GetLocation("Aytum Shop 2").PlaceItem(ItemPool.GetAndRemove(ItemID.ShurikenAmmo, shopItems));
-                GetLocation("Aytum Shop 3").PlaceItem(ItemPool.GetAndRemove(ItemID.BounceShot, items));
-
-                GetLocation("Kero Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Weights, shopItems));
-                GetLocation("Kero Shop 2").PlaceItem(ItemPool.GetAndRemove(ItemID.PistolAmmo, shopItems));
-                GetLocation("Kero Shop 3").PlaceItem(ItemPool.GetAndRemove(ItemID.RoseandCamelia, items));
-
-                GetLocation("Ash Geen Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Weights, shopItems));
-                GetLocation("Ash Geen Shop 2").PlaceItem(ItemPool.GetAndRemove(ItemID.FlareAmmo, shopItems));
-                GetLocation("Ash Geen Shop 3").PlaceItem(ItemPool.GetAndRemove(ItemID.MekuriMaster, items));
-
-                GetLocation("Venom Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Weights, shopItems));
-                GetLocation("Venom Shop 2").PlaceItem(ItemPool.GetAndRemove(ItemID.CaltropsAmmo, shopItems));
-                GetLocation("Venom Shop 3").PlaceItem(ItemPool.GetAndRemove(ItemID.SpaceCapstarII, items));
-
-                GetLocation("Megarock Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Weights, shopItems));
-                GetLocation("Megarock Shop 2").PlaceItem(ItemPool.GetAndRemove(ItemID.EarthSpearAmmo, shopItems));
-                GetLocation("Megarock Shop 3").PlaceItem(ItemPool.GetAndRemove(ItemID.Bracelet, items));
-
-                GetLocation("FairyLan Shop 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Weights, shopItems));
-                GetLocation("FairyLan Shop 2").PlaceItem(ItemPool.GetAndRemove(ItemID.ChakramAmmo, shopItems));
-                GetLocation("FairyLan Shop 3").PlaceItem(ItemPool.GetAndRemove(ItemID.AngelShield, items));
-            }
-        }
-
-        private void PlaceMantras(List<Item> items)
-        {
-            if(Settings.MantraPlacement == MantraPlacement.Original)
-            {
-                //put the mantras where they are originally if they arent randomised
-                GetLocation("Heaven Mantra Mural").PlaceItem(ItemPool.GetAndRemove(ItemID.Heaven, items));
-                GetLocation("Earth Mantra Mural").PlaceItem(ItemPool.GetAndRemove(ItemID.Earth, items));
-                GetLocation("Sun Mantra Mural").PlaceItem(ItemPool.GetAndRemove(ItemID.Sun, items));
-                GetLocation("Moon Mantra Mural").PlaceItem(ItemPool.GetAndRemove(ItemID.Moon, items));
-                GetLocation("Sea Mantra Mural").PlaceItem(ItemPool.GetAndRemove(ItemID.Sea, items));
-                GetLocation("Fire Mantra Mural").PlaceItem(ItemPool.GetAndRemove(ItemID.Fire, items));
-                GetLocation("Wind Mantra Mural").PlaceItem(ItemPool.GetAndRemove(ItemID.Wind, items));
-                GetLocation("Mother Mantra Mural").PlaceItem(ItemPool.GetAndRemove(ItemID.Mother, items));
-                GetLocation("Child Mantra Mural").PlaceItem(ItemPool.GetAndRemove(ItemID.Child, items));
-                GetLocation("Night Mantra Mural").PlaceItem(ItemPool.GetAndRemove(ItemID.Night, items));
-            }
-            else if(Settings.MantraPlacement == MantraPlacement.OnlyMurals)
-            {
-                List<Item> mantras = Shuffle.FisherYates(ItemPool.GetAndRemoveMantras(items), random);
-                RandomiseWithChecks(GetUnplacedLocationsOfType(LocationType.Mural), mantras, items);
-            }
-        }
-
-        private void PlaceResearch(List<Item> items)
+        private void PlaceResearch(ItemPool itemPool)
         {
             if (!Settings.RandomResearch)
             {
-                GetLocation("Research Annwfn").PlaceItem(ItemPool.GetAndRemove(ItemID.Research1, items));
-                GetLocation("Research IB Top Left").PlaceItem(ItemPool.GetAndRemove(ItemID.Research2, items));
-                GetLocation("Research IB Top Right").PlaceItem(ItemPool.GetAndRemove(ItemID.Research3, items));
-                GetLocation("Research IB Tent 1").PlaceItem(ItemPool.GetAndRemove(ItemID.Research4, items));
-                GetLocation("Research IB Tent 2").PlaceItem(ItemPool.GetAndRemove(ItemID.Research5, items));
-                GetLocation("Research IB Tent 3").PlaceItem(ItemPool.GetAndRemove(ItemID.Research6, items));
-                GetLocation("Research IB Pit").PlaceItem(ItemPool.GetAndRemove(ItemID.Research7, items));
-                GetLocation("Research IB Left").PlaceItem(ItemPool.GetAndRemove(ItemID.Research8, items));
-                GetLocation("Research IT").PlaceItem(ItemPool.GetAndRemove(ItemID.Research9, items));
-                GetLocation("Research DSLM").PlaceItem(ItemPool.GetAndRemove(ItemID.Research10, items));
+                GetLocation("Research Annwfn").PlaceItem(itemPool.GetAndRemove(ItemID.Research1));
+                GetLocation("Research IB Top Left").PlaceItem(itemPool.GetAndRemove(ItemID.Research2));
+                GetLocation("Research IB Top Right").PlaceItem(itemPool.GetAndRemove(ItemID.Research3));
+                GetLocation("Research IB Tent 1").PlaceItem(itemPool.GetAndRemove(ItemID.Research4));
+                GetLocation("Research IB Tent 2").PlaceItem(itemPool.GetAndRemove(ItemID.Research5));
+                GetLocation("Research IB Tent 3").PlaceItem(itemPool.GetAndRemove(ItemID.Research6));
+                GetLocation("Research IB Pit").PlaceItem(itemPool.GetAndRemove(ItemID.Research7));
+                GetLocation("Research IB Left").PlaceItem(itemPool.GetAndRemove(ItemID.Research8));
+                GetLocation("Research IT").PlaceItem(itemPool.GetAndRemove(ItemID.Research9));
+                GetLocation("Research DSLM").PlaceItem(itemPool.GetAndRemove(ItemID.Research10));
             }
         }
 
-        private void RandomiseAssumedFill(List<Location> locations, List<Item> itemsToPlace)
+        private bool RandomiseAssumedFill(List<Location> locations, ItemPool itemsToPlace)
         {
             PlayerState state;
 
-            while (itemsToPlace.Count > 0)
+            while (itemsToPlace.ItemCount > 0)
             {
-                Item item = itemsToPlace.Last();
-                itemsToPlace.Remove(item);
+                Item item = itemsToPlace.RandomGetAndRemove(random);
                 locations = Shuffle.FisherYates(locations, random);
 
                 state = PlayerState.GetStateWithItems(this, itemsToPlace);
@@ -552,20 +578,21 @@ namespace LaMulana2Randomizer
                 else
                 {
                     Logger.Log($"Failed to place item {item.Name}.");
-                    Logger.Log($"Total items left to place {itemsToPlace.Count}.");
-                    break;
+                    Logger.Log($"Total items left to place {itemsToPlace.ItemCount}.");
+                    return false;
                 }
             }
+
+            return true;
         }
 
-        private void RandomiseWithChecks(List<Location> locations, List<Item> itemsToPlace, List<Item> currentItems)
+        private void RandomiseWithChecks(List<Location> locations, ItemPool itemsToPlace, ItemPool currentItems)
         {
             PlayerState state;
 
-            while (itemsToPlace.Count > 0)
+            while (itemsToPlace.ItemCount > 0)
             {
-                Item item = itemsToPlace.Last();
-                itemsToPlace.Remove(item);
+                Item item = itemsToPlace.RandomGetAndRemove(random);
                 locations = Shuffle.FisherYates(locations, random);
 
                 state = PlayerState.GetStateWithItems(this, currentItems);
@@ -588,22 +615,21 @@ namespace LaMulana2Randomizer
                 else
                 {
                     Logger.Log($"Failed to place item {item.Name}.");
-                    Logger.Log($"Total items left to place {itemsToPlace.Count}.");
+                    Logger.Log($"Total items left to place {itemsToPlace.ItemCount}.");
                     break;
                 }
             }
         }
 
-        private void RandomiseWithoutChecks(List<Location> locations, List<Item> itemsToPlace)
+        private void RandomiseWithoutChecks(List<Location> locations, ItemPool itemsToPlace)
         {
             locations = Shuffle.FisherYates(locations, random);
 
-            while (itemsToPlace.Count > 0)
+            while (locations.Count > 0)
             {
-                Item item = itemsToPlace.Last();
+                Item item = itemsToPlace.RandomGetAndRemove(random);
                 Location location = locations.Last();
 
-                itemsToPlace.Remove(item);
                 locations.Remove(location);
                 location.PlaceItem(item);
             }
@@ -939,7 +965,10 @@ namespace LaMulana2Randomizer
                 entrances.AddRange(GetConnectionsOfType(ExitType.Gate));
 
             if (Settings.IncludeUniqueTransitions)
+            {
                 entrances.AddRange(GetConnectionsOfType(ExitType.OneWay));
+                entrances.AddRange(GetConnectionsOfType(ExitType.Pyramid));
+            }
 
             Exit entrance1 = null;
             Exit entrance2 = null;
@@ -1054,9 +1083,7 @@ namespace LaMulana2Randomizer
             }
 
             if (Settings.RandomHorizontalEntraces)
-            {
                 priorityEntrances.Add(entrances.Find(x => x.ID == ExitID.fL08Right));
-            }
 
             if (Settings.RandomLadderEntraces)
             {
@@ -1149,10 +1176,15 @@ namespace LaMulana2Randomizer
                     entrance2.BuildLogicTree();
                     break;
                 }
-
                 case ExitID.f03Up:
                 {
                     entrance2.AppendLogicString(" and (CanWarp or CanKill(Cetus) or CanReach(Immortal Battlefield Main))");
+                    entrance2.BuildLogicTree();
+                    break;
+                }
+                case ExitID.f03In:
+                {
+                    entrance2.AppendLogicString(" and CanWarp");
                     entrance2.BuildLogicTree();
                     break;
                 }
@@ -1333,135 +1365,135 @@ namespace LaMulana2Randomizer
             }
         }
 
-        private void VanillaItemPlacement(List<Item> items)
+        private void VanillaItemPlacement(ItemPool itemPool)
         {
-            GetLocation("Xelpud Item").PlaceItem(ItemPool.GetAndRemove(ItemID.Xelputter, items));
-            GetLocation("Nebur Item").PlaceItem(ItemPool.GetAndRemove(ItemID.Map16, items));
-            GetLocation("Alsedana Item").PlaceItem(ItemPool.GetAndRemove(ItemID.Beherit, items));
-            GetLocation("Giltoriyo Item").PlaceItem(ItemPool.GetAndRemove(ItemID.MulanaTalisman, items));
-            GetLocation("Freyas Item").PlaceItem(ItemPool.GetAndRemove(ItemID.FreyasPendant, items));
-            GetLocation("Fobos Item").PlaceItem(ItemPool.GetAndRemove(ItemID.RuinsEncylopedia, items));
-            GetLocation("Fobos Item 2").PlaceItem(ItemPool.GetAndRemove(ItemID.SkullReader, items));
-            GetLocation("Mulbruk Item").PlaceItem(ItemPool.GetAndRemove(ItemID.SnowShoes, items));
-            GetLocation("Osiris Item").PlaceItem(ItemPool.GetAndRemove(ItemID.LightScythe, items));
+            GetLocation("Xelpud Item").PlaceItem(itemPool.GetAndRemove(ItemID.Xelputter));
+            GetLocation("Nebur Item").PlaceItem(itemPool.GetAndRemove(ItemID.Map16));
+            GetLocation("Alsedana Item").PlaceItem(itemPool.GetAndRemove(ItemID.Beherit));
+            GetLocation("Giltoriyo Item").PlaceItem(itemPool.GetAndRemove(ItemID.MulanaTalisman));
+            GetLocation("Freyas Item").PlaceItem(itemPool.GetAndRemove(ItemID.FreyasPendant));
+            GetLocation("Fobos Item").PlaceItem(itemPool.GetAndRemove(ItemID.RuinsEncylopedia));
+            GetLocation("Fobos Item 2").PlaceItem(itemPool.GetAndRemove(ItemID.SkullReader));
+            GetLocation("Mulbruk Item").PlaceItem(itemPool.GetAndRemove(ItemID.SnowShoes));
+            GetLocation("Osiris Item").PlaceItem(itemPool.GetAndRemove(ItemID.LightScythe));
 
-            GetLocation("Djed Pillar Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.DjedPillar, items));
-            GetLocation("Mjolnir Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.Mjolnir, items));
-            GetLocation("Battery Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.AncientBattery, items));
-            GetLocation("Lamp of Time Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.LampofTime, items));
-            GetLocation("Pochette Key Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.PochetteKey, items));
-            GetLocation("Pyramid Crystal Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.PyramidCrystal, items));
-            GetLocation("Vessel Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.Vessel, items));
-            GetLocation("Egg of Creation Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.EggofCreation, items));
-            GetLocation("Giants Flutes Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.GiantsFlute, items));
-            GetLocation("Cog of Antiquity Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.CogofAntiquity, items));
+            GetLocation("Djed Pillar Chest").PlaceItem(itemPool.GetAndRemove(ItemID.DjedPillar));
+            GetLocation("Mjolnir Chest").PlaceItem(itemPool.GetAndRemove(ItemID.Mjolnir));
+            GetLocation("Battery Chest").PlaceItem(itemPool.GetAndRemove(ItemID.AncientBattery));
+            GetLocation("Lamp of Time Chest").PlaceItem(itemPool.GetAndRemove(ItemID.LampofTime));
+            GetLocation("Pochette Key Chest").PlaceItem(itemPool.GetAndRemove(ItemID.PochetteKey));
+            GetLocation("Pyramid Crystal Chest").PlaceItem(itemPool.GetAndRemove(ItemID.PyramidCrystal));
+            GetLocation("Vessel Chest").PlaceItem(itemPool.GetAndRemove(ItemID.Vessel));
+            GetLocation("Egg of Creation Chest").PlaceItem(itemPool.GetAndRemove(ItemID.EggofCreation));
+            GetLocation("Giants Flutes Chest").PlaceItem(itemPool.GetAndRemove(ItemID.GiantsFlute));
+            GetLocation("Cog of Antiquity Chest").PlaceItem(itemPool.GetAndRemove(ItemID.CogofAntiquity));
 
-            GetLocation("Mobile Super X3 Item").PlaceItem(ItemPool.GetAndRemove(ItemID.MobileSuperx3P, items));
-            GetLocation("Shell Horn Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.ShellHorn, items));
-            GetLocation("Holy Grail Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.HolyGrail, items));
-            GetLocation("Fairy Guild Pass Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.FairyPass, items));
-            GetLocation("Glove Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.Gloves, items));
-            GetLocation("Dinosaur Figure Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.DinosaurFigure, items));
-            GetLocation("Gale Fibula Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.GaleFibula, items));
-            GetLocation("Flame Torc Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.FlameTorc, items));
-            GetLocation("Vajra Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.Vajra, items));
-            GetLocation("Power Band Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.PowerBand, items));
-            GetLocation("Bronze Mirror Spot").PlaceItem(ItemPool.GetAndRemove(ItemID.BronzeMirror, items));
-            GetLocation("Perfume Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.Perfume, items));
-            GetLocation("Ice Cloak Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.IceCloak, items));
-            GetLocation("Nemean Fur Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.NemeanFur, items));
-            GetLocation("Gauntlet Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.Gauntlet, items));
-            GetLocation("Anchor Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.Anchor, items));
-            GetLocation("Totem Pole Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.TotemPole, items));
-            GetLocation("Grapple Claw Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.GrappleClaw, items));
-            GetLocation("Spaulder Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.Spaulder, items));
-            GetLocation("Scalesphere Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.Scalesphere, items));
-            GetLocation("Crucifix Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.Crucifix, items));
-            GetLocation("Maats Feather Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.MaatsFeather, items));
-            GetLocation("Ring Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.Ring, items));
-            GetLocation("Feather Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.Feather, items));
-            GetLocation("Scriptures Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.Scriptures, items));
-            GetLocation("Frey Ship").PlaceItem(ItemPool.GetAndRemove(ItemID.FreysShip, items));
-            GetLocation("Book of the Dead Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.BookoftheDead, items));
-            GetLocation("Destiny Tablet Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.DestinyTablet, items));
-            GetLocation("Secret Treasure of Life Item").PlaceItem(ItemPool.GetAndRemove(ItemID.SecretTreasureofLife, items));
-            GetLocation("Origin Seal Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.OriginSigil, items));
-            GetLocation("Birth Sigil Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.BirthSigil, items));
-            GetLocation("Life Sigil Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.LifeSigil, items));
-            GetLocation("Death Sigil Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.DeathSigil, items));
-            GetLocation("Claydoll Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.ClaydollSuit, items));
+            GetLocation("Mobile Super X3 Item").PlaceItem(itemPool.GetAndRemove(ItemID.MobileSuperx3P));
+            GetLocation("Shell Horn Chest").PlaceItem(itemPool.GetAndRemove(ItemID.ShellHorn));
+            GetLocation("Holy Grail Chest").PlaceItem(itemPool.GetAndRemove(ItemID.HolyGrail));
+            GetLocation("Fairy Guild Pass Chest").PlaceItem(itemPool.GetAndRemove(ItemID.FairyPass));
+            GetLocation("Glove Chest").PlaceItem(itemPool.GetAndRemove(ItemID.Gloves));
+            GetLocation("Dinosaur Figure Chest").PlaceItem(itemPool.GetAndRemove(ItemID.DinosaurFigure));
+            GetLocation("Gale Fibula Chest").PlaceItem(itemPool.GetAndRemove(ItemID.GaleFibula));
+            GetLocation("Flame Torc Chest").PlaceItem(itemPool.GetAndRemove(ItemID.FlameTorc));
+            GetLocation("Vajra Chest").PlaceItem(itemPool.GetAndRemove(ItemID.Vajra));
+            GetLocation("Power Band Chest").PlaceItem(itemPool.GetAndRemove(ItemID.PowerBand));
+            GetLocation("Bronze Mirror Spot").PlaceItem(itemPool.GetAndRemove(ItemID.BronzeMirror));
+            GetLocation("Perfume Chest").PlaceItem(itemPool.GetAndRemove(ItemID.Perfume));
+            GetLocation("Ice Cloak Chest").PlaceItem(itemPool.GetAndRemove(ItemID.IceCloak));
+            GetLocation("Nemean Fur Chest").PlaceItem(itemPool.GetAndRemove(ItemID.NemeanFur));
+            GetLocation("Gauntlet Chest").PlaceItem(itemPool.GetAndRemove(ItemID.Gauntlet));
+            GetLocation("Anchor Chest").PlaceItem(itemPool.GetAndRemove(ItemID.Anchor));
+            GetLocation("Totem Pole Chest").PlaceItem(itemPool.GetAndRemove(ItemID.TotemPole));
+            GetLocation("Grapple Claw Chest").PlaceItem(itemPool.GetAndRemove(ItemID.GrappleClaw));
+            GetLocation("Spaulder Chest").PlaceItem(itemPool.GetAndRemove(ItemID.Spaulder));
+            GetLocation("Scalesphere Chest").PlaceItem(itemPool.GetAndRemove(ItemID.Scalesphere));
+            GetLocation("Crucifix Chest").PlaceItem(itemPool.GetAndRemove(ItemID.Crucifix));
+            GetLocation("Maats Feather Chest").PlaceItem(itemPool.GetAndRemove(ItemID.MaatsFeather));
+            GetLocation("Ring Chest").PlaceItem(itemPool.GetAndRemove(ItemID.Ring));
+            GetLocation("Feather Chest").PlaceItem(itemPool.GetAndRemove(ItemID.Feather));
+            GetLocation("Scriptures Chest").PlaceItem(itemPool.GetAndRemove(ItemID.Scriptures));
+            GetLocation("Frey Ship").PlaceItem(itemPool.GetAndRemove(ItemID.FreysShip));
+            GetLocation("Book of the Dead Chest").PlaceItem(itemPool.GetAndRemove(ItemID.BookoftheDead));
+            GetLocation("Destiny Tablet Chest").PlaceItem(itemPool.GetAndRemove(ItemID.DestinyTablet));
+            GetLocation("Secret Treasure of Life Item").PlaceItem(itemPool.GetAndRemove(ItemID.SecretTreasureofLife));
+            GetLocation("Origin Seal Chest").PlaceItem(itemPool.GetAndRemove(ItemID.OriginSigil));
+            GetLocation("Birth Sigil Chest").PlaceItem(itemPool.GetAndRemove(ItemID.BirthSigil));
+            GetLocation("Life Sigil Chest").PlaceItem(itemPool.GetAndRemove(ItemID.LifeSigil));
+            GetLocation("Death Sigil Chest").PlaceItem(itemPool.GetAndRemove(ItemID.DeathSigil));
+            GetLocation("Claydoll Chest").PlaceItem(itemPool.GetAndRemove(ItemID.ClaydollSuit));
 
-            GetLocation("Knife Puzzle Reward").PlaceItem(ItemPool.GetAndRemove(ItemID.Knife, items));
-            GetLocation("Rapier Puzzle Reward").PlaceItem(ItemPool.GetAndRemove(ItemID.Rapier, items));
-            GetLocation("Axe Puzzle Reward").PlaceItem(ItemPool.GetAndRemove(ItemID.Axe, items));
-            GetLocation("Katana Puzzle Reward").PlaceItem(ItemPool.GetAndRemove(ItemID.Katana, items));
-            GetLocation("Shuriken Puzzle Reward").PlaceItem(ItemPool.GetAndRemove(ItemID.Shuriken, items));
-            GetLocation("Rolling Shuriken Puzzle Reward").PlaceItem(ItemPool.GetAndRemove(ItemID.RollingShuriken, items));
-            GetLocation("Earth Spear Puzzle Reward").PlaceItem(ItemPool.GetAndRemove(ItemID.EarthSpear, items));
-            GetLocation("Flare Puzzle Reward").PlaceItem(ItemPool.GetAndRemove(ItemID.Flare, items));
-            GetLocation("Bomb Puzzle Reward").PlaceItem(ItemPool.GetAndRemove(ItemID.Bomb, items));
-            GetLocation("Chakram Puzzle Reward").PlaceItem(ItemPool.GetAndRemove(ItemID.Chakram, items));
-            GetLocation("Caltrop Puzzle Reward").PlaceItem(ItemPool.GetAndRemove(ItemID.Caltrops, items));
+            GetLocation("Knife Puzzle Reward").PlaceItem(itemPool.GetAndRemove(ItemID.Knife));
+            GetLocation("Rapier Puzzle Reward").PlaceItem(itemPool.GetAndRemove(ItemID.Rapier));
+            GetLocation("Axe Puzzle Reward").PlaceItem(itemPool.GetAndRemove(ItemID.Axe));
+            GetLocation("Katana Puzzle Reward").PlaceItem(itemPool.GetAndRemove(ItemID.Katana));
+            GetLocation("Shuriken Puzzle Reward").PlaceItem(itemPool.GetAndRemove(ItemID.Shuriken));
+            GetLocation("Rolling Shuriken Puzzle Reward").PlaceItem(itemPool.GetAndRemove(ItemID.RollingShuriken));
+            GetLocation("Earth Spear Puzzle Reward").PlaceItem(itemPool.GetAndRemove(ItemID.EarthSpear));
+            GetLocation("Flare Puzzle Reward").PlaceItem(itemPool.GetAndRemove(ItemID.Flare));
+            GetLocation("Bomb Puzzle Reward").PlaceItem(itemPool.GetAndRemove(ItemID.Bomb));
+            GetLocation("Chakram Puzzle Reward").PlaceItem(itemPool.GetAndRemove(ItemID.Chakram));
+            GetLocation("Caltrop Puzzle Reward").PlaceItem(itemPool.GetAndRemove(ItemID.Caltrops));
 
-            GetLocation("Yagoo Map Street Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.YagooMapStreet, items));
-            GetLocation("Mantra Mural").PlaceItem(ItemPool.GetAndRemove(ItemID.Mantra, items));
-            GetLocation("Beo Eglana Mural").PlaceItem(ItemPool.GetAndRemove(ItemID.BeoEglana, items));
-            GetLocation("Death Village Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.DeathVillage, items));
-            GetLocation("Miracle Witch Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.MiracleWitch, items));
-            GetLocation("La Mulana Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.LaMulana, items));
-            GetLocation("La Mulana 2 Chest").PlaceItem(ItemPool.GetAndRemove(ItemID.LaMulana2, items));
+            GetLocation("Yagoo Map Street Chest").PlaceItem(itemPool.GetAndRemove(ItemID.YagooMapStreet));
+            GetLocation("Mantra Mural").PlaceItem(itemPool.GetAndRemove(ItemID.Mantra));
+            GetLocation("Beo Eglana Mural").PlaceItem(itemPool.GetAndRemove(ItemID.BeoEglana));
+            GetLocation("Death Village Chest").PlaceItem(itemPool.GetAndRemove(ItemID.DeathVillage));
+            GetLocation("Miracle Witch Chest").PlaceItem(itemPool.GetAndRemove(ItemID.MiracleWitch));
+            GetLocation("La Mulana Chest").PlaceItem(itemPool.GetAndRemove(ItemID.LaMulana));
+            GetLocation("La Mulana 2 Chest").PlaceItem(itemPool.GetAndRemove(ItemID.LaMulana2));
 
-            GetLocation("Sacred Orb VoD").PlaceItem(ItemPool.GetAndRemove(ItemID.SacredOrb0, items));
-            GetLocation("Sacred Orb Chest RoY").PlaceItem(ItemPool.GetAndRemove(ItemID.SacredOrb1, items));
-            GetLocation("Sacred Orb Chest Annwfn").PlaceItem(ItemPool.GetAndRemove(ItemID.SacredOrb2, items));
-            GetLocation("Sacred Orb Chest IB").PlaceItem(ItemPool.GetAndRemove(ItemID.SacredOrb3, items));
-            GetLocation("Sacred Orb Chest IT").PlaceItem(ItemPool.GetAndRemove(ItemID.SacredOrb4, items));
-            GetLocation("Sacred Orb Chest DF").PlaceItem(ItemPool.GetAndRemove(ItemID.SacredOrb5, items));
-            GetLocation("Sacred Orb Chest SotFG").PlaceItem(ItemPool.GetAndRemove(ItemID.SacredOrb6, items));
-            GetLocation("Sacred Orb Chest GotD").PlaceItem(ItemPool.GetAndRemove(ItemID.SacredOrb7, items));
-            GetLocation("Sacred Orb Chest TS").PlaceItem(ItemPool.GetAndRemove(ItemID.SacredOrb8, items));
-            GetLocation("Sacred Orb Chest HL").PlaceItem(ItemPool.GetAndRemove(ItemID.SacredOrb9, items));
+            GetLocation("Sacred Orb VoD").PlaceItem(itemPool.GetAndRemove(ItemID.SacredOrb0));
+            GetLocation("Sacred Orb Chest RoY").PlaceItem(itemPool.GetAndRemove(ItemID.SacredOrb1));
+            GetLocation("Sacred Orb Chest Annwfn").PlaceItem(itemPool.GetAndRemove(ItemID.SacredOrb2));
+            GetLocation("Sacred Orb Chest IB").PlaceItem(itemPool.GetAndRemove(ItemID.SacredOrb3));
+            GetLocation("Sacred Orb Chest IT").PlaceItem(itemPool.GetAndRemove(ItemID.SacredOrb4));
+            GetLocation("Sacred Orb Chest DF").PlaceItem(itemPool.GetAndRemove(ItemID.SacredOrb5));
+            GetLocation("Sacred Orb Chest SotFG").PlaceItem(itemPool.GetAndRemove(ItemID.SacredOrb6));
+            GetLocation("Sacred Orb Chest GotD").PlaceItem(itemPool.GetAndRemove(ItemID.SacredOrb7));
+            GetLocation("Sacred Orb Chest TS").PlaceItem(itemPool.GetAndRemove(ItemID.SacredOrb8));
+            GetLocation("Sacred Orb Chest HL").PlaceItem(itemPool.GetAndRemove(ItemID.SacredOrb9));
 
-            GetLocation("Map Chest RoY").PlaceItem(ItemPool.GetAndRemove(ItemID.Map1, items));
-            GetLocation("Map Chest Annwfn").PlaceItem(ItemPool.GetAndRemove(ItemID.Map2, items));
-            GetLocation("Map Chest IB").PlaceItem(ItemPool.GetAndRemove(ItemID.Map3, items));
-            GetLocation("Map Chest IT").PlaceItem(ItemPool.GetAndRemove(ItemID.Map4, items));
-            GetLocation("Map Chest DF").PlaceItem(ItemPool.GetAndRemove(ItemID.Map5, items));
-            GetLocation("Map Chest SotFG").PlaceItem(ItemPool.GetAndRemove(ItemID.Map6, items));
-            GetLocation("Map Chest GotD").PlaceItem(ItemPool.GetAndRemove(ItemID.Map7, items));
-            GetLocation("Map Chest TS").PlaceItem(ItemPool.GetAndRemove(ItemID.Map8, items));
-            GetLocation("Map Chest HL").PlaceItem(ItemPool.GetAndRemove(ItemID.Map9, items));
-            GetLocation("Map Chest Valhalla").PlaceItem(ItemPool.GetAndRemove(ItemID.Map10, items));
-            GetLocation("Map Chest DLM").PlaceItem(ItemPool.GetAndRemove(ItemID.Map11, items));
-            GetLocation("Map Chest AC").PlaceItem(ItemPool.GetAndRemove(ItemID.Map12, items));
-            GetLocation("Map Chest HoM").PlaceItem(ItemPool.GetAndRemove(ItemID.Map13, items));
-            GetLocation("Map Chest EPG").PlaceItem(ItemPool.GetAndRemove(ItemID.Map14, items));
-            GetLocation("Map Chest EPD").PlaceItem(ItemPool.GetAndRemove(ItemID.Map15, items));
+            GetLocation("Map Chest RoY").PlaceItem(itemPool.GetAndRemove(ItemID.Map1));
+            GetLocation("Map Chest Annwfn").PlaceItem(itemPool.GetAndRemove(ItemID.Map2));
+            GetLocation("Map Chest IB").PlaceItem(itemPool.GetAndRemove(ItemID.Map3));
+            GetLocation("Map Chest IT").PlaceItem(itemPool.GetAndRemove(ItemID.Map4));
+            GetLocation("Map Chest DF").PlaceItem(itemPool.GetAndRemove(ItemID.Map5));
+            GetLocation("Map Chest SotFG").PlaceItem(itemPool.GetAndRemove(ItemID.Map6));
+            GetLocation("Map Chest GotD").PlaceItem(itemPool.GetAndRemove(ItemID.Map7));
+            GetLocation("Map Chest TS").PlaceItem(itemPool.GetAndRemove(ItemID.Map8));
+            GetLocation("Map Chest HL").PlaceItem(itemPool.GetAndRemove(ItemID.Map9));
+            GetLocation("Map Chest Valhalla").PlaceItem(itemPool.GetAndRemove(ItemID.Map10));
+            GetLocation("Map Chest DLM").PlaceItem(itemPool.GetAndRemove(ItemID.Map11));
+            GetLocation("Map Chest AC").PlaceItem(itemPool.GetAndRemove(ItemID.Map12));
+            GetLocation("Map Chest HoM").PlaceItem(itemPool.GetAndRemove(ItemID.Map13));
+            GetLocation("Map Chest EPG").PlaceItem(itemPool.GetAndRemove(ItemID.Map14));
+            GetLocation("Map Chest EPD").PlaceItem(itemPool.GetAndRemove(ItemID.Map15));
 
-            GetLocation("Ankh Chest RoY").PlaceItem(ItemPool.GetAndRemove(ItemID.AnkhJewel2, items));
-            GetLocation("Ankh Chest DF").PlaceItem(ItemPool.GetAndRemove(ItemID.AnkhJewel3, items));
-            GetLocation("Ankh Chest IT").PlaceItem(ItemPool.GetAndRemove(ItemID.AnkhJewel4, items));
-            GetLocation("Ankh Chest SotFG").PlaceItem(ItemPool.GetAndRemove(ItemID.AnkhJewel5, items));
-            GetLocation("Ankh Chest DLM").PlaceItem(ItemPool.GetAndRemove(ItemID.AnkhJewel6, items));
-            GetLocation("Ankh Chest AC").PlaceItem(ItemPool.GetAndRemove(ItemID.AnkhJewel7, items));
-            GetLocation("Ankh Jewel").PlaceItem(ItemPool.GetAndRemove(ItemID.AnkhJewel9, items));
+            GetLocation("Ankh Chest RoY").PlaceItem(itemPool.GetAndRemove(ItemID.AnkhJewel2));
+            GetLocation("Ankh Chest DF").PlaceItem(itemPool.GetAndRemove(ItemID.AnkhJewel3));
+            GetLocation("Ankh Chest IT").PlaceItem(itemPool.GetAndRemove(ItemID.AnkhJewel4));
+            GetLocation("Ankh Chest SotFG").PlaceItem(itemPool.GetAndRemove(ItemID.AnkhJewel5));
+            GetLocation("Ankh Chest DLM").PlaceItem(itemPool.GetAndRemove(ItemID.AnkhJewel6));
+            GetLocation("Ankh Chest AC").PlaceItem(itemPool.GetAndRemove(ItemID.AnkhJewel7));
+            GetLocation("Ankh Jewel").PlaceItem(itemPool.GetAndRemove(ItemID.AnkhJewel9));
 
-            GetLocation("Crystal Skull Chest RoY").PlaceItem(ItemPool.GetAndRemove(ItemID.CrystalSkull1, items));
-            GetLocation("Crystal Skull Chest Annwfn").PlaceItem(ItemPool.GetAndRemove(ItemID.CrystalSkull2, items));
-            GetLocation("Crystal Skull IB").PlaceItem(ItemPool.GetAndRemove(ItemID.CrystalSkull3, items));
-            GetLocation("Crystal Skull Chest IT").PlaceItem(ItemPool.GetAndRemove(ItemID.CrystalSkull4, items));
-            GetLocation("Crystal Skull Chest Valhalla").PlaceItem(ItemPool.GetAndRemove(ItemID.CrystalSkull5, items));
-            GetLocation("Crystal Skull Chest GotD").PlaceItem(ItemPool.GetAndRemove(ItemID.CrystalSkull6, items));
-            GetLocation("Crystal Skull Chest TS").PlaceItem(ItemPool.GetAndRemove(ItemID.CrystalSkull7, items));
-            GetLocation("Crystal Skull Chest DLM").PlaceItem(ItemPool.GetAndRemove(ItemID.CrystalSkull8, items));
-            GetLocation("Crystal Skull Chest AC").PlaceItem(ItemPool.GetAndRemove(ItemID.CrystalSkull9, items));
-            GetLocation("Crystal Skull Chest HL").PlaceItem(ItemPool.GetAndRemove(ItemID.CrystalSkull10, items));
-            GetLocation("Crystal Skull Chest HoM").PlaceItem(ItemPool.GetAndRemove(ItemID.CrystalSkull11, items));
-            GetLocation("Crystal Skull Chest EPD").PlaceItem(ItemPool.GetAndRemove(ItemID.CrystalSkull12, items));
+            GetLocation("Crystal Skull Chest RoY").PlaceItem(itemPool.GetAndRemove(ItemID.CrystalSkull1));
+            GetLocation("Crystal Skull Chest Annwfn").PlaceItem(itemPool.GetAndRemove(ItemID.CrystalSkull2));
+            GetLocation("Crystal Skull IB").PlaceItem(itemPool.GetAndRemove(ItemID.CrystalSkull3));
+            GetLocation("Crystal Skull Chest IT").PlaceItem(itemPool.GetAndRemove(ItemID.CrystalSkull4));
+            GetLocation("Crystal Skull Chest Valhalla").PlaceItem(itemPool.GetAndRemove(ItemID.CrystalSkull5));
+            GetLocation("Crystal Skull Chest GotD").PlaceItem(itemPool.GetAndRemove(ItemID.CrystalSkull6));
+            GetLocation("Crystal Skull Chest TS").PlaceItem(itemPool.GetAndRemove(ItemID.CrystalSkull7));
+            GetLocation("Crystal Skull Chest DLM").PlaceItem(itemPool.GetAndRemove(ItemID.CrystalSkull8));
+            GetLocation("Crystal Skull Chest AC").PlaceItem(itemPool.GetAndRemove(ItemID.CrystalSkull9));
+            GetLocation("Crystal Skull Chest HL").PlaceItem(itemPool.GetAndRemove(ItemID.CrystalSkull10));
+            GetLocation("Crystal Skull Chest HoM").PlaceItem(itemPool.GetAndRemove(ItemID.CrystalSkull11));
+            GetLocation("Crystal Skull Chest EPD").PlaceItem(itemPool.GetAndRemove(ItemID.CrystalSkull12));
 
-            GetLocation("Chain Whip Puzzle Reward").PlaceItem(ItemPool.GetAndRemove(ItemID.ChainWhip, items));
-            GetLocation("Flail Whip Puzzle Reward").PlaceItem(ItemPool.GetAndRemove(ItemID.FlailWhip, items));
-            GetLocation("Silver Shield Puzzle Reward").PlaceItem(ItemPool.GetAndRemove(ItemID.SilverShield, items));
+            GetLocation("Chain Whip Puzzle Reward").PlaceItem(itemPool.GetAndRemove(ItemID.Whip2));
+            GetLocation("Flail Whip Puzzle Reward").PlaceItem(itemPool.GetAndRemove(ItemID.Whip3));
+            GetLocation("Silver Shield Puzzle Reward").PlaceItem(itemPool.GetAndRemove(ItemID.Shield2));
         }
     }
 }

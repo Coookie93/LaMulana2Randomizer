@@ -74,131 +74,125 @@ namespace LaMulana2Randomizer.ViewModels
 
         public void GenerateSeed(IProgress<ProgressInfo> progress)
         {
-            const int NumSeeds = 1;
             const int MaxAttempts = 250;
 
-            for (int i = 1; i <= NumSeeds; i++)
+            Randomiser randomiser = new Randomiser(Settings);
+
+            progress.Report(new ProgressInfo 
+            { 
+                Label = $"Generating Seed ", 
+                ProgressValue = 0, 
+                IsIndeterminate = true 
+            });
+
+            int attemptCount = 0;
+            try
             {
-                Randomiser randomiser = new Randomiser(Settings);
-
-                progress.Report(new ProgressInfo 
-                { 
-                    Label = $"Generating Seed {i}/{NumSeeds}", 
-                    ProgressValue = 0, 
-                    IsIndeterminate = true 
-                });
-
-                int attemptCount = 0;
-                try
+                randomiser.Setup();
+                randomiser.ChooseStartingWeapon();
+                bool entranceCheck;
+                do
                 {
-                    randomiser.Setup();
-                    randomiser.ChooseStartingWeapon();
-                    bool entranceCheck;
-                    do
+                    attemptCount++;
+                    randomiser.PlaceEntrances();
+                    entranceCheck = randomiser.EntranceCheck();
+                    if (!entranceCheck)
                     {
-                        attemptCount++;
-                        randomiser.PlaceEntrances();
-                        entranceCheck = randomiser.EntranceCheck();
-                        if (!entranceCheck)
-                        {
-                            randomiser.ClearEntrances();
-                            Logger.Log($"Failed to generate beatable entrance configuartion, retrying.");
-                            progress.Report(new ProgressInfo
-                            {
-                                Label = $"Failed to generate beatable entrance configuartion, retrying attempt {attemptCount}.",
-                                ProgressValue = 0,
-                                IsIndeterminate = true
-                            });
-                        }
-
-                    } while (!entranceCheck);
-
-                    randomiser.FixAnkhLogic();
-                    randomiser.FixFDCLogic();
-
-                    attemptCount = 0;
-                    bool canBeatGame;
-                    do
-                    {
-                        attemptCount++;
-                        randomiser.PlaceItems();
-                        randomiser.AdjustShopPrices();
-                        canBeatGame = randomiser.CanBeatGame();
-                        if (!canBeatGame)
-                        {
-                            randomiser.ClearPlacedItems();
-                            Logger.Log($"Failed to generate beatable item placement, retrying.");
-                            progress.Report(new ProgressInfo
-                            {
-                                Label = $"Failed to generate beatable item placement, retrying attempt {attemptCount}.",
-                                ProgressValue = 0,
-                                IsIndeterminate = true
-                            });
-                        }
-                    } while (!canBeatGame && attemptCount < MaxAttempts);
-
-                    if (attemptCount == MaxAttempts && !canBeatGame)
-                    {
-                        FileUtils.WriteSpoilers(randomiser);
-                        Logger.LogAndFlush($"Failed to generate beatable configuration for seed {randomiser.Settings.Seed}");
+                        randomiser.ClearEntrances();
+                        Logger.Log($"Failed to generate beatable entrance configuartion, retrying.");
                         progress.Report(new ProgressInfo
                         {
-                            Label = $"Failed to generate beatable configuration stopping after {MaxAttempts} attempts.",
-                            ProgressValue = 100,
-                            IsIndeterminate = false
+                            Label = $"Failed to generate beatable entrance configuartion, retrying attempt {attemptCount}.",
+                            ProgressValue = 0,
+                            IsIndeterminate = true
                         });
-                        return;
                     }
-                }
-                catch (RandomiserException ex)
-                {
-                    Logger.Flush();
-                    progress.Report(new ProgressInfo
-                    {
-                        Label = ex.Message,
-                        ProgressValue = 100,
-                        IsIndeterminate = false
-                    });
-                    return;
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogAndFlush(ex.Message);
-                    progress.Report(new ProgressInfo
-                    {
-                        Label = "Something has gone very wrong!",
-                        ProgressValue = 100,
-                        IsIndeterminate = false
-                    });
-                    return;
-                }
 
-                if (!FileUtils.WriteSpoilers(randomiser))
+                } while (!entranceCheck);
+
+                randomiser.FixAnkhLogic();
+                randomiser.FixFDCLogic();
+
+                attemptCount = 0;
+                bool canBeatGame;
+                do
                 {
+                    attemptCount++;
+                    randomiser.PlaceItems();
+                    randomiser.AdjustShopPrices();
+                    canBeatGame = randomiser.CanBeatGame();
+                    if (!canBeatGame)
+                    {
+                        randomiser.ClearPlacedItems();
+                        Logger.Log($"Failed to generate beatable item placement, retrying.");
+                        progress.Report(new ProgressInfo
+                        {
+                            Label = $"Failed to generate beatable item placement, retrying attempt {attemptCount}.",
+                            ProgressValue = 0,
+                            IsIndeterminate = true
+                        });
+                    }
+                } while (!canBeatGame && attemptCount < MaxAttempts);
+
+                if (attemptCount == MaxAttempts && !canBeatGame)
+                {
+                    FileUtils.WriteSpoilerLog(randomiser);
+                    Logger.LogAndFlush($"Failed to generate beatable configuration for seed {randomiser.Settings.Seed}");
                     progress.Report(new ProgressInfo
                     {
-                        Label = "Failed to write spoiler log.",
+                        Label = $"Failed to generate beatable configuration stopping after {MaxAttempts} attempts.",
                         ProgressValue = 100,
                         IsIndeterminate = false
                     });
                     return;
                 }
-
-                if (!FileUtils.WriteSeedFile(randomiser))
-                {
-                    progress.Report(new ProgressInfo
-                    {
-                        Label = "Failed to write seed file.",
-                        ProgressValue = 100,
-                        IsIndeterminate = false
-                    });
-                    return;
-                }
-
-                Logger.LogAndFlush($"Successfully generated for seed {randomiser.Settings.Seed}");
-                if(NumSeeds > 1)
-                    Reroll();
             }
+            catch (RandomiserException ex)
+            {
+                Logger.Flush();
+                progress.Report(new ProgressInfo
+                {
+                    Label = ex.Message,
+                    ProgressValue = 100,
+                    IsIndeterminate = false
+                });
+                return;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogAndFlush(ex.Message);
+                progress.Report(new ProgressInfo
+                {
+                    Label = "Something has gone very wrong!",
+                    ProgressValue = 100,
+                    IsIndeterminate = false
+                });
+                return;
+            }
+
+            if (!FileUtils.WriteSpoilerLog(randomiser))
+            {
+                progress.Report(new ProgressInfo
+                {
+                    Label = "Failed to write spoiler log.",
+                    ProgressValue = 100,
+                    IsIndeterminate = false
+                });
+                return;
+            }
+
+            if (!FileUtils.WriteSeedFile(randomiser))
+            {
+                progress.Report(new ProgressInfo
+                {
+                    Label = "Failed to write seed file.",
+                    ProgressValue = 100,
+                    IsIndeterminate = false
+                });
+                return;
+            }
+
+            Logger.LogAndFlush($"Successfully generated for seed {randomiser.Settings.Seed}");
 
             progress.Report(new ProgressInfo
             {

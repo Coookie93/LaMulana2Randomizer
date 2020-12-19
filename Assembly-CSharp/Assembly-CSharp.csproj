@@ -50,8 +50,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\Original\Assembly-CSharp.dll</HintPath>
+    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\Original\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
@@ -141,6 +142,7 @@
     <Compile Include="ItemDB.cs" />
     <Compile Include="ItemTracker.cs" />
     <Compile Include="L2Rando.cs" />
+    <Compile Include="Patches\TrapFloor.cs" />
     <Compile Include="Patches\L2SystemCore.cs" />
     <Compile Include="Patches\EventItemScript.cs" />
     <Compile Include="Patches\HolyTabretScript.cs" />

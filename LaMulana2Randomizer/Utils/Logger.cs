@@ -13,9 +13,8 @@ namespace LaMulana2Randomizer.Utils
             try
             {
                 if(sw == null)
-                {
                     sw = new StreamWriter("log.txt", true);
-                }
+
                 sw.WriteLine(message);
             }
             catch(Exception ex)
@@ -27,9 +26,7 @@ namespace LaMulana2Randomizer.Utils
         public static void Flush()
         {
             if (sw != null)
-            {
                 sw.Flush();
-            }
         }
 
         public static void LogAndFlush(string message)

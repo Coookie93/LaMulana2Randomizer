@@ -216,10 +216,7 @@ namespace LM2RandomiserMod
                     UpdatePositionInfo();
                 }
             }
-            catch (Exception)
-            {
-                return;
-            }
+            catch (Exception) { }
         }
 
         private void JumpPosition()

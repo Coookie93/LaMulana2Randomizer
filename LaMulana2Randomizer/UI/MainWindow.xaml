@@ -152,6 +152,21 @@
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
+                            <StackPanel Orientation="Horizontal" Margin="21,0,0,2" Height="22">
+                                <TextBlock Text="Skulls Required for Nibiru Dissonance" Height="15" Margin="0,0,2,0"/>
+                                <TextBox x:Name="SkullTextBox" Width="20" HorizontalAlignment="Stretch" Margin="0,2,0,0">
+                                    <Binding Path="Settings.RequiredSkulls">
+                                        <Binding.ValidationRules>
+                                            <local:IntRangeRule Min="1" Max="12"/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox>
+                                <StackPanel.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="Set number of Skulls required to get the Nibiru Dissonance. Value between 1 and 12"/>
+                                    </ToolTip>
+                                </StackPanel.ToolTip>
+                            </StackPanel>
                         </StackPanel>
                     </GroupBox>
                 </Grid>
@@ -164,19 +179,19 @@
                     </Grid.RowDefinitions>
                     <GroupBox Header="Starting Weapon" Grid.Row="0">
                         <StackPanel Margin="2">
-                            <CheckBox Content="Leather Whip" IsChecked="{Binding Settings.Weapons[0]}"/>
-                            <CheckBox Content="Knife" IsChecked="{Binding Settings.Weapons[1]}"/>
-                            <CheckBox Content="Rapier" IsChecked="{Binding Settings.Weapons[2]}"/>
-                            <CheckBox Content="Axe" IsChecked="{Binding Settings.Weapons[3]}"/>
-                            <CheckBox Content="Katana" IsChecked="{Binding Settings.Weapons[4]}"/>
-                            <CheckBox Content="Shurikens" IsChecked="{Binding Settings.Weapons[5]}"/>
-                            <CheckBox Content="Rolling Shurikens" IsChecked="{Binding Settings.Weapons[6]}"/>
-                            <CheckBox Content="Earth Spears" IsChecked="{Binding Settings.Weapons[7]}"/>
-                            <CheckBox Content="Flares" IsChecked="{Binding Settings.Weapons[8]}"/>
-                            <CheckBox Content="Caltrops" IsChecked="{Binding Settings.Weapons[9]}"/>
-                            <CheckBox Content="Chakrams" IsChecked="{Binding Settings.Weapons[10]}"/>
-                            <CheckBox Content="Bombs" IsChecked="{Binding Settings.Weapons[11]}"/>
-                            <CheckBox Content="Pistol" IsChecked="{Binding Settings.Weapons[12]}"/>
+                            <CheckBox Content="Leather Whip" IsChecked="{Binding Settings.Whip}"/>
+                            <CheckBox Content="Knife" IsChecked="{Binding Settings.Knife}"/>
+                            <CheckBox Content="Rapier" IsChecked="{Binding Settings.Rapier}"/>
+                            <CheckBox Content="Axe" IsChecked="{Binding Settings.Axe}"/>
+                            <CheckBox Content="Katana" IsChecked="{Binding Settings.Katana}"/>
+                            <CheckBox Content="Shurikens" IsChecked="{Binding Settings.Shuriken}"/>
+                            <CheckBox Content="Rolling Shurikens" IsChecked="{Binding Settings.RollingShuriken}"/>
+                            <CheckBox Content="Earth Spears" IsChecked="{Binding Settings.EarthSpear}"/>
+                            <CheckBox Content="Flares" IsChecked="{Binding Settings.Flare}"/>
+                            <CheckBox Content="Caltrops" IsChecked="{Binding Settings.Caltrops}"/>
+                            <CheckBox Content="Chakrams" IsChecked="{Binding Settings.Chakrams}"/>
+                            <CheckBox Content="Bombs" IsChecked="{Binding Settings.Bomb}"/>
+                            <CheckBox Content="Pistol" IsChecked="{Binding Settings.Pistol}"/>
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Header="Bosses" Grid.Row="1">
@@ -185,6 +200,13 @@
                                 <CheckBox.ToolTip>
                                     <ToolTip Style="{StaticResource TootltipStyle}">
                                         <TextBlock Text="Reduces the requirements to fight Guardians/Room Guarders to basically only what is need to start the fight. WARNING this can be really hard." />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <CheckBox Name="EasyEchidnaCheck" Content="Always Baby Echidna" IsChecked="{Binding Settings.EasyEchidna}">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="Makes it so that the Echidna fight is always the version of the fight that happens sub 3hours in-game time." />
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
@@ -317,6 +339,7 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <GroupBox Header="Qaulity of Life" Grid.Row="0">
                         <StackPanel >
@@ -337,12 +360,51 @@
                             <CheckBox Name="FastCorridorCheck" IsChecked="{Binding Settings.FastCorridor}" Content="Fast Corridor of Blood Sealing" Margin="2">
                                 <CheckBox.ToolTip>
                                     <ToolTip Style="{StaticResource TootltipStyle}">
-                                        <TextBlock Text="Going to the Valhalla Corridor of Blood Gate seals every Gate if the requirements to seal it are meet." />
+                                        <TextBlock Text="Going to the Valhalla Corridor of Blood Entrance seals the entire Corridor if all the requirements to seal it are meet." />
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
-                            <CheckBox Name="MoneyStartCheck" IsChecked="{Binding Settings.MoneyStart}" Content="Start with 100 coins" Margin="2"/>
-                            <CheckBox Name="WeightStartCheck" IsChecked="{Binding Settings.WeightStart}" Content="Start with 20 weights" Margin="2"/>
+                            <StackPanel Orientation="Horizontal" Margin="21,0,0,2" Height="22">
+                                <TextBlock Text="Starting Money" Margin="0,2,9,2"/>
+                                <TextBox x:Name="MoneyTextBox" Width="30" HorizontalAlignment="Stretch" Margin="0,2,0,0">
+                                    <Binding Path="Settings.StartingMoney">
+                                        <Binding.ValidationRules>
+                                            <local:IntRangeRule Min="0" Max="999"/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox>
+                                <StackPanel.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="Amount of money you start the game with. Value between 0 and 999." />
+                                    </ToolTip>
+                                </StackPanel.ToolTip>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="21,0,0,2" Height="22">
+                                <TextBlock Text="Starting Weights" Margin="0,2,2,2"/>
+                                <TextBox x:Name="WeightTextBox" Width="30" HorizontalAlignment="Stretch" Margin="0,2,0,0">
+                                    <Binding Path="Settings.StartingWeights">
+                                        <Binding.ValidationRules>
+                                            <local:IntRangeRule Min="0" Max="100"/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox>
+                                <StackPanel.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="Amount of weights you start the game with. Value between 0 and 100." />
+                                    </ToolTip>
+                                </StackPanel.ToolTip>
+                            </StackPanel>
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Header="Other" Grid.Row="1">
+                        <StackPanel >
+                            <CheckBox Name="AlwaysShellHornCheck" IsChecked="{Binding Settings.AlwaysShellHorn}" Content="Always Play Shell Horn Sound" Margin="2">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="Always plays the Shell Horn sound when you solve a puzzle." />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
                         </StackPanel>
                     </GroupBox>
                 </Grid>
@@ -376,13 +438,16 @@
                                 <MultiDataTrigger>
                                     <MultiDataTrigger.Conditions>
                                         <Condition Binding="{Binding Path=(Validation.HasError), ElementName=InputTextBox}" Value="False"/>
+                                        <Condition Binding="{Binding Path=(Validation.HasError), ElementName=SkullTextBox}" Value="False"/>
+                                        <Condition Binding="{Binding Path=(Validation.HasError), ElementName=MoneyTextBox}" Value="False"/>
+                                        <Condition Binding="{Binding Path=(Validation.HasError), ElementName=WeightTextBox}" Value="False"/>
                                     </MultiDataTrigger.Conditions>
                                     <Setter Property="IsEnabled" Value="True"/>
                                 </MultiDataTrigger>
                             </Style.Triggers>
-                        </Style>    
-                    </Button.Style>  
-                </Button> 
+                        </Style>
+                    </Button.Style>
+                </Button>
             </StackPanel>
         </GroupBox>
     </Grid>

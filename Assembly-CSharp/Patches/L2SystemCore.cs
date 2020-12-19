@@ -17,50 +17,50 @@ namespace LM2RandomiserMod.Patches
 		[MonoModReplace]
 		public bool setAsyncScene(bool sysflgReset = true)
 		{
-			if (this.asOpe == null)
+			if (asOpe == null)
 			{
-				if (this.fadeInFlag)
+				if (fadeInFlag)
 				{
-					this.gameScreenFadeIn(10);
+					gameScreenFadeIn(10);
 				}
-				this.jumpPlayerPositionToPresetPosition();
+				jumpPlayerPositionToPresetPosition();
 				if (cartenObj != null)
 					Destroy(cartenObj);
 
 				return true;
 			}
-			if (this.asOpe.progress < 0.9f)
+			if (asOpe.progress < 0.9f)
 			{
 				return false;
 			}
-			this.sys.clearSceneTasks();
-			if (this.sys.getPlayer() != null)
+			sys.clearSceneTasks();
+			if (sys.getPlayer() != null)
 			{
-				this.sys.getPlayer().transform.SetParent(base.transform);
+				sys.getPlayer().transform.SetParent(base.transform);
 			}
-			if (this.activeFairy != null)
+			if (activeFairy != null)
 			{
-				this.activeFairy.transform.SetParent(base.transform);
+				activeFairy.transform.SetParent(base.transform);
 			}
-			this.scrollSys = null;
+			scrollSys = null;
 			if (sysflgReset)
 			{
-				this.sys.delSysFlag(SYSTEMFLAG.DRAMATEJI);
+				sys.delSysFlag(SYSTEMFLAG.DRAMATEJI);
 			}
 			GC.Collect();
-			this.sys.setTaskRuningMode(false);
-			if (this.cartenFirstFrame)
+			sys.setTaskRuningMode(false);
+			if (cartenFirstFrame)
 			{
-				this.cartenFirstFrame = false;
-				if (this.cartenObj != null)
+				cartenFirstFrame = false;
+				if (cartenObj != null)
 				{
-					MapCartain component = this.cartenObj.GetComponent<MapCartain>();
+					MapCartain component = cartenObj.GetComponent<MapCartain>();
 					component.initCartain();
 				}
 			}
-			this.setMenuCameraActive(false);
-			this.scrollSystemInited = false;
-			this.asOpe.allowSceneActivation = true;
+			setMenuCameraActive(false);
+			scrollSystemInited = false;
+			asOpe.allowSceneActivation = true;
 			return true;
 		}
 	}

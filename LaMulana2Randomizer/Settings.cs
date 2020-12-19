@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace LaMulana2Randomizer
 {
@@ -26,6 +26,7 @@ namespace LaMulana2Randomizer
             set => Set(ref seed, value);
         }
 
+        //ITEMS
         private bool randomGrail;
         public bool RandomGrail { 
             get=>randomGrail; 
@@ -56,6 +57,28 @@ namespace LaMulana2Randomizer
             set => Set(ref randomResearch, value);
         }
 
+        private MantraPlacement mantraPlacement;
+        public MantraPlacement MantraPlacement {
+            get => mantraPlacement;
+            set => Set(ref mantraPlacement, value);
+        }
+
+        private ShopPlacement shopPlacement;
+        public ShopPlacement ShopPlacement {
+            get => shopPlacement;
+            set {
+                Set(ref shopPlacement, value);
+                if (value == ShopPlacement.Original)
+                {
+                    RandomScanner = false;
+                    RandomCodices = false;
+                    RandomFDC = false;
+                    FDCForBacksides = false;
+                }
+            }
+        }
+
+        //LOGIC
         private bool fDCForBacksides;
         public bool FDCForBacksides { 
             get=>fDCForBacksides; 
@@ -74,6 +97,14 @@ namespace LaMulana2Randomizer
             set => Set(ref randomCurses, value);
         }
 
+        private int requiredSkulls;
+        public int RequiredSkulls {
+            get => requiredSkulls;
+            set => Set(ref requiredSkulls, value);
+        }
+
+
+        //ENTRANCES
         private bool randomHorizontalEntrances;
         public bool RandomHorizontalEntraces {
             get => randomHorizontalEntrances;
@@ -134,12 +165,99 @@ namespace LaMulana2Randomizer
             set => Set(ref randomSoulPairs, value);
         }
 
+
+        //COMBAT
+        private bool whip;
+        public bool Whip {
+            get => whip;
+            set => Set(ref whip, value);
+        }
+
+        private bool knife;
+        public bool Knife {
+            get => knife;
+            set => Set(ref knife, value);
+        }
+
+        private bool rapier;
+        public bool Rapier {
+            get => rapier;
+            set => Set(ref rapier, value);
+        }
+
+        private bool axe;
+        public bool Axe {
+            get => axe;
+            set => Set(ref axe, value);
+        }
+
+        private bool katana;
+        public bool Katana {
+            get => katana;
+            set => Set(ref katana, value);
+        }
+
+        private bool shuriken;
+        public bool Shuriken {
+            get => shuriken;
+            set => Set(ref shuriken, value);
+        }
+
+        private bool rollingShuriken;
+        public bool RollingShuriken {
+            get => rollingShuriken;
+            set => Set(ref rollingShuriken, value);
+        }
+
+        private bool earthSpear;
+        public bool EarthSpear {
+            get => earthSpear;
+            set => Set(ref earthSpear, value);
+        }
+
+        private bool flare;
+        public bool Flare {
+            get => flare;
+            set => Set(ref flare, value);
+        }
+
+        private bool caltrop;
+        public bool Caltrops {
+            get => caltrop;
+            set => Set(ref caltrop, value);
+        }
+
+        private bool chakram;
+        public bool Chakrams {
+            get => chakram;
+            set => Set(ref chakram, value);
+        }
+
+        private bool bomb;
+        public bool Bomb {
+            get => bomb;
+            set => Set(ref bomb, value);
+        }
+
+        private bool pistol;
+        public bool Pistol {
+            get => pistol;
+            set => Set(ref pistol, value);
+        }
+
         private bool hardBosses;
         public bool HardBosses { 
             get=>hardBosses; 
             set=>Set(ref hardBosses, value); 
         }
 
+        private bool easyEchidna;
+        public bool EasyEchidna {
+            get => easyEchidna;
+            set => Set(ref easyEchidna, value);
+        }
+
+        //OTHER
         private bool autoScanTablets;
         public bool AutoScanTablets {
             get => autoScanTablets;
@@ -158,44 +276,22 @@ namespace LaMulana2Randomizer
             set => Set(ref fastCorridor, value);
         }
 
-        private bool moneyStart;
-        public bool MoneyStart {
-            get => moneyStart;
-            set => Set(ref moneyStart, value);
+        private int startingMoney;
+        public int StartingMoney {
+            get => startingMoney;
+            set => Set(ref startingMoney, value);
         }
 
-        private bool weightStart;
-        public bool WeightStart {
-            get => weightStart;
-            set => Set(ref weightStart, value);
+        private int startingWeights;
+        public int StartingWeights {
+            get => startingWeights;
+            set => Set(ref startingWeights, value);
         }
 
-        private MantraPlacement mantraPlacement;
-        public MantraPlacement MantraPlacement { 
-            get=>mantraPlacement; 
-            set=>Set(ref mantraPlacement, value); 
-        }
-
-        private ShopPlacement shopPlacement;
-        public ShopPlacement ShopPlacement { 
-            get=>shopPlacement;
-            set 
-            {
-                Set(ref shopPlacement, value);
-                if(value == ShopPlacement.Original)
-                {
-                    RandomScanner = false;
-                    RandomCodices = false;
-                    RandomFDC = false;
-                    FDCForBacksides = false;
-                }
-             }
-        }
-
-        private ObservableCollection<bool> weapons;
-        public ObservableCollection<bool> Weapons {
-            get => weapons;
-            set => Set(ref weapons, value);
+        private bool alwaysShellHorn;
+        public bool AlwaysShellHorn {
+            get => alwaysShellHorn;
+            set => Set(ref alwaysShellHorn, value);
         }
 
         public Settings()
@@ -205,9 +301,30 @@ namespace LaMulana2Randomizer
             RandomCodices = true;
             RandomFDC = true;
             randomResearch = false;
+            MantraPlacement = MantraPlacement.Original;
+            ShopPlacement = ShopPlacement.Original;
+
             FDCForBacksides = false;
             LifeForHoM = false;
             RandomCurses = false;
+            RequiredSkulls = 12;
+
+            Whip = true;
+            Knife = false;
+            Rapier = false;
+            Axe = false;
+            Katana = false;
+            Shuriken = false;
+            RollingShuriken = false;
+            EarthSpear = false;
+            Flare = false;
+            Caltrops = false;
+            Chakrams = false;
+            Bomb = false;
+            Pistol = false;
+            HardBosses = false;
+            EasyEchidna = false;
+
             RandomHorizontalEntraces = false;
             ReduceDeadEndStarts = true;
             RandomLadderEntraces = false;
@@ -218,32 +335,18 @@ namespace LaMulana2Randomizer
             RandomSoulGateEntraces = false;
             IncludeNineGates = false;
             RandomSoulPairs = false;
-            HardBosses = false;
+
             AutoScanTablets = false;
             AutoPlaceSkulls = false;
-            MantraPlacement = MantraPlacement.Original;
-            ShopPlacement = ShopPlacement.Original;
-            Weapons = new ObservableCollection<bool>()
-            {
-                true, false, false, false, false,
-                false, false, false, false, false, false, false, false
-            };
+            FastCorridor = false;
+            StartingMoney = 0;
+            StartingWeights = 0;
         }
 
-        [JsonConstructor]
-        public Settings(ObservableCollection<bool> weapons)
+        public List<bool> GetWeaponChoices()
         {
-            Weapons = weapons;
-            if (Weapons == null)
-            {
-                Weapons = new ObservableCollection<bool>
-                {
-                    true
-                };
-            }
-
-            while (weapons.Count < 13)
-                Weapons.Add(false);
+            return new List<bool>() { Whip, Knife, Rapier, Axe, Katana, Shuriken, 
+                RollingShuriken, EarthSpear, Flare, Caltrops, Chakrams, Bomb, Pistol };
         }
     }
 }

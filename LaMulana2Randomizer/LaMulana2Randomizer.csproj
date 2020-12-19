@@ -96,7 +96,7 @@
     </Compile>
     <Compile Include="BindableBase.cs" />
     <Compile Include="Utils\FileUtils.cs" />
-    <Compile Include="Utils\ItemPool.cs" />
+    <Compile Include="ItemPool.cs" />
     <Compile Include="Utils\Shuffle.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ProgressDialogViewModel.cs" />

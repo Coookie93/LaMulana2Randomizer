@@ -69,10 +69,12 @@ namespace LaMulana2Randomizer
         Gate,
         SoulGate,
         OneWay,
+        Pyramid,
         Corridor,
         CorridorSealed,
         Internal,
         PrisonExit,
+        PrisonGate,
         Unique
     }
 }
