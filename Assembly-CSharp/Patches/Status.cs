@@ -23,7 +23,7 @@ namespace LM2RandomiserMod.Patches
 		public void resetPlayerStatus(int lv, int hp, int mcoin, int coin, int wait, int exp, MAINWEAPON now_wea, int now_wea_num, SUBWEAPON now_sub, int now_sub_num, USEITEM now_use, int now_use_num)
 		{
 			sys.setFlagData(2, 62, 0);
-			this.clearItemsNum();
+			clearItemsNum();
 			string weaponName = string.Empty;
 			if (now_wea != MAINWEAPON.NON)
 			{
@@ -42,50 +42,50 @@ namespace LM2RandomiserMod.Patches
 				sys.equipItem(weaponName, true);
 			}
 
-			this.player_level = lv;
-			if (this.player_level < 1)
+			player_level = lv;
+			if (player_level < 1)
 			{
-				this.player_level = 1;
+				player_level = 1;
 			}
 			if (hp < 1)
 			{
-				this.l2_hp = this.HPTANK * lv;
+				l2_hp = HPTANK * lv;
 			}
 			else
 			{
-				this.l2_hp = hp;
+				l2_hp = hp;
 			}
-			this.max_hp = this.HPTANK * lv;
-			this.max_coin = mcoin;
-			this.l2_coin = coin;
-			this.setMainWeapon(now_wea);
-			this.setSubWeapon(now_sub);
-			this.setUseItem(now_use);
-			this.statusbar.setInitHP(this.l2_hp / 100, (float)(this.max_hp / 100));
-			this.l2Exp = exp;
-			this.statusbar.setExp(exp);
-			if (this.max_coin < 1000)
+			max_hp = HPTANK * lv;
+			max_coin = mcoin;
+			l2_coin = coin;
+			setMainWeapon(now_wea);
+			setSubWeapon(now_sub);
+			setUseItem(now_use);
+			statusbar.setInitHP(l2_hp / 100, (float)(max_hp / 100));
+			l2Exp = exp;
+			statusbar.setExp(exp);
+			if (max_coin < 1000)
 			{
-				this.statusbar.setCoin(this.l2_coin, 3);
-				this.statusbar.changeCoinMax(999);
+				statusbar.setCoin(l2_coin, 3);
+				statusbar.changeCoinMax(999);
 			}
 			else
 			{
-				this.statusbar.setCoin(this.l2_coin, 4);
-				this.statusbar.changeCoinMax(2000);
+				statusbar.setCoin(l2_coin, 4);
+				statusbar.changeCoinMax(2000);
 			}
-			this.l2_wait = wait;
-			this.statusbar.setWait(wait);
-			this.statusbar.setMain(this.l2_eq_main, this.l2_main[(int)now_wea]);
-			this.statusbar.setSub(this.l2_eq_sub, this.l2_sub[(int)now_sub]);
-			this.statusbar.setUse(this.l2_eq_use, this.l2_use[(int)now_use]);
+			l2_wait = wait;
+			statusbar.setWait(wait);
+			statusbar.setMain(l2_eq_main, l2_main[(int)now_wea]);
+			statusbar.setSub(l2_eq_sub, l2_sub[(int)now_sub]);
+			statusbar.setUse(l2_eq_use, l2_use[(int)now_use]);
 		}
 
 		[MonoModReplace]
 		public MAINWEAPON changeMainWeapon(int slide_vector)
 		{
-			MAINWEAPON mainweapon = this.getMainWeapon();
-			for(int i = 0; i < 4; i++)
+			MAINWEAPON mainweapon = getMainWeapon();
+			for(int i = 0; i < 5; i++)
 			{
 				if (slide_vector == 1)
 				{
@@ -111,11 +111,11 @@ namespace LM2RandomiserMod.Patches
 							break;
 						case MAINWEAPON.SWORD:
 						case MAINWEAPON.NON:
-							if (this.isMainWeapon(MAINWEAPON.HWHIP))
+							if (isMainWeapon(MAINWEAPON.HWHIP))
 							{
 								mainweapon = MAINWEAPON.HWHIP;
 							}
-							else if (this.isMainWeapon(MAINWEAPON.MWIHP))
+							else if (isMainWeapon(MAINWEAPON.MWIHP))
 							{
 								mainweapon = MAINWEAPON.MWIHP;
 							}
@@ -137,11 +137,11 @@ namespace LM2RandomiserMod.Patches
 							mainweapon = MAINWEAPON.SWORD;
 							break;
 						case MAINWEAPON.KNIFE:
-							if (this.isMainWeapon(MAINWEAPON.HWHIP))
+							if (isMainWeapon(MAINWEAPON.HWHIP))
 							{
 								mainweapon = MAINWEAPON.HWHIP;
 							}
-							else if (this.isMainWeapon(MAINWEAPON.MWIHP))
+							else if (isMainWeapon(MAINWEAPON.MWIHP))
 							{
 								mainweapon = MAINWEAPON.MWIHP;
 							}

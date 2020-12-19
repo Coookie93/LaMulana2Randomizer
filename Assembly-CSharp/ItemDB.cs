@@ -77,9 +77,9 @@ namespace LM2RandomiserMod
             {ItemID.LittleDevil,                new ItemInfo("Little Devil",     "Little Devil",      "fashion",     2,     59,       0,    1)},
             {ItemID.EasternEurope,              new ItemInfo("Eastern Europe",   "Eastern Europe",    "fashion",     2,     60,       0,    1)},
                                                                                                                                            
-            {ItemID.Whip,                       new ItemInfo("Whip",             "Whip",              "weapon",      2,     62,       5,    1)},
-            {ItemID.ChainWhip,                  new ItemInfo("Whip2",            "Whip2",             "weapon",      2,     62,      10,    1)},
-            {ItemID.FlailWhip,                  new ItemInfo("Whip3",            "Whip3",             "weapon",      2,     62,      20,    1)},
+            {ItemID.Whip1,                      new ItemInfo("Whip1",            "Whip1",             "weapon",      2,     190,      5,    1)},
+            {ItemID.Whip2,                      new ItemInfo("Whip2",            "Whip2",             "weapon",      2,     189,      5,    1)},
+            {ItemID.Whip3,                      new ItemInfo("Whip3",            "Whip3",             "weapon",      2,     188,      5,    1)},
                                                                                                                                            
             {ItemID.Knife,                      new ItemInfo("Knife",            "Knife",             "weapon",      2,     63,      10,    1)},
             {ItemID.Rapier,                     new ItemInfo("Rapier",           "Rapier",            "weapon",      2,     64,      10,    1)},
@@ -94,9 +94,9 @@ namespace LM2RandomiserMod
             {ItemID.Caltrops,                   new ItemInfo("Caltrops",         "Caltrops",          "weapon",      2,     73,       5,    1)},
             {ItemID.Pistol,                     new ItemInfo("Pistol",           "Pistol",            "weapon",      2,     74,      20,    1)},
                                                                                                                                            
-            {ItemID.Buckler,                    new ItemInfo("Shield",           "Shield",            "weapon",      2,     75,       1,    1)},
-            {ItemID.SilverShield,               new ItemInfo("Shield2",          "Shield2",           "weapon",      2,     75,      10,    1)},
-            {ItemID.AngelShield,                new ItemInfo("Shield3",          "Shield3",           "weapon",      2,     75,      20,    1)},
+            {ItemID.Shield1,                    new ItemInfo("Shield1",          "Shield1",           "weapon",      2,     187,      5,    1)},
+            {ItemID.Shield2,                    new ItemInfo("Shield2",          "Shield2",           "weapon",      2,     186,      5,    1)},
+            {ItemID.Shield3,                    new ItemInfo("Shield3",          "Shield3",           "weapon",      2,     185,      5,    1)},
                                                                                                                                            
             {ItemID.AnkhJewel,                  new ItemInfo("Ankh Jewel",       "Ankh Jewel",        "weapon",      2,     76,       5,    1)},
                                                                                                                                           

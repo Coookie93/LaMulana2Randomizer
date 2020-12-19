@@ -26,49 +26,93 @@ namespace LM2RandomiserMod.Patches
             orig_Start();
             GameObject obj = new GameObject();
             L2Rando component = obj.AddComponent<L2Rando>() as L2Rando;
-            component.Initialise(this.l2sdb, this.l2tdb, this);
+            component.Initialise(l2sdb, l2tdb, this);
             DontDestroyOnLoad(obj);
         }
 
         [MonoModReplace]
 		public void setItem(string item_name, int num, bool direct = false, bool loadcall = false, bool sub_add = true)
 		{
-			int num2 = this.SeetNametoNo("02Items");
-			int num3 = this.SeetNametoNo("00system");
+			int value = num;
+			int num2 = SeetNametoNo("02Items");
+			int num3 = SeetNametoNo("00system");
 			if (num2 < 0)
 			{
 				return;
 			}
 
+			if (!direct)
+			{
+				if(item_name.Contains("Whip"))
+				{
+					if (item_name == "Whip1")
+						setFlagData(num2, 190, 1);
+					else if (item_name == "Whip2")
+						setFlagData(num2, 189, 1);
+					else if (item_name == "Whip3")
+						setFlagData(num2, 188, 1);
+
+					short data = 0;
+					getFlag(2, "Whip", ref data);
+					value = data + 1;
+				}
+				else if (item_name.Contains("Shield"))
+				{
+					if (item_name == "Shield1")
+						setFlagData(num2, 187, 1);
+					else if (item_name == "Shield2")
+						setFlagData(num2, 186, 1);
+					else if (item_name == "Shield3")
+						setFlagData(num2, 185, 1);
+
+					short data = 0;
+					getFlag(2, 184, ref data);
+					value = data + 1;
+					setFlagData(num2, 184, (short)(data + 1));
+				}
+				else if (item_name == "Lamp")
+				{
+					value = 2;
+				}
+			}
+
 			if (item_name.Contains("Mantra") && !item_name.Equals("Mantra"))
 			{
-				this.setFlagData(num2, item_name, (short)num);
+				setFlagData(num2, item_name, (short)value);
 				return;
 			}
 
-			if (item_name == "Whip")
+			if (item_name.Contains("Whip"))
 			{
-				if (num == 1)
+				if (value == 1)
 				{
-					this.playerst.setMainWeaponNum(MAINWEAPON.MWIHP, 0);
-					this.haveMainWeapon(MAINWEAPON.MWIHP, false);
-					this.playerst.setMainWeaponNum(MAINWEAPON.HWHIP, 0);
-					this.haveMainWeapon(MAINWEAPON.HWHIP, false);
+					item_name = "Whip";
+					playerst.setMainWeaponNum(MAINWEAPON.MWIHP, 0);
+					haveMainWeapon(MAINWEAPON.MWIHP, false);
+					playerst.setMainWeaponNum(MAINWEAPON.HWHIP, 0);
+					haveMainWeapon(MAINWEAPON.HWHIP, false);
 				}
-				else if (num == 2)
+				else if (value == 2)
 				{
 					item_name = "Whip2";
-					num = 1;
-					this.playerst.setMainWeaponNum(MAINWEAPON.HWHIP, 0);
-					this.haveMainWeapon(MAINWEAPON.HWHIP, false);
+					value = 1;
+					playerst.setMainWeaponNum(MAINWEAPON.HWHIP, 0);
+					haveMainWeapon(MAINWEAPON.HWHIP, false);
 				}
-				else if (num == 3)
+				else if (value == 3)
 				{
 					item_name = "Whip3";
-					num = 1;
+					value = 1;
 				}
 			}
-			if (num == 0)
+			else if (item_name.Contains("Shield"))
+			{
+				if (value == 1) item_name = "Shield";
+				else if (value == 2) item_name = "Shield2";
+				else if (value == 3) item_name = "Shield3";
+				setFlagData(num2, "Shield", (short)value); 
+			}
+			if (value == 0)
 			{
 				return;
 			}
@@ -76,28 +120,28 @@ namespace LM2RandomiserMod.Patches
 			{
 				if (direct)
 				{
-					this.playerst.setWait(num);
+					playerst.setWait(value);
 				}
 				else
 				{
-					this.playerst.addWait(num);
+					playerst.addWait(value);
 				}
 				return;
 			}
 			if (item_name == "Gold Bangle")
 			{
-				this.playerst.setMaxCoin(2000);
-				this.playerst.setCoin(this.playerst.getCoin());
+				playerst.setMaxCoin(2000);
+				playerst.setCoin(playerst.getCoin());
 			}
 			if (item_name == "Gold")
 			{
 				if (direct)
 				{
-					this.playerst.setCoin(num);
+					playerst.setCoin(value);
 				}
 				else
 				{
-					this.playerst.addCoin(num);
+					playerst.addCoin(value);
 				}
 				return;
 			}
@@ -105,36 +149,36 @@ namespace LM2RandomiserMod.Patches
 			{
 				if (direct)
 				{
-					this.playerst.setExp(num);
+					playerst.setExp(value);
 				}
 				else
 				{
-					this.playerst.addExp(num);
+					playerst.addExp(value);
 				}
 			}
 			else if (item_name == "Sacred Orb")
 			{
 				if (direct)
 				{
-					this.playerst.setPLayerLevel(num);
+					playerst.setPLayerLevel(value);
 				}
 				else
 				{
-					this.playerst.setPLayerLevel(this.playerst.getPlayerLevel() + 1);
+					playerst.setPLayerLevel(playerst.getPlayerLevel() + 1);
 				}
 			}
 			else
 			{
-				if (this.isAnkJewel(item_name))
+				if (isAnkJewel(item_name))
 				{
-					this.setFlagData(num2, item_name, (short)num);
+					setFlagData(num2, item_name, (short)value);
 					short num4 = 0;
 					if (!direct)
 					{
-						this.getFlag(num3, "A_Jewel", ref num4);
-						num += (int)num4;
+						getFlag(num3, "A_Jewel", ref num4);
+						value += (int)num4;
 					}
-					this.setFlagData(num3, "A_Jewel", (short)num);
+					setFlagData(num3, "A_Jewel", (short)value);
 					item_name = "A_Jewel";
 					goto IL_3BF;
 				}
@@ -143,10 +187,10 @@ namespace LM2RandomiserMod.Patches
 					short num5 = 0;
 					if (!direct)
 					{
-						this.getFlag(num3, "A_Jewel", ref num5);
-						num += (int)num5;
+						getFlag(num3, "A_Jewel", ref num5);
+						value += (int)num5;
 					}
-					this.setFlagData(num3, "A_Jewel", (short)num);
+					setFlagData(num3, "A_Jewel", (short)value);
 					goto IL_3BF;
 				}
 				if (item_name == "A_Jewel")
@@ -154,10 +198,10 @@ namespace LM2RandomiserMod.Patches
 					short num6 = 0;
 					if (!direct)
 					{
-						this.getFlag(num3, "A_Jewel", ref num6);
-						num += (int)num6;
+						getFlag(num3, "A_Jewel", ref num6);
+						value += (int)num6;
 					}
-					this.setFlagData(num3, "A_Jewel", (short)num);
+					setFlagData(num3, "A_Jewel", (short)value);
 					goto IL_3BF;
 				}
 				if (item_name == "pistolBox")
@@ -168,7 +212,7 @@ namespace LM2RandomiserMod.Patches
 				{
 					if (!direct)
 					{
-						this.setFlagData(num3, "Pepper-b", 69);
+						setFlagData(num3, "Pepper-b", 69);
 					}
 				}
 				else if (L2SystemCore.getItemData(item_name).isEquipableItem())
@@ -179,11 +223,11 @@ namespace LM2RandomiserMod.Patches
 						{
 							if (!direct)
 							{
-								this.equipItem(item_name, true);
+								equipItem(item_name, true);
 							}
-							if (this.getPlayer() != null)
+							if (getPlayer() != null)
 							{
-								this.getPlayer().checkEquipItem();
+								getPlayer().checkEquipItem();
 							}
 						}
 					}
@@ -191,13 +235,13 @@ namespace LM2RandomiserMod.Patches
 					{
 						for (int i = 0; i < 1; i++)
 						{
-							int[] softLiveData = this.getSoftLiveData(i);
+							int[] softLiveData = getSoftLiveData(i);
 							for (int j = 0; j < softLiveData.Length; j++)
 							{
 								if (softLiveData[j] == -1)
 								{
 									softLiveData[j] = 0;
-									this.setSoftLive(i, ItemDatabaseSystem.ItemNames.Xelputter, true);
+									setSoftLive(i, ItemDatabaseSystem.ItemNames.Xelputter, true);
 									break;
 								}
 							}
@@ -207,146 +251,128 @@ namespace LM2RandomiserMod.Patches
 			}
 			if (direct)
 			{
-				if (item_name == "Shield1")
+				if (item_name == "Shield")
 				{
-					this.setFlagData(num2, "Shield", 1);
-				}
-				else if (item_name == "Shield2")
-				{
-					this.setFlagData(num2, "Shield", 2);
-				}
-				else if (item_name == "Shield3")
-				{
-					this.setFlagData(num2, "Shield", 3);
+					if (value == 1) item_name = "Shield";
+					else if (value == 2) item_name = "Shield2";
+					else if (value == 3) item_name = "Shield3";
+					setFlagData(num2, "Shield", (short)value);
 				}
 				else
 				{
-					this.setFlagData(num2, item_name, (short)num);
+					setFlagData(num2, item_name, (short)value);
 				}
-			}
-			else if (item_name == "Shield")
-			{
-				this.setFlagData(num2, "Shield", 1);
-			}
-			else if (item_name == "Shield2")
-			{
-				this.setFlagData(num2, "Shield", 2);
-			}
-			else if (item_name == "Shield3")
-			{
-				this.setFlagData(num2, "Shield", 3);
 			}
 			else
 			{
-
-				this.setFlagData(num2, item_name, (short)num);//(short)(this.getItemNum(item_name) + 
+				setFlagData(num2, item_name, (short)value);
 			}
 			IL_3BF:
-			MAINWEAPON mainweapon = this.exchengeMainWeaponNameToEnum(item_name);
+			MAINWEAPON mainweapon = exchengeMainWeaponNameToEnum(item_name);
 			if (mainweapon != MAINWEAPON.NON)
 			{
-				this.haveMainWeapon(mainweapon, true);
+				haveMainWeapon(mainweapon, true);
 				if (direct)
 				{
 					if (mainweapon == MAINWEAPON.LWHIP)
 					{
-						this.setFlagData(num2, "Whip", (short)num);
-						this.playerst.setMainWeaponNum(mainweapon, num);
+						setFlagData(num2, "Whip", 1);
+						playerst.setMainWeaponNum(mainweapon, value);
 					}
 					else if (mainweapon == MAINWEAPON.MWIHP)
 					{
-						this.setFlagData(num2, "Whip", 2);
-						this.playerst.setMainWeaponNum(mainweapon, num);
+						setFlagData(num2, "Whip", 2);
+						playerst.setMainWeaponNum(mainweapon, value);
 					}
 					else if (mainweapon == MAINWEAPON.HWHIP)
 					{
-						this.setFlagData(num2, "Whip", 3);
-						this.playerst.setMainWeaponNum(mainweapon, num);
+						setFlagData(num2, "Whip", 3);
+						playerst.setMainWeaponNum(mainweapon, value);
 					}
 				}
 				else
 				{
 					if (mainweapon == MAINWEAPON.LWHIP)
 					{
-						this.setFlagData(num2, "Whip", (short)num);
+						setFlagData(num2, "Whip", 1);
 					}
 					else if (mainweapon == MAINWEAPON.MWIHP)
 					{
-						this.setFlagData(num2, "Whip", 2);
+						setFlagData(num2, "Whip", 2);
 					}
 					else if (mainweapon == MAINWEAPON.HWHIP)
 					{
-						this.setFlagData(num2, "Whip", 3);
+						setFlagData(num2, "Whip", 3);
 					}
-					this.addMainWeaponNum(mainweapon, 1);
+					addMainWeaponNum(mainweapon, 1);
 				}
 				return;
 			}
-			SUBWEAPON subweapon = this.exchengeSubWeaponNameToEnum(item_name);
+			SUBWEAPON subweapon = exchengeSubWeaponNameToEnum(item_name);
 			if (subweapon != SUBWEAPON.NON)
 			{
 				if (subweapon > SUBWEAPON.SUB_ANKJEWEL && subweapon != SUBWEAPON.SUB_REGUN)
 				{
 					if (direct)
 					{
-						this.playerst.setSubWeaponNum(subweapon, num, false);
+						playerst.setSubWeaponNum(subweapon, value, false);
 					}
 					else
 					{
-						this.addSubWeaponNum(subweapon, num);
+						addSubWeaponNum(subweapon, value);
 					}
 				}
 				else if (loadcall)
 				{
 					if (subweapon == SUBWEAPON.SUB_SHIELD1)
 					{
-						if (num == 2)
+						if (value == 2)
 						{
 							subweapon = SUBWEAPON.SUB_SHIELD2;
 						}
-						else if (num == 3)
+						else if (value == 3)
 						{
 							subweapon = SUBWEAPON.SUB_SHIELD3;
 						}
 					}
-					this.haveSubWeapon(subweapon, true, false);
+					haveSubWeapon(subweapon, true, false);
 				}
 				else
 				{
-					this.haveSubWeapon(subweapon, true, sub_add);
+					haveSubWeapon(subweapon, true, sub_add);
 					if (subweapon == SUBWEAPON.SUB_REGUN)
 					{
-						this.playerst.addSubWeaponNum(subweapon, num);
+						playerst.addSubWeaponNum(subweapon, value);
 					}
 				}
 				return;
 			}
-			USEITEM useitem = this.exchengeUseItemNameToEnum(item_name);
+			USEITEM useitem = exchengeUseItemNameToEnum(item_name);
 			if (useitem != USEITEM.NON)
 			{
-				this.haveUsesItem(useitem, true);
+				haveUsesItem(useitem, true);
 				if (direct)
 				{
-					this.playerst.setUseItemNum(useitem, num);
+					playerst.setUseItemNum(useitem, value);
 					if (useitem == USEITEM.USE_PEPPER_B)
 					{
-						this.setFlagData(num3, "Pepper-b", (short)num);
+						setFlagData(num3, "Pepper-b", (short)value);
 					}
 					else if (useitem == USEITEM.USE_CRYSTAL_S_B)
 					{
-						this.setFlagData(num3, "Crystal S-b", (short)num);
+						setFlagData(num3, "Crystal S-b", (short)value);
 					}
 				}
 				else
 				{
-					this.addUseItemNum(useitem, 1);
+					addUseItemNum(useitem, 1);
 					if (useitem == USEITEM.USE_PEPPER_B)
 					{
-						this.setFlagData(num3, "Pepper-b", (short)this.playerst.getUseItemNum(useitem));
+						setFlagData(num3, "Pepper-b", (short)playerst.getUseItemNum(useitem));
 					}
 					else if (useitem == USEITEM.USE_CRYSTAL_S_B)
 					{
-						this.setFlagData(num3, "Crystal S-b", (short)this.playerst.getUseItemNum(useitem));
+						setFlagData(num3, "Crystal S-b", (short)playerst.getUseItemNum(useitem));
 					}
 				}
 				return;
@@ -357,62 +383,38 @@ namespace LM2RandomiserMod.Patches
         public int isHaveItem(string name)
         {
             short num = 0;
-            int seet = this.SeetNametoNo("02Items");
+            int seet = SeetNametoNo("02Items");
             if (name == "A_Jewel" || name == "Ankh Jewel")
             {
-                this.getFlag(this.SeetNametoNo("00system"), "A_Jewel", ref num);
+                getFlag(SeetNametoNo("00system"), "A_Jewel", ref num);
             }
-            else if (name == "Whip2")
+            else if (name == "Whip1")
             {
-                this.getFlag(seet, "Whip", ref num);
-                if (num >= 2)
-                {
-                    num = 1;
-                }
-                else
-                {
-                    num = 0;
-                }
+                getFlag(seet, 190, ref num);
             }
-            else if (name == "Whip3")
+			else if (name == "Whip2")
+			{
+				getFlag(seet, 189, ref num);
+			}
+			else if (name == "Whip3")
+			{
+				getFlag(seet, 188, ref num);
+			}
+			else if (name == "Shield1")
             {
-                this.getFlag(seet, "Whip", ref num);
-                if (num == 3)
-                {
-                    num = 1;
-                }
-                else
-                {
-                    num = 0;
-                }
-            }
-            else if (name == "Shield2")
+				getFlag(seet, 187, ref num);
+			}
+			else if (name == "Shield2")
+			{
+				getFlag(seet, 186, ref num);
+			}
+			else if (name == "Shield3")
+			{
+				getFlag(seet, 185, ref num);
+			}
+			else
             {
-                this.getFlag(seet, "Shield", ref num);
-                if (num >= 2)
-                {
-                    num = 1;
-                }
-                else
-                {
-                    num = 0;
-                }
-            }
-            else if (name == "Shield3")
-            {
-                this.getFlag(seet, "Shield", ref num);
-                if (num == 3)
-                {
-                    num = 1;
-                }
-                else
-                {
-                    num = 0;
-                }
-            }
-            else
-            {
-                this.getFlag(seet, name, ref num);
+                getFlag(seet, name, ref num);
             }
             return (int)num;
         }
@@ -423,86 +425,80 @@ namespace LM2RandomiserMod.Patches
 		public int getItemNum(string item_name)
 		{
 			short num = 0;
-			int num2 = this.SeetNametoNo("02Items");
+			int num2 = SeetNametoNo("02Items");
 			if (num2 < 0)
 			{
 				return -1;
 			}
 			if (item_name == "Weight")
 			{
-				return this.playerst.getWait();
+				return playerst.getWait();
 			}
 			if (item_name == "Gold")
 			{
-				return this.playerst.getCoin();
+				return playerst.getCoin();
 			}
-			if (item_name == "Whip2")
+			if (item_name == "Whip1")
 			{
-				this.getFlag(num2, "Whip", ref num);
-				if (num == 2)
-				{
-					return 1;
-				}
-				return 0;
+				getFlag(num2, 190, ref num);
+				return num;
+			}
+			else if (item_name == "Whip2")
+			{
+				getFlag(num2, 189, ref num);
+				return num;
 			}
 			else if (item_name == "Whip3")
 			{
-				this.getFlag(num2, "Whip", ref num);
-				if (num == 3)
-				{
-					return 1;
-				}
-				return 0;
+				getFlag(num2, 188, ref num);
+				return num;
+			}
+			else if (item_name == "Shield1")
+			{
+				getFlag(num2, 187, ref num);
+				return num;
 			}
 			else if (item_name == "Shield2")
 			{
-				this.getFlag(num2, "Shield", ref num);
-				if (num == 2)
-				{
-					return 1;
-				}
-				return 0;
+				getFlag(num2, 186, ref num);
+				return num;
 			}
 			else if (item_name == "Shield3")
 			{
-				this.getFlag(num2, "Shield", ref num);
-				if (num == 3)
-				{
-					return 1;
-				}
-				return 0;
+				getFlag(num2, 185, ref num);
+				return num;
 			}
 			else if (item_name == "MSX")
 			{
-				this.getFlag(num2, "MSX", ref num);
+				getFlag(num2, "MSX", ref num);
 				return num == 2 ? 1 : 0;
 			}
 			else
 			{
 				if (item_name == "A_Jewel" || item_name == "Ankh Jewel")
 				{
-					this.getFlag(this.SeetNametoNo("00system"), "A_Jewel", ref num);
+					getFlag(SeetNametoNo("00system"), "A_Jewel", ref num);
 					return (int)num;
 				}
-				if (!this.getFlag(num2, item_name, ref num))
+				if (!getFlag(num2, item_name, ref num))
 				{
 					num = -1;
 				}
-				MAINWEAPON mainweapon = this.exchengeMainWeaponNameToEnum(item_name);
+				MAINWEAPON mainweapon = exchengeMainWeaponNameToEnum(item_name);
 				if (mainweapon != MAINWEAPON.NON)
 				{
-					this.getFlag(num2, item_name, ref num);
+					getFlag(num2, item_name, ref num);
 					return num > 0 ? 1 : 0;
 				}
-				SUBWEAPON subweapon = this.exchengeSubWeaponNameToEnum(item_name);
+				SUBWEAPON subweapon = exchengeSubWeaponNameToEnum(item_name);
 				if (subweapon != SUBWEAPON.NON && subweapon > SUBWEAPON.SUB_ANKJEWEL)
 				{
-					num = (short)this.getSubWeaponNum(subweapon);
+					num = (short)getSubWeaponNum(subweapon);
 				}
-				USEITEM useitem = this.exchengeUseItemNameToEnum(item_name);
+				USEITEM useitem = exchengeUseItemNameToEnum(item_name);
 				if (useitem != USEITEM.NON)
 				{
-					num = (short)this.getUseItemNum(useitem);
+					num = (short)getUseItemNum(useitem);
 				}
 				return (int)num;
 			}
@@ -518,39 +514,49 @@ namespace LM2RandomiserMod.Patches
 			if (itemTracker != null)
 				itemTracker.Add(102, 0);
 
-			this.fsys.allReset();
-			this.playerst.clearItemsNum();
-			this.menusys.menuSysReStart();
-			this.setSystemDataToClothFlag();
+			fsys.allReset();
+			playerst.clearItemsNum();
+			menusys.menuSysReStart();
+			setSystemDataToClothFlag();
 
-			MAINWEAPON mainWeapon = MAINWEAPON.LWHIP;
+			MAINWEAPON mainWeapon = MAINWEAPON.NON;
 			SUBWEAPON subWeapon = SUBWEAPON.NON;
 
 			L2Rando l2Rando = FindObjectOfType<L2Rando>();
 			if (l2Rando != null && l2Rando.IsRandomising)
 			{
-				if (l2Rando.MoneyStart)
-					Init_Coin_num = 100;
-
-				if (l2Rando.WeightStart)
-					Init_Weight_num = 20;
+				Init_Coin_num = l2Rando.StartingMoney;
+				Init_Weight_num = l2Rando.StartingWeights;
 
 				if(l2Rando.RemoveITStatue)
-					this.setFlagData(8, 10, 1);
+					setFlagData(8, 10, 1);
 
-				ItemID itemID = l2Rando.StartingWeapon;
-				ItemInfo itemInfo = ItemDB.GetItemInfo(itemID);
-				mainWeapon = exchengeMainWeaponNameToEnum(itemInfo.BoxName);
-				subWeapon = exchengeSubWeaponNameToEnum(itemInfo.BoxName);
+				setFlagData(5, 47, (short)(12 - l2Rando.RequiredSkulls));
+
+				ItemInfo itemInfo = ItemDB.GetItemInfo(l2Rando.StartingWeapon);
+
+				if (itemInfo != null)
+				{
+					if (l2Rando.StartingWeapon == ItemID.Whip1 || l2Rando.StartingWeapon == ItemID.Whip2 || l2Rando.StartingWeapon == ItemID.Whip3)
+					{
+						setFlagData(itemInfo.ItemSheet, itemInfo.ItemFlag, 1);
+						mainWeapon = exchengeMainWeaponNameToEnum("Whip");
+					}
+					else
+					{
+						mainWeapon = exchengeMainWeaponNameToEnum(itemInfo.BoxName);
+					}
+					subWeapon = exchengeSubWeaponNameToEnum(itemInfo.BoxName);
+				}
 			}
 
-			this.playerst.addCoin(Init_Coin_num);
-			this.playerst.addWait(Init_Weight_num);
-            this.playerst.resetPlayerStatus(this.Init_PLayer_lv, 0, 999, this.Init_Coin_num, this.Init_Weight_num, 0, mainWeapon, 0, subWeapon, 0, USEITEM.NON, 0);
-            this.playerst.resetExp();
-            this.setFlagData(0, 42, 1);
-			this.setFlagData(4, 60, 4);
-			this.setFlagData(4, 62, 2);
+			playerst.addCoin(Init_Coin_num);
+			playerst.addWait(Init_Weight_num);
+            playerst.resetPlayerStatus(Init_PLayer_lv, 0, 999, Init_Coin_num, Init_Weight_num, 0, mainWeapon, 0, subWeapon, 0, USEITEM.NON, 0);
+            playerst.resetExp();
+            setFlagData(0, 42, 1);
+			setFlagData(4, 60, 4);
+			setFlagData(4, 62, 2);
 		}
 
 		[MonoModIgnore]
@@ -571,33 +577,33 @@ namespace LM2RandomiserMod.Patches
 		[MonoModReplace]
 		public void reInitSystem(bool callTitle = true)
 		{
-			this.fsys.allReset();
+			fsys.allReset();
 			for (int i = 0; i < 16; i++)
 			{
-				this.Systemflagbuffer[i] = 0;
+				Systemflagbuffer[i] = 0;
 			}
-			this.setSysFlag(SYSTEMFLAG.LOADSTATUS);
-			this.setSysFlag(SYSTEMFLAG.INISTATUS);
-			this.setSysFlag(SYSTEMFLAG.SYSTEMINI);
-			this.setSysFlag(SYSTEMFLAG.LIVEPLAYER);
-			this.gamespeed = 1f;
-			this.axisRingIndex = 0;
-			for (int i = 0; i < this.RINGBUFF_MAX; i++)
+			setSysFlag(SYSTEMFLAG.LOADSTATUS);
+			setSysFlag(SYSTEMFLAG.INISTATUS);
+			setSysFlag(SYSTEMFLAG.SYSTEMINI);
+			setSysFlag(SYSTEMFLAG.LIVEPLAYER);
+			gamespeed = 1f;
+			axisRingIndex = 0;
+			for (int i = 0; i < RINGBUFF_MAX; i++)
 			{
-				this.axisRingH[i] = 0f;
-				this.axisRingV[i] = 0f;
+				axisRingH[i] = 0f;
+				axisRingV[i] = 0f;
 			}
-			this.setSysFlag(SYSTEMFLAG.SYSTEMSTART);
-			this.playerst.resetPlayerStatus(this.Init_PLayer_lv, 0, 999, this.Init_Coin_num, this.Init_Weight_num, 0, MAINWEAPON.NON, 0, SUBWEAPON.NON, 0, USEITEM.NON, 0);
-			BGCharacterTraceCamera component = this.playerobject.GetComponent<BGCharacterTraceCamera>();
-			this.delTask(component);
-			this.delTask(this.playerobject);
-			this.deletePlayer();
-			this.clearSceneTasks();
-			this.reSetAlertMessNo();
+			setSysFlag(SYSTEMFLAG.SYSTEMSTART);
+			playerst.resetPlayerStatus(Init_PLayer_lv, 0, 999, Init_Coin_num, Init_Weight_num, 0, MAINWEAPON.NON, 0, SUBWEAPON.NON, 0, USEITEM.NON, 0);
+			BGCharacterTraceCamera component = playerobject.GetComponent<BGCharacterTraceCamera>();
+			delTask(component);
+			delTask(playerobject);
+			deletePlayer();
+			clearSceneTasks();
+			reSetAlertMessNo();
 			if (callTitle)
 			{
-				this.l2core.loadDemoSceane("Title");
+				l2core.loadDemoSceane("Title");
 			}
 		}
 
@@ -646,16 +652,17 @@ namespace LM2RandomiserMod.Patches
         [MonoModReplace]
         public void debugDrawBossHPText(int hp)
         {
-            this.boss_hp_text.color = Color.magenta;
-            this.boss_hp_text.text = hp.ToString();
+            boss_hp_text.color = Color.magenta;
+            boss_hp_text.text = hp.ToString();
         }
 
         [MonoModReplace]
         public void debugDrawBossDmgText(int dmg)
         {
-            this.boss_dmg_text.color = Color.magenta;
-            this.boss_dmg_text.text = dmg.ToString();
+            boss_dmg_text.color = Color.magenta;
+            boss_dmg_text.text = dmg.ToString();
         }
+
 #endif
-    }
+	}
 }

@@ -197,7 +197,7 @@
   {
     "name": "Bracelet",
     "id": 41,
-    "isRequired": true
+    "isRequired": false
   },
   {
     "name": "Feather",
@@ -275,17 +275,17 @@
     "isRequired": true
   },
   {
-    "name": "Leather Whip",
+    "name": "Progressive Whip",
     "id": 61,
     "isRequired": true
   },
   {
-    "name": "Chain Whip",
+    "name": "Progressive Whip",
     "id": 62,
     "isRequired": true
   },
   {
-    "name": "Flail Whip",
+    "name": "Progressive Whip",
     "id": 63,
     "isRequired": true
   },
@@ -348,21 +348,21 @@
     "name": "Pistol",
     "id": 75,
     "price": 200,
-    "isRequired": true
-  },
-  {
-    "name": "Buckler",
-    "id": 76,
-    "price": 10,
     "isRequired": false
   },
   {
-    "name": "Silver Shield",
+    "name": "Progressive Shield",
+    "id": 76,
+    "price": 10,
+    "isRequired": true
+  },
+  {
+    "name": "Progressive Shield",
     "id": 77,
     "isRequired": true
   },
   {
-    "name": "Angel Shield",
+    "name": "Progressive Shield",
     "id": 78,
     "isRequired": true
   },
@@ -792,21 +792,6 @@
     "isRequired": true
   },
   {
-    "name": "Rolling Shuriken Ammo",
-    "id": 166,
-    "isRequired": true
-  },
-  {
-    "name": "Rolling Shuriken Ammo",
-    "id": 166,
-    "isRequired": true
-  },
-  {
-    "name": "Earth Spear Ammo",
-    "id": 167,
-    "isRequired": true
-  },
-  {
     "name": "Earth Spear Ammo",
     "id": 167,
     "isRequired": true
@@ -827,11 +812,6 @@
     "isRequired": true
   },
   {
-    "name": "Flare Ammo",
-    "id": 168,
-    "isRequired": true
-  },
-  {
     "name": "Bomb Ammo",
     "id": 169,
     "isRequired": true
@@ -839,21 +819,6 @@
   {
     "name": "Bomb Ammo",
     "id": 169,
-    "isRequired": true
-  },
-  {
-    "name": "Bomb Ammo",
-    "id": 169,
-    "isRequired": true
-  },
-  {
-    "name": "Chakram Ammo",
-    "id": 170,
-    "isRequired": true
-  },
-  {
-    "name": "Chakram Ammo",
-    "id": 170,
     "isRequired": true
   },
   {
@@ -887,9 +852,44 @@
     "isRequired": false
   },
   {
-    "name": "Pistol Ammo",
-    "id": 172,
-    "isRequired": false
+    "name": "Weights",
+    "id": 173,
+    "isRequired": true
+  },
+  {
+    "name": "Weights",
+    "id": 173,
+    "isRequired": true
+  },
+  {
+    "name": "Weights",
+    "id": 173,
+    "isRequired": true
+  },
+  {
+    "name": "Weights",
+    "id": 173,
+    "isRequired": true
+  },
+  {
+    "name": "Weights",
+    "id": 173,
+    "isRequired": true
+  },
+  {
+    "name": "Weights",
+    "id": 173,
+    "isRequired": true
+  },
+  {
+    "name": "Weights",
+    "id": 173,
+    "isRequired": true
+  },
+  {
+    "name": "Weights",
+    "id": 173,
+    "isRequired": true
   },
   {
     "name": "Weights",

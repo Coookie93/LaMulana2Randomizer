@@ -36,94 +36,128 @@ namespace LM2RandomiserMod.Patches
         [MonoModReplace]
         public override void StartSwitch()
         {
-            if (!this.first)
+            if (!first)
             {
-                this.cam = GameObject.Find("BGScrollSystemBase").GetComponent<BGScrollSystem>().bgCamera.BaseCamera;
-                if (this.MessString[1] == "kataribe")
+                cam = GameObject.Find("BGScrollSystemBase").GetComponent<BGScrollSystem>().bgCamera.BaseCamera;
+                if (MessString[1] == "kataribe")
                 {
-                    this.PositionF = 100f;
-                    this.PositionD = 120f;
+                    PositionF = 100f;
+                    PositionD = 120f;
                 }
                 else
                 {
-                    Vector3 position = this.sys.getPlayer().gameObject.transform.position;
-                    if (this.cam.WorldToScreenPoint(position).y > 224f)
+                    Vector3 position = sys.getPlayer().gameObject.transform.position;
+                    if (cam.WorldToScreenPoint(position).y > 224f)
                     {
-                        this.PositionF = -100f;
-                        this.PositionD = -120f;
+                        PositionF = -100f;
+                        PositionD = -120f;
                     }
                     else
                     {
-                        this.PositionF = 100f;
-                        this.PositionD = 120f;
+                        PositionF = 100f;
+                        PositionD = 120f;
                     }
-                    this.sys.setSysFlag(SYSTEMFLAG.MENUOPEN);
+                    sys.setSysFlag(SYSTEMFLAG.MENUOPEN);
                 }
-                this.cgroup = this.con.DialogBase.GetComponent<CanvasGroup>();
-                this.cgroup.alpha = 0f;
-                if (this.MessString[0] == "Message")
+                cgroup = con.DialogBase.GetComponent<CanvasGroup>();
+                cgroup.alpha = 0f;
+                if (MessString[0] == "Message")
                 {
-                    this.con.Icon.gameObject.SetActive(false);
+                    con.Icon.gameObject.SetActive(false);
                 }
                 else
                 {
-                    this.con.Icon.gameObject.SetActive(true);
-                    this.con.Icon.sprite = L2Math.Load("Textures/icons_itemmenu", this.MessString[0]);
+                    con.Icon.gameObject.SetActive(true);
+                    if (MessString[0].Contains("Whip"))
+                    {
+                        short data = 0;
+                        sys.getFlag(2, "Whip", ref data);
+                        if (MessString[1] == "kataribe")
+                        {
+                            if (data == 0) MessString[0] = "Whip";
+                            else if (data == 1) MessString[0] = "Whip2";
+                            else if (data >= 2) MessString[0] = "Whip3";
+                        }
+                        else
+                        {
+                            if (data == 1) MessString[0] = "Whip";
+                            else if (data == 2) MessString[0] = "Whip2";
+                            else if (data >= 3) MessString[0] = "Whip3";
+                        }
+                    }
+                    else if (MessString[0].Contains("Shield"))
+                    {
+                        short data = 0;
+                        sys.getFlag(2, 184, ref data);
+                        if (MessString[1] == "kataribe")
+                        {
+                            if (data == 0) MessString[0] = "Shield";
+                            else if (data == 1) MessString[0] = "Shield2";
+                            else if (data >= 2) MessString[0] = "Shield3";
+                        }
+                        else
+                        {
+                            if (data == 1) MessString[0] = "Shield";
+                            else if (data == 2) MessString[0] = "Shield2";
+                            else if (data >= 3) MessString[0] = "Shield3";
+                        }
+                    }
+                    con.Icon.sprite = L2Math.Load("Textures/icons_itemmenu", MessString[0]);
                 }
                 string str;
                 string str2;
                 string str3;
-                if (this.MessString[0] == "N Chip")
+                if (MessString[0] == "N Chip")
                 {
-                    str = this.sys.getMojiText(true, "system", "itemDialog1", mojiScriptType.system);
-                    str2 = this.GetMonsterName(this.MessInt[0]);
-                    str3 = this.sys.getMojiText(true, "system", "itemDialog2", mojiScriptType.system);
+                    str = sys.getMojiText(true, "system", "itemDialog1", mojiScriptType.system);
+                    str2 = GetMonsterName(MessInt[0]);
+                    str3 = sys.getMojiText(true, "system", "itemDialog2", mojiScriptType.system);
                 }
-                else if (this.MessString[0] == "R Chip")
+                else if (MessString[0] == "R Chip")
                 {
-                    str = this.sys.getMojiText(true, "system", "itemDialog1", mojiScriptType.system);
-                    str2 = this.GetMonsterName(this.MessInt[0]);
-                    str3 = this.sys.getMojiText(true, "system", "itemDialog2", mojiScriptType.system);
+                    str = sys.getMojiText(true, "system", "itemDialog1", mojiScriptType.system);
+                    str2 = GetMonsterName(MessInt[0]);
+                    str3 = sys.getMojiText(true, "system", "itemDialog2", mojiScriptType.system);
                 }
-                else if (this.MessString[0] == "SR Chip")
+                else if (MessString[0] == "SR Chip")
                 {
-                    str = this.sys.getMojiText(true, "system", "itemDialog1", mojiScriptType.system);
-                    str2 = this.GetMonsterName(this.MessInt[0]);
-                    str3 = this.sys.getMojiText(true, "system", "itemDialog2", mojiScriptType.system);
+                    str = sys.getMojiText(true, "system", "itemDialog1", mojiScriptType.system);
+                    str2 = GetMonsterName(MessInt[0]);
+                    str3 = sys.getMojiText(true, "system", "itemDialog2", mojiScriptType.system);
                 }
-                else if (this.MessString[0] == "UR Chip")
+                else if (MessString[0] == "UR Chip")
                 {
-                    str = this.sys.getMojiText(true, "system", "itemDialog1", mojiScriptType.system);
-                    str2 = this.GetMonsterName(this.MessInt[0]);
-                    str3 = this.sys.getMojiText(true, "system", "itemDialog2", mojiScriptType.system);
+                    str = sys.getMojiText(true, "system", "itemDialog1", mojiScriptType.system);
+                    str2 = GetMonsterName(MessInt[0]);
+                    str3 = sys.getMojiText(true, "system", "itemDialog2", mojiScriptType.system);
                 }
-                else if (this.MessString[0] == "Message")
+                else if (MessString[0] == "Message")
                 {
                     str = string.Empty;
-                    str2 = this.sys.getMojiText(true, this.MessString[1], this.MessString[2], mojiScriptType.system);
+                    str2 = sys.getMojiText(true, MessString[1], MessString[2], mojiScriptType.system);
                     str3 = string.Empty;
                 }
-                else if(this.MessString[0].Contains("Mantra") && !this.MessString[0].Equals("Mantra"))
+                else if(MessString[0].Contains("Mantra") && !MessString[0].Equals("Mantra"))
                 {
-                    this.con.Icon.gameObject.SetActive(false);
-                    str = this.sys.getMojiText(true, "system", "itemDialog1", mojiScriptType.system);
+                    con.Icon.gameObject.SetActive(false);
+                    str = sys.getMojiText(true, "system", "itemDialog1", mojiScriptType.system);
                     string mojiName = MessString[0].Equals("Mantra10") ? "mantra1stM10" : "mantra1stM" + MessString[0].Substring(6, 1);
-                    str2 = this.sys.getMojiText(false, "menu", mojiName, mojiScriptType.system);
-                    str3 = this.sys.getMojiText(true, "system", "itemDialog2", mojiScriptType.system);
+                    str2 = sys.getMojiText(false, "menu", mojiName, mojiScriptType.system);
+                    str3 = sys.getMojiText(true, "system", "itemDialog2", mojiScriptType.system);
                 }
                 else
                 {
-                    str = this.sys.getMojiText(true, "system", "itemDialog1", mojiScriptType.system);
-                    string itemSheetName = this.sys.getItemSheetName(this.MessString[0]);
-                    str2 = this.sys.getMojiText(false, itemSheetName, this.MessString[0], mojiScriptType.item);
-                    str3 = this.sys.getMojiText(true, "system", "itemDialog2", mojiScriptType.system);
+                    str = sys.getMojiText(true, "system", "itemDialog1", mojiScriptType.system);
+                    string itemSheetName = sys.getItemSheetName(MessString[0]);
+                    str2 = sys.getMojiText(false, itemSheetName, MessString[0], mojiScriptType.item);
+                    str3 = sys.getMojiText(true, "system", "itemDialog2", mojiScriptType.system);
                 }
-                this.con.DialogText.text = str + str2 + str3;
-                this.sys.setSysFlag(SYSTEMFLAG.ITDLRBLOCK);
-                this.sta = 1;
-                this.con.DialogBase.transform.localPosition = new Vector3(0f, this.PositionD, 600f);
-                this.move_count = 0f;
-                this.m_obj.SetActive(true);
+                con.DialogText.text = str + str2 + str3;
+                sys.setSysFlag(SYSTEMFLAG.ITDLRBLOCK);
+                sta = 1;
+                con.DialogBase.transform.localPosition = new Vector3(0f, PositionD, 600f);
+                move_count = 0f;
+                m_obj.SetActive(true);
             }
         }
     }

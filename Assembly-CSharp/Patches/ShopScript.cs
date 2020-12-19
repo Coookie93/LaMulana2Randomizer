@@ -40,103 +40,190 @@ namespace LM2RandomiserMod.Patches
         [MonoModReplace]
         public override bool itemCallBack(string tab, string name, int vale, int num)
         {
-            string[] weapons = { "Whip", "Whip2", "Whip3", "Knife", "Rapier", "Axe", "Katana", "Shuriken", "R-Shuriken", "E-Spear", "Flare Gun", "Bomb",
+            string[] weapons = { "Knife", "Rapier", "Axe", "Katana", "Shuriken", "R-Shuriken", "E-Spear", "Flare Gun", "Bomb",
                                     "Chakram", "Caltrops", "Clay Doll", "Origin Seal", "Birth Seal", "Life Seal", "Death Seal"};
             
-            if (this.item_copunter > 2)
+            if (item_copunter > 2)
             {
                 return false;
             }
-            this.true_name[this.item_copunter] = name;
-            if (this.sys.isAnkJewel(name))
+            true_name[item_copunter] = name;
+            if (sys.isAnkJewel(name))
             {
                 name = "Ankh Jewel";
             }
-            else if (this.sys.isMap(name))
+            else if (sys.isMap(name))
             {
                 name = "Map";
             }
-            this.item_id[this.item_copunter] = name;
+            item_id[item_copunter] = name;
             
             if (name.Contains("Mantra") && !name.Equals("Mantra"))
             {
-                this.icon[this.item_copunter] = L2SystemCore.getShopIconSprite(L2SystemCore.getItemData("Mantra"));
-                this.shop_item[this.item_copunter].sprite = this.icon[this.item_copunter];
+                icon[item_copunter] = L2SystemCore.getShopIconSprite(L2SystemCore.getItemData("Mantra"));
+                shop_item[item_copunter].sprite = icon[item_copunter];
 
                 string mojiName = name.Equals("Mantra10") ? "mantra1stM10" : "mantra1stM" + name.Substring(6, 1);
-                this.item_name[this.item_copunter].text = this.sys.getMojiText(true, this.sys.mojiSheetNameToNo(tab, this.sys.getMojiScript(mojiScriptType.system)),
-                    this.sys.mojiIdToNo(tab, mojiName, this.sys.getMojiScript(mojiScriptType.system)), this.sys.getNowLangage(), this.sys.getMojiScript(mojiScriptType.system));
+                item_name[item_copunter].text = sys.getMojiText(true, sys.mojiSheetNameToNo(tab, sys.getMojiScript(mojiScriptType.system)),
+                    sys.mojiIdToNo(tab, mojiName, sys.getMojiScript(mojiScriptType.system)), sys.getNowLangage(), sys.getMojiScript(mojiScriptType.system));
             }
             else
             {
                 if (name.Equals("Map"))
                 {
-                    this.icon[this.item_copunter] = L2SystemCore.getMapIconSprite(L2SystemCore.getItemData("Map"));
-                }
-                else if (name.Equals("MSX"))
-                {
-                    this.icon[this.item_copunter] = L2SystemCore.getShopIconSprite(L2SystemCore.getItemData("MSX3p"));
-                }
-                else if (name.Contains("Sacred Orb"))
-                {
-                    this.icon[this.item_copunter] = L2SystemCore.getMenuIconSprite(L2SystemCore.getItemData("Sacred Orb"));
-                    name = "Sacred Orb";
+                    icon[item_copunter] = L2SystemCore.getMapIconSprite(L2SystemCore.getItemData("Map"));
                 }
                 else if (name.Contains("Crystal S"))
                 {
-                    this.icon[this.item_copunter] = L2SystemCore.getShopIconSprite(L2SystemCore.getItemData("Crystal S"));
                     name = "Crystal S";
+                    icon[item_copunter] = L2SystemCore.getShopIconSprite(L2SystemCore.getItemData(name));
+                }
+                else if (name.Contains("Sacred Orb"))
+                {
+                    name = "Sacred Orb";
+                    icon[item_copunter] = L2SystemCore.getMenuIconSprite(L2SystemCore.getItemData(name));
+                }
+                else if (name.Contains("Whip"))
+                {
+                    short data = 0;
+                    sys.getFlag(2, "Whip", ref data);
+                    if(data == 0)
+                    {
+                        name = "Whip";
+                    }
+                    else if (data == 1) 
+                    { 
+                        name = "Whip2";
+                        vale *= 2;
+                    }
+                    else if (data >= 2) 
+                    { 
+                        name = "Whip3";
+                        vale *= 4;
+                    }
+                    icon[item_copunter] = L2SystemCore.getMenuIconSprite(L2SystemCore.getItemData(name));
+                }
+                else if (name.Contains("Shield"))
+                {
+                    short data = 0;
+                    sys.getFlag(2, 184, ref data);
+                    if(data == 0)
+                    {
+                        name = "Shield";
+                    }
+                    else if (data == 1) 
+                    { 
+                        name = "Shield2";
+                        vale *= 2;
+                    }
+                    else if (data >= 2) 
+                    { 
+                        name = "Shield3";
+                        vale *= 4;
+                    }
+                    icon[item_copunter] = Load("Textures/icons_shops", name);
+                }
+                else if (name.Equals("MSX"))
+                {
+                    icon[item_copunter] = L2SystemCore.getShopIconSprite(L2SystemCore.getItemData("MSX3p"));
                 }
                 else if (Array.IndexOf(weapons, name) > -1)
                 {
-                    this.icon[this.item_copunter] = L2SystemCore.getMenuIconSprite(L2SystemCore.getItemData(name));
+                    icon[item_copunter] = L2SystemCore.getMenuIconSprite(L2SystemCore.getItemData(name));
                 }
                 else {
-                    this.icon[this.item_copunter] = Load("Textures/icons_shops", name);
+                    icon[item_copunter] = Load("Textures/icons_shops", name);
                 }
 
-                this.shop_item[this.item_copunter].sprite = this.icon[this.item_copunter];
-                this.item_name[this.item_copunter].text = this.sys.getMojiText(true, this.sys.mojiSheetNameToNo(tab, this.sys.getMojiScript(mojiScriptType.item)),
-                        this.sys.mojiIdToNo(tab, name, this.sys.getMojiScript(mojiScriptType.item)), this.sys.getNowLangage(), this.sys.getMojiScript(mojiScriptType.item));
+                shop_item[item_copunter].sprite = icon[item_copunter];
+                item_name[item_copunter].text = sys.getMojiText(true, sys.mojiSheetNameToNo(tab, sys.getMojiScript(mojiScriptType.item)),
+                        sys.mojiIdToNo(tab, name, sys.getMojiScript(mojiScriptType.item)), sys.getNowLangage(), sys.getMojiScript(mojiScriptType.item));
             }
             
-            this.item_value[this.item_copunter] = vale;
+            item_value[item_copunter] = vale;
             if (vale > 999)
             {
-                this.item_valu[this.item_copunter].text = L2Math.numToText(vale, 4);
+                item_valu[item_copunter].text = L2Math.numToText(vale, 4);
             }
             else
             {
-                this.item_valu[this.item_copunter].text = L2Math.numToText(vale, 3);
+                item_valu[item_copunter].text = L2Math.numToText(vale, 3);
             }
-            this.item_num[this.item_copunter] = num;
-            this.item_copunter++;
+            item_num[item_copunter] = num;
+            item_copunter++;
             return true;
         }
 
-        //Change this method so shops can check if the player has the MSX3P+ if needed
-        //public void orig_setSouldOut() { }
-        //public void setSouldOut()
-        //{
-        //    orig_setSouldOut();
+        private extern string orig_exchangeItemName(string name);
+        public string exchangeItemName(string name)
+        {
+            return orig_exchangeItemName(name);
+        }
 
-        //    for (int i = 0; i < 3; i++)
-        //    {
-        //        if (this.item_id[i] == "MSX")
-        //        {
-        //            short num = 0;
-        //            this.sys.getFlag(this.sys.SeetNametoNo("02Items"), "MSX", ref num);
-        //            if (num >= 2)
-        //            {
-        //                this.isSouldOut[i] = true;
-        //            }
-        //            else
-        //            {
-        //                this.isSouldOut[i] = false;
-        //            }
-        //        }
-        //    }
-        //    this.drawItems();
-        //}
+        [MonoModIgnore]
+        private bool[] isSouldOut;
+
+        [MonoModReplace]
+        public void setSouldOut()
+        {
+            short num = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                string text = exchangeItemName(item_id[i]);
+                if (text != item_id[i])
+                {
+                    sys.getFlag(sys.SeetNametoNo("02Items"), text, ref num);
+                    if (num != 0)
+                    {
+                        if (item_id[i] == "Pistol-b")
+                        {
+                            if (sys.getItemNum("pistolBox") >= sys.getItemMax("pistolBox"))
+                            {
+                                isSouldOut[i] = true;
+                            }
+                            else
+                            {
+                                isSouldOut[i] = false;
+                            }
+                        }
+                        else if (sys.getItemNum(true_name[i]) >= sys.getItemMax(item_id[i]))
+                        {
+                            isSouldOut[i] = true;
+                        }
+                        else
+                        {
+                            isSouldOut[i] = false;
+                        }
+                    }
+                    else
+                    {
+                        isSouldOut[i] = true;
+                    }
+                }
+                else if (item_id[i] == "Pepper")
+                {
+                    short num2 = 0;
+                    sys.getFlag(0, "Pepper-b", ref num2);
+                    if (num2 == 0)
+                    {
+                        isSouldOut[i] = false;
+                    }
+                    else
+                    {
+                        isSouldOut[i] = true;
+                    }
+                }
+                else if (sys.getItemNum(true_name[i]) >= sys.getItemMax(item_id[i]))
+                {
+                    isSouldOut[i] = true;
+                }
+                else
+                {
+                    isSouldOut[i] = false;
+                }
+            }
+            isSouldOut[3] = false;
+            drawItems();
+        }
     }
 }

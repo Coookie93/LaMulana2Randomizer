@@ -1,5 +1,4 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using LaMulana2RandomizerShared;
 
 namespace LaMulana2Randomizer
@@ -15,7 +14,7 @@ namespace LaMulana2Randomizer
         public int PriceMultiplier;
 
         [JsonConstructor]
-        public Item(string name, ItemID id, bool isRequired = true)
+        public Item(string name, ItemID id, bool isRequired = false)
         {
             Name = name;
             ID = id;

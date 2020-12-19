@@ -32,7 +32,7 @@ namespace LaMulana2Randomizer
             collectedItems = new Dictionary<string, int>();
         }
         
-        public static PlayerState GetStateWithItems(Randomiser randomiser, List<Item> currentItems)
+        public static PlayerState GetStateWithItems(Randomiser randomiser, ItemPool currentItems)
         {
             PlayerState state = new PlayerState(randomiser);
             state.CollectItem(randomiser.StartingWeapon);
@@ -128,7 +128,15 @@ namespace LaMulana2Randomizer
         public static bool EntrancePlacementCheck(Randomiser randomiser)
         {
             PlayerState state = new PlayerState(randomiser);
-            foreach (Item item in FileUtils.GetItemsFromJson())
+            ItemPool itemPool = new ItemPool(FileUtils.LoadItemFile());
+
+            if (randomiser.Settings.ShopPlacement == ShopPlacement.Original)
+                randomiser.PlaceShopItems(itemPool);
+
+            if (randomiser.Settings.MantraPlacement == MantraPlacement.Original)
+                randomiser.PlaceMantras(itemPool);
+
+            foreach (Item item in itemPool)
                 state.CollectItem(item);
 
             List<Location> requiredLocations = randomiser.GetPlacedLocations();
@@ -160,7 +168,7 @@ namespace LaMulana2Randomizer
             //check to see if its possible to actually escape
             state.EscapeCheck = true;
             state.StartingArea = randomiser.GetArea("Immortal Battlefield Main");
-            List<string> exitNames = new List<string>() { "Cliff", "Gate of Guidance", "Mausoleum of Giants", "Village of Departure", "Gate of Illusion"};
+            List<string> exitNames = new List<string>() { "Cliff", "Gate of Guidance", "Mausoleum of Giants", "Village of Departure", "Gate of Illusion", "Nibiru"};
             foreach(string exitName in exitNames)
             {
                 state.ClearCheckedAreasAndEntrances();
@@ -225,6 +233,9 @@ namespace LaMulana2Randomizer
 
         public void CollectItem(Item item)
         {
+            if (item == null)
+                return;
+
             if (collectedItems.ContainsKey(item.Name))
                 collectedItems[item.Name]++;
             else
@@ -321,7 +332,30 @@ namespace LaMulana2Randomizer
         
         private bool HasItem(string itemName)
         {
-            return collectedItems.ContainsKey(itemName);
+            if (itemName.Contains("Whip"))
+            {
+                if(collectedItems.TryGetValue("Progressive Whip", out int value))
+                {
+                    if (itemName.Equals("Leather Whip")) return value >= 1;
+                    else if (itemName.Equals("Chain Whip")) return value >= 2;
+                    else if (itemName.Equals("Flail Whip")) return value >= 3;
+                }
+                return false;
+            }
+            else if (itemName.Contains("Shield") || itemName.Equals("Buckler"))
+            {
+                if (collectedItems.TryGetValue("Progressive Shield", out int value))
+                {
+                    if (itemName.Equals("Buckler")) return value >= 1;
+                    else if (itemName.Equals("Silver Shield")) return value >= 2;
+                    else if (itemName.Equals("Angel Shield")) return value >= 3;
+                }
+                return false;
+            }
+            else
+            {
+                return collectedItems.ContainsKey(itemName);
+            }
         } 
         
         private bool CanChant(string mantra)
