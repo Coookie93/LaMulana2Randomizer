@@ -612,7 +612,7 @@
       {
         "Name": "Kujata",
         "LocationType": "Guardian",
-        "Logic": "Has(Freys Ship) and (IsDead(Ixtab) or Has(Feather)) and ((CanUse(Pistol) and OrbCount(1)) or ((Has(Flail Whip) or Has(Axe) or CanUse(Bombs)) and OrbCount(2)) or ((Has(Chain Whip) or Has(Katana) or CanUse(Earth Spear) or CanUse(Chakram)) and OrbCount(3)) or ((Has(Knife) or Has(Rapier) and (CanUse(Shuriken) and Has(Ring))) and OrbCount(3) and Has(Feather)) or ((Has(Leather Whip) and CanUse(Rolling Shuriken)) and OrbCount(4)))",
+        "Logic": "Has(Freys Ship) and (IsDead(Ixtab) or Has(Feather)) and ((CanUse(Pistol) and OrbCount(1)) or ((Has(Flail Whip) or Has(Axe) or CanUse(Bombs)) and OrbCount(2)) or ((Has(Chain Whip) or Has(Katana) or CanUse(Earth Spear) or CanUse(Chakram)) and OrbCount(3)) or ((Has(Knife) or Has(Rapier) or (CanUse(Shuriken) and Has(Ring))) and OrbCount(3) and Has(Feather)) or ((Has(Leather Whip) and CanUse(Rolling Shuriken)) and OrbCount(4)))",
         "HardLogic": "Has(Freys Ship) and (IsDead(Ixtab) or Has(Feather))",
         "Item": {
           "Name": "Kujata",
@@ -2763,7 +2763,7 @@
         "Logic": "IsDead(HoM Right Path) and Has(Death Sigil)"
       },
       {
-        "Name": "Giants Flutes Chest",
+        "Name": "Giants Flute Chest",
         "LocationType": "Chest",
         "Logic": "IsDead(Echidna)"
       },

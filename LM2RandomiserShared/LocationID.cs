@@ -15,7 +15,7 @@ namespace LaMulana2RandomizerShared
         PyramidCrystalChest = 7,
         VesselChest = 9,
         EggofCreationChest = 11,
-        GiantsFlutesChest = 12,
+        GiantsFluteChest = 12,
         CogofAntiquityChest = 13,
 
         MobileSuperX3Item = 15,
