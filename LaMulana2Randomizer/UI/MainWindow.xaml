@@ -118,7 +118,13 @@
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Header="Research" Grid.Row="3">
-                        <CheckBox Name="ResearchCheck" Content="Randomised" IsChecked="{Binding Settings.RandomResearch}"/>
+                        <CheckBox Name="ResearchCheck" Content="Randomised" IsChecked="{Binding Settings.RandomResearch}">
+                            <CheckBox.ToolTip>
+                                <ToolTip Style="{StaticResource TootltipStyle}">
+                                    <TextBlock Text="Adds the Research Papers to the pool of random items."/>
+                                </ToolTip>
+                            </CheckBox.ToolTip>
+                        </CheckBox>
                     </GroupBox>
                 </Grid>
             </TabItem>
