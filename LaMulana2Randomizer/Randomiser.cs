@@ -208,7 +208,7 @@ namespace LaMulana2Randomizer
                 StartingWeaponID = ItemID.None;
         }
 
-        public void PlaceItems()
+        public bool PlaceItems()
         {
             ItemPool itemPool = new ItemPool(FileUtils.LoadItemFile());
 
@@ -224,13 +224,6 @@ namespace LaMulana2Randomizer
             //if we have a subweapon need to give the player ammo at a shop
             if (StartingWeaponID > ItemID.Katana)
                 GetLocation("Nebur Shop 2").PlaceItem(itemPool.GetAndRemove(GetAmmoItemID(StartingWeaponID)));
-
-            //if (Settings.ShopPlacement != ShopPlacement.Original)
-            //{
-            //    //these locations cant be included properly atm since the reason the shop switches is unknown
-            //    GetLocation("Hiner Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.Map1));
-            //    GetLocation("Hiner Shop 4").PlaceItem(itemPool.GetAndRemove(ItemID.Map2));
-            //}
 
             //place the weights and ammo in shops first since they can only be in shops
             PlaceShopItems(itemPool);
@@ -250,7 +243,8 @@ namespace LaMulana2Randomizer
             RandomiseWithChecks(GetUnplacedLocations(), earlyItems, new ItemPool());
 
             //place mantras if they are not fully randomised
-            PlaceMantras(itemPool);
+            if (!PlaceMantras(itemPool))
+                return false;
 
             //place research if it is not randomised
             PlaceResearch(itemPool);
@@ -261,10 +255,12 @@ namespace LaMulana2Randomizer
 
             //place required items
             if (!RandomiseAssumedFill(GetUnplacedLocations(), requiredItems))
-                return;
+                return false;
 
             //place non requires items
             RandomiseWithoutChecks(GetUnplacedLocations(), nonRequiredItems);
+
+            return true;
         }
 
         public void ClearEntrances()
@@ -494,7 +490,7 @@ namespace LaMulana2Randomizer
             }
         }
 
-        public void PlaceMantras(ItemPool itemPool)
+        public bool PlaceMantras(ItemPool itemPool)
         {
             if(Settings.MantraPlacement == MantraPlacement.Original)
             {
@@ -512,8 +508,10 @@ namespace LaMulana2Randomizer
             }
             else if(Settings.MantraPlacement == MantraPlacement.OnlyMurals)
             {
-                RandomiseWithChecks(GetUnplacedLocationsOfType(LocationType.Mural), new ItemPool(itemPool.GetAndRemoveMantras()), itemPool);
+                return RandomiseWithChecks(GetUnplacedLocationsOfType(LocationType.Mural), new ItemPool(itemPool.GetAndRemoveMantras()), itemPool);
             }
+
+            return true;
         }
 
         private ItemID GetAmmoItemID(ItemID itemID)
@@ -586,7 +584,7 @@ namespace LaMulana2Randomizer
             return true;
         }
 
-        private void RandomiseWithChecks(List<Location> locations, ItemPool itemsToPlace, ItemPool currentItems)
+        private bool RandomiseWithChecks(List<Location> locations, ItemPool itemsToPlace, ItemPool currentItems)
         {
             PlayerState state;
 
@@ -616,9 +614,11 @@ namespace LaMulana2Randomizer
                 {
                     Logger.Log($"Failed to place item {item.Name}.");
                     Logger.Log($"Total items left to place {itemsToPlace.ItemCount}.");
-                    break;
+                    return false;
                 }
             }
+
+            return true;
         }
 
         private void RandomiseWithoutChecks(List<Location> locations, ItemPool itemsToPlace)
@@ -872,6 +872,7 @@ namespace LaMulana2Randomizer
                 gates.Find(x => x.ID == ExitID.f13GateP0)
             };
 
+            priorityGates.RemoveAll(x => x == null);
             foreach (Exit gate in priorityGates)
                 gates.Remove(gate);
 
@@ -985,7 +986,7 @@ namespace LaMulana2Randomizer
                 {
                     entrance2 = entrances[random.Next(entrances.Count)];
                 } while ((entrance2.ID == ExitID.f01Right && (!Settings.RandomLadderEntraces || Settings.ReduceDeadEndStarts)) || entrance2.IsInaccessible() 
-                            || entrance2.ID == ExitID.f11Pyramid);   
+                            || entrance2.ID == ExitID.f11Pyramid || entrance2.ID == ExitID.f09In);   
                 
                 entrances.Remove(entrance2);
 
@@ -1112,7 +1113,6 @@ namespace LaMulana2Randomizer
             }
 
             priorityEntrances.RemoveAll(x => x == null);
-
             foreach (Exit entrance in priorityEntrances)
                 entrances.Remove(entrance);
 
@@ -1129,11 +1129,7 @@ namespace LaMulana2Randomizer
                     entrances.Remove(entrance1);
                 }
 
-                do
-                {
-                    entrance2 = entrances[random.Next(entrances.Count)];
-                } while (entrance1.ID == entrance2.ID);
-
+                entrance2 = entrances[random.Next(entrances.Count)];
                 entrances.Remove(entrance2);
 
 
@@ -1297,17 +1293,7 @@ namespace LaMulana2Randomizer
                     gates.Remove(gate1);
                 }
 
-                if (gate1.ID == ExitID.f12GateN8) 
-                {
-                    do
-                    {
-                        gate2 = gates[random.Next(gates.Count)];
-                    } while (gate2.ID == ExitID.f03GateN9);
-                }
-                else
-                {
-                    gate2 = gates[random.Next(gates.Count)];
-                }
+                gate2 = gates[random.Next(gates.Count)];
                 gates.Remove(gate2);
 
                 int soulAmount = soulAmounts[random.Next(soulAmounts.Count)];

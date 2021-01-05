@@ -118,9 +118,11 @@ namespace LaMulana2Randomizer.ViewModels
                 do
                 {
                     attemptCount++;
-                    randomiser.PlaceItems();
-                    randomiser.AdjustShopPrices();
-                    canBeatGame = randomiser.CanBeatGame();
+                    canBeatGame = false;
+
+                    if(randomiser.PlaceItems())
+                        canBeatGame = randomiser.CanBeatGame();
+
                     if (!canBeatGame)
                     {
                         randomiser.ClearPlacedItems();
@@ -132,6 +134,7 @@ namespace LaMulana2Randomizer.ViewModels
                             IsIndeterminate = true
                         });
                     }
+                    randomiser.AdjustShopPrices();
                 } while (!canBeatGame && attemptCount < MaxAttempts);
 
                 if (attemptCount == MaxAttempts && !canBeatGame)
@@ -160,6 +163,7 @@ namespace LaMulana2Randomizer.ViewModels
             }
             catch (Exception ex)
             {
+                Logger.Log($"Error generating seed: {randomiser.Settings.Seed}");
                 Logger.LogAndFlush(ex.Message);
                 progress.Report(new ProgressInfo
                 {

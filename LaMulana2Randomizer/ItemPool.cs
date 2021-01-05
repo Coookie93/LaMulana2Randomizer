@@ -34,16 +34,16 @@ namespace LaMulana2Randomizer
             return items.Find(i => i.ID == id);
         }
 
-        public Item RandomGetAndRemove(Random random)
+        public Item GetAndRemove(ItemID id)
         {
-            Item item = items[random.Next(items.Count)];
+            Item item = Get(id);
             items.Remove(item);
             return item;
         }
 
-        public Item GetAndRemove(ItemID id)
+        public Item RandomGetAndRemove(Random random)
         {
-            Item item = items.Find(i => i.ID == id);
+            Item item = items[random.Next(items.Count)];
             items.Remove(item);
             return item;
         }
@@ -110,7 +110,7 @@ namespace LaMulana2Randomizer
 
             int remainingItems = subWeaponStart ? 23 : 24;
 
-            for (; remainingItems >= 0; remainingItems--)
+            for (; remainingItems > 0; remainingItems--)
                 itemPool.Add(shopItems[random.Next(shopItems.Count)]);
 
             return itemPool;

@@ -145,6 +145,13 @@
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
+                            <CheckBox Name="RemoveITStatue" IsChecked="{Binding Settings.RemoveITStatue}" Content="Remove Statue in Icefire Treetop" Margin="0,2">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="Starts the game with the statue next to the gate in Icefire Treetop removed." />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
                             <CheckBox Name="RandomCurseCheck" IsChecked="{Binding Settings.RandomCurses}" Margin="0,2" Content="Randomise Curses">
                                 <CheckBox.ToolTip>
                                     <ToolTip Style="{StaticResource TootltipStyle}">
@@ -192,6 +199,11 @@
                             <CheckBox Content="Chakrams" IsChecked="{Binding Settings.Chakrams}"/>
                             <CheckBox Content="Bombs" IsChecked="{Binding Settings.Bomb}"/>
                             <CheckBox Content="Pistol" IsChecked="{Binding Settings.Pistol}"/>
+                            <StackPanel.ToolTip>
+                                <ToolTip Style="{StaticResource TootltipStyle}">
+                                    <TextBlock Text="If one weapon is selected it will be the starting weapon, if more than one weapon is selected the starting weapon will be randomly chosen from them." />
+                                </ToolTip>
+                            </StackPanel.ToolTip>
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Header="Bosses" Grid.Row="1">
@@ -256,13 +268,6 @@
                                 <CheckBox.ToolTip>
                                     <ToolTip Style="{StaticResource TootltipStyle}">
                                         <TextBlock Text="Randomises the gates." />
-                                    </ToolTip>
-                                </CheckBox.ToolTip>
-                            </CheckBox>
-                            <CheckBox Name="RemoveITStatue" IsChecked="{Binding Settings.RemoveITStatue}" Content="Remove Statue in Icefire Treetop" Margin="20,2,2,2">
-                                <CheckBox.ToolTip>
-                                    <ToolTip Style="{StaticResource TootltipStyle}">
-                                        <TextBlock Text="Starts the game with the statue next to the gate in Icefire Treetop removed." />
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>

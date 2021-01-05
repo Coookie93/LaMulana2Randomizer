@@ -15,31 +15,31 @@ namespace LaMulana2Randomizer.LogicParsing
 
     public class Token
     {
+        public TokenType Type;
+        public string Logic;
+        public string Value;
+
         public Token(TokenType type, string logic = null, string value = null)
         {
             Type = type;
             Logic = logic;
             Value = value;
         }
-
-        public TokenType Type;
-        public string Logic;
-        public string Value;
     }
 
     public class Tokeniser
     {
+        private char next;
+        private int parenthesCheck = 0;
+
+        private readonly StringReader reader;
+        private readonly IList<Token> tokens;
+
         public Tokeniser(string line)
         {
             reader = new StringReader(line);
             tokens = new List<Token>();
         }
-
-        char next;
-        int parenthesCheck = 0;
-
-        StringReader reader;
-        IList<Token> tokens;
 
         public IList<Token> Tokenise()
         {
@@ -52,9 +52,7 @@ namespace LaMulana2Randomizer.LogicParsing
                     {
                         Token previousToken = tokens[tokens.Count - 1];
                         if (previousToken.Type == TokenType.ClosedParentheses || previousToken.Type == TokenType.RuleToken)
-                        {
                             throw new TokeniserException("An open parentheses can only follow an \"and\" expression, an \"or\" expression or an parenthesis.");
-                        }
                     }
 
                     tokens.Add(new Token(TokenType.OpenParentheses));
@@ -71,9 +69,7 @@ namespace LaMulana2Randomizer.LogicParsing
                     {
                         Token previousToken = tokens[tokens.Count - 1];
                         if (previousToken.Type == TokenType.OpenParentheses || previousToken.Type == TokenType.AndOperator || previousToken.Type == TokenType.OrOperator)
-                        {
                             throw new TokeniserException("A closed parentheses can only follow a logic expression or a closed parenthesis.");
-                        }
                     }
 
                     tokens.Add(new Token(TokenType.ClosedParentheses));
@@ -95,50 +91,36 @@ namespace LaMulana2Randomizer.LogicParsing
             }
 
             if(parenthesCheck != 0)
-            {
                 throw new TokeniserException("Mismatched amount of open and closed parentheses in logic string.");
-            }
 
             return tokens;
         }
 
         void Expression()
         {
-            string s = GeString();
+            string s = GetString();
 
             if (s.Equals("or"))
             {
                 if (tokens.Count == 0)
-                {
                     throw new TokeniserException("Logic string can't start with \"or\" expression.");
-                }
 
                 Token previousToken = tokens[tokens.Count - 1];
                 if (previousToken.Type == TokenType.ClosedParentheses || previousToken.Type == TokenType.RuleToken)
-                {
                     tokens.Add(new Token(TokenType.OrOperator));
-                }
                 else
-                {
                     throw new TokeniserException("An \"or\" expression can only follow a closed parentheses or logic expression in a logic string.");
-                }
             }
             else if (s.Equals("and"))
             {
                 if (tokens.Count == 0)
-                {
                     throw new TokeniserException("Rule string can't start with \"and\" expression.");
-                }
 
                 Token previousToken = tokens[tokens.Count - 1];
                 if (previousToken.Type == TokenType.ClosedParentheses || previousToken.Type == TokenType.RuleToken)
-                {
                     tokens.Add(new Token(TokenType.AndOperator));
-                }
                 else
-                {
                     throw new TokeniserException("An \"and\" expression can only follow a closed parentheses or a logic expression in a logic string.");
-                }
             }
             else
             {
@@ -146,16 +128,14 @@ namespace LaMulana2Randomizer.LogicParsing
                 {
                     Token previousToken = tokens[tokens.Count - 1];
                     if (previousToken.Type == TokenType.ClosedParentheses || previousToken.Type == TokenType.RuleToken)
-                    {
                         throw new TokeniserException("A rule expression can only follow and open parentheses, an \"and\" expression or an \"or\" expression in a logic string.");
-                    }
+                    
                 }
 
                 if (next.Equals('('))
                 {
                     reader.Read();
-                    string value = GetValueString();
-                    tokens.Add(new Token(TokenType.RuleToken, s, value));
+                    tokens.Add(new Token(TokenType.RuleToken, s, GetValueString()));
                     reader.Read();
                 }
                 else
@@ -165,7 +145,7 @@ namespace LaMulana2Randomizer.LogicParsing
             }
         }
 
-        string GeString()
+        string GetString()
         {
             next = (char)reader.Peek();
             List<char> chars = new List<char>();

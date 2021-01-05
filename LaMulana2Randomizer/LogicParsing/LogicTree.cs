@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using LaMulana2Randomizer;
 using LaMulana2Randomizer.Utils;
 
 namespace LaMulana2Randomizer.LogicParsing
@@ -13,7 +12,7 @@ namespace LaMulana2Randomizer.LogicParsing
             {
                 IList<Token> tokens = new Tokeniser(logicString).Tokenise();
                 IList<Token> polish = ShuntingYard.Sort(tokens);
-                IEnumerator<Token> enumerator = polish.GetEnumerator();
+                var enumerator = polish.GetEnumerator();
                 enumerator.MoveNext();
 
                 return BuildLogicTree(enumerator);

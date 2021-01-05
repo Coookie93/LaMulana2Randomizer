@@ -10,9 +10,8 @@ namespace LaMulana2Randomizer.LogicParsing
         public Logic(string logic, string value = null)
         {
             if(!Enum.TryParse(logic, out logicType))
-            {
                 throw new InvalidLogicTypeException($"Failed to parse logic type, type of logic \"{logic}\" does not exist.");
-            }
+
             this.value = value;
         }
     }

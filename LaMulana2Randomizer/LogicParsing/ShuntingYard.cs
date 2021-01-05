@@ -11,12 +11,9 @@ namespace LaMulana2Randomizer.LogicParsing
             Queue<Token> outputQueue = new Queue<Token>();
             Stack<Token> stack = new Stack<Token>();
 
-            int index = 0;
-
-            while (tokens.Count > index)
+            for (int index = 0; index < tokens.Count; index++)
             {
                 Token token = tokens[index];
-
                 switch (token.Type)
                 {
                     case TokenType.RuleToken:
@@ -27,18 +24,16 @@ namespace LaMulana2Randomizer.LogicParsing
                     case TokenType.AndOperator:
                     {
                         while (stack.Count > 0 && stack.Peek().Type == TokenType.AndOperator)
-                        {
                             outputQueue.Enqueue(stack.Pop());
-                        }
+
                         stack.Push(token);
                         break;
                     }
                     case TokenType.OrOperator:
                     { 
                         while (stack.Count > 0 && (stack.Peek().Type == TokenType.AndOperator || stack.Peek().Type == TokenType.OrOperator))
-                        {
                             outputQueue.Enqueue(stack.Pop());
-                        }
+
                         stack.Push(token);
                         break;
                     }
@@ -50,31 +45,22 @@ namespace LaMulana2Randomizer.LogicParsing
                     case TokenType.ClosedParentheses:
                     {
                         while (stack.Count > 0 && stack.Peek().Type != TokenType.OpenParentheses)
-                        {
                             outputQueue.Enqueue(stack.Pop());
-                        }
+
                         if (stack.Count == 0 || stack.Peek().Type != TokenType.OpenParentheses)
-                        {
-                            //NOTE:Should never hit this is theory
                             throw new Exception("Mismatched parentheses.");
-                        }
                         else
-                        {
                             stack.Pop();
-                        }
                         break;
                     }
 
                     default:
                         break;
                 }
-                index++;
             }
 
             while (stack.Count > 0)
-            {
                 outputQueue.Enqueue(stack.Pop());
-            }
 
             return outputQueue.Reverse().ToList();
         }

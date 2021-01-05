@@ -11,8 +11,8 @@
     <Grid Width="300">
         <StackPanel Margin="10">
             <TextBlock Name="Label" Margin="0,0,0,5" Text="{Binding Label}" TextAlignment="Center" TextWrapping="Wrap"/>
-            <ProgressBar Name="ProgressBar" Margin="0,0,0,5" Height="20" IsIndeterminate="{Binding IsIndeterminate}" Value="{Binding ProgressValue}"/>
-            <Button Content="OK" Width="40" Visibility="{Binding TaskComplete, Converter={StaticResource BoolToVisibility}}" Command="{Binding CloseCommand}" CommandParameter="{Binding ElementName=DialogWindow}"/>
+            <ProgressBar x:Name="ProgressBar" Margin="0,0,0,5" Height="20" IsIndeterminate="{Binding IsIndeterminate}" Value="{Binding ProgressValue}"/>
+            <Button Content="OK" Width="40" Visibility="{Binding TaskComplete, Converter={StaticResource BoolToVisibility}}" Command="{Binding CloseCommand}" CommandParameter="{Binding ElementName=DialogWindow}" Margin="120,0"/>
         </StackPanel>
     </Grid>
 </Window>

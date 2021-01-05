@@ -791,7 +791,7 @@
       {
         "Name": "Research IB Tent 3",
         "LocationType": "FreeStanding",
-        "Logic": "(Has(Gale Fibula) or CanStopTime) and (Has(Dinosaur Figure) and IsDead(Anu) and Dissonance(6) and CanChant(Night))"
+        "Logic": "(Has(Gale Fibula) or CanStopTime) and (IsDead(Anu) and Dissonance(6) and CanChant(Night))"
       },
       {
         "Name": "Hiro Roderick Shop 1",

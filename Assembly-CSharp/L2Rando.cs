@@ -100,6 +100,22 @@ namespace LM2RandomiserMod
                 AddAnchorPoints(scene.name);
                 ChangeFlagWatchers(scene.name);
 
+                /*{
+                    foreach (ShopGateScript shopGate in FindObjectsOfType<ShopGateScript>())
+                    {
+                        if (shopGate.name.Equals("ShopGate1"))
+                        {
+                            GameObject obj = Instantiate(shopGate.gameObject, new Vector3(17, -278, 0), Quaternion.identity, shopGate.transform);
+                            obj.name = "Shop Gate Test";
+                            ShopGateScript gateScript = obj.GetComponent<ShopGateScript>();
+                            gateScript.sheetName = "f04-1e";
+                            gateScript.shdowtask = null;
+                            obj.SetActive(true);
+                            break;
+                        }
+                    }
+                }*/
+
                 if (scene.name.Equals("field01-2"))
                 {
                     //move the pots on the starting screen
@@ -781,26 +797,26 @@ namespace LM2RandomiserMod
             foreach (EventItemScript item in FindObjectsOfType<EventItemScript>())
             {
                 LocationID locationID;
-                if (item.name.Contains("Research"))
+                if (!item.name.Contains("Research"))
                 {
-                    locationID = GetLocationIDForResearch(item.itemActiveFlag);
+                    ItemData oldItemData = GetItemDataFromName(item.name);
+                    if (oldItemData != null)
+                        locationID = (LocationID)oldItemData.getItemName();
+                    else
+                        continue;
                 }
                 else
                 {
-                    ItemData oldItemData = GetItemDataFromName(item.name);
-                    if (oldItemData == null)
-                        continue;
-                    locationID = (LocationID)oldItemData.getItemName();
+                    locationID = GetLocationIDForResearch(item.itemActiveFlag);
                 }
 
-                ItemID newItemID;
-                if (locationToItemMap.TryGetValue(locationID, out newItemID))
+                if (locationToItemMap.TryGetValue(locationID, out ItemID newItemID))
                 {
                     ItemInfo newItemInfo = ItemDB.GetItemInfo(newItemID);
                     if (locationID >= LocationID.ResearchAnnwfn && locationID <= LocationID.ResearchDSLM)
                     {
                         if (locationID == LocationID.ResearchIBPit)
-                            item.gameObject.transform.position = item.gameObject.transform.position + new Vector3(0,20,0);
+                            item.gameObject.transform.position = item.gameObject.transform.position + new Vector3(0, 40, 0);
 
                         List<L2FlagBox> flags = new List<L2FlagBox>();
                         L2FlagBox flagBox = new L2FlagBox()
@@ -813,7 +829,7 @@ namespace LM2RandomiserMod
                             logic = LOGIC.AND
                         };
 
-                        //msx flag starts at 1 so have to check against 1 not 0
+                        //MSX flag starts at 1 so have to check against 1 not 0
                         if (newItemID == ItemID.MobileSuperx3P)
                         {
                             flagBox.flag_no2 = 1;
@@ -971,18 +987,19 @@ namespace LM2RandomiserMod
 
                 if (fieldName.Equals("fieldL00"))
                 {
-                    //stops Nebur from disappearing
                     foreach (L2FlagBoxParent flagBoxParent in flagWatcher.CheckFlags)
                     {
                         foreach (L2FlagBox flagBox in flagBoxParent.BOX)
                         {
                             if (flagBox.seet_no1 == 5 && flagBox.flag_no1 == 3 && flagBox.flag_no2 == 2)
                             {
+                                //stops Nebur from disappearing on the surface
                                 flagBox.flag_no2 = 1;
                                 flagBox.comp = COMPARISON.GreaterEq;
                             }
                             else if(flagBox.seet_no1 == 2 && flagBox.flag_no1 == 131)
                             {
+                                //this is used to trigger the change of Hiner's shop, need to change it so it checks for the actual item in slot 3
                                 if (shopToItemMap.TryGetValue(LocationID.HinerShop3, out ShopItem item))
                                 {
                                     ItemInfo info = ItemDB.GetItemInfo(item.ID);
@@ -1004,9 +1021,7 @@ namespace LM2RandomiserMod
                         foreach (L2FlagBox flagBox in flagBoxParent.BOX)
                         {
                             if (flagBox.seet_no1 == 3 && flagBox.flag_no1 == 30 && flagBox.flag_no2 == 80)
-                            {
                                 flagBox.flag_no2 = 255;
-                            }
                         }
                     }
                 }
@@ -1018,9 +1033,11 @@ namespace LM2RandomiserMod
                 }
                 else if (fieldName.Equals("field13"))
                 {
+                    //disable these the Flagwatchers tht change the Echidna fight if easy Echidna option is on
                     if (easyEchidna && (flagWatcher.name.Equals("FlagWatcherTime1") || flagWatcher.name.Equals("FlagWatcherTime2") || flagWatcher.name.Equals("FlagWatcherTime3")))
                         flagWatcher.gameObject.SetActive(false);
 
+                    //change the flagwatchers that seal the corridor of blood so that they only seal it when the player has all 6 dissonance
                     ChangeCorridorFlags(flagWatcher);
                 }
                 else if (fieldName.Equals("field06-2") || fieldName.Equals("field10") || fieldName.Equals("field11") || 
@@ -1420,8 +1437,8 @@ namespace LM2RandomiserMod
             {
                 if (trapFloor.transform.position.x == 550 && trapFloor.transform.position.y == 388)
                 {
-                    trapFloor.width = 100;
-                    trapFloor.whalf = 50;
+                    trapFloor.width = 50;
+                    trapFloor.whalf = 25;
                 }
             }
         }
@@ -1591,7 +1608,7 @@ namespace LM2RandomiserMod
 
             //Fobos Dialogue
             talkDataBase.cellData[5][3][3][1] = "Hmmm.";
-            talkDataBase.cellData[5][16][3][1] = "Here take this, I also opened that gate over there.";
+            talkDataBase.cellData[5][16][3][1] = "Here take this.";
 
             //Change Fairy King to set flag to open endless even if you have the pendant
             talkDataBase.cellData[8][10][1][0] = "[@exit]\n[@anim,talk,1]\n[@setf,3,34,=,2]\n[@setf,5,12,=,1]\n[@p,2nd-2]";
