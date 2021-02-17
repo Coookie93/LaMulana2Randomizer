@@ -7,7 +7,7 @@
     <ProjectGuid>{9F97EB8E-6DCE-4F97-A1A6-5D0F354F581B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LM2RandomizerShared</RootNamespace>
+    <RootNamespace>LaMulana2RandomizerShared</RootNamespace>
     <AssemblyName>LaMulana2RandomizerShared</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AreaID.cs" />
     <Compile Include="ExitID.cs" />
     <Compile Include="Version.cs" />
     <Compile Include="ItemID.cs" />

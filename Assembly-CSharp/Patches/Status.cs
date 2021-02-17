@@ -28,12 +28,10 @@ namespace LM2RandomiserMod.Patches
 			if (now_wea != MAINWEAPON.NON)
 			{
 				weaponName = sys.exchengeMainWeaponEnumToName(now_wea);
-				//haveMainWeapon(now_wea, true);
 			}
 			else if (now_sub != SUBWEAPON.NON)
 			{
 				weaponName = sys.exchengeSubWeaponEnumToName(now_sub);
-				//sys.haveSubWeapon(now_sub, true, true);
 			}
 
 			if (!string.IsNullOrEmpty(weaponName))

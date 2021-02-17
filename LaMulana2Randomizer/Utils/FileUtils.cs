@@ -65,11 +65,11 @@ namespace LaMulana2Randomizer.Utils
             }
         }
 
-        public static List<Item> LoadItemFile()
+        public static List<Item> LoadItemFile(string name)
         {
             try
             {
-                using (StreamReader sr = File.OpenText("Data\\items.json"))
+                using (StreamReader sr = File.OpenText(Path.Combine("Data", name)))
                 {
                     JsonSerializer serializer = new JsonSerializer();
                     return (List<Item>)serializer.Deserialize(sr, typeof(List<Item>));
@@ -90,7 +90,17 @@ namespace LaMulana2Randomizer.Utils
                 {
                     sw.WriteLine($"Seed: {randomiser.Settings.Seed}\n");
 
+                    sw.WriteLine($"Starting Area: {randomiser.StartingArea.Name}\n");
                     sw.WriteLine($"Starting Weapon: {randomiser.StartingWeapon?.Name}\n");
+
+                    if(randomiser.StartingItems.Count != 0)
+                    {
+                        sw.WriteLine("Starting Items: {");
+                        foreach (Item item in randomiser.StartingItems)
+                            sw.WriteLine($"  {item.Name}");
+
+                        sw.WriteLine("}\n");
+                    }
 
                     sw.WriteLine("Curse Locations: {");
                     foreach (Location location in randomiser.CursedLocations)
@@ -101,29 +111,29 @@ namespace LaMulana2Randomizer.Utils
                     sw.WriteLine("Entrance Placement: {");
                     if (!randomiser.Settings.FullRandomEntrances)
                     {
-                        if (randomiser.Settings.RandomHorizontalEntraces)
+                        if (randomiser.Settings.RandomHorizontalEntrances)
                         {
                             sw.WriteLine("  Horizontal Entrances: {");
                             foreach (string pair in randomiser.HorizontalPairs)
-                                sw.WriteLine(pair);
+                                sw.WriteLine($"    {pair}");
 
                             sw.WriteLine("  }");
                         }
 
-                        if (randomiser.Settings.RandomLadderEntraces)
+                        if (randomiser.Settings.RandomLadderEntrances)
                         {
                             sw.WriteLine("  Ladders Entrances: {");
                             foreach (string pair in randomiser.LadderPairs)
-                                sw.WriteLine(pair);
+                                sw.WriteLine($"    {pair}");
 
                             sw.WriteLine("  }");
                         }
 
-                        if (randomiser.Settings.RandomGateEntraces)
+                        if (randomiser.Settings.RandomGateEntrances)
                         {
                             sw.WriteLine("  Gate Entrances: {");
                             foreach (string pair in randomiser.GatePairs)
-                                sw.WriteLine(pair);
+                                sw.WriteLine($"    {pair}");
 
                             sw.WriteLine("  }");
                         }
@@ -132,12 +142,12 @@ namespace LaMulana2Randomizer.Utils
                     {
                         sw.WriteLine("  Entrances: {");
                         foreach (string pair in randomiser.EntrancePairs)
-                            sw.WriteLine(pair);
+                            sw.WriteLine($"    {pair}");
 
                         sw.WriteLine("  }");
                     }
 
-                    if (randomiser.Settings.RandomSoulGateEntraces)
+                    if (randomiser.Settings.RandomSoulGateEntrances)
                     {
                         sw.WriteLine("  Soul Gate Entrances: {");
                         foreach (var pair in randomiser.SoulGatePairs)
@@ -148,13 +158,10 @@ namespace LaMulana2Randomizer.Utils
                     sw.WriteLine("}\n");
 
                     sw.WriteLine("Item Placement {");
-                    foreach (LocationID id in Enum.GetValues(typeof(LocationID)))
+                    foreach (Location location in randomiser.GetPlacedLocations().OrderBy(x => x.ID))
                     {
-                        foreach (Location location in randomiser.GetPlacedLocations())
-                        {
-                            if (id != LocationID.None && id == location.ID)
-                                sw.WriteLine($"  {location.Name} -> {location.Item.Name}");
-                        }
+                        if (location.ID < LocationID.DissonanceValhalla && location.ID != LocationID.None)
+                            sw.WriteLine($"  {location.Name} -> {location.Item.Name}");
                     }
                     sw.WriteLine("}\n");
                     sw.WriteLine("Expected Playthrough {");
@@ -163,16 +170,14 @@ namespace LaMulana2Randomizer.Utils
                     {
                         IgnoreFalseChecks = true
                     };
-                    playthrough.CollectItem(randomiser.StartingWeapon);
 
                     List<Location> reachableLocations;
-
                     int sphere = 0;
                     do
                     {
                         reachableLocations = playthrough.GetReachableLocations(randomiser.GetPlacedRequiredItemLocations());
                         sw.WriteLine($"  Sphere {sphere} {{");
-                        foreach (Location location in reachableLocations)
+                        foreach (Location location in reachableLocations.OrderBy(x => x.ID))
                         {
                             playthrough.CollectItem(location.Item);
                             playthrough.CollectLocation(location);
@@ -202,20 +207,17 @@ namespace LaMulana2Randomizer.Utils
         {
             List<(LocationID, ItemID)> items = new List<(LocationID, ItemID)>();
             List<(LocationID, ItemID, int)> shopItems = new List<(LocationID, ItemID, int)>();
-            foreach (LocationID id in Enum.GetValues(typeof(LocationID)))
+            foreach (Location location in randomiser.GetPlacedLocations())
             {
-                foreach (Location location in randomiser.GetPlacedLocations())
+                if (location.ID < LocationID.DissonanceValhalla && location.ID != LocationID.None)
                 {
-                    if (id != LocationID.None && id == location.ID)
+                    if (location.LocationType == LocationType.Shop)
                     {
-                        if (location.LocationType == LocationType.Shop)
-                        {
-                            shopItems.Add((location.ID, location.Item.ID, location.Item.PriceMultiplier));
-                        }
-                        else
-                        {
-                            items.Add((location.ID, location.Item.ID));
-                        }
+                        shopItems.Add((location.ID, location.Item.ID, location.Item.PriceMultiplier));
+                    }
+                    else
+                    {
+                        items.Add((location.ID, location.Item.ID));
                     }
                 }
             }
@@ -224,7 +226,8 @@ namespace LaMulana2Randomizer.Utils
             {   
                 using (BinaryWriter br = new BinaryWriter(File.Open("Seed\\seed.lm2r", FileMode.Create)))
                 {
-                    br.Write((int)randomiser.StartingWeaponID);
+                    br.Write((int)randomiser.StartingWeapon.ID);
+                    br.Write((int)randomiser.StartingArea.ID);
                     br.Write(randomiser.Settings.RequiredSkulls);
                     br.Write(randomiser.Settings.RemoveITStatue);
                     br.Write(randomiser.Settings.EasyEchidna);
@@ -234,25 +237,30 @@ namespace LaMulana2Randomizer.Utils
                     br.Write(randomiser.Settings.StartingMoney);
                     br.Write(randomiser.Settings.StartingWeights);
                     br.Write(randomiser.Settings.AlwaysShellHorn);
+                    br.Write((int)randomiser.Settings.ItemChestColour);
+                    br.Write((int)randomiser.Settings.WeightChestColour);
+
+                    br.Write(randomiser.StartingItems.Count);
+                    foreach (var item in randomiser.StartingItems)
+                        br.Write((int)item.ID);
+
                     br.Write(items.Count);
-                    foreach(var p in items)
+                    foreach(var item in items)
                     {
-                        br.Write((int)p.Item1);
-                        br.Write((int)p.Item2);
+                        br.Write((int)item.Item1);
+                        br.Write((int)item.Item2);
                     }
 
                     br.Write(shopItems.Count);
-                    foreach (var p in shopItems)
+                    foreach (var item in shopItems)
                     {
-                        br.Write((int)p.Item1);
-                        br.Write((int)p.Item2);
-                        br.Write(p.Item3);
+                        br.Write((int)item.Item1);
+                        br.Write((int)item.Item2);
+                        br.Write(item.Item3);
                     }
 
                     foreach (Location location in randomiser.CursedLocations)
-                    {
                         br.Write((int)location.ID);
-                    }
 
                     br.Write(randomiser.ExitPairs.Count);
                     foreach(var d in randomiser.ExitPairs)

@@ -1,11 +1,12 @@
-﻿using MonoMod;
+﻿using System.Collections.Generic;
+using MonoMod;
 using UnityEngine;
 using L2Word;
 using L2STATUS;
 using L2Menu;
 using L2Hit;
-using LaMulana2RandomizerShared;
 using L2Base;
+using LaMulana2RandomizerShared;
 
 #pragma warning disable 0649, 0414, 0108, 0626
 namespace LM2RandomiserMod.Patches
@@ -528,13 +529,7 @@ namespace LM2RandomiserMod.Patches
 				Init_Coin_num = l2Rando.StartingMoney;
 				Init_Weight_num = l2Rando.StartingWeights;
 
-				if(l2Rando.RemoveITStatue)
-					setFlagData(8, 10, 1);
-
-				setFlagData(5, 47, (short)(12 - l2Rando.RequiredSkulls));
-
 				ItemInfo itemInfo = ItemDB.GetItemInfo(l2Rando.StartingWeapon);
-
 				if (itemInfo != null)
 				{
 					if (l2Rando.StartingWeapon == ItemID.Whip1 || l2Rando.StartingWeapon == ItemID.Whip2 || l2Rando.StartingWeapon == ItemID.Whip3)
@@ -548,6 +543,24 @@ namespace LM2RandomiserMod.Patches
 					}
 					subWeapon = exchengeSubWeaponNameToEnum(itemInfo.BoxName);
 				}
+				else
+				{
+					mainWeapon = MAINWEAPON.LWHIP;
+				}
+
+				foreach (ItemID itemID in l2Rando.StartingItems)
+				{
+					itemInfo = ItemDB.GetItemInfo(itemID);
+					setItem(itemInfo.BoxName, 1, false, false, true);
+					setEffectFlag(l2Rando.CreateGetFlags(itemID, itemInfo));
+				}
+
+				if (l2Rando.RemoveITStatue)
+					setFlagData(8, 10, 1);
+
+				setFlagData(5, 47, (short)(12 - l2Rando.RequiredSkulls));
+
+				l2Rando.StartingGame = true;
 			}
 
 			playerst.addCoin(Init_Coin_num);
@@ -557,6 +570,7 @@ namespace LM2RandomiserMod.Patches
             setFlagData(0, 42, 1);
 			setFlagData(4, 60, 4);
 			setFlagData(4, 62, 2);
+			setFlagData(0, 12, 0);
 		}
 
 		[MonoModIgnore]
@@ -606,7 +620,6 @@ namespace LM2RandomiserMod.Patches
 				l2core.loadDemoSceane("Title");
 			}
 		}
-
 		public extern void orig_loadInitFlagToItem();
 
 		public void loadInitFlagToItem()

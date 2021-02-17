@@ -21,5 +21,12 @@ namespace LaMulana2Randomizer
             IsRequired = isRequired;
             PriceMultiplier = 10;
         }
+
+        public Item DeepCopy()
+        {
+            Item result = (Item)MemberwiseClone();
+            result.Name = string.Copy(Name);
+            return result;
+        }
     }
 }

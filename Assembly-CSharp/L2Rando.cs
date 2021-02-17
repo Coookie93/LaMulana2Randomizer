@@ -29,11 +29,14 @@ namespace LM2RandomiserMod
     {
         public bool IsRandomising { get; private set; } = false;
         public ItemID StartingWeapon { get; private set; }
+        public AreaID StartingArea { get; private set; }
+        public List<ItemID> StartingItems { get; private set; }
         public int RequiredSkulls { get; private set; } = 0;
         public bool AutoScanTablets { get; private set; } = false;
         public bool RemoveITStatue { get; private set; } = false;
         public int StartingMoney { get; private set; } = 0;
         public int StartingWeights { get; private set; } = 0;
+        public bool StartingGame = false;
 
         private Dictionary<LocationID, ItemID> locationToItemMap;
         private Dictionary<LocationID, ShopItem> shopToItemMap;
@@ -45,6 +48,8 @@ namespace LM2RandomiserMod
         private bool fastCorridor = false;
         private bool easyEchidna= false;
         private bool alwaysShellHorn= false;
+        private int itemChestColour = 0;
+        private int weightChestColour = 0;
 
         private patched_L2System sys;
         private L2ShopDataBase shopDataBase;
@@ -94,27 +99,12 @@ namespace LM2RandomiserMod
 
             if (IsRandomising)
             {
+                AddAnchorPoints(scene.name);
+                CreateStartingObjects(scene.name);
                 StartCoroutine(ChangeTreasureBoxes());
                 ChangeEventItems();
-                StartCoroutine(ChangeEntrances(scene.name));
-                AddAnchorPoints(scene.name);
                 ChangeFlagWatchers(scene.name);
-
-                /*{
-                    foreach (ShopGateScript shopGate in FindObjectsOfType<ShopGateScript>())
-                    {
-                        if (shopGate.name.Equals("ShopGate1"))
-                        {
-                            GameObject obj = Instantiate(shopGate.gameObject, new Vector3(17, -278, 0), Quaternion.identity, shopGate.transform);
-                            obj.name = "Shop Gate Test";
-                            ShopGateScript gateScript = obj.GetComponent<ShopGateScript>();
-                            gateScript.sheetName = "f04-1e";
-                            gateScript.shdowtask = null;
-                            obj.SetActive(true);
-                            break;
-                        }
-                    }
-                }*/
+                StartCoroutine(ChangeEntrances(scene.name));
 
                 if (scene.name.Equals("field01-2"))
                 {
@@ -129,15 +119,23 @@ namespace LM2RandomiserMod
                     if (obj != null)
                         obj.SetActive(false);
                 }
+                else if (scene.name.Equals("field04"))
+                {
+                    foreach (ShopGateScript shopGate in FindObjectsOfType<ShopGateScript>())
+                    {
+                        //stop the first BTK shop from being unenterable after certain flags and turn the second version off
+                        if (shopGate.name.Equals("ShopGate (1)"))
+                            shopGate.shdowtask = null;
+                        else if (shopGate.name.Equals("ShopGate (2)"))
+                            shopGate.gameObject.SetActive(false);
+                    }
+                }
                 else if (scene.name.Equals("field10"))
                 {
                     if (fastCorridor)
                     {
                         //setup the flagwatcher to seal the corridor in valhalla
-                        GameObject obj = new GameObject()
-                        {
-                            name = "CorridorSealFlagWatcher"
-                        };
+                        GameObject obj = new GameObject("CorridorSealFlagWatcher");
                         obj.transform.position = new Vector3(48, 258, 0);
                         FlagWatcherScript flagWatcher = obj.AddComponent<FlagWatcherScript>();
                         flagWatcher.actionWaitFrames = 90;
@@ -152,65 +150,65 @@ namespace LM2RandomiserMod
                         {
                             BOX = new L2FlagBox[]
                             {
-                                new L2FlagBox()
-                                {
-                                    seet_no1 = 3,
-                                    flag_no1 = 93,
-                                    seet_no2 = -1,
-                                    flag_no2 = 0,
-                                    logic = LOGIC.AND,
-                                    comp = COMPARISON.Equal
-                                },
-                                new L2FlagBox()
-                                {
-                                    seet_no1 = 3,
-                                    flag_no1 = 15,
-                                    seet_no2 = -1,
-                                    flag_no2 = 4,
-                                    logic = LOGIC.AND,
-                                    comp = COMPARISON.Equal
-                                },
-                                new L2FlagBox()
-                                {
-                                    seet_no1 = 2,
-                                    flag_no1 = 3,
-                                    seet_no2 = -1,
-                                    flag_no2 = 7,
-                                    logic = LOGIC.AND,
-                                    comp = COMPARISON.Equal
-                                },
+                    new L2FlagBox()
+                    {
+                        seet_no1 = 3,
+                        flag_no1 = 93,
+                        seet_no2 = -1,
+                        flag_no2 = 0,
+                        logic = LOGIC.AND,
+                        comp = COMPARISON.Equal
+                    },
+                    new L2FlagBox()
+                    {
+                        seet_no1 = 3,
+                        flag_no1 = 15,
+                        seet_no2 = -1,
+                        flag_no2 = 4,
+                        logic = LOGIC.AND,
+                        comp = COMPARISON.Equal
+                    },
+                    new L2FlagBox()
+                    {
+                        seet_no1 = 2,
+                        flag_no1 = 3,
+                        seet_no2 = -1,
+                        flag_no2 = 7,
+                        logic = LOGIC.AND,
+                        comp = COMPARISON.Equal
+                    },
                             }
                         };
                         flagWatcher.ActionFlags = new L2FlagBoxEnd[]
                         {
-                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 44, data = 2, calcu = CALCU.EQR },
-                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 45, data = 2, calcu = CALCU.EQR },
-                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 46, data = 2, calcu = CALCU.EQR },
-                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 47, data = 0, calcu = CALCU.EQR },
-                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 48, data = 2, calcu = CALCU.EQR },
-                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 49, data = 8, calcu = CALCU.EQR },
-                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 87, data = 1, calcu = CALCU.EQR },
-                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 88, data = 1, calcu = CALCU.EQR },
-                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 89, data = 1, calcu = CALCU.EQR },
-                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 90, data = 1, calcu = CALCU.EQR },
-                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 91, data = 1, calcu = CALCU.EQR },
-                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 92, data = 1, calcu = CALCU.EQR },
-                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 93, data = 1, calcu = CALCU.EQR },
+                new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 44, data = 2, calcu = CALCU.EQR },
+                new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 45, data = 2, calcu = CALCU.EQR },
+                new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 46, data = 2, calcu = CALCU.EQR },
+                new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 47, data = 0, calcu = CALCU.EQR },
+                new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 48, data = 2, calcu = CALCU.EQR },
+                new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 49, data = 8, calcu = CALCU.EQR },
+                new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 87, data = 1, calcu = CALCU.EQR },
+                new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 88, data = 1, calcu = CALCU.EQR },
+                new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 89, data = 1, calcu = CALCU.EQR },
+                new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 90, data = 1, calcu = CALCU.EQR },
+                new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 91, data = 1, calcu = CALCU.EQR },
+                new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 92, data = 1, calcu = CALCU.EQR },
+                new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 93, data = 1, calcu = CALCU.EQR },
                         };
                         flagWatcher.finishFlags = new L2FlagBoxParent[1];
                         flagWatcher.finishFlags[0] = new L2FlagBoxParent
                         {
                             BOX = new L2FlagBox[]
                             {
-                                new L2FlagBox()
-                                {
-                                    seet_no1 = 3,
-                                    flag_no1 = 93,
-                                    seet_no2 = -1,
-                                    flag_no2 = 1,
-                                    logic = LOGIC.NON,
-                                    comp = COMPARISON.Equal
-                                }
+                    new L2FlagBox()
+                    {
+                        seet_no1 = 3,
+                        flag_no1 = 93,
+                        seet_no2 = -1,
+                        flag_no2 = 1,
+                        logic = LOGIC.NON,
+                        comp = COMPARISON.Equal
+                    }
                             }
                         };
                     }
@@ -281,9 +279,9 @@ namespace LM2RandomiserMod
                     }
                 }
 
-                if (alwaysShellHorn)
+                foreach (AnimatorController animatorController in FindObjectsOfType<AnimatorController>())
                 {
-                    foreach (AnimatorController animatorController in FindObjectsOfType<AnimatorController>())
+                    if (animatorController.name.Equals("WrongCall") || (alwaysShellHorn && animatorController.name.Equals("RightCall")))
                     {
                         foreach (L2FlagBoxParent flagBoxParent in animatorController.CheckFlags)
                         {
@@ -391,6 +389,7 @@ namespace LM2RandomiserMod
 
         private bool LoadSeedFile()
         {
+            StartingItems = new List<ItemID>();
             locationToItemMap = new Dictionary<LocationID, ItemID>();
             shopToItemMap = new Dictionary<LocationID, ShopItem>();
             cursedChests = new List<LocationID>();
@@ -402,6 +401,7 @@ namespace LM2RandomiserMod
                     Path.Combine("LaMulana2Randomizer", Path.Combine("Seed", "seed.lm2r"))), FileMode.Open)))
                 {
                     StartingWeapon = (ItemID)br.ReadInt32();
+                    StartingArea = (AreaID)br.ReadInt32();
                     RequiredSkulls = br.ReadInt32();
                     RemoveITStatue = br.ReadBoolean();
                     easyEchidna = br.ReadBoolean();
@@ -411,6 +411,12 @@ namespace LM2RandomiserMod
                     StartingMoney = br.ReadInt32();
                     StartingWeights = br.ReadInt32();
                     alwaysShellHorn = br.ReadBoolean();
+                    itemChestColour = br.ReadInt32();
+                    weightChestColour = br.ReadInt32();
+
+                    int startingItems = br.ReadInt32();
+                    for (int i = 0; i < startingItems; i++)
+                        StartingItems.Add((ItemID)br.ReadInt32());
 
                     int itemCount = br.ReadInt32();
                     for (int i = 0; i < itemCount; i++)
@@ -489,13 +495,27 @@ namespace LM2RandomiserMod
 
             foreach (TreasureBoxScript box in FindObjectsOfType<TreasureBoxScript>())
             {
-                if (box.curseMode && !objects.ContainsKey("cursedChest"))
+                if (box.closetMode)
                 {
                     GameObject obj = Instantiate(box.gameObject);
-                    obj.name = "Cursed Chest Prefab";
+                    obj.name = "Turquise Chest Prefab";
                     DontDestroyOnLoad(obj);
                     obj.SetActive(false);
-                    objects.Add("cursedChest", obj);
+                    objects.Add("turquiseChest", obj);
+                    break;
+                }
+            }
+
+            foreach (Animator animator in FindObjectsOfType<Animator>())
+            {
+                if (animator.name.Equals("Curse Tresure"))
+                {
+                    GameObject obj = Instantiate(animator.gameObject);
+                    obj.name = "Curse Prefab";
+                    obj.SetActive(false);
+                    objects.Add("curse", obj);
+                    DontDestroyOnLoad(obj);
+                    break;
                 }
             }
 
@@ -557,27 +577,21 @@ namespace LM2RandomiserMod
 
             foreach (AnimatorController controller in FindObjectsOfType<AnimatorController>())
             {
-                if (controller.name.Equals("soul_gate"))
+                if (controller.name.Equals("soul_gate") && !objects.ContainsKey("oneSoulGate"))
                 {
-                    if (!objects.ContainsKey("oneSoulGate"))
-                    {
-                        GameObject obj = Instantiate(controller.gameObject);
-                        obj.name = "One Soul Gate Prefab";
-                        DontDestroyOnLoad(obj);
-                        obj.SetActive(false);
-                        objects.Add("oneSoulGate", obj);
-                    }
+                    GameObject obj = Instantiate(controller.gameObject);
+                    obj.name = "One Soul Gate Prefab";
+                    DontDestroyOnLoad(obj);
+                    obj.SetActive(false);
+                    objects.Add("oneSoulGate", obj);
                 }
-                else if (controller.name.Equals("soul_cont"))
+                else if (controller.name.Equals("soul_cont") && !objects.ContainsKey("oneSoul"))
                 {
-                    if (!objects.ContainsKey("oneSoul"))
-                    {
-                        GameObject obj = Instantiate(controller.gameObject);
-                        obj.name = "One Soul Prefab";
-                        DontDestroyOnLoad(obj);
-                        obj.SetActive(false);
-                        objects.Add("oneSoul", obj);
-                    }
+                    GameObject obj = Instantiate(controller.gameObject);
+                    obj.name = "One Soul Prefab";
+                    DontDestroyOnLoad(obj);
+                    obj.SetActive(false);
+                    objects.Add("oneSoul", obj);
                 }
             }
 
@@ -589,59 +603,98 @@ namespace LM2RandomiserMod
 
             foreach (AnimatorController controller in FindObjectsOfType<AnimatorController>())
             {
-                if (controller.name.Equals("soul_gate"))
+                if (controller.name.Equals("soul_gate") && !objects.ContainsKey("nineSoulGate"))
                 {
-                    if (!objects.ContainsKey("nineSoulGate"))
-                    {
-                        GameObject obj = Instantiate(controller.gameObject);
-                        obj.name = "Nine Soul Gate Prefab";
-                        DontDestroyOnLoad(obj);
-                        obj.SetActive(false);
-                        objects.Add("nineSoulGate", obj);
-                    }
+                    GameObject obj = Instantiate(controller.gameObject);
+                    obj.name = "Nine Soul Gate Prefab";
+                    DontDestroyOnLoad(obj);
+                    obj.SetActive(false);
+                    objects.Add("nineSoulGate", obj);
                 }
-                else if (controller.name.Equals("soul_cont"))
+                else if (controller.name.Equals("soul_cont") && !objects.ContainsKey("nineSoul"))
                 {
-                    if (!objects.ContainsKey("nineSoul"))
-                    {
-                        GameObject obj = Instantiate(controller.gameObject);
-                        obj.name = "Nine Soul Prefab";
-                        DontDestroyOnLoad(obj);
-                        obj.SetActive(false);
-                        objects.Add("nineSoul", obj);
-                    }
+                    GameObject obj = Instantiate(controller.gameObject);
+                    obj.name = "Nine Soul Prefab";
+                    DontDestroyOnLoad(obj);
+                    obj.SetActive(false);
+                    objects.Add("nineSoul", obj);
                 }
             }
 
             sys.reInitSystem();
 
-            ao = SceneManager.LoadSceneAsync("field02");
+            ao = SceneManager.LoadSceneAsync("fieldP00");
             while (!ao.isDone)
                 yield return null;
 
+            foreach (TreasureBoxScript box in FindObjectsOfType<TreasureBoxScript>())
+            {
+                if (box.closetMode)
+                {
+                    GameObject obj = Instantiate(box.gameObject);
+                    obj.name = "Red Chest Prefab";
+                    DontDestroyOnLoad(obj);
+                    obj.SetActive(false);
+                    objects.Add("redChest", obj);
+                    break;
+                }
+            }
+
+            sys.reInitSystem();
+
+            ao = SceneManager.LoadSceneAsync("field07");
+            while (!ao.isDone)
+                yield return null;
+
+            foreach (TreasureBoxScript box in FindObjectsOfType<TreasureBoxScript>())
+            {
+                if (box.closetMode)
+                {
+                    GameObject obj = Instantiate(box.gameObject);
+                    obj.name = "Pink Chest Prefab";
+                    DontDestroyOnLoad(obj);
+                    obj.SetActive(false);
+                    objects.Add("pinkChest", obj);
+                    break;
+                }
+            }
+
             foreach (AnimatorController controller in FindObjectsOfType<AnimatorController>())
             {
-                if (controller.name.Equals("soul_gate"))
+                if (controller.name.Equals("soul_gate") && !objects.ContainsKey("twoSoulGate"))
                 {
-                    if (!objects.ContainsKey("twoSoulGate"))
-                    {
-                        GameObject obj = Instantiate(controller.gameObject);
-                        obj.name = "Two Soul Gate Prefab";
-                        DontDestroyOnLoad(obj);
-                        obj.SetActive(false);
-                        objects.Add("twoSoulGate", obj);
-                    }
+                    GameObject obj = Instantiate(controller.gameObject);
+                    obj.name = "Two Soul Gate Prefab";
+                    DontDestroyOnLoad(obj);
+                    obj.SetActive(false);
+                    objects.Add("twoSoulGate", obj);
                 }
-                else if (controller.name.Equals("soul_cont"))
+                else if (controller.name.Equals("soul_cont") && !objects.ContainsKey("twoSoul"))
                 {
-                    if (!objects.ContainsKey("twoSoul"))
-                    {
-                        GameObject obj = Instantiate(controller.gameObject);
-                        obj.name = "Two Soul Prefab";
-                        DontDestroyOnLoad(obj);
-                        obj.SetActive(false);
-                        objects.Add("twoSoul", obj);
-                    }
+                    GameObject obj = Instantiate(controller.gameObject);
+                    obj.name = "Two Soul Prefab";
+                    DontDestroyOnLoad(obj);
+                    obj.SetActive(false);
+                    objects.Add("twoSoul", obj);
+                }
+            }
+
+            sys.reInitSystem();
+
+            ao = SceneManager.LoadSceneAsync("field12");
+            while (!ao.isDone)
+                yield return null;
+
+            foreach (TreasureBoxScript box in FindObjectsOfType<TreasureBoxScript>())
+            {
+                if (box.closetMode)
+                {
+                    GameObject obj = Instantiate(box.gameObject);
+                    obj.name = "Yellow Chest Prefab";
+                    DontDestroyOnLoad(obj);
+                    obj.SetActive(false);
+                    objects.Add("yellowChest", obj);
+                    break;
                 }
             }
 
@@ -695,6 +748,49 @@ namespace LM2RandomiserMod
             return false;
         }
 
+        private TreasureBoxScript CreateColouredChest(int colour, TreasureBoxScript oldBox)
+        {
+            TreasureBoxScript newBox;
+            switch (colour)
+            {
+                case 1:
+                {
+                    newBox = Instantiate(objects["turquiseChest"], oldBox.transform.position, oldBox.transform.rotation).GetComponent<TreasureBoxScript>();
+                    break;
+                }
+                case 2:
+                {
+                    newBox = Instantiate(objects["redChest"], oldBox.transform.position, oldBox.transform.rotation).GetComponent<TreasureBoxScript>();
+                    break;
+                }
+                case 3:
+                {
+                    newBox = Instantiate(objects["pinkChest"], oldBox.transform.position, oldBox.transform.rotation).GetComponent<TreasureBoxScript>();
+                    break;
+                }
+                case 4:
+                {
+                    newBox = Instantiate(objects["yellowChest"], oldBox.transform.position, oldBox.transform.rotation).GetComponent<TreasureBoxScript>();
+                    break;
+                }
+                default:
+                    return null;
+            }
+
+            newBox.closetMode = false;
+            newBox.curseMode = false;
+            newBox.forceOpenFlags = oldBox.forceOpenFlags;
+            newBox.itemFlags = oldBox.itemFlags;
+            newBox.openActionFlags = oldBox.openActionFlags;
+            newBox.openFlags = oldBox.openFlags;
+            newBox.unlockFlags = oldBox.unlockFlags;
+            newBox.itemObj = oldBox.itemObj;
+            newBox.gameObject.SetActive(true);
+            newBox.transform.SetParent(oldBox.transform.parent);
+
+            return newBox;
+        }
+
         private IEnumerator ChangeTreasureBoxes()
         {
             List<TreasureBoxScript> oldboxes = new List<TreasureBoxScript>();
@@ -708,26 +804,42 @@ namespace LM2RandomiserMod
                 if (locationToItemMap.TryGetValue(locationID, out ItemID newItemID))
                 {
                     ItemInfo newItemInfo = ItemDB.GetItemInfo(newItemID);
+
                     TreasureBoxScript newBox;
-                    if (IsLocationCursed(locationID))
+                    if (newItemID >= ItemID.ChestWeight01)
                     {
-                        GameObject obj = Instantiate(objects["cursedChest"], box.transform.position, box.transform.rotation);
-                        newBox = obj.GetComponent<TreasureBoxScript>();
-                        newBox.curseMode = true;
-                        newBox.forceOpenFlags = box.forceOpenFlags;
-                        newBox.itemFlags = box.itemFlags;
-                        newBox.openActionFlags = box.openActionFlags;
-                        newBox.openFlags = box.openFlags;
-                        newBox.unlockFlags = box.unlockFlags;
-                        newBox.itemObj = box.itemObj;
-                        obj.SetActive(true);
-                        obj.transform.SetParent(box.transform.parent);
-                        oldboxes.Add(box);
+                        if (weightChestColour > 0)
+                        {
+                            newBox = CreateColouredChest(weightChestColour, box);
+                            oldboxes.Add(box);
+                        }
+                        else
+                        {
+                            newBox = box;
+                            newBox.curseMode = false;
+                        }
                     }
                     else
                     {
-                        newBox = box;
-                        newBox.curseMode = false;
+                        if (itemChestColour > 0)
+                        {
+                            newBox = CreateColouredChest(itemChestColour, box);
+                            oldboxes.Add(box);
+                        }
+                        else
+                        {
+                            newBox = box;
+                            newBox.curseMode = false;
+                        }
+                    }
+
+                    if (IsLocationCursed(locationID))
+                    {
+                        GameObject curse = Instantiate(objects["curse"], box.transform.position, box.transform.rotation);
+                        curse.SetActive(true);
+                        newBox.curseAnime = curse.GetComponent<Animator>();
+                        newBox.curseParticle = curse.GetComponent<ParticleSystem>();
+                        newBox.curseMode = true;
                     }
 
                     //Change the Treasure Boxs open flags to correspond to the new item
@@ -782,8 +894,13 @@ namespace LM2RandomiserMod
                     //Change the name used when calling setitem to correspond to new item
                     item.itemLabel = newItemInfo.BoxName;
 
-                    //Change the sprite to correspond to new item
-                    item.gameObject.GetComponent<SpriteRenderer>().sprite = GetItemSprite(newItemInfo.BoxName, newItemID);
+                    //if item is a weight set item value for flag checking
+                    if (newItemID >= ItemID.ChestWeight01)
+                        item.itemValue = newItemInfo.ItemFlag;
+
+                    //Change the sprite to correspond to new item if its not a weight
+                    if(newItemID < ItemID.ChestWeight01)
+                        item.gameObject.GetComponent<SpriteRenderer>().sprite = GetItemSprite(newItemInfo.BoxName, newItemID);
                 }
             }
 
@@ -797,17 +914,17 @@ namespace LM2RandomiserMod
             foreach (EventItemScript item in FindObjectsOfType<EventItemScript>())
             {
                 LocationID locationID;
-                if (!item.name.Contains("Research"))
+                if (item.name.Contains("Research"))
+                {
+                    locationID = GetLocationIDForResearch(item.itemActiveFlag);
+                }
+                else
                 {
                     ItemData oldItemData = GetItemDataFromName(item.name);
                     if (oldItemData != null)
                         locationID = (LocationID)oldItemData.getItemName();
                     else
                         continue;
-                }
-                else
-                {
-                    locationID = GetLocationIDForResearch(item.itemActiveFlag);
                 }
 
                 if (locationToItemMap.TryGetValue(locationID, out ItemID newItemID))
@@ -891,15 +1008,34 @@ namespace LM2RandomiserMod
                         }
                     }
 
-                    //Change the Event Items get flags to correspond to the new item
-                    //These are flags that are set when the item is gotten
-                    item.itemGetFlags = CreateGetFlags(newItemID, newItemInfo);
+                    if (newItemID < ItemID.ChestWeight01)
+                    {
+                        //Change the Event Items get flags to correspond to the new item
+                        //These are flags that are set when the item is gotten
+                        item.itemGetFlags = CreateGetFlags(newItemID, newItemInfo);
 
-                    //Change the name used when calling setitem to correspond to new item
-                    item.itemLabel = newItemInfo.BoxName;
+                        //Change the name used when calling setitem to correspond to new item
+                        item.itemLabel = newItemInfo.BoxName;
 
-                    //Change the sprite to correspond to new itemwhip"
-                    item.gameObject.GetComponent<SpriteRenderer>().sprite = GetItemSprite(newItemInfo.BoxName, newItemID);
+                        //Change the sprite to correspond to new itemwhip"
+                        item.gameObject.GetComponent<SpriteRenderer>().sprite = GetItemSprite(newItemInfo.BoxName, newItemID);
+                    }
+                    else
+                    {
+                        //make a fake item instead of the item
+                        GameObject obj = new GameObject(newItemID.ToString());
+                        obj.transform.position = item.transform.position;
+                        obj.transform.SetParent(item.transform.parent);
+
+                        FakeItem fakeItem = obj.AddComponent<FakeItem>();
+                        fakeItem.Init(sys, item.itemActiveFlag, item.transform.position, newItemInfo.ItemFlag);
+                        item.gameObject.SetActive(false);
+
+                        //random sprite
+                        SpriteRenderer renderer = obj.AddComponent<SpriteRenderer>();
+                        renderer.sprite = GetRandomSprite();
+                        renderer.enabled = false;
+                    }
                 }
             }
         }
@@ -937,6 +1073,13 @@ namespace LM2RandomiserMod
             {
                 return L2SystemCore.getMapIconSprite(L2SystemCore.getItemData(itemName));
             }
+        }
+
+        private Sprite GetRandomSprite()
+        {
+            ItemID itemID = (ItemID)UnityEngine.Random.Range(0, (int)ItemID.Research10);
+            ItemInfo itemInfo = ItemDB.GetItemInfo(itemID);
+            return GetItemSprite(itemInfo.BoxName, itemID);
         }
 
         private void ChangeFlagWatchers(string fieldName) 
@@ -1132,31 +1275,77 @@ namespace LM2RandomiserMod
             }
         }
 
+        private void CreateStartingObjects(string field)
+        {
+            //surface has a shop that can be used already so it doesnt matter;
+            if (StartingArea == AreaID.VoD)
+                return;
+
+            string startingFieldName;
+            switch (StartingArea)
+            {
+                case AreaID.RoY: startingFieldName = "field00"; break;
+                case AreaID.AnnwfnMain: startingFieldName = "field02"; break;
+                case AreaID.IBMain: startingFieldName = "field03"; break;
+                case AreaID.ITLeft: startingFieldName = "field04"; break;
+                case AreaID.DFMain: startingFieldName = "field05"; break;
+                case AreaID.ValhallaMain: startingFieldName = "field10"; break;
+                case AreaID.DSLMMain: startingFieldName = "field11"; break;
+                case AreaID.ACTablet: startingFieldName = "field12"; break;
+                default: startingFieldName = string.Empty; break;
+            }
+
+            if (!field.Equals(startingFieldName))
+                return;
+            StartInfo startInfo = StartDB.GetStartInfo(StartingArea);
+
+            GameObject obj = new GameObject("Tablet Hotspring");
+            obj.transform.position = startInfo.TabletPosition;
+            var hotSpring = obj.AddComponent<HotSpring>();
+            hotSpring.Init(sys, startInfo.TabletPosition);
+            obj.SetActive(true);
+
+            foreach (ShopGateScript shopGate in FindObjectsOfType<ShopGateScript>())
+            {
+                if (shopGate.name.Equals("ShopGate"))
+                {
+                    GameObject shop = Instantiate(shopGate.gameObject, new Vector3(startInfo.ShopPosition.x, startInfo.ShopPosition.y, 0), 
+                                                    Quaternion.identity, shopGate.transform.parent);
+                    shop.name = "Start Shop";
+                    ShopGateScript gateScript = shop.GetComponent<ShopGateScript>();
+                    gateScript.sheetName = "f04-1e";
+                    gateScript.shdowtask = null;
+                    shop.SetActive(true);
+
+                    GameObject shopVisual = new GameObject("Shop Entrance");
+                    shopVisual.transform.position = new Vector3(startInfo.ShopPosition.x - 10, startInfo.ShopPosition.y, 1);
+                    shopVisual.transform.localScale = new Vector3(5, 7, 1);
+                    SpriteRenderer spriteRenderer = shopVisual.AddComponent<SpriteRenderer>();
+                    spriteRenderer.sprite = Sprite.Create(Texture2D.whiteTexture, new Rect(0, 0, Texture2D.whiteTexture.width, Texture2D.whiteTexture.height), new Vector2(0, 0), 1);
+                    spriteRenderer.color = Color.white;
+                    shopVisual.SetActive(true);
+                    break;
+                }
+            }
+        }
+
         private ExitID GetExitIDFromAnchorName(string anchorName, string field)
         {
-            if (field.Equals("fieldL02") && anchorName.Equals("PlayerStart"))
+            if (anchorName.Equals("PlayerStart"))
             {
-                return ExitID.fL02Left;
+                if (field.Equals("fieldL02")) return ExitID.fL02Left;
+                else if (field.Equals("field03")) return ExitID.f03Right;
+                else if (field.Equals("fieldP00")) return ExitID.fP00Right;
+                else if (field.Equals("field01")) return ExitID.f01Down;
+                else if (field.Equals("field11")) return ExitID.f11Pyramid;
             }
-            else if(field.Equals("field03") && anchorName.Equals("PlayerStart"))
+            else if (field.Equals("field01-2") && anchorName.Equals("PlayerStart f01Right"))
             {
-                return ExitID.f03Right;
-            }
-            else if (field.Equals("fieldP00") && anchorName.Equals("PlayerStart"))
-            {
-                return ExitID.fP00Right;
-            }
-            else if (field.Equals("field01") && anchorName.Equals("PlayerStart"))
-            {
-                return ExitID.f01Down;
+                return ExitID.fStart;
             }
             else if (field.Equals("field01") && anchorName.Equals("PlayerStart f01Right"))
             {
-                return ExitID.None;
-            }
-            else if (field.Equals("field11") && anchorName.Equals("PlayerStart"))
-            {
-                return ExitID.f11Pyramid;
+                return ExitID.f01Start;
             }
             return ExitDB.AnchorNameToExitID(anchorName);
         }
@@ -1165,6 +1354,19 @@ namespace LM2RandomiserMod
         {
             if (field.Equals("fieldLast"))
                 yield return false;
+
+            if(field.Equals("field01-2") && StartingGame)
+            {
+                var gate = FindObjectOfType<AnchorGateZ>();
+                var startInfo = StartDB.GetStartInfo(StartingArea);
+                gate.AnchorName = startInfo.AnchorName;
+                gate.FieldNo = startInfo.FieldNo;
+                gate.AnchorID = -1;
+
+                StartingGame = false;
+
+                yield return true;
+            }
 
             List<AnimatorController> yugGates = new List<AnimatorController>(); 
             foreach (AnimatorController animator in FindObjectsOfType<AnimatorController>())
@@ -1220,7 +1422,7 @@ namespace LM2RandomiserMod
                             seet_no1 = exitInfo.SheetNo,
                             flag_no1 = exitInfo.FlagNo,
                             seet_no2 = -1,
-                            flag_no2 = 0,
+                            flag_no2 = exitInfo.SheetNo == 0 ? -1 : 0,
                             logic = LOGIC.AND,
                             comp = COMPARISON.Greater
                         });
@@ -1646,7 +1848,7 @@ namespace LM2RandomiserMod
             shopDataBase.cellData[7][24][1][0] = CreateShopItemsString(LocationID.PeibalusaShop1, LocationID.PeibalusaShop2, LocationID.PeibalusaShop3);
             shopDataBase.cellData[8][24][1][0] = CreateShopItemsString(LocationID.HiroRoderickShop1, LocationID.HiroRoderickShop2, LocationID.HiroRoderickShop3);
             shopDataBase.cellData[9][24][1][0] = CreateShopItemsString(LocationID.BtkShop1, LocationID.BtkShop2, LocationID.BtkShop3);
-            shopDataBase.cellData[10][24][1][0] = CreateShopItemsString(LocationID.BtkShop1, LocationID.BtkShop2, LocationID.BtkShop3);
+            shopDataBase.cellData[10][24][1][0] = CreateShopItemsString(LocationID.StartingShop1, LocationID.StartingShop2, LocationID.StartingShop3);
             shopDataBase.cellData[11][24][1][0] = CreateShopItemsString(LocationID.MinoShop1, LocationID.MinoShop2, LocationID.MinoShop3);
             shopDataBase.cellData[12][24][1][0] = CreateShopItemsString(LocationID.ShuhokaShop1, LocationID.ShuhokaShop2, LocationID.ShuhokaShop3);
             shopDataBase.cellData[13][24][1][0] = CreateShopItemsString(LocationID.HydlitShop1, LocationID.HydlitShop2, LocationID.HydlitShop3);
@@ -1723,7 +1925,7 @@ namespace LM2RandomiserMod
             ChangeThanksStrings(LocationID.PeibalusaShop1, LocationID.PeibalusaShop2, LocationID.PeibalusaShop3, 7, 8);
             ChangeThanksStrings(LocationID.HiroRoderickShop1, LocationID.HiroRoderickShop2, LocationID.HiroRoderickShop3, 8, 8);
             ChangeThanksStrings(LocationID.BtkShop1, LocationID.BtkShop2, LocationID.BtkShop3, 9, 8);
-            ChangeThanksStrings(LocationID.BtkShop1, LocationID.BtkShop2, LocationID.BtkShop3, 10, 8);
+            ChangeThanksStrings(LocationID.StartingShop1, LocationID.StartingShop2, LocationID.StartingShop3, 10, 8);
             ChangeThanksStrings(LocationID.MinoShop1, LocationID.MinoShop2, LocationID.MinoShop3, 11, 8);
             ChangeThanksStrings(LocationID.ShuhokaShop1, LocationID.ShuhokaShop2, LocationID.ShuhokaShop3, 12, 8);
             ChangeThanksStrings(LocationID.HydlitShop1, LocationID.HydlitShop2, LocationID.HydlitShop3, 13, 8);

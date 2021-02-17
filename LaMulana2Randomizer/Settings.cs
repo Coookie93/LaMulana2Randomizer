@@ -3,6 +3,13 @@ using System.Collections.Generic;
 
 namespace LaMulana2Randomizer
 {
+    public enum ItemPlacement
+    {
+        Random,
+        AvailableAtStart,
+        Starting
+    }
+
     public enum ShopPlacement
     {
         Random,
@@ -17,6 +24,15 @@ namespace LaMulana2Randomizer
         Original
     }
 
+    public enum ChestColour
+    {
+        Blue,
+        Turquise,
+        Red,
+        Pink,
+        Yellow
+    }
+
     public class Settings : BindableBase {
         private int seed;
         [JsonIgnore]
@@ -27,34 +43,62 @@ namespace LaMulana2Randomizer
         }
 
         //ITEMS
-        private bool randomGrail;
-        public bool RandomGrail { 
+        private ItemPlacement randomGrail;
+        public ItemPlacement RandomGrail { 
             get=>randomGrail; 
             set =>Set(ref randomGrail, value); 
         }
 
-        private bool randomScanner;
-        public bool RandomScanner { 
+        private ItemPlacement randomScanner;
+        public ItemPlacement RandomScanner { 
             get=>randomScanner; 
             set=>Set(ref randomScanner, value); 
         }
 
-        private bool randomCodices;
-        public bool RandomCodices { 
+        private ItemPlacement randomCodices;
+        public ItemPlacement RandomCodices { 
             get=>randomCodices; 
             set=>Set(ref randomCodices, value); 
         }
 
-        private bool randomFDC;
-        public bool RandomFDC {
+        private ItemPlacement randomFDC;
+        public ItemPlacement RandomFDC {
             get => randomFDC;
             set => Set(ref randomFDC, value);
+        }
+
+        private ItemPlacement randomRing;
+        public ItemPlacement RandomRing {
+            get => randomRing;
+            set => Set(ref randomRing, value);
         }
 
         private bool randomResearch;
         public bool RandomResearch {
             get => randomResearch;
-            set => Set(ref randomResearch, value);
+            set { 
+                Set(ref randomResearch, value);
+                if (!value)
+                    RemoveResearch = false;
+            }
+        }
+
+        private bool removeResearch;
+        public bool RemoveResearch {
+            get => removeResearch;
+            set => Set(ref removeResearch, value);
+        }
+
+        private bool removeMaps;
+        public bool RemoveMaps {
+            get => removeMaps;
+            set => Set(ref removeMaps, value);
+        }
+
+        private bool removeSkulls;
+        public bool RemoveSkulls {
+            get => removeSkulls;
+            set => Set(ref removeSkulls, value);
         }
 
         private MantraPlacement mantraPlacement;
@@ -70,9 +114,6 @@ namespace LaMulana2Randomizer
                 Set(ref shopPlacement, value);
                 if (value == ShopPlacement.Original)
                 {
-                    RandomScanner = false;
-                    RandomCodices = false;
-                    RandomFDC = false;
                     FDCForBacksides = false;
                 }
             }
@@ -97,6 +138,12 @@ namespace LaMulana2Randomizer
             set => Set(ref randomCurses, value);
         }
 
+        private bool removeITStatue;
+        public bool RemoveITStatue {
+            get => removeITStatue;
+            set => Set(ref removeITStatue, value);
+        }
+
         private int requiredSkulls;
         public int RequiredSkulls {
             get => requiredSkulls;
@@ -104,53 +151,68 @@ namespace LaMulana2Randomizer
         }
 
 
-        //ENTRANCES
+        //LAYOUT
         private bool randomHorizontalEntrances;
-        public bool RandomHorizontalEntraces {
+        public bool RandomHorizontalEntrances {
             get => randomHorizontalEntrances;
-            set => Set(ref randomHorizontalEntrances, value);
-        }
-
-        private bool reduceDeadEndStarts;
-        public bool ReduceDeadEndStarts {
-            get => reduceDeadEndStarts;
-            set => Set(ref reduceDeadEndStarts, value);
+            set {
+                Set(ref randomHorizontalEntrances, value);
+                if(!value)
+                {
+                    if (!RandomGateEntrances && !RandomLadderEntrances)
+                        FullRandomEntrances = false;
+                }
+            }
         }
 
         private bool randomLadderEntrances;
-        public bool RandomLadderEntraces {
+        public bool RandomLadderEntrances {
             get => randomLadderEntrances;
-            set => Set(ref randomLadderEntrances, value);
+            set {
+                Set(ref randomLadderEntrances, value);
+                if(!value)
+                {
+                    if (!RandomGateEntrances && !RandomHorizontalEntrances)
+                        FullRandomEntrances = false;
+
+                    if(!RandomGateEntrances)
+                        IcefireStart = false;
+                }
+            }
         }
 
         private bool randomGateEntrances;
-        public bool RandomGateEntraces {
+        public bool RandomGateEntrances {
             get => randomGateEntrances;
-            set => Set(ref randomGateEntrances, value);
-        }
+            set { 
+                Set(ref randomGateEntrances, value); 
+                if(!value)
+                {
+                    if (!RandomLadderEntrances && !RandomHorizontalEntrances)
+                        FullRandomEntrances = false;
 
-        private bool removeITStatue;
-        public bool RemoveITStatue {
-            get => removeITStatue;
-            set => Set(ref removeITStatue, value);
-        }
+                    if (!RandomLadderEntrances)
+                        IcefireStart = false;
 
-        private bool fullRandomEntrances;
-        public bool FullRandomEntrances {
-            get => fullRandomEntrances;
-            set => Set(ref fullRandomEntrances, value);
-        }
-
-        private bool includeOneWays;
-        public bool IncludeUniqueTransitions {
-            get => includeOneWays;
-            set => Set(ref includeOneWays, value);
+                    DivineStart = false;
+                    ValhallaStart = false;
+                    DarkStarStart = false;
+                    AncientStart = false;
+                }
+            }
         }
 
         private bool randomSoulGateEntrances;
-        public bool RandomSoulGateEntraces {
+        public bool RandomSoulGateEntrances {
             get => randomSoulGateEntrances;
-            set => Set(ref randomSoulGateEntrances, value);
+            set { 
+                Set(ref randomSoulGateEntrances, value); 
+                if(!value)
+                {
+                    IncludeNineGates = false;
+                    RandomSoulPairs = false;
+                }
+            }
         }
 
         private bool includeNineGates;
@@ -165,84 +227,266 @@ namespace LaMulana2Randomizer
             set => Set(ref randomSoulPairs, value);
         }
 
-
-        //COMBAT
-        private bool whip;
-        public bool Whip {
-            get => whip;
-            set => Set(ref whip, value);
+        private bool fullRandomEntrances;
+        public bool FullRandomEntrances {
+            get => fullRandomEntrances;
+            set {
+                Set(ref fullRandomEntrances, value);
+                if (!value)
+                {
+                    IncludeUniqueTransitions = false;
+                }
+            }
         }
 
+        private bool includeUniqueTransitions;
+        public bool IncludeUniqueTransitions {
+            get => includeUniqueTransitions;
+            set => Set(ref includeUniqueTransitions, value); 
+        }
+
+        private bool reduceDeadEndStarts;
+        public bool ReduceDeadEndStarts {
+            get => reduceDeadEndStarts;
+            set => Set(ref reduceDeadEndStarts, value);
+        }
+
+        private bool rootsStart;
+        public bool RootsStart {
+            get => rootsStart;
+            set { 
+                Set(ref rootsStart, value);
+                if (!value && NoStartsSelected)
+                    VillageStart = true;
+            }
+        }
+
+        private bool annwfnStart;
+        public bool AnnwfnStart {
+            get => annwfnStart;
+            set {
+                Set(ref annwfnStart, value);
+                if (!value && NoStartsSelected)
+                    VillageStart = true;
+            }
+        }
+
+        private bool immortalStart;
+        public bool ImmortalStart {
+            get => immortalStart;
+            set { 
+                Set(ref immortalStart, value);
+                if (!value && NoStartsSelected)
+                    VillageStart = true;
+            }
+        }
+
+        private bool icefireStart;
+        public bool IcefireStart {
+            get => icefireStart;
+            set {
+                Set(ref icefireStart, value);
+                if (!value && NoStartsSelected)
+                    VillageStart = true;
+            }
+        }
+
+        private bool divineStart;
+        public bool DivineStart {
+            get => divineStart;
+            set {
+                Set(ref divineStart, value);
+                if (!value && NoStartsSelected)
+                    VillageStart = true;
+            }
+        }
+
+        private bool valhallaStart;
+        public bool ValhallaStart {
+            get => valhallaStart;
+            set { 
+                Set(ref valhallaStart, value); 
+                if (!value && NoStartsSelected)
+                    VillageStart = true;
+            }
+        }
+
+        private bool darkStarStart;
+        public bool DarkStarStart {
+            get => darkStarStart;
+            set { 
+                Set(ref darkStarStart, value);
+                if (!value && NoStartsSelected)
+                    VillageStart = true;
+            }
+        }
+
+        private bool ancientStart;
+        public bool AncientStart {
+            get => ancientStart;
+            set { 
+                Set(ref ancientStart, value);
+                if (!value && NoStartsSelected)
+                    VillageStart = true;
+            }
+        }
+
+        private bool villageStart;
+        public bool VillageStart {
+            get => villageStart;
+            set => Set(ref villageStart, value);
+        }
+
+
+        //COMBAT
         private bool knife;
         public bool Knife {
             get => knife;
-            set => Set(ref knife, value);
+            set {
+                Set(ref knife, value);
+                if(!value && NoWeaponsSelected)
+                {
+                    Whip = true;
+                }
+            }
         }
 
         private bool rapier;
         public bool Rapier {
             get => rapier;
-            set => Set(ref rapier, value);
+            set {
+                Set(ref rapier, value);
+                if (!value && NoWeaponsSelected)
+                {
+                    Whip = true;
+                }
+            }
         }
 
         private bool axe;
         public bool Axe {
             get => axe;
-            set => Set(ref axe, value);
+            set {
+                Set(ref axe, value);
+                if (!value && NoWeaponsSelected)
+                {
+                    Whip = true;
+                }
+            }
         }
 
         private bool katana;
         public bool Katana {
             get => katana;
-            set => Set(ref katana, value);
+            set {
+                Set(ref katana, value);
+                if (!value && NoWeaponsSelected)
+                {
+                    Whip = true;
+                }
+            }
         }
 
         private bool shuriken;
         public bool Shuriken {
             get => shuriken;
-            set => Set(ref shuriken, value);
+            set {
+                Set(ref shuriken, value);
+                if (!value && NoWeaponsSelected)
+                {
+                    Whip = true;
+                }
+            }
         }
 
         private bool rollingShuriken;
         public bool RollingShuriken {
             get => rollingShuriken;
-            set => Set(ref rollingShuriken, value);
+            set {
+                Set(ref rollingShuriken, value);
+                if (!value && NoWeaponsSelected)
+                {
+                    Whip = true;
+                }
+            }
         }
 
         private bool earthSpear;
         public bool EarthSpear {
             get => earthSpear;
-            set => Set(ref earthSpear, value);
+            set {
+                Set(ref earthSpear, value);
+                if (!value && NoWeaponsSelected)
+                {
+                    Whip = true;
+                }
+            }
         }
 
         private bool flare;
         public bool Flare {
             get => flare;
-            set => Set(ref flare, value);
+            set {
+                Set(ref flare, value);
+                if (!value && NoWeaponsSelected)
+                {
+                    Whip = true;
+                }
+            }
         }
 
         private bool caltrop;
         public bool Caltrops {
             get => caltrop;
-            set => Set(ref caltrop, value);
+            set {
+                Set(ref caltrop, value);
+                if (!value && NoWeaponsSelected)
+                {
+                    Whip = true;
+                }
+            }
         }
 
         private bool chakram;
         public bool Chakrams {
             get => chakram;
-            set => Set(ref chakram, value);
+            set {
+                Set(ref chakram, value);
+                if (!value && NoWeaponsSelected)
+                {
+                    Whip = true;
+                }
+            }
         }
 
         private bool bomb;
         public bool Bomb {
             get => bomb;
-            set => Set(ref bomb, value);
+            set {
+                Set(ref bomb, value);
+                if (!value && NoWeaponsSelected)
+                {
+                    Whip = true;
+                }
+            }
         }
 
         private bool pistol;
         public bool Pistol {
             get => pistol;
-            set => Set(ref pistol, value);
+            set {
+                Set(ref pistol, value);
+                if (!value && NoWeaponsSelected)
+                {
+                    Whip = true;
+                }
+            }
+        }
+
+        private bool whip;
+        public bool Whip {
+            get => whip;
+            set => Set(ref whip, value);
         }
 
         private bool hardBosses;
@@ -294,59 +538,103 @@ namespace LaMulana2Randomizer
             set => Set(ref alwaysShellHorn, value);
         }
 
+        private ChestColour itemChestColour;
+        public ChestColour ItemChestColour {
+            get => itemChestColour;
+            set => Set(ref itemChestColour, value);
+        }
+
+        private ChestColour weightChestColour;
+        public ChestColour WeightChestColour {
+            get => weightChestColour;
+            set => Set(ref weightChestColour, value);
+        }
+
+        private bool NoStartsSelected {
+            get => !VillageStart && !RootsStart && !AnnwfnStart && !ImmortalStart && !IcefireStart && 
+                        !DivineStart && !ValhallaStart && !DarkStarStart && !AncientStart;
+        }
+
+        private bool NoWeaponsSelected {
+            get => !Whip && !Knife && !Rapier && !Axe && !Katana && !Shuriken && !RollingShuriken && 
+                        !EarthSpear && !Flare && !Chakrams && !Caltrops && !Bomb && !Pistol;
+        }
+
         public Settings()
         {
-            RandomGrail = false;
-            RandomScanner = false;
-            RandomCodices = true;
-            RandomFDC = true;
+            randomGrail = ItemPlacement.Random;
+            randomScanner = ItemPlacement.Random;
+            randomCodices = ItemPlacement.Random;
+            randomFDC = ItemPlacement.Random;
             randomResearch = false;
-            MantraPlacement = MantraPlacement.Original;
-            ShopPlacement = ShopPlacement.Original;
+            mantraPlacement = MantraPlacement.Original;
+            shopPlacement = ShopPlacement.Original;
 
-            FDCForBacksides = false;
-            LifeForHoM = false;
-            RandomCurses = false;
-            RequiredSkulls = 12;
+            fDCForBacksides = false;
+            lifeForHoM = false;
+            randomCurses = false;
+            removeITStatue = false;
+            requiredSkulls = 12;
 
-            Whip = true;
-            Knife = false;
-            Rapier = false;
-            Axe = false;
-            Katana = false;
-            Shuriken = false;
-            RollingShuriken = false;
-            EarthSpear = false;
-            Flare = false;
-            Caltrops = false;
-            Chakrams = false;
-            Bomb = false;
-            Pistol = false;
-            HardBosses = false;
-            EasyEchidna = false;
+            whip = true;
+            knife = false;
+            rapier = false;
+            axe = false;
+            katana = false;
+            shuriken = false;
+            rollingShuriken = false;
+            earthSpear = false;
+            flare = false;
+            caltrop = false;
+            chakram = false;
+            bomb = false;
+            pistol = false;
 
-            RandomHorizontalEntraces = false;
-            ReduceDeadEndStarts = true;
-            RandomLadderEntraces = false;
-            RandomGateEntraces = false;
-            RemoveITStatue = false;
-            FullRandomEntrances = false;
-            IncludeUniqueTransitions = false;
-            RandomSoulGateEntraces = false;
-            IncludeNineGates = false;
-            RandomSoulPairs = false;
+            hardBosses = false;
+            easyEchidna = false;
 
-            AutoScanTablets = false;
-            AutoPlaceSkulls = false;
-            FastCorridor = false;
-            StartingMoney = 0;
-            StartingWeights = 0;
+            randomHorizontalEntrances = false;
+            randomLadderEntrances = false;
+            randomGateEntrances = false;
+            fullRandomEntrances = false;
+            includeUniqueTransitions = false;
+            randomSoulGateEntrances = false;
+            includeNineGates = false;
+            randomSoulPairs = false;
+            reduceDeadEndStarts = false;
+
+            villageStart = true;
+            rootsStart = false;
+            annwfnStart = false;
+            immortalStart = false;
+            icefireStart = false;
+            divineStart = false;
+            valhallaStart = false;
+            darkStarStart = false;
+            ancientStart = false;
+
+            autoScanTablets = false;
+            autoPlaceSkulls = false;
+            fastCorridor = false;
+            startingMoney = 0;
+            startingWeights = 0;
+
+            alwaysShellHorn = false;
+
+            itemChestColour = ChestColour.Blue;
+            weightChestColour = ChestColour.Blue;
         }
 
         public List<bool> GetWeaponChoices()
         {
             return new List<bool>() { Whip, Knife, Rapier, Axe, Katana, Shuriken, 
                 RollingShuriken, EarthSpear, Flare, Caltrops, Chakrams, Bomb, Pistol };
+        }
+
+        public List<bool> GetStartingAreaChoices()
+        {
+            return new List<bool>() { VillageStart, RootsStart, AnnwfnStart, ImmortalStart, IcefireStart, 
+                                        DivineStart, ValhallaStart, DarkStarStart, AncientStart };
         }
     }
 }

@@ -70,6 +70,8 @@
         f13GateN9,
         f14GateN6,
 
+        fStart,
+        f01Start,
         f02Bifrost,
         f03In,
         f08Neck,

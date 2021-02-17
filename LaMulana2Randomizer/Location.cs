@@ -25,15 +25,27 @@ namespace LaMulana2Randomizer
         public LocationType LocationType { get; private set; }
         public Item Item { get; private set; }
         public LocationID ID { get; private set; }
-        public string ParentAreaName { get; private set; }
+
+        public AreaID ParentAreaID { get; private set; }
+        //public string ParentAreaName { get; private set; }
         public BinaryNode LogicTree { get; private set; }
 
         public bool IsLocked = false;
+        public bool RandomPlacement = false;
 
         private string logicString;
         private readonly string hardLogicString;
 
-        public Location(JsonLocation jsonLocation, string parentName)
+        public Location(string name, LocationID id, LocationType locationType, string logic, AreaID parentAreaID)
+        {
+            Name = name;
+            ID = id;
+            LocationType = locationType;
+            logicString = logic;
+            ParentAreaID = parentAreaID;
+        }
+
+        public Location(JsonLocation jsonLocation, AreaID parentAreaID)
         {
             Name = jsonLocation.Name;
             LocationType = jsonLocation.LocationType;
@@ -42,22 +54,23 @@ namespace LaMulana2Randomizer
             Item = jsonLocation.Item;
             Enum.TryParse(Name.RemoveWhitespace(), out LocationID temp);
             ID = temp;
-            ParentAreaName = parentName;
-        }
-        
-        public bool CanReach(PlayerState state)
-        {
-            return LogicTree.Evaluate(state) && state.CanReach(ParentAreaName);
+            ParentAreaID = parentAreaID;
         }
 
-        public void UseHardRules()
+        public bool CanReach(PlayerState state)
+        {
+            return LogicTree.Evaluate(state) && state.CanReach(ParentAreaID);
+        }
+
+        public void UseHardLogic()
         {
             logicString = hardLogicString;
         }
 
-        public void PlaceItem(Item item)
+        public void PlaceItem(Item item, bool randomPlacement)
         {
             Item = item;
+            RandomPlacement = randomPlacement;
         }
 
         public void AppendLogicString(string append)

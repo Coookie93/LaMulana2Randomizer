@@ -130,13 +130,22 @@ namespace LM2RandomiserMod.Patches
                                 if (itemID == ItemID.MobileSuperx3P)
                                     flagValue = 1;
 
-                                if (sys.isHaveItem(itemInfo.ShopName) > flagValue)
+                                HaveItems = false;
+                                if (itemInfo.BoxName.Equals("Research")) 
+                                {
+                                    short data = 0;
+                                    sys.getFlag(itemInfo.ItemSheet, itemInfo.ItemFlag, ref data);
+                                    if (data > 0)
+                                        HaveItems = true;
+
+                                }
+                                else if (sys.isHaveItem(itemInfo.ShopName) > flagValue)
                                 {
                                     HaveItems = true;
                                 }
-                                else
+
+                                if(!HaveItems)
                                 {
-                                    HaveItems = false;
                                     sys.setItem(GetItemID, 1, false, false, true);
                                     sys.setEffectFlag(rando.CreateGetFlags(itemID, itemInfo));
                                 }

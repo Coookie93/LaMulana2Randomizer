@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using LaMulana2RandomizerShared;
 
-
 namespace LM2RandomiserMod
 {
     public abstract class ExitDB
@@ -86,6 +85,8 @@ namespace LM2RandomiserMod
             { ExitID.f14GateN6,       new ExitInfo("PlayerStart f14GateN6",      14, -1, -1)},
 
             //other
+            { ExitID.fStart,          new ExitInfo("PlayerStart f01Right",       32, -1, -1)},
+            { ExitID.f01Start,        new ExitInfo("PlayerStart f01Start",        1, -1, -1)},
             { ExitID.f02Bifrost,      new ExitInfo("PlayerStart f02Bifrost",      2, -1, -1)},
             { ExitID.f03In,           new ExitInfo("PlayerStart f03In",           3, -1, -1)},
             { ExitID.f08Neck,         new ExitInfo("PlayerStart f08Neck",         8, -1, -1)},
@@ -170,6 +171,7 @@ namespace LM2RandomiserMod
             {"PlayerStart f04GateN62",     ExitID.f14GateN6 },
             
             //other
+            {"PlayerStart f01Start",       ExitID.fStart },
             {"PlayerStart f03In",          ExitID.f02Bifrost },
             {"PlayerStart f09In",          ExitID.f08Neck },
             {"PlayerStart f11Pyramid",     ExitID.fNibiru },

@@ -74,7 +74,8 @@ namespace LaMulana2Randomizer.ViewModels
 
         public void GenerateSeed(IProgress<ProgressInfo> progress)
         {
-            const int MaxAttempts = 250;
+            const int MaxEntranceAttempts = 1000;
+            const int MaxItemAttempts = 250;
 
             Randomiser randomiser = new Randomiser(Settings);
 
@@ -89,7 +90,6 @@ namespace LaMulana2Randomizer.ViewModels
             try
             {
                 randomiser.Setup();
-                randomiser.ChooseStartingWeapon();
                 bool entranceCheck;
                 do
                 {
@@ -108,7 +108,20 @@ namespace LaMulana2Randomizer.ViewModels
                         });
                     }
 
-                } while (!entranceCheck);
+                } while (!entranceCheck && attemptCount < MaxEntranceAttempts);
+
+                if (attemptCount == MaxEntranceAttempts && !entranceCheck)
+                {
+                    FileUtils.WriteSpoilerLog(randomiser);
+                    Logger.LogAndFlush($"Failed to generate beatable entrance configuration for seed {randomiser.Settings.Seed}");
+                    progress.Report(new ProgressInfo
+                    {
+                        Label = $"Failed to generate beatable entrance configuration, stopping after {MaxEntranceAttempts} attempts.",
+                        ProgressValue = 100,
+                        IsIndeterminate = false
+                    });
+                    return;
+                }
 
                 randomiser.FixAnkhLogic();
                 randomiser.FixFDCLogic();
@@ -125,8 +138,8 @@ namespace LaMulana2Randomizer.ViewModels
 
                     if (!canBeatGame)
                     {
-                        randomiser.ClearPlacedItems();
-                        Logger.Log($"Failed to generate beatable item placement, retrying.");
+                        randomiser.ClearRandomlyPlacedItems();
+                        Logger.Log("Failed to generate beatable item placement, retrying.");
                         progress.Report(new ProgressInfo
                         {
                             Label = $"Failed to generate beatable item placement, retrying attempt {attemptCount}.",
@@ -134,21 +147,22 @@ namespace LaMulana2Randomizer.ViewModels
                             IsIndeterminate = true
                         });
                     }
-                    randomiser.AdjustShopPrices();
-                } while (!canBeatGame && attemptCount < MaxAttempts);
+                } while (!canBeatGame && attemptCount < MaxItemAttempts);
 
-                if (attemptCount == MaxAttempts && !canBeatGame)
+                if (attemptCount == MaxItemAttempts && !canBeatGame)
                 {
                     FileUtils.WriteSpoilerLog(randomiser);
-                    Logger.LogAndFlush($"Failed to generate beatable configuration for seed {randomiser.Settings.Seed}");
+                    Logger.LogAndFlush($"Failed to generate beatable item placement for seed {randomiser.Settings.Seed}");
                     progress.Report(new ProgressInfo
                     {
-                        Label = $"Failed to generate beatable configuration stopping after {MaxAttempts} attempts.",
+                        Label = $"Failed to generate beatable item placement, stopping after {MaxItemAttempts} attempts.",
                         ProgressValue = 100,
                         IsIndeterminate = false
                     });
                     return;
                 }
+                randomiser.AdjustShopPrices();
+                randomiser.FixEmptyLocations();
             }
             catch (RandomiserException ex)
             {
@@ -197,7 +211,6 @@ namespace LaMulana2Randomizer.ViewModels
             }
 
             Logger.LogAndFlush($"Successfully generated for seed {randomiser.Settings.Seed}");
-
             progress.Report(new ProgressInfo
             {
                 Label = "Successfully generated seed.",
@@ -205,5 +218,6 @@ namespace LaMulana2Randomizer.ViewModels
                 IsIndeterminate = false
             });
         }
+
     }
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using LaMulana2RandomizerShared;
+using LaMulana2Randomizer.Utils;
 
 namespace LaMulana2Randomizer
 {
@@ -48,22 +49,22 @@ namespace LaMulana2Randomizer
             return item;
         }
 
-        public List<Item> GetandRemoveRequiredItems()
+        public ItemPool GetandRemoveRequiredItems()
         {
             List<Item> required = items.Where(item => item.IsRequired).ToList();
             foreach (Item item in required)
                 items.Remove(item);
 
-            return required;
+            return new ItemPool(required);
         }
 
-        public List<Item> GetandRemoveNonRequiredItems()
+        public ItemPool GetandRemoveNonRequiredItems()
         {
             List<Item> nonRequired = items.Where(item => !item.IsRequired).ToList();
             foreach (Item item in nonRequired)
                 items.Remove(item);
 
-            return nonRequired;
+            return new ItemPool(nonRequired);
         }
 
         public List<Item> GetAndRemoveShopOnlyItems()
@@ -84,6 +85,15 @@ namespace LaMulana2Randomizer
             return mantras;
         }
 
+        public ItemPool Copy()
+        {
+            List<Item> copies = new List<Item>();
+
+            foreach (Item item in items)
+                copies.Add(item.DeepCopy());
+
+            return new ItemPool(copies);
+        }
 
         public IEnumerator GetEnumerator()
         {
@@ -91,26 +101,12 @@ namespace LaMulana2Randomizer
                 yield return item;
         }
 
-        public static ItemPool CreateRandomShopPool(Random random, bool subWeaponStart)
+        //
+        public ItemPool CreateRandomShopPool(int amount, Random random)
         {
-            List<Item> shopItems = new List<Item>()
-            {
-                new Item("Weights", ItemID.Weights, true),
-                new Item("Shuriken Ammo", ItemID.ShurikenAmmo, true),
-                new Item("Rolling Shuriken Ammo", ItemID.RollingShurikenAmmo, true),
-                new Item("Earth Spear Ammo", ItemID.EarthSpearAmmo, true),
-                new Item("Flare Ammo", ItemID.FlareAmmo, true),
-                new Item("Caltrops Ammo", ItemID.CaltropsAmmo, true),
-                new Item("Chakram Ammo", ItemID.ChakramAmmo, true),
-                new Item("Bomb Ammo", ItemID.BombAmmo, true),
-                new Item("Pistol Ammo", ItemID.PistolAmmo, true)
-            };
-
+            var shopItems = GetAndRemoveShopOnlyItems();
             ItemPool itemPool = new ItemPool(shopItems);
-
-            int remainingItems = subWeaponStart ? 23 : 24;
-
-            for (; remainingItems > 0; remainingItems--)
+            for (; amount > 0; amount--)
                 itemPool.Add(shopItems[random.Next(shopItems.Count)]);
 
             return itemPool;
