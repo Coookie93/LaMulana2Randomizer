@@ -27,15 +27,6 @@ namespace LM2RandomiserMod
 
     public class L2Rando : MonoBehaviour
     {
-        public bool IsRandomising { get; private set; } = false;
-        public ItemID StartingWeapon { get; private set; }
-        public AreaID StartingArea { get; private set; }
-        public List<ItemID> StartingItems { get; private set; }
-        public int RequiredSkulls { get; private set; } = 0;
-        public bool AutoScanTablets { get; private set; } = false;
-        public bool RemoveITStatue { get; private set; } = false;
-        public int StartingMoney { get; private set; } = 0;
-        public int StartingWeights { get; private set; } = 0;
         public bool StartingGame = false;
 
         private Dictionary<LocationID, ItemID> locationToItemMap;
@@ -47,7 +38,6 @@ namespace LM2RandomiserMod
         private bool autoPlaceSkull = false;
         private bool fastCorridor = false;
         private bool easyEchidna= false;
-        private bool alwaysShellHorn= false;
         private int itemChestColour = 0;
         private int weightChestColour = 0;
 
@@ -60,6 +50,16 @@ namespace LM2RandomiserMod
         private Font currentFont = null;
         private bool onTitle = false;
         private string message;
+
+        public bool IsRandomising { get; private set; } = false;
+        public ItemID StartingWeapon { get; private set; }
+        public AreaID StartingArea { get; private set; }
+        public List<ItemID> StartingItems { get; private set; }
+        public int RequiredSkulls { get; private set; } = 0;
+        public bool AutoScanTablets { get; private set; } = false;
+        public bool RemoveITStatue { get; private set; } = false;
+        public int StartingMoney { get; private set; } = 0;
+        public int StartingWeights { get; private set; } = 0;
 
         public void OnGUI()
         {
@@ -150,69 +150,69 @@ namespace LM2RandomiserMod
                         {
                             BOX = new L2FlagBox[]
                             {
-                    new L2FlagBox()
-                    {
-                        seet_no1 = 3,
-                        flag_no1 = 93,
-                        seet_no2 = -1,
-                        flag_no2 = 0,
-                        logic = LOGIC.AND,
-                        comp = COMPARISON.Equal
-                    },
-                    new L2FlagBox()
-                    {
-                        seet_no1 = 3,
-                        flag_no1 = 15,
-                        seet_no2 = -1,
-                        flag_no2 = 4,
-                        logic = LOGIC.AND,
-                        comp = COMPARISON.Equal
-                    },
-                    new L2FlagBox()
-                    {
-                        seet_no1 = 2,
-                        flag_no1 = 3,
-                        seet_no2 = -1,
-                        flag_no2 = 7,
-                        logic = LOGIC.AND,
-                        comp = COMPARISON.Equal
-                    },
+                                new L2FlagBox()
+                                {
+                                    seet_no1 = 3,
+                                    flag_no1 = 93,
+                                    seet_no2 = -1,
+                                    flag_no2 = 0,
+                                    logic = LOGIC.AND,
+                                    comp = COMPARISON.Equal
+                                },
+                                new L2FlagBox()
+                                {
+                                    seet_no1 = 3,
+                                    flag_no1 = 15,
+                                    seet_no2 = -1,
+                                    flag_no2 = 4,
+                                    logic = LOGIC.AND,
+                                    comp = COMPARISON.Equal
+                                },
+                                new L2FlagBox()
+                                {
+                                    seet_no1 = 2,
+                                    flag_no1 = 3,
+                                    seet_no2 = -1,
+                                    flag_no2 = 7,
+                                    logic = LOGIC.AND,
+                                    comp = COMPARISON.Equal
+                                },
                             }
                         };
                         flagWatcher.ActionFlags = new L2FlagBoxEnd[]
                         {
-                new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 44, data = 2, calcu = CALCU.EQR },
-                new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 45, data = 2, calcu = CALCU.EQR },
-                new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 46, data = 2, calcu = CALCU.EQR },
-                new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 47, data = 0, calcu = CALCU.EQR },
-                new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 48, data = 2, calcu = CALCU.EQR },
-                new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 49, data = 8, calcu = CALCU.EQR },
-                new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 87, data = 1, calcu = CALCU.EQR },
-                new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 88, data = 1, calcu = CALCU.EQR },
-                new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 89, data = 1, calcu = CALCU.EQR },
-                new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 90, data = 1, calcu = CALCU.EQR },
-                new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 91, data = 1, calcu = CALCU.EQR },
-                new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 92, data = 1, calcu = CALCU.EQR },
-                new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 93, data = 1, calcu = CALCU.EQR },
+                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 44, data = 2, calcu = CALCU.EQR },
+                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 45, data = 2, calcu = CALCU.EQR },
+                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 46, data = 2, calcu = CALCU.EQR },
+                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 47, data = 0, calcu = CALCU.EQR },
+                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 48, data = 2, calcu = CALCU.EQR },
+                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 49, data = 8, calcu = CALCU.EQR },
+                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 87, data = 1, calcu = CALCU.EQR },
+                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 88, data = 1, calcu = CALCU.EQR },
+                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 89, data = 1, calcu = CALCU.EQR },
+                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 90, data = 1, calcu = CALCU.EQR },
+                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 91, data = 1, calcu = CALCU.EQR },
+                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 92, data = 1, calcu = CALCU.EQR },
+                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 93, data = 1, calcu = CALCU.EQR },
                         };
                         flagWatcher.finishFlags = new L2FlagBoxParent[1];
                         flagWatcher.finishFlags[0] = new L2FlagBoxParent
                         {
                             BOX = new L2FlagBox[]
                             {
-                    new L2FlagBox()
-                    {
-                        seet_no1 = 3,
-                        flag_no1 = 93,
-                        seet_no2 = -1,
-                        flag_no2 = 1,
-                        logic = LOGIC.NON,
-                        comp = COMPARISON.Equal
-                    }
+                                new L2FlagBox()
+                                {
+                                    seet_no1 = 3,
+                                    flag_no1 = 93,
+                                    seet_no2 = -1,
+                                    flag_no2 = 1,
+                                    logic = LOGIC.NON,
+                                    comp = COMPARISON.Equal
+                                }
                             }
                         };
                     }
-                    //i hate this stupid trapdoors hitbox
+                    //i hate this stupid trapdoor's hitbox
                     StartCoroutine(FixTrapDoor());
                 }
                 else if (scene.name.Equals("fieldSpace"))
@@ -279,9 +279,10 @@ namespace LM2RandomiserMod
                     }
                 }
 
+                //make it so fake items always play the wrong puzzle solve noise
                 foreach (AnimatorController animatorController in FindObjectsOfType<AnimatorController>())
                 {
-                    if (animatorController.name.Equals("WrongCall") || (alwaysShellHorn && animatorController.name.Equals("RightCall")))
+                    if (animatorController.name.Equals("WrongCall"))
                     {
                         foreach (L2FlagBoxParent flagBoxParent in animatorController.CheckFlags)
                         {
@@ -410,7 +411,6 @@ namespace LM2RandomiserMod
                     fastCorridor = br.ReadBoolean();
                     StartingMoney = br.ReadInt32();
                     StartingWeights = br.ReadInt32();
-                    alwaysShellHorn = br.ReadBoolean();
                     itemChestColour = br.ReadInt32();
                     weightChestColour = br.ReadInt32();
 
@@ -1028,13 +1028,15 @@ namespace LM2RandomiserMod
                         obj.transform.SetParent(item.transform.parent);
 
                         FakeItem fakeItem = obj.AddComponent<FakeItem>();
-                        fakeItem.Init(sys, item.itemActiveFlag, item.transform.position, newItemInfo.ItemFlag);
-                        item.gameObject.SetActive(false);
+                        fakeItem.Init(sys, item.itemActiveFlag, newItemInfo.ItemFlag);
 
                         //random sprite
                         SpriteRenderer renderer = obj.AddComponent<SpriteRenderer>();
                         renderer.sprite = GetRandomSprite();
                         renderer.enabled = false;
+
+                        //set old item to inactive
+                        item.gameObject.SetActive(false);
                     }
                 }
             }
@@ -1063,6 +1065,10 @@ namespace LM2RandomiserMod
                 else if (data == 1) name = "Shield2";
                 else if (data >= 2) name = "Shield3";
                 return L2SystemCore.getMapIconSprite(L2SystemCore.getItemData(name));
+            }
+            else if(itemID >= ItemID.Research1 && itemID <= ItemID.Research10)
+            {
+                return L2SystemCore.getMapIconSprite(L2SystemCore.getItemData("Research"));
             }
             else if (itemID >= ItemID.Heaven && itemID <= ItemID.Night)
             {
@@ -1297,8 +1303,8 @@ namespace LM2RandomiserMod
 
             if (!field.Equals(startingFieldName))
                 return;
-            StartInfo startInfo = StartDB.GetStartInfo(StartingArea);
 
+            StartInfo startInfo = StartDB.GetStartInfo(StartingArea);
             GameObject obj = new GameObject("Tablet Hotspring");
             obj.transform.position = startInfo.TabletPosition;
             var hotSpring = obj.AddComponent<HotSpring>();
@@ -1388,7 +1394,12 @@ namespace LM2RandomiserMod
             foreach(AnchorGateZ gate in FindObjectsOfType<AnchorGateZ>())
             {
                 ExitID exitID = GetExitIDFromAnchorName(gate.AnchorName, field);
-                if (exitID != ExitID.None && exitToExitMap.TryGetValue(exitID, out ExitID destinationID))
+                if (exitID == ExitID.None)
+                    continue;
+
+
+
+                if (exitToExitMap.TryGetValue(exitID, out ExitID destinationID))
                 {
                     ExitInfo destinationInfo = ExitDB.GetExitInfo(destinationID);
                     gate.AnchorName = destinationInfo.AnchorName;
@@ -1624,6 +1635,32 @@ namespace LM2RandomiserMod
                         };
                     }
                 }
+                else if(exitID == ExitID.fLDown)
+                {
+                    //fix for rando start since samaranta wont appear to unlock the elevator sometimes
+                    List<L2FlagBoxEnd> gateFlags = new List<L2FlagBoxEnd>
+                    {
+                        new L2FlagBoxEnd()
+                        {
+                            seet_no1 = 5,
+                            flag_no1 = 73,
+                            data = 2,
+                            calcu = CALCU.EQR
+                        },
+                        new L2FlagBoxEnd()
+                        {
+                            seet_no1 = 5,
+                            flag_no1 = 22,
+                            data = 1,
+                            calcu = CALCU.EQR
+                        }
+                    };
+
+                    if (gate.gateFlags != null)
+                        gateFlags.AddRange(gate.gateFlags.ToList());
+
+                    gate.gateFlags = gateFlags.ToArray();
+                }
             }
 
             yield return new WaitForEndOfFrame();
@@ -1728,6 +1765,8 @@ namespace LM2RandomiserMod
                 string itemString;
                 if (newItemInfo.BoxName.Equals("Crystal S") || newItemInfo.BoxName.Equals("Sacred Orb") || newItemInfo.BoxName.Equals("MSX3p"))
                     itemString = string.Format("[@take,{0},02item,1]\n", newItemInfo.BoxName);
+                else if (newItemInfo.BoxName.Equals("Money"))
+                    itemString = "[@setfd,0,1,+,30]\n";
                 else
                     itemString = string.Format("[@take,{0},02item,1]\n", newItemInfo.ShopName);
 
@@ -1752,17 +1791,11 @@ namespace LM2RandomiserMod
                 ItemInfo newItemInfo = ItemDB.GetItemInfo(newItemID);
 
                 int flagValue = 0;
-                if (comp == COMPARISON.Greater)
-                {
-                    if (newItemID == ItemID.MobileSuperx3P)
-                        flagValue = 1;
-                }
-                else if (comp == COMPARISON.Less)
-                {
+                if (comp == COMPARISON.Less)
                     flagValue = 1;
-                    if (newItemID == ItemID.MobileSuperx3P)
-                        flagValue = 2;
-                }
+
+                if (newItemID == ItemID.MobileSuperx3P)
+                    flagValue++;
 
                 return string.Format(original, newItemInfo.ItemSheet, newItemInfo.ItemFlag, flagValue);
             }
@@ -1782,6 +1815,8 @@ namespace LM2RandomiserMod
                 string itemString;
                 if (newItemInfo.BoxName.Equals("Crystal S") || newItemInfo.BoxName.Equals("Sacred Orb") || newItemInfo.BoxName.Equals("MSX3p"))
                     itemString = string.Format("[@take,{0},02item,1]\n", newItemInfo.BoxName);
+                else if (newItemInfo.BoxName.Equals("Money"))
+                    itemString = "[@setfd,0,1,+,30]\n";
                 else
                     itemString = string.Format("[@take,{0},02item,1]\n", newItemInfo.ShopName);
 

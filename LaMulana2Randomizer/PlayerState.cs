@@ -9,27 +9,25 @@ namespace LaMulana2Randomizer
 {
     public class PlayerState
     {
-        private readonly string[] bossNames = {"Fafnir", "Surtr", "Vritra", "Kujata", "Aten Ra", "Jormangund", "Anu", "Echidna", "Hel"};
-
-        private readonly Randomiser randomiser;
-        private readonly HashSet<LocationID> collectedLocations;
-        private readonly Dictionary<string, int> collectedItems;
-
-        private bool checkingTimeStop;
-
-        private Dictionary<AreaID, bool> areaChecks;
-        private Dictionary<string, bool> entraceChecks;
-
         public bool SoftlockCheck;
         public bool IgnoreFalseChecks;
         public bool IgnoreGuardians;
         public bool EscapeCheck;
         public Area StartingArea;
 
+        private readonly string[] bossNames = {"Fafnir", "Surtr", "Vritra", "Kujata", "Aten Ra", "Jormangund", "Anu", "Echidna", "Hel"};
+
+        private readonly Randomiser randomiser;
+        private readonly HashSet<LocationID> collectedLocations;
+        private readonly Dictionary<string, int> collectedItems;
+
+        private Dictionary<AreaID, bool> areaChecks;
+        private Dictionary<string, bool> entraceChecks;
+
         public PlayerState(Randomiser randomiser)
         {
             this.randomiser = randomiser;
-            this.StartingArea = randomiser.StartingArea;
+            StartingArea = randomiser.StartingArea;
             areaChecks = new Dictionary<AreaID, bool>();
             entraceChecks = new Dictionary<string, bool>();
             collectedLocations = new HashSet<LocationID>();
@@ -156,7 +154,7 @@ namespace LaMulana2Randomizer
             //check to see if all locations are accessable
             foreach (Location location in randomiser.GetLocations())
             {
-                if (!location.LogicTree.Evaluate(state))
+                if (!location.CanReach(state))
                     return false;
             }
 
@@ -411,23 +409,15 @@ namespace LaMulana2Randomizer
 
         private bool CanSpinCorridor()
         {
-            return HasItem("Beherit") && Dissonance(1);
+            return HasItem("Progressive Beherit") && Dissonance(1);
         }
 
         private bool CanStopTime()
         {
-            bool result = false;
-
-            if (checkingTimeStop)
-                return false;
-
-            checkingTimeStop = true;
             if (collectedItems.ContainsKey("Lamp of Time"))
-                result = CanReach(AreaID.RoYBottom) || CanReach(AreaID.IBMain) || CanReach(AreaID.ITLeft) || CanReach(AreaID.DSLMMain);
+                return CanReach(AreaID.RoYBottom) || CanReach(AreaID.IBMain) || CanReach(AreaID.ITLeft) || CanReach(AreaID.DSLMMain);
 
-            checkingTimeStop = false;
-
-            return result;
+            return false;
         }
 
         private bool CanKill(string enemy)
@@ -435,7 +425,7 @@ namespace LaMulana2Randomizer
             if (!Enum.TryParse(enemy.RemoveWhitespace(), out LocationID locationID))
                 throw new InvalidAreaException($"Enemy does not exist {enemy}.");
 
-            return randomiser.GetLocation(locationID).LogicTree.Evaluate(this);
+            return randomiser.GetLocation(locationID).CanCollect(this);
         }
 
         private bool GuardianKills(int count)
@@ -479,7 +469,8 @@ namespace LaMulana2Randomizer
         {
             if (collectedItems.TryGetValue("Dissonance", out int num))
                 return num >= count;
-            
+            else if (collectedItems.TryGetValue("Progressive Beherit", out num))
+                return num >= count + 1;
             return false;
         }
 

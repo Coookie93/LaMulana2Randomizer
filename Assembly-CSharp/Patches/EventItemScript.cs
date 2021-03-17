@@ -34,7 +34,7 @@ namespace LM2RandomiserMod.Patches
             {
                 short data = 0;
                 string trueItemName = string.Empty;
-                sys.getFlag(2, 184, ref data);
+                sys.getFlag(2, 196, ref data);
                 if (data == 0) trueItemName = "Shield";
                 else if (data == 1) trueItemName = "Shield2";
                 else if (data >= 2) trueItemName = "Shield3";
@@ -48,6 +48,8 @@ namespace LM2RandomiserMod.Patches
                 //Mantras don't have an icon so just use the mantra software icon
                 if (itemLabel.Contains("Mantra"))
                     pl.setGetItemIcon(L2SystemCore.getItemData("Mantra"));
+                else if(itemLabel.Contains("Research"))
+                    pl.setGetItemIcon(L2SystemCore.getItemData("Research"));
                 else
                     pl.setGetItemIcon(L2SystemCore.getItemData(itemLabel));
             }

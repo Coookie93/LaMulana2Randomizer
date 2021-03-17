@@ -131,7 +131,7 @@ namespace LM2RandomiserMod.Patches
                                     flagValue = 1;
 
                                 HaveItems = false;
-                                if (itemInfo.BoxName.Equals("Research")) 
+                                if (itemInfo.BoxName.Contains("Research") || itemInfo.BoxName.Equals("Nothing")) 
                                 {
                                     short data = 0;
                                     sys.getFlag(itemInfo.ItemSheet, itemInfo.ItemFlag, ref data);
@@ -146,7 +146,9 @@ namespace LM2RandomiserMod.Patches
 
                                 if(!HaveItems)
                                 {
-                                    sys.setItem(GetItemID, 1, false, false, true);
+                                    if(!itemInfo.BoxName.Equals("Nothing"))
+                                        sys.setItem(GetItemID, 1, false, false, true);
+
                                     sys.setEffectFlag(rando.CreateGetFlags(itemID, itemInfo));
                                 }
                             }
@@ -204,34 +206,34 @@ namespace LM2RandomiserMod.Patches
                     break;
                 case 6:
                     {
-                        string text = string.Empty;
-                        if (DrawBinalyCount > 7)
+                    string text = string.Empty;
+                    if (DrawBinalyCount > 7)
+                    {
+                        int num2 = BinalyStart;
+                        for (int k = 0; k < 8; k++)
                         {
-                            int num2 = BinalyStart;
-                            for (int k = 0; k < 8; k++)
+                            text += BinalyData[num2];
+                            num2++;
+                            if (num2 > 9)
                             {
-                                text += BinalyData[num2];
-                                num2++;
-                                if (num2 > 9)
-                                {
-                                    num2 = 0;
-                                }
-                            }
-                            BinalyStart++;
-                            if (BinalyStart > 9)
-                            {
-                                BinalyStart = 0;
+                                num2 = 0;
                             }
                         }
-                        else
+                        BinalyStart++;
+                        if (BinalyStart > 9)
                         {
-                            text = string.Empty;
-                            for (int l = 0; l < DrawBinalyCount; l++)
-                            {
-                                text += BinalyData[l];
-                            }
+                            BinalyStart = 0;
                         }
-                        con.ContentsText.text = text;
+                    }
+                    else
+                    {
+                        text = string.Empty;
+                        for (int l = 0; l < DrawBinalyCount; l++)
+                        {
+                            text += BinalyData[l];
+                        }
+                    }
+                    con.ContentsText.text = text;
                         DrawBinalyCount++;
                         if (DrawBinalyCount == 120)
                         {

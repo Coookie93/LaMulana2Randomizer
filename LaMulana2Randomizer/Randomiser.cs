@@ -81,6 +81,19 @@ namespace LaMulana2Randomizer
             PlaceResearch();
             RemoveItems();
 
+            Items.Add(GetLocation(LocationID.DissonanceDSLM).Item);
+            GetLocation(LocationID.DissonanceDSLM).PlaceItem(null, true);
+            Items.Add(GetLocation(LocationID.DissonanceEPG).Item);
+            GetLocation(LocationID.DissonanceEPG).PlaceItem(null, true);
+            Items.Add(GetLocation(LocationID.DissonanceHL).Item);
+            GetLocation(LocationID.DissonanceHL).PlaceItem(null, true);
+            Items.Add(GetLocation(LocationID.DissonanceMoG).Item);
+            GetLocation(LocationID.DissonanceMoG).PlaceItem(null, true);
+            Items.Add(GetLocation(LocationID.DissonanceNibiru).Item);
+            GetLocation(LocationID.DissonanceNibiru).PlaceItem(null, true);
+            Items.Add(GetLocation(LocationID.DissonanceValhalla).Item);
+            GetLocation(LocationID.DissonanceValhalla).PlaceItem(null, true);
+
             //Set the amount of Skull required for Nibiru Dissonance
             var nibiruDiss = GetLocation(LocationID.DissonanceNibiru);
             nibiruDiss.AppendLogicString($" and SkullCount({Settings.RequiredSkulls})");
@@ -297,6 +310,8 @@ namespace LaMulana2Randomizer
             Item weight = new Item("Weights", ItemID.Weights, false);
             ItemID chestWeight = ItemID.ChestWeight01;
             ItemID fakeItem = ItemID.FakeItem01;
+            ItemID scanItem = ItemID.NothingScan01;
+            ItemID npcMoney = ItemID.NPCMoney01;
             foreach (Location location in GetUnplacedLocations())
             {
                 switch (location.LocationType)
@@ -306,6 +321,7 @@ namespace LaMulana2Randomizer
                         location.PlaceItem(weight, true);
                         break;
                     }
+                    case LocationType.Dissonance:
                     case LocationType.Chest:
                     {
                         location.PlaceItem(new Item("Weight", chestWeight++, false), true);
@@ -314,6 +330,16 @@ namespace LaMulana2Randomizer
                     case LocationType.FreeStanding:
                     {
                         location.PlaceItem(new Item("Fake Item", fakeItem++, false), true);
+                        break;
+                    }
+                    case LocationType.Mural:
+                    {
+                        location.PlaceItem(new Item("Nothing", scanItem++, false), true);
+                        break;
+                    }
+                    case LocationType.Dialogue:
+                    {
+                        location.PlaceItem(new Item("Money", npcMoney++, false), true);
                         break;
                     }
                     default:
@@ -701,12 +727,16 @@ namespace LaMulana2Randomizer
         {
             if (Settings.RandomGrail == ItemPlacement.Starting)
                 StartingItems.Add(Items.GetAndRemove(ItemID.HolyGrail));
-            if(Settings.RandomScanner == ItemPlacement.Starting && Settings.ShopPlacement != ShopPlacement.Original)
+            if(Settings.RandomScanner == ItemPlacement.Starting)
                 StartingItems.Add(Items.GetAndRemove(ItemID.HandScanner));
-            if (Settings.RandomCodices == ItemPlacement.Starting && Settings.ShopPlacement != ShopPlacement.Original)
+            if (Settings.RandomCodices == ItemPlacement.Starting)
                 StartingItems.Add(Items.GetAndRemove(ItemID.Codices));
-            if (Settings.RandomFDC == ItemPlacement.Starting && Settings.ShopPlacement != ShopPlacement.Original)
+            if (Settings.RandomFDC == ItemPlacement.Starting)
                 StartingItems.Add(Items.GetAndRemove(ItemID.FutureDevelopmentCompany));
+            if(Settings.RandomRing == ItemPlacement.Starting)
+                StartingItems.Add(Items.GetAndRemove(ItemID.Ring));
+            if(Settings.RandomShellHorn == ItemPlacement.Starting)
+                StartingItems.Add(Items.GetAndRemove(ItemID.ShellHorn));
         }
 
         private void PlaceAvailableAtStart(ItemPool items)
@@ -715,12 +745,16 @@ namespace LaMulana2Randomizer
             ItemPool earlyItems = new ItemPool();
             if (Settings.RandomGrail == ItemPlacement.AvailableAtStart)
                 earlyItems.Add(items.GetAndRemove(ItemID.HolyGrail));
-            if (Settings.RandomScanner == ItemPlacement.AvailableAtStart && Settings.ShopPlacement != ShopPlacement.Original)
+            if (Settings.RandomScanner == ItemPlacement.AvailableAtStart)
                 earlyItems.Add(items.GetAndRemove(ItemID.HandScanner));
-            if (Settings.RandomCodices == ItemPlacement.AvailableAtStart && Settings.ShopPlacement != ShopPlacement.Original)
+            if (Settings.RandomCodices == ItemPlacement.AvailableAtStart)
                 earlyItems.Add(items.GetAndRemove(ItemID.Codices));
-            if (Settings.RandomFDC == ItemPlacement.AvailableAtStart && Settings.ShopPlacement != ShopPlacement.Original)
+            if (Settings.RandomFDC == ItemPlacement.AvailableAtStart)
                 earlyItems.Add(items.GetAndRemove(ItemID.FutureDevelopmentCompany));
+            if (Settings.RandomRing == ItemPlacement.AvailableAtStart)
+                earlyItems.Add(items.GetAndRemove(ItemID.Ring));
+            if (Settings.RandomShellHorn == ItemPlacement.AvailableAtStart)
+                earlyItems.Add(items.GetAndRemove(ItemID.ShellHorn));
 
             PlayerState state = PlayerState.GetStateWithItems(this, new ItemPool());
             var locations = state.GetReachableLocations(GetUnplacedLocations());
@@ -836,20 +870,7 @@ namespace LaMulana2Randomizer
 
         private void RandomiseWithoutChecks(ItemPool items)
         {
-            //for the time being place these first since they cant have weights like shops/chests
-            var locations = new List<Location>();
-            locations.AddRange(GetUnplacedLocationsOfType(LocationType.Dialogue));
-            locations.AddRange(GetUnplacedLocationsOfType(LocationType.Mural));
-
-            locations = Shuffle.FisherYates(locations, random);
-            foreach(Location location in locations)
-            {
-                Item item = items.RandomGetAndRemove(random);
-                location.PlaceItem(item, true);
-            }
-
-
-            locations = Shuffle.FisherYates(GetUnplacedLocations(), random);
+            var locations = Shuffle.FisherYates(GetUnplacedLocations(), random);
             while (items.ItemCount > 0)
             {
                 Item item = items.RandomGetAndRemove(random);

@@ -229,6 +229,7 @@ namespace LaMulana2RandomizerShared
         ChestWeight38,
         ChestWeight39,
         ChestWeight40,
+
         FakeItem01,
         FakeItem02,
         FakeItem03,
@@ -268,6 +269,33 @@ namespace LaMulana2RandomizerShared
         FakeItem37,
         FakeItem38,
         FakeItem39,
-        FakeItem40
+        FakeItem40,
+
+        NPCMoney01,
+        NPCMoney02,
+        NPCMoney03,
+        NPCMoney04,
+        NPCMoney05,
+        NPCMoney06,
+        NPCMoney07,
+        NPCMoney08,
+        NPCMoney09,
+        NPCMoney10,
+
+        NothingScan01,
+        NothingScan02,
+        NothingScan03,
+        NothingScan04,
+        NothingScan05,
+        NothingScan06,
+        NothingScan07,
+        NothingScan08,
+        NothingScan09,
+        NothingScan10,
+        NothingScan11,
+        NothingScan12,
+        NothingScan13,
+        NothingScan14,
+        NothingScan15
     }
 }

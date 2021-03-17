@@ -102,6 +102,10 @@ namespace LM2RandomiserMod.Patches
                             else if (data >= 3) MessString[0] = "Shield3";
                         }
                     }
+                    else if (MessString[0].Contains("Research"))
+                    {
+                        MessString[0] = "Research";
+                    }
                     con.Icon.sprite = L2Math.Load("Textures/icons_itemmenu", MessString[0]);
                 }
                 string str;
@@ -141,8 +145,15 @@ namespace LM2RandomiserMod.Patches
                 {
                     con.Icon.gameObject.SetActive(false);
                     str = sys.getMojiText(true, "system", "itemDialog1", mojiScriptType.system);
-                    string mojiName = MessString[0].Equals("Mantra10") ? "mantra1stM10" : "mantra1stM" + MessString[0].Substring(6, 1);
+                    string mojiName = "mantra1stM" + MessString[0].Substring(6);
                     str2 = sys.getMojiText(false, "menu", mojiName, mojiScriptType.system);
+                    str3 = sys.getMojiText(true, "system", "itemDialog2", mojiScriptType.system);
+                }
+                else if (MessString[0].Equals("Nothing"))
+                {
+                    con.Icon.gameObject.SetActive(false);
+                    str = sys.getMojiText(true, "system", "itemDialog1", mojiScriptType.system);
+                    str2 = "Nothing";
                     str3 = sys.getMojiText(true, "system", "itemDialog2", mojiScriptType.system);
                 }
                 else

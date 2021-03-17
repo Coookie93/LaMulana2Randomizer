@@ -73,6 +73,12 @@ namespace LaMulana2Randomizer
             set => Set(ref randomRing, value);
         }
 
+        private ItemPlacement randomShellHorn;
+        public ItemPlacement RandomShellHorn {
+            get => randomShellHorn;
+            set => Set(ref randomShellHorn, value);
+        }
+
         private bool randomResearch;
         public bool RandomResearch {
             get => randomResearch;
@@ -114,6 +120,9 @@ namespace LaMulana2Randomizer
                 Set(ref shopPlacement, value);
                 if (value == ShopPlacement.Original)
                 {
+                    RandomScanner = ItemPlacement.Random;
+                    RandomFDC = ItemPlacement.Random;
+                    RandomCodices = ItemPlacement.Random;
                     FDCForBacksides = false;
                 }
             }
@@ -532,12 +541,6 @@ namespace LaMulana2Randomizer
             set => Set(ref startingWeights, value);
         }
 
-        private bool alwaysShellHorn;
-        public bool AlwaysShellHorn {
-            get => alwaysShellHorn;
-            set => Set(ref alwaysShellHorn, value);
-        }
-
         private ChestColour itemChestColour;
         public ChestColour ItemChestColour {
             get => itemChestColour;
@@ -566,6 +569,8 @@ namespace LaMulana2Randomizer
             randomScanner = ItemPlacement.Random;
             randomCodices = ItemPlacement.Random;
             randomFDC = ItemPlacement.Random;
+            randomRing = ItemPlacement.Random;
+            randomShellHorn = ItemPlacement.Random;
             randomResearch = false;
             mantraPlacement = MantraPlacement.Original;
             shopPlacement = ShopPlacement.Original;
@@ -618,8 +623,6 @@ namespace LaMulana2Randomizer
             fastCorridor = false;
             startingMoney = 0;
             startingWeights = 0;
-
-            alwaysShellHorn = false;
 
             itemChestColour = ChestColour.Blue;
             weightChestColour = ChestColour.Blue;

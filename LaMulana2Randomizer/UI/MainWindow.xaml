@@ -71,24 +71,60 @@
                                     <RadioButton Content="Starting Item" IsChecked="{Binding Settings.RandomFDC, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ItemPlacement.Starting}}"/>
                                     <RadioButton Content="Available at start" IsChecked="{Binding Settings.RandomFDC, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ItemPlacement.AvailableAtStart}}"/>
                                     <RadioButton Content="Random" IsChecked="{Binding Settings.RandomFDC, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ItemPlacement.Random}}"/>
+                                    <StackPanel.Style>
+                                        <Style TargetType="StackPanel">
+                                            <Setter Property="IsEnabled" Value="True"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=OriginalShopCheck, Path=IsChecked}" Value="True">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Style>
                                 </StackPanel>
                                 <StackPanel Grid.Row="1" Grid.Column="1" Margin="2">
                                     <TextBlock Text="Hand Scanner" FontSize="16"/>
                                     <RadioButton Content="Starting Item" IsChecked="{Binding Settings.RandomScanner, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ItemPlacement.Starting}}"/>
                                     <RadioButton Content="Available at start" IsChecked="{Binding Settings.RandomScanner, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ItemPlacement.AvailableAtStart}}"/>
                                     <RadioButton Content="Random" IsChecked="{Binding Settings.RandomScanner, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ItemPlacement.Random}}"/>
+                                    <StackPanel.Style>
+                                        <Style TargetType="StackPanel">
+                                            <Setter Property="IsEnabled" Value="True"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=OriginalShopCheck, Path=IsChecked}" Value="True">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Style>
                                 </StackPanel>
                                 <StackPanel Grid.Row="1" Grid.Column="0" Margin="2,2,5,2">
                                     <TextBlock Text="Codices" FontSize="16"/>
                                     <RadioButton Content="Starting Item" IsChecked="{Binding Settings.RandomCodices, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ItemPlacement.Starting}}"/>
                                     <RadioButton Content="Available at start" IsChecked="{Binding Settings.RandomCodices, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ItemPlacement.AvailableAtStart}}"/>
                                     <RadioButton Content="Random" IsChecked="{Binding Settings.RandomCodices, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ItemPlacement.Random}}"/>
+                                    <StackPanel.Style>
+                                        <Style TargetType="StackPanel">
+                                            <Setter Property="IsEnabled" Value="True"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=OriginalShopCheck, Path=IsChecked}" Value="True">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Style>
                                 </StackPanel>
                                 <StackPanel Grid.Row="2" Grid.Column="0" Margin="2,2,5,2">
                                     <TextBlock Text="Ring" FontSize="16"/>
                                     <RadioButton Content="Starting Item" IsChecked="{Binding Settings.RandomRing, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ItemPlacement.Starting}}"/>
                                     <RadioButton Content="Available at start" IsChecked="{Binding Settings.RandomRing, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ItemPlacement.AvailableAtStart}}"/>
                                     <RadioButton Content="Random" IsChecked="{Binding Settings.RandomRing, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ItemPlacement.Random}}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="2" Grid.Column="1" Margin="2,2,5,2">
+                                    <TextBlock Text="Shell Horn" FontSize="16"/>
+                                    <RadioButton Content="Starting Item" IsChecked="{Binding Settings.RandomShellHorn, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ItemPlacement.Starting}}"/>
+                                    <RadioButton Content="Available at start" IsChecked="{Binding Settings.RandomShellHorn, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ItemPlacement.AvailableAtStart}}"/>
+                                    <RadioButton Content="Random" IsChecked="{Binding Settings.RandomShellHorn, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ItemPlacement.Random}}"/>
                                 </StackPanel>
                                 <Grid.ToolTip>
                                     <ToolTip Style="{StaticResource TootltipStyle}">
@@ -126,9 +162,9 @@
                             </GroupBox>
                             <GroupBox Header="Shops">
                                 <StackPanel Margin="5">
-                                    <RadioButton Content="Randomised" IsChecked="{Binding Settings.ShopPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ShopPlacement.Random}}"/>
-                                    <RadioButton Content="At least one item" IsChecked="{Binding Settings.ShopPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ShopPlacement.AtLeastOne}}"/>
-                                    <RadioButton Content="Original Items" IsChecked="{Binding Settings.ShopPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ShopPlacement.Original}}"/>
+                                    <RadioButton Name="RandomShopCheck" Content="Randomised" IsChecked="{Binding Settings.ShopPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ShopPlacement.Random}}"/>
+                                    <RadioButton Name="OnlyOneShopCheck" Content="At least one item" IsChecked="{Binding Settings.ShopPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ShopPlacement.AtLeastOne}}"/>
+                                    <RadioButton Name="OriginalShopCheck" Content="Original Items" IsChecked="{Binding Settings.ShopPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ShopPlacement.Original}}"/>
                                     <StackPanel.ToolTip>
                                         <ToolTip Style="{StaticResource TootltipStyle}">
                                             <StackPanel>
@@ -143,7 +179,7 @@
                                     </StackPanel.ToolTip>
                                 </StackPanel>
                             </GroupBox>
-                            <GroupBox Header="Research">
+                            <GroupBox Header="Research Notes">
                                 <StackPanel>
                                     <CheckBox Name="ResearchCheck" Content="Randomised" IsChecked="{Binding Settings.RandomResearch}" Margin="0,2">
                                         <CheckBox.ToolTip>
@@ -152,7 +188,7 @@
                                             </ToolTip>
                                         </CheckBox.ToolTip>
                                     </CheckBox>
-                                    <CheckBox Name="RemoveResearchCheck" IsChecked="{Binding Settings.RemoveResearch}" Content="Remove Research Items" Margin="20,2,2,2">
+                                    <CheckBox Name="RemoveResearchCheck" IsChecked="{Binding Settings.RemoveResearch}" Content="Remove Research Notes" Margin="20,2,2,2">
                                         <CheckBox.ToolTip>
                                             <ToolTip Style="{StaticResource TootltipStyle}">
                                                 <TextBlock Text="Removes the reasearch items from the pool but items can still be placed at research locations." />
@@ -180,7 +216,7 @@
                                             </ToolTip>
                                         </CheckBox.ToolTip>
                                     </CheckBox>
-                                    <CheckBox Name="RemoveSkullsCheck" Content="Remove Excess Skull" IsChecked="{Binding Settings.RemoveSkulls}" Margin="0,2">
+                                    <CheckBox Name="RemoveSkullsCheck" Content="Remove Excess Skulls" IsChecked="{Binding Settings.RemoveSkulls}" Margin="0,2">
                                         <CheckBox.ToolTip>
                                             <ToolTip Style="{StaticResource TootltipStyle}">
                                                 <TextBlock Text="Removes any excess skulls if the amount required for Nibiru dissonace has been changed."/>
@@ -539,7 +575,7 @@
                             </CheckBox>
                             <StackPanel.ToolTip>
                                 <ToolTip Style="{StaticResource TootltipStyle}">
-                                    <TextBlock Text="." />
+                                    <TextBlock Text="If one area is selected it will be the starting area, if more than one area is selected the starting area will be randomly chosen from them." />
                                 </ToolTip>
                             </StackPanel.ToolTip>
                         </StackPanel>
@@ -556,7 +592,7 @@
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
-                    <GroupBox Header="Qaulity of Life" Grid.Row="0" Grid.Column="0">
+                    <GroupBox Header="Qaulity of Life" Grid.Row="0" Grid.ColumnSpan="2">
                         <StackPanel >
                             <CheckBox Name="AutoScanCheck" IsChecked="{Binding Settings.AutoScanTablets}" Content="Auto-scan Holy Tablets" Margin="2">
                                 <CheckBox.ToolTip>
@@ -609,17 +645,6 @@
                                     </ToolTip>
                                 </StackPanel.ToolTip>
                             </StackPanel>
-                        </StackPanel>
-                    </GroupBox>
-                    <GroupBox Header="Other" Grid.Row="0" Grid.Column="1">
-                        <StackPanel >
-                            <CheckBox Name="AlwaysShellHornCheck" IsChecked="{Binding Settings.AlwaysShellHorn}" Content="Always Play Shell Horn Sound" Margin="2">
-                                <CheckBox.ToolTip>
-                                    <ToolTip Style="{StaticResource TootltipStyle}">
-                                        <TextBlock Text="Always plays the Shell Horn sound when you solve a puzzle." />
-                                    </ToolTip>
-                                </CheckBox.ToolTip>
-                            </CheckBox>
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Header="Item Chest Colour" Grid.Row="1" Grid.Column="0">

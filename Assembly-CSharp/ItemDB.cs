@@ -78,8 +78,8 @@ namespace LM2RandomiserMod
             {ItemID.EasternEurope,              new ItemInfo("Eastern Europe",   "Eastern Europe",    "fashion",     2,     60,       0,    1)},
                                                                                                                                            
             {ItemID.Whip1,                      new ItemInfo("Whip1",            "Whip1",             "weapon",      2,     190,      5,    1)},
-            {ItemID.Whip2,                      new ItemInfo("Whip2",            "Whip2",             "weapon",      2,     189,      5,    1)},
-            {ItemID.Whip3,                      new ItemInfo("Whip3",            "Whip3",             "weapon",      2,     188,      5,    1)},
+            {ItemID.Whip2,                      new ItemInfo("Whip2",            "Whip2",             "weapon",      2,     191,      5,    1)},
+            {ItemID.Whip3,                      new ItemInfo("Whip3",            "Whip3",             "weapon",      2,     192,      5,    1)},
                                                                                                                                            
             {ItemID.Knife,                      new ItemInfo("Knife",            "Knife",             "weapon",      2,     63,      10,    1)},
             {ItemID.Rapier,                     new ItemInfo("Rapier",           "Rapier",            "weapon",      2,     64,      10,    1)},
@@ -94,9 +94,9 @@ namespace LM2RandomiserMod
             {ItemID.Caltrops,                   new ItemInfo("Caltrops",         "Caltrops",          "weapon",      2,     73,       5,    1)},
             {ItemID.Pistol,                     new ItemInfo("Pistol",           "Pistol",            "weapon",      2,     74,      20,    1)},
                                                                                                                                            
-            {ItemID.Shield1,                    new ItemInfo("Shield1",          "Shield1",           "weapon",      2,     187,      5,    1)},
-            {ItemID.Shield2,                    new ItemInfo("Shield2",          "Shield2",           "weapon",      2,     186,      5,    1)},
-            {ItemID.Shield3,                    new ItemInfo("Shield3",          "Shield3",           "weapon",      2,     185,      5,    1)},
+            {ItemID.Shield1,                    new ItemInfo("Shield1",          "Shield1",           "weapon",      2,     193,      5,    1)},
+            {ItemID.Shield2,                    new ItemInfo("Shield2",          "Shield2",           "weapon",      2,     194,      5,    1)},
+            {ItemID.Shield3,                    new ItemInfo("Shield3",          "Shield3",           "weapon",      2,     195,      5,    1)},
                                                                                                                                            
             {ItemID.AnkhJewel,                  new ItemInfo("Ankh Jewel",       "Ankh Jewel",        "weapon",      2,     76,       5,    1)},
                                                                                                                                           
@@ -201,16 +201,16 @@ namespace LM2RandomiserMod
             {ItemID.PistolAmmo,                 new ItemInfo("Pistol-b",         "Pistol-b",          "weapon",     -1,      -1,     40,    1,     3)},
             {ItemID.Weights,                    new ItemInfo("Weight",           "Weight",            "item",       -1,      -1,      1,    5)},
 
-            {ItemID.Research1,                  new ItemInfo("Research",         "Research",          "soft",        6,      43,      5,    1)},
-            {ItemID.Research2,                  new ItemInfo("Research",         "Research",          "soft",        8,      45,      5,    1)},
-            {ItemID.Research3,                  new ItemInfo("Research",         "Research",          "soft",        7,      78,      5,    1)},
-            {ItemID.Research4,                  new ItemInfo("Research",         "Research",          "soft",        7,      79,      5,    1)},
-            {ItemID.Research5,                  new ItemInfo("Research",         "Research",          "soft",        7,      80,      5,    1)},
-            {ItemID.Research6,                  new ItemInfo("Research",         "Research",          "soft",        7,      81,      5,    1)},
-            {ItemID.Research7,                  new ItemInfo("Research",         "Research",          "soft",        7,      83,      5,    1)},
-            {ItemID.Research8,                  new ItemInfo("Research",         "Research",          "soft",        7,      85,      5,    1)},
-            {ItemID.Research9,                  new ItemInfo("Research",         "Research",          "soft",        7,      86,      5,    1)},
-            {ItemID.Research10,                 new ItemInfo("Research",         "Research",          "soft",       15,      44,      5,    1)},
+            {ItemID.Research1,                  new ItemInfo("Research1",        "Research1",         "soft",        2,      180,      5,    1)},
+            {ItemID.Research2,                  new ItemInfo("Research2",        "Research2",         "soft",        2,      181,      5,    1)},
+            {ItemID.Research3,                  new ItemInfo("Research3",        "Research3",         "soft",        2,      182,      5,    1)},
+            {ItemID.Research4,                  new ItemInfo("Research4",        "Research4",         "soft",        2,      183,      5,    1)},
+            {ItemID.Research5,                  new ItemInfo("Research5",        "Research5",         "soft",        2,      184,      5,    1)},
+            {ItemID.Research6,                  new ItemInfo("Research6",        "Research6",         "soft",        2,      185,      5,    1)},
+            {ItemID.Research7,                  new ItemInfo("Research7",        "Research7",         "soft",        2,      186,      5,    1)},
+            {ItemID.Research8,                  new ItemInfo("Research8",        "Research8",         "soft",        2,      187,      5,    1)},
+            {ItemID.Research9,                  new ItemInfo("Research9",        "Research9",         "soft",        2,      188,      5,    1)},
+            {ItemID.Research10,                 new ItemInfo("Research10",       "Research10",        "soft",        2,      189,      5,    1)},
 
             {ItemID.ChestWeight01,              new ItemInfo("Weight",           "Weight",            "item",       31,       0,      0,     1)},
             {ItemID.ChestWeight02,              new ItemInfo("Weight",           "Weight",            "item",       31,       1,      0,     1)},
@@ -293,8 +293,34 @@ namespace LM2RandomiserMod
             {ItemID.FakeItem38,                 new ItemInfo("Fake",             "Fake",              "item",       31,      77,      0,     1)},
             {ItemID.FakeItem39,                 new ItemInfo("Fake",             "Fake",              "item",       31,      78,      0,     1)},
             {ItemID.FakeItem40,                 new ItemInfo("Fake",             "Fake",              "item",       31,      79,      0,     1)},
-        };                                                                                                               
 
+            {ItemID.NPCMoney01,                 new ItemInfo("Money",            "Money",             "item",       31,      80,      0,     1)},
+            {ItemID.NPCMoney02,                 new ItemInfo("Money",            "Money",             "item",       31,      81,      0,     1)},
+            {ItemID.NPCMoney03,                 new ItemInfo("Money",            "Money",             "item",       31,      82,      0,     1)},
+            {ItemID.NPCMoney04,                 new ItemInfo("Money",            "Money",             "item",       31,      83,      0,     1)},
+            {ItemID.NPCMoney05,                 new ItemInfo("Money",            "Money",             "item",       31,      84,      0,     1)},
+            {ItemID.NPCMoney06,                 new ItemInfo("Money",            "Money",             "item",       31,      85,      0,     1)},
+            {ItemID.NPCMoney07,                 new ItemInfo("Money",            "Money",             "item",       31,      86,      0,     1)},
+            {ItemID.NPCMoney08,                 new ItemInfo("Money",            "Money",             "item",       31,      87,      0,     1)},
+            {ItemID.NPCMoney09,                 new ItemInfo("Money",            "Money",             "item",       31,      88,      0,     1)},
+            {ItemID.NPCMoney10,                 new ItemInfo("Money",            "Money",             "item",       31,      89,      0,     1)},
+
+            {ItemID.NothingScan01,              new ItemInfo("Nothing",          "Nothing",           "item",       31,      90,      0,     1)},
+            {ItemID.NothingScan02,              new ItemInfo("Nothing",          "Nothing",           "item",       31,      91,      0,     1)},
+            {ItemID.NothingScan03,              new ItemInfo("Nothing",          "Nothing",           "item",       31,      92,      0,     1)},
+            {ItemID.NothingScan04,              new ItemInfo("Nothing",          "Nothing",           "item",       31,      93,      0,     1)},
+            {ItemID.NothingScan05,              new ItemInfo("Nothing",          "Nothing",           "item",       31,      94,      0,     1)},
+            {ItemID.NothingScan06,              new ItemInfo("Nothing",          "Nothing",           "item",       31,      95,      0,     1)},
+            {ItemID.NothingScan07,              new ItemInfo("Nothing",          "Nothing",           "item",       31,      96,      0,     1)},
+            {ItemID.NothingScan08,              new ItemInfo("Nothing",          "Nothing",           "item",       31,      97,      0,     1)},
+            {ItemID.NothingScan09,              new ItemInfo("Nothing",          "Nothing",           "item",       31,      98,      0,     1)},
+            {ItemID.NothingScan10,              new ItemInfo("Nothing",          "Nothing",           "item",       31,      99,      0,     1)},
+            {ItemID.NothingScan11,              new ItemInfo("Nothing",          "Nothing",           "item",       31,      100,     0,     1)},
+            {ItemID.NothingScan12,              new ItemInfo("Nothing",          "Nothing",           "item",       31,      101,     0,     1)},
+            {ItemID.NothingScan13,              new ItemInfo("Nothing",          "Nothing",           "item",       31,      102,     0,     1)},
+            {ItemID.NothingScan14,              new ItemInfo("Nothing",          "Nothing",           "item",       31,      103,     0,     1)},
+            {ItemID.NothingScan15,              new ItemInfo("Nothing",          "Nothing",           "item",       31,      104,     0,     1)},
+        }; 
     }
 
     public class ItemInfo

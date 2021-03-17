@@ -236,7 +236,6 @@ namespace LaMulana2Randomizer.Utils
                     br.Write(randomiser.Settings.FastCorridor);
                     br.Write(randomiser.Settings.StartingMoney);
                     br.Write(randomiser.Settings.StartingWeights);
-                    br.Write(randomiser.Settings.AlwaysShellHorn);
                     br.Write((int)randomiser.Settings.ItemChestColour);
                     br.Write((int)randomiser.Settings.WeightChestColour);
 

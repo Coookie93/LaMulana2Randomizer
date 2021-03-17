@@ -38,20 +38,18 @@ namespace LM2RandomiserMod.Patches
 			int num2 = SeetNametoNo("02Items");
 			int num3 = SeetNametoNo("00system");
 			if (num2 < 0)
-			{
 				return;
-			}
 
 			if (!direct)
 			{
-				if(item_name.Contains("Whip"))
+				if (item_name.Contains("Whip"))
 				{
 					if (item_name == "Whip1")
 						setFlagData(num2, 190, 1);
 					else if (item_name == "Whip2")
-						setFlagData(num2, 189, 1);
+						setFlagData(num2, 191, 1);
 					else if (item_name == "Whip3")
-						setFlagData(num2, 188, 1);
+						setFlagData(num2, 192, 1);
 
 					short data = 0;
 					getFlag(2, "Whip", ref data);
@@ -60,18 +58,41 @@ namespace LM2RandomiserMod.Patches
 				else if (item_name.Contains("Shield"))
 				{
 					if (item_name == "Shield1")
-						setFlagData(num2, 187, 1);
+						setFlagData(num2, 193, 1);
 					else if (item_name == "Shield2")
-						setFlagData(num2, 186, 1);
+						setFlagData(num2, 194, 1);
 					else if (item_name == "Shield3")
-						setFlagData(num2, 185, 1);
+						setFlagData(num2, 195, 1);
 
 					short data = 0;
-					getFlag(2, 184, ref data);
+					getFlag(2, 196, ref data);
 					value = data + 1;
-					setFlagData(num2, 184, (short)(data + 1));
+					setFlagData(num2, 196, (short)(data + 1));
 				}
-				else if (item_name == "Lamp")
+				else if (item_name.Contains("Research"))
+				{
+					if (item_name == "Research1")
+						setFlagData(num2, 180, 1);
+					else if (item_name == "Research2")
+						setFlagData(num2, 181, 1);
+					else if (item_name == "Research3")
+						setFlagData(num2, 182, 1);
+					else if (item_name == "Research4")
+						setFlagData(num2, 183, 1);
+					else if (item_name == "Research5")
+						setFlagData(num2, 184, 1);
+					else if (item_name == "Research6")
+						setFlagData(num2, 185, 1);
+					else if (item_name == "Research7")
+						setFlagData(num2, 186, 1);
+					else if (item_name == "Research8")
+						setFlagData(num2, 187, 1);
+					else if (item_name == "Research9")
+						setFlagData(num2, 188, 1);
+					else if (item_name == "Research10")
+						setFlagData(num2, 189, 1);
+				}
+				else if (item_name.Equals("Lamp"))
 				{
 					value = 2;
 				}
@@ -111,62 +132,50 @@ namespace LM2RandomiserMod.Patches
 				if (value == 1) item_name = "Shield";
 				else if (value == 2) item_name = "Shield2";
 				else if (value == 3) item_name = "Shield3";
-				setFlagData(num2, "Shield", (short)value); 
+				setFlagData(num2, "Shield", (short)value);
 			}
-			if (value == 0)
+			else if (item_name.Contains("Research"))
 			{
-				return;
+				item_name = "Research";
 			}
+
+			if (value == 0)
+				return;
+
 			if (item_name == "Weight")
 			{
 				if (direct)
-				{
 					playerst.setWait(value);
-				}
 				else
-				{
 					playerst.addWait(value);
-				}
 				return;
 			}
-			if (item_name == "Gold Bangle")
+			else if (item_name == "Gold Bangle")
 			{
 				playerst.setMaxCoin(2000);
 				playerst.setCoin(playerst.getCoin());
 			}
-			if (item_name == "Gold")
+			else if (item_name == "Gold")
 			{
 				if (direct)
-				{
 					playerst.setCoin(value);
-				}
 				else
-				{
 					playerst.addCoin(value);
-				}
 				return;
 			}
-			if (item_name == "Soul")
+			else if (item_name == "Soul")
 			{
 				if (direct)
-				{
 					playerst.setExp(value);
-				}
 				else
-				{
 					playerst.addExp(value);
-				}
 			}
 			else if (item_name == "Sacred Orb")
 			{
 				if (direct)
-				{
 					playerst.setPLayerLevel(value);
-				}
 				else
-				{
 					playerst.setPLayerLevel(playerst.getPlayerLevel() + 1);
-				}
 			}
 			else
 			{
@@ -389,29 +398,69 @@ namespace LM2RandomiserMod.Patches
             {
                 getFlag(SeetNametoNo("00system"), "A_Jewel", ref num);
             }
-            else if (name == "Whip1")
-            {
-                getFlag(seet, 190, ref num);
-            }
-			else if (name == "Whip2")
+			else if (name.Equals("Research1"))
 			{
-				getFlag(seet, 189, ref num);
+				getFlag(seet, 180, ref num);
 			}
-			else if (name == "Whip3")
+			else if (name.Equals("Research2"))
 			{
-				getFlag(seet, 188, ref num);
+				getFlag(seet, 181, ref num);
 			}
-			else if (name == "Shield1")
-            {
-				getFlag(seet, 187, ref num);
+			else if (name.Equals("Research3"))
+			{
+				getFlag(seet, 182, ref num);
 			}
-			else if (name == "Shield2")
+			else if (name.Equals("Research4"))
+			{
+				getFlag(seet, 183, ref num);
+			}
+			else if (name.Equals("Research5"))
+			{
+				getFlag(seet, 184, ref num);
+			}
+			else if (name.Equals("Research6"))
+			{
+				getFlag(seet, 185, ref num);
+			}
+			else if (name.Equals("Research7"))
 			{
 				getFlag(seet, 186, ref num);
 			}
-			else if (name == "Shield3")
+			else if (name.Equals("Research8"))
 			{
-				getFlag(seet, 185, ref num);
+				getFlag(seet, 187, ref num);
+			}
+			else if (name.Equals("Research9"))
+			{
+				getFlag(seet, 188, ref num);
+			}
+			else if (name.Equals("Research10"))
+			{
+				getFlag(seet, 189, ref num);
+			}
+			else if (name.Equals("Whip1"))
+			{
+				getFlag(seet, 190, ref num);
+			}
+			else if (name.Equals("Whip2"))
+			{
+				getFlag(seet, 191, ref num);
+			}
+			else if (name.Equals("Whip3"))
+			{
+				getFlag(seet, 192, ref num);
+			}
+			else if (name.Equals("Shield1"))
+			{
+				getFlag(seet, 193, ref num);
+			}
+			else if (name.Equals("Shield2"))
+			{
+				getFlag(seet, 194, ref num);
+			}
+			else if (name.Equals("Shield3"))
+			{
+				getFlag(seet, 195, ref num);
 			}
 			else
             {
@@ -435,38 +484,88 @@ namespace LM2RandomiserMod.Patches
 			{
 				return playerst.getWait();
 			}
-			if (item_name == "Gold")
+			else if (item_name == "Gold")
 			{
 				return playerst.getCoin();
 			}
-			if (item_name == "Whip1")
+			else if (item_name.Equals("Research1"))
 			{
-				getFlag(num2, 190, ref num);
+				getFlag(num2, 180, ref num);
 				return num;
 			}
-			else if (item_name == "Whip2")
+			else if (item_name.Equals("Research2"))
 			{
-				getFlag(num2, 189, ref num);
+				getFlag(num2, 181, ref num);
 				return num;
 			}
-			else if (item_name == "Whip3")
+			else if (item_name.Equals("Research3"))
 			{
-				getFlag(num2, 188, ref num);
+				getFlag(num2, 182, ref num);
 				return num;
 			}
-			else if (item_name == "Shield1")
+			else if (item_name.Equals("Research4"))
 			{
-				getFlag(num2, 187, ref num);
+				getFlag(num2, 183, ref num);
 				return num;
 			}
-			else if (item_name == "Shield2")
+			else if (item_name.Equals("Research5"))
+			{
+				getFlag(num2, 184, ref num);
+				return num;
+			}
+			else if (item_name.Equals("Research6"))
+			{
+				getFlag(num2, 185, ref num);
+				return num;
+			}
+			else if (item_name.Equals("Research7"))
 			{
 				getFlag(num2, 186, ref num);
 				return num;
 			}
-			else if (item_name == "Shield3")
+			else if (item_name.Equals("Research8"))
 			{
-				getFlag(num2, 185, ref num);
+				getFlag(num2, 187, ref num);
+				return num;
+			}
+			else if (item_name.Equals("Research9"))
+			{
+				getFlag(num2, 188, ref num);
+				return num;
+			}
+			else if (item_name.Equals("Research10"))
+			{
+				getFlag(num2, 189, ref num);
+				return num;
+			}
+			else if (item_name.Equals("Whip1"))
+			{
+				getFlag(num2, 190, ref num);
+				return num;
+			}
+			else if (item_name.Equals("Whip2"))
+			{
+				getFlag(num2, 191, ref num);
+				return num;
+			}
+			else if (item_name.Equals("Whip3"))
+			{
+				getFlag(num2, 192, ref num);
+				return num;
+			}
+			else if (item_name.Equals("Shield1"))
+			{
+				getFlag(num2, 193, ref num);
+				return num;
+			}
+			else if (item_name.Equals("Shield2"))
+			{
+				getFlag(num2, 194, ref num);
+				return num;
+			}
+			else if (item_name.Equals("Shield3"))
+			{
+				getFlag(num2, 195, ref num);
 				return num;
 			}
 			else if (item_name == "MSX")

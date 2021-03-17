@@ -7,6 +7,21 @@ using LaMulana2RandomizerShared;
 
 namespace LaMulana2Randomizer
 {
+    public enum LocationType
+    {
+        Chest,
+        FreeStanding,
+        Shop,
+        Dialogue,
+        Mural,
+        Miniboss,
+        Guardian,
+        FinalBoss,
+        Puzzle,
+        Dissonance,
+        Fairy
+    }
+
     public class JsonLocation
     {
         public string Name;
@@ -21,20 +36,18 @@ namespace LaMulana2Randomizer
 
     public class Location
     {
-        public string Name { get; private set; }
-        public LocationType LocationType { get; private set; }
-        public Item Item { get; private set; }
-        public LocationID ID { get; private set; }
-
-        public AreaID ParentAreaID { get; private set; }
-        //public string ParentAreaName { get; private set; }
-        public BinaryNode LogicTree { get; private set; }
-
         public bool IsLocked = false;
         public bool RandomPlacement = false;
 
         private string logicString;
-        private readonly string hardLogicString;
+        private string hardLogicString;
+        private BinaryNode logicTree;
+
+        public string Name { get; private set; }
+        public LocationType LocationType { get; private set; }
+        public Item Item { get; private set; }
+        public LocationID ID { get; private set; }
+        public AreaID ParentAreaID { get; private set; }
 
         public Location(string name, LocationID id, LocationType locationType, string logic, AreaID parentAreaID)
         {
@@ -59,7 +72,12 @@ namespace LaMulana2Randomizer
 
         public bool CanReach(PlayerState state)
         {
-            return LogicTree.Evaluate(state) && state.CanReach(ParentAreaID);
+            return logicTree.Evaluate(state) && state.CanReach(ParentAreaID);
+        }
+
+        public bool CanCollect(PlayerState state)
+        {
+            return logicTree.Evaluate(state);
         }
 
         public void UseHardLogic()
@@ -73,29 +91,14 @@ namespace LaMulana2Randomizer
             RandomPlacement = randomPlacement;
         }
 
-        public void AppendLogicString(string append)
+        public void AppendLogicString(string str)
         {
-            logicString = string.Format($"({logicString}){append}");
+            logicString = string.Format($"({logicString}) {str}");
         }
 
         public void BuildLogicTree()
         {
-            LogicTree = LogicParsing.LogicTree.ParseAndBuildLogic(logicString);
+            logicTree = LogicTree.ParseAndBuildLogic(logicString);
         }
-    }
-
-    public enum LocationType
-    {
-        Chest,
-        FreeStanding,
-        Shop,
-        Dialogue,
-        Mural,
-        Miniboss,
-        Guardian,
-        FinalBoss,
-        Puzzle,
-        Dissonance,
-        Fairy
     }
 }

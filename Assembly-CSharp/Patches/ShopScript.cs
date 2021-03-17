@@ -56,6 +56,10 @@ namespace LM2RandomiserMod.Patches
             {
                 name = "Map";
             }
+            else if (name.Contains("Research"))
+            {
+                name = "Research";
+            }
             item_id[item_copunter] = name;
             
             if (name.Contains("Mantra") && !name.Equals("Mantra"))
@@ -106,7 +110,7 @@ namespace LM2RandomiserMod.Patches
                 else if (name.Contains("Shield"))
                 {
                     short data = 0;
-                    sys.getFlag(2, 184, ref data);
+                    sys.getFlag(2, 196, ref data);
                     if(data == 0)
                     {
                         name = "Shield";
