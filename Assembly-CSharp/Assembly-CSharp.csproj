@@ -57,9 +57,6 @@
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
-    <Reference Include="LaMulana2RandomizerShared">
-      <HintPath>..\LM2RandomiserShared\bin\Release\LaMulana2RandomizerShared.dll</HintPath>
-    </Reference>
     <Reference Include="Mono.Cecil, Version=0.10.0.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\LaMulana2Randomizer\Monomod\Mono.Cecil.dll</HintPath>
@@ -155,6 +152,12 @@
     <Compile Include="Patches\Status.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Patches\ShopScript.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LM2RandomiserShared\LaMulana2RandomizerShared.csproj">
+      <Project>{9f97eb8e-6dce-4f97-a1a6-5d0f354f581b}</Project>
+      <Name>LaMulana2RandomizerShared</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
