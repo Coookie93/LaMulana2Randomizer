@@ -18,7 +18,7 @@ Before playing a run it is best to head over to https://github.com/Coookie93/LaM
 4. Replace current LaMulana2Randomizer folder with the newer version.
 5. Copy all the files from the LaMulana2Randomizer/Monomod folder to the LaMulana2_Data/Managed folder
 6. Now in the LaMulana2_Data/Managed folde, drag the Assembly-CSharp.dll onto monomod.exe
-7. Make a backup of Assembly-CSharp.ddl eg. rename to Assembly-CSharp.ddl.backup
+7. Make a backup of Assembly-CSharp.ddl eg. create an `Original` folder inside `LaMulana2_Data/Managed` and place the file in there.
 8. Rename the MONOMODDED_Assembly-CSharp.dll file to Assembly-CSharp.dll
 9. Copy old seeds into the seed folder if that is applicable.
 
@@ -29,4 +29,6 @@ Use Steam's file verification and it will redownload the original Assembly-CShar
 2. Remove Assembley-CSharp.mm.dll and all monomod related files from the LaMulana2_Data/Managed folder
 
 ## Compiling:
-The randomisation application should compile fine, for the patch dll you will have to correct the missing references to the Unity dlls, TextMeshPro dll and the games Assembly-CSharp dll as these can't be distributed with the source code.
+The randomisation application should compile fine.
+
+The patch library will require both installing La-Mulana 2 and setting the system environment variable `LAMULANA2PATH` before building. Set the variable to where La-Mulana 2 is installed. Refer to [How to change Environment Variables on Windows 10](https://www.architectryan.com/2018/08/31/how-to-change-environment-variables-on-windows-10/) for additional information. Make sure the environment variable is set before launching Visual Studio.
