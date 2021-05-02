@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.29403.142
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaMulana2Randomizer", "LaMulana2Randomizer\LaMulana2Randomizer.csproj", "{40078A86-30B5-410D-9691-EC207662AE2D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{34400CB6-0827-46B4-801D-CA281FFACD2E} = {34400CB6-0827-46B4-801D-CA281FFACD2E}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp\Assembly-CSharp.csproj", "{34400CB6-0827-46B4-801D-CA281FFACD2E}"
 EndProject

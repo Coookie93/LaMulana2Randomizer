@@ -160,7 +160,6 @@
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>xcopy /f /y "$(TargetPath)" "$(SolutionDir)LaMulana2Randomizer\Monomod"</PostBuildEvent>
   </PropertyGroup>
 </Project>
