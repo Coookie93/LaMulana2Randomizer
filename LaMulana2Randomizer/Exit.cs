@@ -14,12 +14,12 @@ namespace LaMulana2Randomizer
         OneWay,
         Pyramid,
         Corridor,
-        CorridorSealed,
         Internal,
         PrisonExit,
         PrisonGate,
         Start,
-        Unique
+        Elevator,
+        SpiralGate
     }
 
     public class JsonExit
@@ -50,10 +50,11 @@ namespace LaMulana2Randomizer
                     ID == ExitID.f13GateP0 || ID == ExitID.fNibiru;
         }
         public bool IsDeadEnd {
-            get => ID == ExitID.f00Down || ID == ExitID.f00GateYA || ID == ExitID.f01Down || ID == ExitID.fStart ||
-                    ID == ExitID.fL05Up || ID == ExitID.fL08Right || ID == ExitID.fLGate || ID == ExitID.f03Down3 ||
-                    ID == ExitID.f04Up2 || ID == ExitID.f06_2GateP0 || ID == ExitID.f09In || ID == ExitID.f11Pyramid ||
-                    ID == ExitID.f13GateP0 || ID == ExitID.fNibiru;
+            get => ID == ExitID.fStart || ID == ExitID.fL05Up || ID == ExitID.fL08Right || ID == ExitID.fLGate || 
+                    ID == ExitID.f00Down || ID == ExitID.f00GateYA || ID == ExitID.f01Down || ID == ExitID.f03Down1 || 
+                    ID == ExitID.f03Down2 || ID == ExitID.f03Down3 || ID == ExitID.f04Up3 || ID == ExitID.f06GateP0 || 
+                    ID == ExitID.f06_2GateP0 || ID == ExitID.f09In || ID == ExitID.f09GateP0 || ID == ExitID.f11Pyramid || 
+                    ID == ExitID.f12GateP0 || ID == ExitID.f13GateP0 || ID == ExitID.fNibiru;
         }
 
         public Exit(JsonExit jsonConnection, AreaID parentAreaID) 
@@ -76,6 +77,7 @@ namespace LaMulana2Randomizer
         public void AppendLogicString(string str)
         {
             logicString = string.Format($"({logicString}) {str}");
+            BuildLogicTree();
         }
 
         public void BuildLogicTree()

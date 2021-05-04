@@ -13,7 +13,7 @@ using LaMulana2RandomizerShared;
 
 namespace LM2RandomiserMod
 {
-    public class ShopItem 
+    public class ShopItem
     {
         public ItemID ID;
         public int Multiplier;
@@ -35,11 +35,14 @@ namespace LM2RandomiserMod
         private Dictionary<ExitID, ExitID> exitToExitMap;
         private Dictionary<ExitID, int> soulGateValueMap;
         private bool randomSoulGates = false;
+        private bool randomDissonance = false;
         private bool autoPlaceSkull = false;
-        private bool fastCorridor = false;
-        private bool easyEchidna= false;
+        private bool easyEchidna = false;
         private int itemChestColour = 0;
         private int weightChestColour = 0;
+
+        //TODO:REMOVE THIS
+        private bool fastCorridor = false;
 
         private patched_L2System sys;
         private L2ShopDataBase shopDataBase;
@@ -47,8 +50,10 @@ namespace LM2RandomiserMod
 
         private Dictionary<string, GameObject> objects;
 
-        private Font currentFont = null;
+        private Font font = null;
+        private GUIStyle style = null;
         private bool onTitle = false;
+        private bool loading = false;
         private string message;
 
         public bool IsRandomising { get; private set; } = false;
@@ -65,21 +70,28 @@ namespace LM2RandomiserMod
         {
             if (onTitle)
             {
-                if (currentFont == null)
-                    currentFont = Font.CreateDynamicFontFromOSFont("Consolas", 14);
+                if (font == null)
+                    font = Font.CreateDynamicFontFromOSFont("Consolas", 14);
 
-                GUIStyle guistyle = new GUIStyle(GUI.skin.label);
-                guistyle.normal.textColor = Color.white;
-                guistyle.font = currentFont;
-                guistyle.fontStyle = FontStyle.Bold;
-                guistyle.fontSize = 14;
+                if (style == null)
+                {
+                    style = new GUIStyle(GUI.skin.label);
+                    style.normal.textColor = Color.white;
+                    style.font = font;
+                    style.fontStyle = FontStyle.Bold;
+                }
 
-                GUIContent verContent = new GUIContent(LaMulana2RandomizerShared.Version.version);
-                Vector2 verSize = guistyle.CalcSize(verContent);
-                GUI.Label(new Rect(0, 0, verSize.x, verSize.y), verContent, guistyle);
+                GUIContent verContent = new GUIContent("La-Mulana 2 Randomiser " + LaMulana2RandomizerShared.Version.version);
+                style.fontSize = 14;
+                Vector2 verSize = style.CalcSize(verContent);
+                GUI.Label(new Rect(0, 0, verSize.x, verSize.y), verContent, style);
+                style.fontSize = 10;
+                GUI.Label(new Rect(0, verSize.y, 500, 50), message, style);
+            }
 
-                guistyle.fontSize = 10;
-                GUI.Label(new Rect(0, verSize.y, 500, 50), message, guistyle);
+            if (loading)
+            {
+                GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), Texture2D.whiteTexture, ScaleMode.StretchToFill, true, 0, Color.black, 0, 0);
             }
         }
 
@@ -97,205 +109,30 @@ namespace LM2RandomiserMod
         {
             onTitle = scene.name.Equals("title");
 
-            if (IsRandomising)
+            if (scene.name.Equals("fieldLast") || scene.name.Equals("title"))
+                return;
+
+            using (StreamWriter sr = new StreamWriter(File.Open(Path.Combine(Directory.GetCurrentDirectory(), "log.txt"), FileMode.Open)))
             {
-                AddAnchorPoints(scene.name);
-                CreateStartingObjects(scene.name);
-                StartCoroutine(ChangeTreasureBoxes());
-                ChangeEventItems();
-                ChangeFlagWatchers(scene.name);
-                StartCoroutine(ChangeEntrances(scene.name));
-
-                if (scene.name.Equals("field01-2"))
+                try
                 {
-                    //move the pots on the starting screen
-                    foreach (ItemPotScript pot in FindObjectsOfType<ItemPotScript>())
-                        pot.transform.position = new Vector3(pot.transform.position.x - 100, pot.transform.position.y, pot.transform.position.z);
-                }
-                else if (scene.name.Equals("field00"))
-                {
-                    //remove the pillar that falls infront of Roots main gate during escape
-                    GameObject obj = GameObject.Find("endPiller");
-                    if (obj != null)
-                        obj.SetActive(false);
-                }
-                else if (scene.name.Equals("field04"))
-                {
-                    foreach (ShopGateScript shopGate in FindObjectsOfType<ShopGateScript>())
+                    if (IsRandomising)
                     {
-                        //stop the first BTK shop from being unenterable after certain flags and turn the second version off
-                        if (shopGate.name.Equals("ShopGate (1)"))
-                            shopGate.shdowtask = null;
-                        else if (shopGate.name.Equals("ShopGate (2)"))
-                            shopGate.gameObject.SetActive(false);
+                        CreateStartingAreaObjects(scene.name);
+                        StartCoroutine(ChangeTreasureChests());
+                        ChangeEventItems();
+                        StartCoroutine(ChangeEntrances(scene.name));
+                        DissonanceChests(scene.name);
+                        ChangeFlagWatchers(scene.name);
+                        FieldSpecificChanges(scene.name);
+                        AddAnchorPoints(scene.name);
+                        ObjectChanges();
                     }
-                }
-                else if (scene.name.Equals("field10"))
-                {
-                    if (fastCorridor)
-                    {
-                        //setup the flagwatcher to seal the corridor in valhalla
-                        GameObject obj = new GameObject("CorridorSealFlagWatcher");
-                        obj.transform.position = new Vector3(48, 258, 0);
-                        FlagWatcherScript flagWatcher = obj.AddComponent<FlagWatcherScript>();
-                        flagWatcher.actionWaitFrames = 90;
-                        flagWatcher.autoFinish = false;
-                        flagWatcher.characterEfxType = MoveCharacterBase.CharacterEffectType.NONE;
-                        flagWatcher.startAreaMode = MoveCharacterBase.ActionstartAreaMode.VIEW;
-                        flagWatcher.taskLayerNo = 2;
-                        flagWatcher.AnimeData = new GameObject[0];
-                        flagWatcher.ResetFlags = new L2FlagBoxEnd[0];
-                        flagWatcher.CheckFlags = new L2FlagBoxParent[1];
-                        flagWatcher.CheckFlags[0] = new L2FlagBoxParent
-                        {
-                            BOX = new L2FlagBox[]
-                            {
-                                new L2FlagBox()
-                                {
-                                    seet_no1 = 3,
-                                    flag_no1 = 93,
-                                    seet_no2 = -1,
-                                    flag_no2 = 0,
-                                    logic = LOGIC.AND,
-                                    comp = COMPARISON.Equal
-                                },
-                                new L2FlagBox()
-                                {
-                                    seet_no1 = 3,
-                                    flag_no1 = 15,
-                                    seet_no2 = -1,
-                                    flag_no2 = 4,
-                                    logic = LOGIC.AND,
-                                    comp = COMPARISON.Equal
-                                },
-                                new L2FlagBox()
-                                {
-                                    seet_no1 = 2,
-                                    flag_no1 = 3,
-                                    seet_no2 = -1,
-                                    flag_no2 = 7,
-                                    logic = LOGIC.AND,
-                                    comp = COMPARISON.Equal
-                                },
-                            }
-                        };
-                        flagWatcher.ActionFlags = new L2FlagBoxEnd[]
-                        {
-                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 44, data = 2, calcu = CALCU.EQR },
-                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 45, data = 2, calcu = CALCU.EQR },
-                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 46, data = 2, calcu = CALCU.EQR },
-                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 47, data = 0, calcu = CALCU.EQR },
-                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 48, data = 2, calcu = CALCU.EQR },
-                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 49, data = 8, calcu = CALCU.EQR },
-                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 87, data = 1, calcu = CALCU.EQR },
-                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 88, data = 1, calcu = CALCU.EQR },
-                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 89, data = 1, calcu = CALCU.EQR },
-                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 90, data = 1, calcu = CALCU.EQR },
-                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 91, data = 1, calcu = CALCU.EQR },
-                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 92, data = 1, calcu = CALCU.EQR },
-                            new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 93, data = 1, calcu = CALCU.EQR },
-                        };
-                        flagWatcher.finishFlags = new L2FlagBoxParent[1];
-                        flagWatcher.finishFlags[0] = new L2FlagBoxParent
-                        {
-                            BOX = new L2FlagBox[]
-                            {
-                                new L2FlagBox()
-                                {
-                                    seet_no1 = 3,
-                                    flag_no1 = 93,
-                                    seet_no2 = -1,
-                                    flag_no2 = 1,
-                                    logic = LOGIC.NON,
-                                    comp = COMPARISON.Equal
-                                }
-                            }
-                        };
-                    }
-                    //i hate this stupid trapdoor's hitbox
-                    StartCoroutine(FixTrapDoor());
-                }
-                else if (scene.name.Equals("fieldSpace"))
-                {
-                    //disable the object that stop the holy grail working in space
-                    foreach (HolyGrailCancellerScript grailCanceller in FindObjectsOfType<HolyGrailCancellerScript>())
-                        grailCanceller.gameObject.SetActive(false);
-                }
-                else if (scene.name.Equals("fieldL08"))
-                {
-                    //change the shadowtask that makes Freya stop talking in endless corridor to only happen after you get the item from her
-                    foreach (ShopGateScript talkGate in FindObjectsOfType<ShopGateScript>())
-                    {
-                        if (talkGate.shdowtask != null)
-                        {
-                            foreach (L2FlagBoxParent flagBoxParent in talkGate.shdowtask.startflag)
-                            {
-                                foreach (L2FlagBox flagBox in flagBoxParent.BOX)
-                                {
-                                    ItemID itemID = GetItemIDForLocation(LocationID.FreyasItem);
-                                    ItemInfo itemInfo = ItemDB.GetItemInfo(itemID);
-                                    flagBox.comp = COMPARISON.Less;
-                                    flagBox.seet_no1 = itemInfo.ItemSheet;
-                                    flagBox.flag_no1 = itemInfo.ItemFlag;
-                                    flagBox.flag_no2 = 1;
-                                    if (itemID == ItemID.MobileSuperx3P)
-                                        flagBox.flag_no2 = 2;
-                                }
-                            }
-                        }
-                    }
-                }
 
-
-                //these cause the message to popup when you record a mantra for the first time, so just deactivate
-                //the gameobject so they don't appear
-                foreach (FlagDialogueScript flagDialogue in FindObjectsOfType<FlagDialogueScript>())
+                }        
+                catch (Exception ex)
                 {
-                    if (flagDialogue.cellName.Contains("mantraDialog"))
-                        flagDialogue.gameObject.SetActive(false);
-                }
-
-                //Change the snapshot type to software so as this behaves like getting an item instead of a mantra
-                foreach (SnapShotTargetScript snapTarget in FindObjectsOfType<SnapShotTargetScript>())
-                {
-                    LocationID locationID = GetLocationIDForMural(snapTarget);
-                    if (locationID != LocationID.None)
-                        snapTarget.mode = SnapShotTargetScript.SnapShotMode.SOFTWARE;
-                }
-
-                //change it so the corridor of blood can be entered even after sealing it
-                foreach (AnchorGateZ anchorGate in FindObjectsOfType<AnchorGateZ>())
-                {
-                    if (anchorGate.shdowtask != null)
-                    {
-                        foreach (L2FlagBoxParent flagBoxParent in anchorGate.shdowtask.startflag)
-                        {
-                            foreach (L2FlagBox flagBox in flagBoxParent.BOX)
-                            {
-                                if (flagBox.seet_no1 == 3 && flagBox.flag_no1 == 93 && flagBox.flag_no2 == 0)
-                                    flagBox.comp = COMPARISON.GreaterEq;
-                            }
-                        }
-                    }
-                }
-
-                //make it so fake items always play the wrong puzzle solve noise
-                foreach (AnimatorController animatorController in FindObjectsOfType<AnimatorController>())
-                {
-                    if (animatorController.name.Equals("WrongCall"))
-                    {
-                        foreach (L2FlagBoxParent flagBoxParent in animatorController.CheckFlags)
-                        {
-                            foreach (L2FlagBox flagBox in flagBoxParent.BOX)
-                            {
-                                if (flagBox.seet_no1 == 2 && flagBox.flag_no1 == 16 && flagBox.flag_no2 == 1)
-                                {
-                                    flagBox.flag_no2 = 0;
-                                    flagBox.comp = COMPARISON.GreaterEq;
-                                }
-                            }
-                        }
-                    }
+                    sr.WriteLine(ex.ToString());
                 }
             }
         }
@@ -346,6 +183,7 @@ namespace LM2RandomiserMod
             if (itemID >= ItemID.SacredOrb0 && itemID <= ItemID.SacredOrb9)
             {
                 getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 0, flag_no1 = 2, data = 1 });
+                getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = itemInfo.ItemSheet, flag_no1 = itemInfo.ItemFlag, data = 1 });
             }
             else if (itemID >= ItemID.CrystalSkull1 && itemID <= ItemID.CrystalSkull12)
             {
@@ -356,21 +194,34 @@ namespace LM2RandomiserMod
                     getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 5, flag_no1 = (int)itemID - 108, data = 1 });
                     getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 5, flag_no1 = 47, data = 1 });
                 }
+                getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = itemInfo.ItemSheet, flag_no1 = itemInfo.ItemFlag, data = 1 });
             }
             else if ((itemID >= ItemID.AnkhJewel1 && itemID <= ItemID.AnkhJewel9) || Array.IndexOf(storyItems, itemID) > -1)
             {
                 data = 4;
                 if (itemID == ItemID.GrappleClaw || itemID == ItemID.HolyGrail)
                     data = 2;
-
                 getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 3, flag_no1 = 30, data = data });
+
+                data = 1;
+                if (itemID == ItemID.LampofTime)
+                    data = 2;
+                getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = itemInfo.ItemSheet, flag_no1 = itemInfo.ItemFlag, data = data });
+            }
+            else if (itemID >= ItemID.ProgressiveBeherit1 && itemID <= ItemID.ProgressiveBeherit7)
+            {
+                getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 2, flag_no1 = 3, data = 1 });
+                getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = itemInfo.ItemSheet, flag_no1 = itemInfo.ItemFlag, data = 1 });
+            }
+            else
+            {
+                data = 1;
+                if (itemID == ItemID.MobileSuperx3P)
+                    data = 2;
+
+                getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = itemInfo.ItemSheet, flag_no1 = itemInfo.ItemFlag, data = data });
             }
 
-            data = 1;
-            if (itemID == ItemID.MobileSuperx3P || itemID == ItemID.LampofTime)
-                data = 2;
-
-            getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = itemInfo.ItemSheet, flag_no1 = itemInfo.ItemFlag, data = data });
 
             return getFlags.ToArray();
         }
@@ -403,6 +254,7 @@ namespace LM2RandomiserMod
                 {
                     StartingWeapon = (ItemID)br.ReadInt32();
                     StartingArea = (AreaID)br.ReadInt32();
+                    randomDissonance = br.ReadBoolean();
                     RequiredSkulls = br.ReadInt32();
                     RemoveITStatue = br.ReadBoolean();
                     easyEchidna = br.ReadBoolean();
@@ -430,7 +282,7 @@ namespace LM2RandomiserMod
                         cursedChests.Add((LocationID)br.ReadInt32());
 
                     int exitPairCount = br.ReadInt32();
-                    for(int i = 0; i < exitPairCount; i++)
+                    for (int i = 0; i < exitPairCount; i++)
                     {
                         ExitID exit1 = (ExitID)br.ReadInt32();
                         ExitID exit2 = (ExitID)br.ReadInt32();
@@ -468,9 +320,12 @@ namespace LM2RandomiserMod
             //stop the game from accepting inputs when we are doing the initial loading of scenes to get objects from them
             sys.setKeyBlock(true);
             yield return new WaitForSeconds(5f);
+            loading = true;
             yield return StartCoroutine(GetGameObjects());
             ApplySeed();
+            yield return new WaitForSeconds(1f);
             sys.setKeyBlock(false);
+            loading = false;
         }
 
         private void ApplySeed()
@@ -574,6 +429,16 @@ namespace LM2RandomiserMod
             ao = SceneManager.LoadSceneAsync("field05");
             while (!ao.isDone)
                 yield return null;
+
+            foreach (TreasureBoxScript box in FindObjectsOfType<TreasureBoxScript>())
+            {
+                GameObject obj = Instantiate(box.gameObject);
+                obj.name = "Blue Chest Prefab";
+                DontDestroyOnLoad(obj);
+                obj.SetActive(false);
+                objects.Add("blueChest", obj);
+                break;
+            }
 
             foreach (AnimatorController controller in FindObjectsOfType<AnimatorController>())
             {
@@ -748,165 +613,133 @@ namespace LM2RandomiserMod
             return false;
         }
 
-        private TreasureBoxScript CreateColouredChest(int colour, TreasureBoxScript oldBox)
+        private TreasureBoxScript CreateChest(int colour, Vector3 position, Quaternion rotation)
         {
-            TreasureBoxScript newBox;
             switch (colour)
             {
-                case 1:
-                {
-                    newBox = Instantiate(objects["turquiseChest"], oldBox.transform.position, oldBox.transform.rotation).GetComponent<TreasureBoxScript>();
-                    break;
-                }
-                case 2:
-                {
-                    newBox = Instantiate(objects["redChest"], oldBox.transform.position, oldBox.transform.rotation).GetComponent<TreasureBoxScript>();
-                    break;
-                }
-                case 3:
-                {
-                    newBox = Instantiate(objects["pinkChest"], oldBox.transform.position, oldBox.transform.rotation).GetComponent<TreasureBoxScript>();
-                    break;
-                }
-                case 4:
-                {
-                    newBox = Instantiate(objects["yellowChest"], oldBox.transform.position, oldBox.transform.rotation).GetComponent<TreasureBoxScript>();
-                    break;
-                }
-                default:
-                    return null;
+                case 0: return Instantiate(objects["blueChest"], position, rotation).GetComponent<TreasureBoxScript>();
+                case 1: return Instantiate(objects["turquiseChest"], position, rotation).GetComponent<TreasureBoxScript>();
+                case 2: return Instantiate(objects["redChest"], position, rotation).GetComponent<TreasureBoxScript>();
+                case 3: return Instantiate(objects["pinkChest"], position, rotation).GetComponent<TreasureBoxScript>();
+                case 4: return Instantiate(objects["yellowChest"], position, rotation).GetComponent<TreasureBoxScript>();
+                default: return null;
             }
-
-            newBox.closetMode = false;
-            newBox.curseMode = false;
-            newBox.forceOpenFlags = oldBox.forceOpenFlags;
-            newBox.itemFlags = oldBox.itemFlags;
-            newBox.openActionFlags = oldBox.openActionFlags;
-            newBox.openFlags = oldBox.openFlags;
-            newBox.unlockFlags = oldBox.unlockFlags;
-            newBox.itemObj = oldBox.itemObj;
-            newBox.gameObject.SetActive(true);
-            newBox.transform.SetParent(oldBox.transform.parent);
-
-            return newBox;
         }
 
-        private IEnumerator ChangeTreasureBoxes()
+        private IEnumerator ChangeTreasureChests()
         {
-            List<TreasureBoxScript> oldboxes = new List<TreasureBoxScript>();
-            foreach (TreasureBoxScript box in FindObjectsOfType<TreasureBoxScript>())
+            List<TreasureBoxScript> oldChests = new List<TreasureBoxScript>();
+            foreach (TreasureBoxScript oldChest in FindObjectsOfType<TreasureBoxScript>())
             {
-                ItemData oldItemData = GetItemDataFromName(box.itemObj.name);
+                ItemData oldItemData = GetItemDataFromName(oldChest.itemObj.name);
                 if (oldItemData == null)
                     continue;
 
                 LocationID locationID = (LocationID)oldItemData.getItemName();
                 if (locationToItemMap.TryGetValue(locationID, out ItemID newItemID))
                 {
-                    ItemInfo newItemInfo = ItemDB.GetItemInfo(newItemID);
-
-                    TreasureBoxScript newBox;
+                    TreasureBoxScript newChest;
                     if (newItemID >= ItemID.ChestWeight01)
-                    {
-                        if (weightChestColour > 0)
-                        {
-                            newBox = CreateColouredChest(weightChestColour, box);
-                            oldboxes.Add(box);
-                        }
-                        else
-                        {
-                            newBox = box;
-                            newBox.curseMode = false;
-                        }
-                    }
+                        newChest = CreateChest(weightChestColour, oldChest.transform.position, oldChest.transform.rotation);
                     else
-                    {
-                        if (itemChestColour > 0)
-                        {
-                            newBox = CreateColouredChest(itemChestColour, box);
-                            oldboxes.Add(box);
-                        }
-                        else
-                        {
-                            newBox = box;
-                            newBox.curseMode = false;
-                        }
-                    }
+                        newChest = CreateChest(itemChestColour, oldChest.transform.position, oldChest.transform.rotation);
 
                     if (IsLocationCursed(locationID))
                     {
-                        GameObject curse = Instantiate(objects["curse"], box.transform.position, box.transform.rotation);
+                        GameObject curse = Instantiate(objects["curse"], oldChest.transform.position, oldChest.transform.rotation);
                         curse.SetActive(true);
-                        newBox.curseAnime = curse.GetComponent<Animator>();
-                        newBox.curseParticle = curse.GetComponent<ParticleSystem>();
-                        newBox.curseMode = true;
+                        newChest.curseAnime = curse.GetComponent<Animator>();
+                        newChest.curseParticle = curse.GetComponent<ParticleSystem>();
+                        newChest.curseMode = true;
                     }
-
-                    //Change the Treasure Boxs open flags to correspond to the new item
-                    //These flags are used to so the chest stays open after you get the item
-                    foreach (L2FlagBoxParent flagBoxParent in newBox.openFlags)
+                    else
                     {
-                        foreach (L2FlagBox flagBox in flagBoxParent.BOX)
-                        {
-                            if (flagBox.seet_no1 == 2)
-                            {
-                                flagBox.seet_no1 = newItemInfo.ItemSheet;
-                                flagBox.flag_no1 = newItemInfo.ItemFlag;
-                                flagBox.flag_no2 = 1;
-
-                                //msx flag starts at 1 so have to check against 2 as 2 means we have the upgrade
-                                if (newItemID == ItemID.MobileSuperx3P)
-                                {
-                                    flagBox.flag_no2 = 2;
-                                }
-                            }
-                        }
+                        newChest.curseMode = false;
                     }
 
-                    EventItemScript item = newBox.itemObj.GetComponent<EventItemScript>();
+                    newChest.closetMode = false;
+                    newChest.forceOpenFlags = oldChest.forceOpenFlags;
+                    newChest.itemFlags = oldChest.itemFlags;
+                    newChest.openActionFlags = oldChest.openActionFlags;
+                    newChest.openFlags = oldChest.openFlags;
+                    newChest.unlockFlags = oldChest.unlockFlags;
+                    newChest.itemObj = oldChest.itemObj;
+                    newChest.transform.SetParent(oldChest.transform.parent);
 
-                    //Change the Event Items active flags to correspond to the new item
-                    //These flags are used to set the item inactive after you have got it
-                    foreach (L2FlagBoxParent flagBoxParent in item.itemActiveFlag)
-                    {
-                        foreach (L2FlagBox flagBox in flagBoxParent.BOX)
-                        {
-                            if (flagBox.seet_no1 == 2)
-                            {
-                                flagBox.seet_no1 = newItemInfo.ItemSheet;
-                                flagBox.flag_no1 = newItemInfo.ItemFlag;
-                                flagBox.comp = COMPARISON.Equal;
-                                flagBox.flag_no2 = 0;
-
-                                //msx flag starts at 1 so have to check against 1 not 0
-                                if (newItemID == ItemID.MobileSuperx3P)
-                                {
-                                    flagBox.flag_no2 = 1;
-                                    flagBox.comp = COMPARISON.LessEq;
-                                }
-                            }
-                        }
-                    }
-                    //Change the Event Items get flags to correspond to the new item
-                    //These are flags that are set when the item is gotten
-                    item.itemGetFlags = CreateGetFlags(newItemID, newItemInfo);
-
-                    //Change the name used when calling setitem to correspond to new item
-                    item.itemLabel = newItemInfo.BoxName;
-
-                    //if item is a weight set item value for flag checking
-                    if (newItemID >= ItemID.ChestWeight01)
-                        item.itemValue = newItemInfo.ItemFlag;
-
-                    //Change the sprite to correspond to new item if its not a weight
-                    if(newItemID < ItemID.ChestWeight01)
-                        item.gameObject.GetComponent<SpriteRenderer>().sprite = GetItemSprite(newItemInfo.BoxName, newItemID);
+                    ChangeChestItemFlags(newChest, newItemID); 
+                    newChest.gameObject.SetActive(true);
+                    oldChests.Add(oldChest);
                 }
             }
 
             yield return new WaitForEndOfFrame();
-            foreach (var box in oldboxes)
+            foreach (var box in oldChests)
                 box.gameObject.SetActive(false);
+        }
+
+        private void ChangeChestItemFlags(TreasureBoxScript chest, ItemID itemID)
+        {
+            ItemInfo itemInfo = ItemDB.GetItemInfo(itemID);
+
+            //Change the Treasure Boxs open flags to correspond to the new item
+            //These flags are used to so the chest stays open after you get the item
+            foreach (L2FlagBoxParent flagBoxParent in chest.openFlags)
+            {
+                foreach (L2FlagBox flagBox in flagBoxParent.BOX)
+                {
+                    if (flagBox.seet_no1 == 2)
+                    {
+                        flagBox.seet_no1 = itemInfo.ItemSheet;
+                        flagBox.flag_no1 = itemInfo.ItemFlag;
+                        flagBox.flag_no2 = 1;
+
+                        //msx flag starts at 1 so have to check against 2 as 2 means we have the upgrade
+                        if (itemID == ItemID.MobileSuperx3P)
+                        {
+                            flagBox.flag_no2 = 2;
+                        }
+                    }
+                }
+            }
+
+            EventItemScript item = chest.itemObj.GetComponent<EventItemScript>();
+
+            //Change the Event Items active flags to correspond to the new item
+            //These flags are used to set the item inactive after you have got it
+            foreach (L2FlagBoxParent flagBoxParent in item.itemActiveFlag)
+            {
+                foreach (L2FlagBox flagBox in flagBoxParent.BOX)
+                {
+                    if (flagBox.seet_no1 == 2)
+                    {
+                        flagBox.seet_no1 = itemInfo.ItemSheet;
+                        flagBox.flag_no1 = itemInfo.ItemFlag;
+                        flagBox.comp = COMPARISON.Equal;
+                        flagBox.flag_no2 = 0;
+
+                        //msx flag starts at 1 so have to check against 1 not 0
+                        if (itemID == ItemID.MobileSuperx3P)
+                        {
+                            flagBox.flag_no2 = 1;
+                            flagBox.comp = COMPARISON.LessEq;
+                        }
+                    }
+                }
+            }
+            //Change the Event Items get flags to correspond to the new item
+            //These are flags that are set when the item is gotten
+            item.itemGetFlags = CreateGetFlags(itemID, itemInfo);
+
+            //Change the name used when calling setitem to correspond to new item
+            item.itemLabel = itemInfo.BoxName;
+
+            //if item is a weight set item value for flag checking
+            if (itemID >= ItemID.ChestWeight01)
+                item.itemValue = itemInfo.ItemFlag;
+
+            //Change the sprite to correspond to new item if its not a weight
+            if (itemID < ItemID.ChestWeight01)
+                item.gameObject.GetComponent<SpriteRenderer>().sprite = GetItemSprite(itemInfo.BoxName, itemID);
         }
 
         private void ChangeEventItems()
@@ -932,8 +765,9 @@ namespace LM2RandomiserMod
                     ItemInfo newItemInfo = ItemDB.GetItemInfo(newItemID);
                     if (locationID >= LocationID.ResearchAnnwfn && locationID <= LocationID.ResearchDSLM)
                     {
+                        //stop this item becoming inaccessable under the failing pit of time thing
                         if (locationID == LocationID.ResearchIBPit)
-                            item.gameObject.transform.position = item.gameObject.transform.position + new Vector3(0, 40, 0);
+                            item.gameObject.transform.position = item.gameObject.transform.position + new Vector3(0, 70, 0);
 
                         List<L2FlagBox> flags = new List<L2FlagBox>();
                         L2FlagBox flagBox = new L2FlagBox()
@@ -1047,7 +881,7 @@ namespace LM2RandomiserMod
             if (itemID == ItemID.Whip1 || itemID == ItemID.Whip2 || itemID == ItemID.Whip3)
             {
                 //since whips are progressive we need to determine what level of whip the player currently has to show the next one
-                short data= 0;
+                short data = 0;
                 string name = string.Empty;
                 sys.getFlag(2, "Whip", ref data);
                 if (data == 0) name = "Whip";
@@ -1060,15 +894,19 @@ namespace LM2RandomiserMod
                 //since shields are progressive we need to determine what level of shield the player currently has to show the next one
                 short data = 0;
                 string name = string.Empty;
-                sys.getFlag(2, 184, ref data);
+                sys.getFlag(2, 196, ref data);
                 if (data == 0) name = "Shield";
                 else if (data == 1) name = "Shield2";
                 else if (data >= 2) name = "Shield3";
                 return L2SystemCore.getMapIconSprite(L2SystemCore.getItemData(name));
             }
-            else if(itemID >= ItemID.Research1 && itemID <= ItemID.Research10)
+            else if (itemID >= ItemID.Research1 && itemID <= ItemID.Research10)
             {
                 return L2SystemCore.getMapIconSprite(L2SystemCore.getItemData("Research"));
+            }
+            else if (itemID >= ItemID.ProgressiveBeherit1 && itemID <= ItemID.ProgressiveBeherit7)
+            {
+                return L2SystemCore.getMapIconSprite(L2SystemCore.getItemData("Beherit"));
             }
             else if (itemID >= ItemID.Heaven && itemID <= ItemID.Night)
             {
@@ -1083,9 +921,403 @@ namespace LM2RandomiserMod
 
         private Sprite GetRandomSprite()
         {
-            ItemID itemID = (ItemID)UnityEngine.Random.Range(0, (int)ItemID.Research10);
+            ItemID itemID = (ItemID)UnityEngine.Random.Range(1, (int)ItemID.Research10);
             ItemInfo itemInfo = ItemDB.GetItemInfo(itemID);
             return GetItemSprite(itemInfo.BoxName, itemID);
+        }
+
+        private void DissonanceChests(string field)
+        {
+            if (!randomDissonance || field.Equals("lastBoss"))
+                return;
+
+            //destory the objects that give dissonance by using the beherit 
+            GameObject toDestroy = null;
+            foreach (var useItem in FindObjectsOfType<UsingItemTargetScript>())
+            {
+                foreach (var target in useItem.itemTargets)
+                {
+                    if (target.targetItem == L2Hit.USEITEM.USE_BEHERIT)
+                    {
+                        foreach (var flags in target.effectFlags)
+                        {
+                            if (flags.seet_no1 == 2 && flags.flag_no1 == 3)
+                            {
+                                toDestroy = useItem.gameObject;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            Destroy(toDestroy);
+
+            //turn off the dissonance effects
+            foreach (var animator in FindObjectsOfType<Animator>())
+            {
+                if (animator.name.Equals("MinusSmoke")){
+                    animator.gameObject.SetActive(false);
+                    break;
+                }
+            }
+
+            //set up data for the chest depending on the field 
+            LocationID locationID = LocationID.None;
+            Vector3 position = new Vector3(0,0,0);
+            int sheet = 0, flag = 0;
+            switch (field)
+            {
+                case "fieldL02":
+                {
+                    locationID = LocationID.DissonanceMoG;
+                    position = new Vector3(926, -166, 8);
+                    sheet = 5;
+                    flag = 59;
+                    break;
+                }
+                case "field09":
+                {
+                    locationID = LocationID.DissonanceHL;
+                    position = new Vector3(-55, -270, 8);
+                    sheet = 13;
+                    flag = 39;
+                    break; 
+                }
+                case "field10":
+                {
+                    locationID = LocationID.DissonanceValhalla;
+                    position = new Vector3(1000, -6, 8);
+                    sheet = 14;
+                    flag = 42;
+                    break; 
+                }
+                case "field11":
+                {
+                    locationID = LocationID.DissonanceDSLM;
+                    position = new Vector3(175, -870, 8);
+                    sheet = 15;
+                    flag = 45;
+                    break; 
+                }
+                case "field15":
+                {
+                    locationID = LocationID.DissonanceEPG;
+                    position = new Vector3(-990, 138, 8);
+                    sheet = 18;
+                    flag = 55;
+                    break;
+                }
+                case "fieldSpace":
+                {
+                    locationID = LocationID.DissonanceNibiru;
+                    position = new Vector3(50, 138, 8);
+                    sheet = 5;
+                    flag = 60;
+                    break;
+                }
+                default:
+                    break;
+            }
+
+            if(locationToItemMap.TryGetValue(locationID, out ItemID itemID))
+            {
+                TreasureBoxScript chest;
+                if (itemID >= ItemID.ChestWeight01)
+                    chest = CreateChest(weightChestColour, position, objects["blueChest"].transform.rotation);
+                else
+                    chest = CreateChest(itemChestColour, position, objects["blueChest"].transform.rotation);
+
+                if (IsLocationCursed(locationID))
+                {
+                    GameObject curse = Instantiate(objects["curse"], chest.transform.position, chest.transform.rotation);
+                    curse.SetActive(true);
+                    chest.curseAnime = curse.GetComponent<Animator>();
+                    chest.curseParticle = curse.GetComponent<ParticleSystem>();
+                    chest.curseMode = true;
+                }
+                else
+                {
+                    chest.curseMode = false;
+                }
+
+                chest.closetMode = false;
+                chest.unlockFlags = new L2FlagBoxParent[]
+                {
+                    new L2FlagBoxParent()
+                    {
+                        logoc = LOGIC.AND,
+                        BOX = new L2FlagBox[]
+                        {
+                            new L2FlagBox()
+                            {
+                                seet_no1 = sheet,
+                                flag_no1 = flag,
+                                seet_no2 = -1,
+                                flag_no2 = 1,
+                                logic = LOGIC.AND,
+                                comp = COMPARISON.GreaterEq
+                            },
+                            new L2FlagBox()
+                            {
+                                seet_no1 = 2,
+                                flag_no1 = 3,
+                                seet_no2 = -1,
+                                flag_no2 = 0,
+                                logic = LOGIC.AND,
+                                comp = COMPARISON.Greater
+                            }
+                        }
+                    }
+                };
+                chest.openFlags = new L2FlagBoxParent[]
+                {
+                    new L2FlagBoxParent()
+                    {
+                        BOX = new L2FlagBox[]
+                        {
+                            new L2FlagBox()
+                            {
+                                seet_no1 = 2,
+                                flag_no1 = -1,
+                                seet_no2 = -1,
+                                flag_no2 = 1,
+                                logic = LOGIC.NON,
+                                comp = COMPARISON.GreaterEq
+                            }
+                        }
+                    }
+                };
+
+                ChangeChestItemFlags(chest, itemID);
+                chest.gameObject.SetActive(true);
+            }
+        }
+
+        private void FieldSpecificChanges(string fieldName)
+        {
+            if (fieldName.Equals("field01-2"))
+            {
+                //move the pots on the starting screen
+                foreach (ItemPotScript pot in FindObjectsOfType<ItemPotScript>())
+                    pot.transform.position = new Vector3(pot.transform.position.x - 100, pot.transform.position.y, pot.transform.position.z);
+            }
+            else if (fieldName.Equals("field00"))
+            {
+                //remove the pillar that falls infront of Roots main gate during escape
+                GameObject obj = GameObject.Find("endPiller");
+                if (obj != null)
+                    obj.SetActive(false);
+            }
+            else if (fieldName.Equals("field03"))
+            {
+                //setup the flagwatcher to drop the spiral boat
+                GameObject obj = new GameObject("SpiralBoatFlagWatcher");
+                obj.transform.position = new Vector3(-255, -16, 0);
+                FlagWatcherScript flagWatcher = obj.AddComponent<FlagWatcherScript>();
+                flagWatcher.setTaskSystemName(L2Base.TASKSYSNAME.SCENE);
+                flagWatcher.actionWaitFrames = 90;
+                flagWatcher.autoFinish = false;
+                flagWatcher.characterEfxType = MoveCharacterBase.CharacterEffectType.NONE;
+                flagWatcher.startAreaMode = MoveCharacterBase.ActionstartAreaMode.VIEW;
+                flagWatcher.taskLayerNo = 2;
+                flagWatcher.AnimeData = new GameObject[0];
+                flagWatcher.ResetFlags = new L2FlagBoxEnd[0];
+                flagWatcher.CheckFlags = new L2FlagBoxParent[1];
+                flagWatcher.CheckFlags[0] = new L2FlagBoxParent();
+                List<L2FlagBox> flagBoxes = new List<L2FlagBox>
+            {
+                new L2FlagBox()
+                {
+                    seet_no1 = 3,
+                    flag_no1 = 93,
+                    seet_no2 = -1,
+                    flag_no2 = 0,
+                    logic = LOGIC.AND,
+                    comp = COMPARISON.Equal
+                },
+                new L2FlagBox()
+                {
+                    seet_no1 = 2,
+                    flag_no1 = 3,
+                    seet_no2 = -1,
+                    flag_no2 = 7,
+                    logic = LOGIC.AND,
+                    comp = COMPARISON.Equal
+                }
+            };
+
+                if (randomDissonance)
+                {
+                    flagBoxes.Add(new L2FlagBox()
+                    {
+                        seet_no1 = 3,
+                        flag_no1 = 0,
+                        seet_no2 = -1,
+                        flag_no2 = 5,
+                        logic = LOGIC.AND,
+                        comp = COMPARISON.GreaterEq
+                    });
+                }
+                else
+                {
+                    flagBoxes.Add(new L2FlagBox()
+                    {
+                        seet_no1 = 3,
+                        flag_no1 = 15,
+                        seet_no2 = -1,
+                        flag_no2 = 4,
+                        logic = LOGIC.AND,
+                        comp = COMPARISON.GreaterEq
+                    });
+                }
+
+                flagWatcher.CheckFlags[0].BOX = flagBoxes.ToArray();
+                flagWatcher.ActionFlags = new L2FlagBoxEnd[]
+                {
+                new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 93, data = 2, calcu = CALCU.EQR },
+                };
+                flagWatcher.finishFlags = new L2FlagBoxParent[1];
+                flagWatcher.finishFlags[0] = new L2FlagBoxParent
+                {
+                    BOX = new L2FlagBox[]
+                    {
+                    new L2FlagBox()
+                    {
+                        seet_no1 = 3,
+                        flag_no1 = 93,
+                        seet_no2 = -1,
+                        flag_no2 = 2,
+                        logic = LOGIC.NON,
+                        comp = COMPARISON.Equal
+                    }
+                    }
+                };
+                obj.SetActive(true);
+            }
+            else if (fieldName.Equals("field04"))
+            {
+                foreach (ShopGateScript shopGate in FindObjectsOfType<ShopGateScript>())
+                {
+                    //stop the first BTK shop from being unenterable after certain flags and turn the second version off
+                    if (shopGate.name.Equals("ShopGate (1)"))
+                        shopGate.shdowtask = null;
+                    else if (shopGate.name.Equals("ShopGate (2)"))
+                        shopGate.gameObject.SetActive(false);
+                }
+            }
+            else if (fieldName.Equals("field10"))
+            {
+                //i hate this stupid trapdoor's hitbox
+                StartCoroutine(FixTrapDoor());
+            }
+            else if (fieldName.Equals("fieldSpace"))
+            {
+                //disable the object that stop the holy grail working in space
+                foreach (HolyGrailCancellerScript grailCanceller in FindObjectsOfType<HolyGrailCancellerScript>())
+                    grailCanceller.gameObject.SetActive(false);
+            }
+            else if (fieldName.Equals("fieldL08"))
+            {
+                //change the shadowtask that makes Freya stop talking in endless corridor to only happen after you get the item from her
+                foreach (ShopGateScript talkGate in FindObjectsOfType<ShopGateScript>())
+                {
+                    if (talkGate.shdowtask != null)
+                    {
+                        foreach (L2FlagBoxParent flagBoxParent in talkGate.shdowtask.startflag)
+                        {
+                            foreach (L2FlagBox flagBox in flagBoxParent.BOX)
+                            {
+                                ItemID itemID = GetItemIDForLocation(LocationID.FreyasItem);
+                                ItemInfo itemInfo = ItemDB.GetItemInfo(itemID);
+                                flagBox.comp = COMPARISON.Less;
+                                flagBox.seet_no1 = itemInfo.ItemSheet;
+                                flagBox.flag_no1 = itemInfo.ItemFlag;
+                                flagBox.flag_no2 = 1;
+                                if (itemID == ItemID.MobileSuperx3P)
+                                    flagBox.flag_no2 = 2;
+                            }
+                        }
+                    }
+                }
+            }
+            else if (fieldName.Equals("lastBoss"))
+            {
+                foreach (var useItem in FindObjectsOfType<UsingItemTargetScript>())
+                {
+                    foreach (var target in useItem.itemTargets)
+                    {
+                        if (target.targetItem == L2Hit.USEITEM.USE_BEHERIT)
+                        {
+                            foreach (var flags in target.effectFlags)
+                            {
+                                if (flags.seet_no1 == 2 && flags.flag_no1 == 3)
+                                    flags.data = 2;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void ObjectChanges()
+        {
+            //these cause the message to popup when you record a mantra for the first time, so just deactivate
+            //the gameobject so they don't appear
+            foreach (FlagDialogueScript flagDialogue in FindObjectsOfType<FlagDialogueScript>())
+            {
+                if (flagDialogue.cellName.Contains("mantraDialog"))
+                    flagDialogue.gameObject.SetActive(false);
+            }
+
+            //Change the snapshot type to software so as this behaves like getting an item instead of a mantra
+            foreach (SnapShotTargetScript snapTarget in FindObjectsOfType<SnapShotTargetScript>())
+            {
+                LocationID locationID = GetLocationIDForMural(snapTarget);
+                if (locationID != LocationID.None)
+                    snapTarget.mode = SnapShotTargetScript.SnapShotMode.SOFTWARE;
+            }
+
+            //change it so the corridor of blood can be entered even after sealing it
+            foreach (AnchorGateZ anchorGate in FindObjectsOfType<AnchorGateZ>())
+            {
+                if (anchorGate.shdowtask != null)
+                {
+                    foreach (L2FlagBoxParent flagBoxParent in anchorGate.shdowtask.startflag)
+                    {
+                        foreach (L2FlagBox flagBox in flagBoxParent.BOX)
+                        {
+                            if (flagBox.seet_no1 == 3 && flagBox.flag_no1 == 93 && flagBox.flag_no2 == 0)
+                                flagBox.comp = COMPARISON.GreaterEq;
+                        }
+                    }
+                }
+            }
+
+            //turn off the corridor of blood cutscene
+            foreach(Animator animator in FindObjectsOfType<Animator>())
+            {
+                if (animator.name.Equals("6starDemo"))
+                    animator.gameObject.SetActive(false);
+            }
+
+            //make it so fake items always play the wrong puzzle solve noise
+            foreach (AnimatorController animatorController in FindObjectsOfType<AnimatorController>())
+            {
+                if (animatorController.name.Equals("WrongCall"))
+                {
+                    foreach (L2FlagBoxParent flagBoxParent in animatorController.CheckFlags)
+                    {
+                        foreach (L2FlagBox flagBox in flagBoxParent.BOX)
+                        {
+                            if (flagBox.seet_no1 == 2 && flagBox.flag_no1 == 16 && flagBox.flag_no2 == 1)
+                            {
+                                flagBox.flag_no2 = 0;
+                                flagBox.comp = COMPARISON.GreaterEq;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         private void ChangeFlagWatchers(string fieldName) 
@@ -1186,20 +1418,19 @@ namespace LM2RandomiserMod
                     if (easyEchidna && (flagWatcher.name.Equals("FlagWatcherTime1") || flagWatcher.name.Equals("FlagWatcherTime2") || flagWatcher.name.Equals("FlagWatcherTime3")))
                         flagWatcher.gameObject.SetActive(false);
 
-                    //change the flagwatchers that seal the corridor of blood so that they only seal it when the player has all 6 dissonance
-                    ChangeCorridorFlags(flagWatcher);
+                    RemoveCorridorSealers(flagWatcher);
                 }
                 else if (fieldName.Equals("field06-2") || fieldName.Equals("field10") || fieldName.Equals("field11") || 
                             fieldName.Equals("field12") || fieldName.Equals("field15"))
                 {
-                    //change the flagwatchers that seal the corridor of blood so that they only seal it when the player has all 6 dissonance
-                    ChangeCorridorFlags(flagWatcher);
+                    RemoveCorridorSealers(flagWatcher);
                 }
             }
         }
 
-        private void ChangeCorridorFlags(FlagWatcherScript flagWatcher)
+        private void RemoveCorridorSealers(FlagWatcherScript flagWatcher)
         {
+            //Don't want the corridor to ever seal 
             bool isCorridorSealer = false;
             foreach (L2FlagBoxParent flagBoxParent in flagWatcher.CheckFlags)
             {
@@ -1211,24 +1442,10 @@ namespace LM2RandomiserMod
                         break;
                     }
                 }
-
-                if (isCorridorSealer)
-                {
-                    List<L2FlagBox> checkFlags = new List<L2FlagBox>();
-                    checkFlags.AddRange(flagBoxParent.BOX);
-                    checkFlags.Add(new L2FlagBox()
-                    {
-                        seet_no1 = 2,
-                        flag_no1 = 3,
-                        seet_no2 = -1,
-                        flag_no2 = 7,
-                        comp = COMPARISON.GreaterEq,
-                        logic = LOGIC.AND
-                    });
-
-                    flagBoxParent.BOX = checkFlags.ToArray();
-                }
             }
+
+            if (isCorridorSealer)
+                Destroy(flagWatcher.gameObject);
         }
 
         private void AddAnchorPoints(string fieldName)
@@ -1281,7 +1498,7 @@ namespace LM2RandomiserMod
             }
         }
 
-        private void CreateStartingObjects(string field)
+        private void CreateStartingAreaObjects(string field)
         {
             //surface has a shop that can be used already so it doesnt matter;
             if (StartingArea == AreaID.VoD)
@@ -1315,6 +1532,7 @@ namespace LM2RandomiserMod
             {
                 if (shopGate.name.Equals("ShopGate"))
                 {
+                    //make a copy of a shop for the start dhop
                     GameObject shop = Instantiate(shopGate.gameObject, new Vector3(startInfo.ShopPosition.x, startInfo.ShopPosition.y, 0), 
                                                     Quaternion.identity, shopGate.transform.parent);
                     shop.name = "Start Shop";
@@ -1358,10 +1576,7 @@ namespace LM2RandomiserMod
 
         private IEnumerator ChangeEntrances(string field)
         {
-            if (field.Equals("fieldLast"))
-                yield return false;
-
-            if(field.Equals("field01-2") && StartingGame)
+            if(StartingGame && field.Equals("field01-2"))
             {
                 var gate = FindObjectOfType<AnchorGateZ>();
                 var startInfo = StartDB.GetStartInfo(StartingArea);
@@ -1396,8 +1611,6 @@ namespace LM2RandomiserMod
                 ExitID exitID = GetExitIDFromAnchorName(gate.AnchorName, field);
                 if (exitID == ExitID.None)
                     continue;
-
-
 
                 if (exitToExitMap.TryGetValue(exitID, out ExitID destinationID))
                 {

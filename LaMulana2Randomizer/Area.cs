@@ -38,7 +38,7 @@ namespace LaMulana2Randomizer
             foreach (Exit entrance in Entrances)
             {
                 if (state.EscapeCheck && (entrance.ExitType == ExitType.PrisonExit || entrance.ExitType == ExitType.PrisonGate
-                    || entrance.ExitType == ExitType.Pyramid || entrance.ExitType == ExitType.Corridor))
+                    || entrance.ExitType == ExitType.Pyramid))
                     continue;
 
                 if (state.CanReach(entrance))

@@ -25,7 +25,7 @@ namespace LaMulana2Randomizer.ViewModels
 
         public MainViewModel()
         {
-            Title = Version.version;
+            Title = "La Mulana 2 Randomiser " + Version.version;
             Settings = FileUtils.LoadSettings();
             Reroll();
         }

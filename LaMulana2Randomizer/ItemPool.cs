@@ -30,6 +30,11 @@ namespace LaMulana2Randomizer
             items.Add(item);
         }
 
+        public void Remove(ItemID id)
+        {
+            items.Remove(Get(id));
+        }
+
         public Item Get(ItemID id)
         {
             return items.Find(i => i.ID == id);
@@ -102,11 +107,17 @@ namespace LaMulana2Randomizer
         }
 
         //
-        public ItemPool CreateRandomShopPool(int amount, Random random)
+        public ItemPool CreateRandomShopPool(int size, Random random)
         {
+            if (size <= 0)
+                throw new RandomiserException($"Can not create a random shop item pool with size {size}.");
+
             var shopItems = GetAndRemoveShopOnlyItems();
+            if (shopItems.Count <= 0)
+                throw new RandomiserException($"Can not create a random shop item pool from {size} shop items.");
+
             ItemPool itemPool = new ItemPool(shopItems);
-            for (; amount > 0; amount--)
+            for (; size > 0; size--)
                 itemPool.Add(shopItems[random.Next(shopItems.Count)]);
 
             return itemPool;

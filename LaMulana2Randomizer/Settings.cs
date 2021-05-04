@@ -159,6 +159,12 @@ namespace LaMulana2Randomizer
             set => Set(ref requiredSkulls, value);
         }
 
+        private bool randomDissonance;
+        public bool RandomDissonance {
+            get => randomDissonance;
+            set => Set(ref randomDissonance, value);
+        }
+
 
         //LAYOUT
         private bool randomHorizontalEntrances;
@@ -354,9 +360,7 @@ namespace LaMulana2Randomizer
             set {
                 Set(ref knife, value);
                 if(!value && NoWeaponsSelected)
-                {
                     Whip = true;
-                }
             }
         }
 
@@ -366,9 +370,7 @@ namespace LaMulana2Randomizer
             set {
                 Set(ref rapier, value);
                 if (!value && NoWeaponsSelected)
-                {
                     Whip = true;
-                }
             }
         }
 
@@ -378,9 +380,7 @@ namespace LaMulana2Randomizer
             set {
                 Set(ref axe, value);
                 if (!value && NoWeaponsSelected)
-                {
                     Whip = true;
-                }
             }
         }
 
@@ -390,9 +390,7 @@ namespace LaMulana2Randomizer
             set {
                 Set(ref katana, value);
                 if (!value && NoWeaponsSelected)
-                {
                     Whip = true;
-                }
             }
         }
 
@@ -402,9 +400,7 @@ namespace LaMulana2Randomizer
             set {
                 Set(ref shuriken, value);
                 if (!value && NoWeaponsSelected)
-                {
                     Whip = true;
-                }
             }
         }
 
@@ -414,9 +410,7 @@ namespace LaMulana2Randomizer
             set {
                 Set(ref rollingShuriken, value);
                 if (!value && NoWeaponsSelected)
-                {
                     Whip = true;
-                }
             }
         }
 
@@ -426,9 +420,7 @@ namespace LaMulana2Randomizer
             set {
                 Set(ref earthSpear, value);
                 if (!value && NoWeaponsSelected)
-                {
                     Whip = true;
-                }
             }
         }
 
@@ -438,9 +430,7 @@ namespace LaMulana2Randomizer
             set {
                 Set(ref flare, value);
                 if (!value && NoWeaponsSelected)
-                {
                     Whip = true;
-                }
             }
         }
 
@@ -450,9 +440,7 @@ namespace LaMulana2Randomizer
             set {
                 Set(ref caltrop, value);
                 if (!value && NoWeaponsSelected)
-                {
                     Whip = true;
-                }
             }
         }
 
@@ -462,9 +450,7 @@ namespace LaMulana2Randomizer
             set {
                 Set(ref chakram, value);
                 if (!value && NoWeaponsSelected)
-                {
                     Whip = true;
-                }
             }
         }
 
@@ -474,9 +460,7 @@ namespace LaMulana2Randomizer
             set {
                 Set(ref bomb, value);
                 if (!value && NoWeaponsSelected)
-                {
                     Whip = true;
-                }
             }
         }
 
@@ -486,9 +470,7 @@ namespace LaMulana2Randomizer
             set {
                 Set(ref pistol, value);
                 if (!value && NoWeaponsSelected)
-                {
                     Whip = true;
-                }
             }
         }
 
@@ -580,6 +562,7 @@ namespace LaMulana2Randomizer
             randomCurses = false;
             removeITStatue = false;
             requiredSkulls = 12;
+            randomDissonance = false;
 
             whip = true;
             knife = false;
@@ -621,8 +604,8 @@ namespace LaMulana2Randomizer
             autoScanTablets = false;
             autoPlaceSkulls = false;
             fastCorridor = false;
-            startingMoney = 0;
-            startingWeights = 0;
+            startingMoney = 100;
+            startingWeights = 20;
 
             itemChestColour = ChestColour.Blue;
             weightChestColour = ChestColour.Blue;

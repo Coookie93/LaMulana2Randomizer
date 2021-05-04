@@ -94,6 +94,7 @@ namespace LaMulana2Randomizer
         public void AppendLogicString(string str)
         {
             logicString = string.Format($"({logicString}) {str}");
+            BuildLogicTree();
         }
 
         public void BuildLogicTree()

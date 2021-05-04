@@ -69,6 +69,7 @@ namespace LaMulana2Randomizer
                 areas.Add(area.ID, area); 
             }
 
+
             RandomiseCurses();
             ChooseStartingArea();
             ChooseStartingWeapon();
@@ -79,25 +80,10 @@ namespace LaMulana2Randomizer
             PlaceOriginalMantras();
             PlaceOriginalShops();
             PlaceResearch();
+            PlaceDissonance();
             RemoveItems();
 
-            Items.Add(GetLocation(LocationID.DissonanceDSLM).Item);
-            GetLocation(LocationID.DissonanceDSLM).PlaceItem(null, true);
-            Items.Add(GetLocation(LocationID.DissonanceEPG).Item);
-            GetLocation(LocationID.DissonanceEPG).PlaceItem(null, true);
-            Items.Add(GetLocation(LocationID.DissonanceHL).Item);
-            GetLocation(LocationID.DissonanceHL).PlaceItem(null, true);
-            Items.Add(GetLocation(LocationID.DissonanceMoG).Item);
-            GetLocation(LocationID.DissonanceMoG).PlaceItem(null, true);
-            Items.Add(GetLocation(LocationID.DissonanceNibiru).Item);
-            GetLocation(LocationID.DissonanceNibiru).PlaceItem(null, true);
-            Items.Add(GetLocation(LocationID.DissonanceValhalla).Item);
-            GetLocation(LocationID.DissonanceValhalla).PlaceItem(null, true);
-
-            //Set the amount of Skull required for Nibiru Dissonance
-            var nibiruDiss = GetLocation(LocationID.DissonanceNibiru);
-            nibiruDiss.AppendLogicString($" and SkullCount({Settings.RequiredSkulls})");
-            nibiruDiss.BuildLogicTree();
+            FixLogic();
         }
 
         public void PlaceEntrances()
@@ -142,6 +128,13 @@ namespace LaMulana2Randomizer
                     connectingArea.Entrances.Add(exit);
                 }
             }
+
+            //change the exit to spiral gates logic depending on whether dissonance is randomised
+            var spiralGate = GetExitsOfType(ExitType.SpiralGate).First();
+            if(Settings.RandomDissonance)
+                spiralGate.AppendLogicString($" and GuardianKills(5)");
+            else
+                spiralGate.AppendLogicString($" and IsDead(Anu)");
         }
 
         public void FixAnkhLogic()
@@ -195,10 +188,7 @@ namespace LaMulana2Randomizer
             {
                 ankhs += group.Count();
                 foreach(Location guardian in group)
-                {
                     guardian.AppendLogicString($" and AnkhCount({ankhs})");
-                    guardian.BuildLogicTree();
-                }
             }
         }
 
@@ -209,10 +199,7 @@ namespace LaMulana2Randomizer
                 foreach(Exit exit in exits)
                 {
                     if (exit.ExitType != ExitType.Internal && GetArea(exit.ConnectingAreaID).IsBackside)
-                    {
                         exit.AppendLogicString(" and Has(Future Development Company)");
-                        exit.BuildLogicTree();
-                    }
                 }
             }
         }
@@ -310,7 +297,7 @@ namespace LaMulana2Randomizer
             Item weight = new Item("Weights", ItemID.Weights, false);
             ItemID chestWeight = ItemID.ChestWeight01;
             ItemID fakeItem = ItemID.FakeItem01;
-            ItemID scanItem = ItemID.NothingScan01;
+            ItemID scanItem = ItemID.FakeScan01;
             ItemID npcMoney = ItemID.NPCMoney01;
             foreach (Location location in GetUnplacedLocations())
             {
@@ -321,8 +308,8 @@ namespace LaMulana2Randomizer
                         location.PlaceItem(weight, true);
                         break;
                     }
-                    case LocationType.Dissonance:
                     case LocationType.Chest:
+                    case LocationType.Dissonance:
                     {
                         location.PlaceItem(new Item("Weight", chestWeight++, false), true);
                         break;
@@ -401,17 +388,15 @@ namespace LaMulana2Randomizer
 
         private void PlaceShopItems(ItemPool items)
         {
-            int amount = 24;
-            if (StartingWeapon.ID > ItemID.Katana) amount -= 1;
-            if (StartingArea.ID != AreaID.VoD) amount += 3;
+            int freeSlots = 24;
+            if (StartingWeapon.ID > ItemID.Katana) freeSlots -= 1;
+            if (StartingArea.ID != AreaID.VoD) freeSlots += 3;
 
             if (Settings.ShopPlacement == ShopPlacement.Random)
             {
-                //lock this shop only items can go here since there is a forth slot
+                //lock this shop only items can go here since the item needs to be purchased to see the forth slot
                 GetLocation(LocationID.HinerShop3).IsLocked = true;
-
-                RandomiseWithChecks(GetUnplacedLocationsOfType(LocationType.Shop), items.CreateRandomShopPool(amount, random), items);
-
+                RandomiseWithChecks(GetUnplacedLocationsOfType(LocationType.Shop), items.CreateRandomShopPool(freeSlots, random), items);
                 GetLocation(LocationID.HinerShop3).IsLocked = false;
             }
             else if(Settings.ShopPlacement == ShopPlacement.AtLeastOne)
@@ -421,7 +406,7 @@ namespace LaMulana2Randomizer
                     if (location.Name.Contains("3"))
                         location.IsLocked = true;
                 }
-                RandomiseWithChecks(GetUnplacedLocationsOfType(LocationType.Shop), items.CreateRandomShopPool(amount, random), items);
+                RandomiseWithChecks(GetUnplacedLocationsOfType(LocationType.Shop), items.CreateRandomShopPool(freeSlots, random), items);
 
                 //now unlock all the shop slots that were locked
                 foreach (var location in GetLocationsOfType(LocationType.Shop))
@@ -520,7 +505,6 @@ namespace LaMulana2Randomizer
 
                 if (StartingArea.ID != AreaID.VoD)
                 {
-                    //TODO:REMOVE THIS WHEN YOU FIX IT
                     if (StartingWeapon.ID <= ItemID.Katana)
                         GetLocation(LocationID.StartingShop2).PlaceItem(Items.Get(ItemID.Weights), false);
 
@@ -530,14 +514,6 @@ namespace LaMulana2Randomizer
                 //after placing the weights/ammo remove them as they arent needed anymore
                 Items.GetAndRemoveShopOnlyItems();
             }
-        }
-
-        private bool PlaceMantras(ItemPool items)
-        {
-            if (Settings.MantraPlacement == MantraPlacement.OnlyMurals)
-                return RandomiseWithChecks(GetUnplacedLocationsOfType(LocationType.Mural), new ItemPool(items.GetAndRemoveMantras()), items);
-
-            return true;
         }
 
         private void PlaceOriginalMantras()
@@ -556,6 +532,14 @@ namespace LaMulana2Randomizer
                 GetLocation(LocationID.ChildMantraMural).PlaceItem(Items.GetAndRemove(ItemID.Child), false);
                 GetLocation(LocationID.NightMantraMural).PlaceItem(Items.GetAndRemove(ItemID.Night), false);
             }
+        }
+
+        private bool PlaceMantras(ItemPool items)
+        {
+            if (Settings.MantraPlacement == MantraPlacement.OnlyMurals)
+                return RandomiseWithChecks(GetUnplacedLocationsOfType(LocationType.Mural), new ItemPool(items.GetAndRemoveMantras()), items);
+
+            return true;
         }
 
         private void PlaceStartingShopItems()
@@ -611,6 +595,28 @@ namespace LaMulana2Randomizer
             }               
         }                   
 
+        private void PlaceDissonance()
+        {
+            if (Settings.RandomDissonance)
+            {
+                Items.Add(new Item("Progressive Beherit", ItemID.ProgressiveBeherit2, true));
+                Items.Add(new Item("Progressive Beherit", ItemID.ProgressiveBeherit3, true));
+                Items.Add(new Item("Progressive Beherit", ItemID.ProgressiveBeherit4, true));
+                Items.Add(new Item("Progressive Beherit", ItemID.ProgressiveBeherit5, true));
+                Items.Add(new Item("Progressive Beherit", ItemID.ProgressiveBeherit6, true));
+                Items.Add(new Item("Progressive Beherit", ItemID.ProgressiveBeherit7, true));
+            }
+            else
+            {
+                GetLocation(LocationID.DissonanceDSLM).PlaceItem(new Item("Dissonance", ItemID.None, true), false);
+                GetLocation(LocationID.DissonanceEPG).PlaceItem(new Item("Dissonance", ItemID.None, true), false);
+                GetLocation(LocationID.DissonanceHL).PlaceItem(new Item("Dissonance", ItemID.None, true), false);
+                GetLocation(LocationID.DissonanceMoG).PlaceItem(new Item("Dissonance", ItemID.None, true), false);
+                GetLocation(LocationID.DissonanceNibiru).PlaceItem(new Item("Dissonance", ItemID.None, true), false);
+                GetLocation(LocationID.DissonanceValhalla).PlaceItem(new Item("Dissonance", ItemID.None, true), false);
+            }
+        }
+
         private void ChooseStartingWeapon()
         {
             ItemID[] weapons = new ItemID[]{ ItemID.Whip1, ItemID.Knife, ItemID.Rapier, ItemID.Axe, ItemID.Katana, ItemID.Shuriken,
@@ -657,7 +663,6 @@ namespace LaMulana2Randomizer
                 {
                     if(Settings.RandomGateEntrances)
                         entrances.Add(ExitID.f01Right);
-
                     if(Settings.IncludeUniqueTransitions)
                         entrances.Add(ExitID.f01Start);
                     break;
@@ -686,9 +691,6 @@ namespace LaMulana2Randomizer
                 {
                     if (Settings.RandomLadderEntrances)
                         entrances.Add(ExitID.f04Up);
-                    if (Settings.RandomGateEntrances)
-                        entrances.Add(ExitID.f04GateYB);
-
                     break;
                 }
                 case AreaID.DFMain:
@@ -725,36 +727,24 @@ namespace LaMulana2Randomizer
 
         private void CheckStartingItems()
         {
-            if (Settings.RandomGrail == ItemPlacement.Starting)
-                StartingItems.Add(Items.GetAndRemove(ItemID.HolyGrail));
-            if(Settings.RandomScanner == ItemPlacement.Starting)
-                StartingItems.Add(Items.GetAndRemove(ItemID.HandScanner));
-            if (Settings.RandomCodices == ItemPlacement.Starting)
-                StartingItems.Add(Items.GetAndRemove(ItemID.Codices));
-            if (Settings.RandomFDC == ItemPlacement.Starting)
-                StartingItems.Add(Items.GetAndRemove(ItemID.FutureDevelopmentCompany));
-            if(Settings.RandomRing == ItemPlacement.Starting)
-                StartingItems.Add(Items.GetAndRemove(ItemID.Ring));
-            if(Settings.RandomShellHorn == ItemPlacement.Starting)
-                StartingItems.Add(Items.GetAndRemove(ItemID.ShellHorn));
+            if (Settings.RandomGrail == ItemPlacement.Starting) StartingItems.Add(Items.GetAndRemove(ItemID.HolyGrail));
+            if(Settings.RandomScanner == ItemPlacement.Starting) StartingItems.Add(Items.GetAndRemove(ItemID.HandScanner));
+            if (Settings.RandomCodices == ItemPlacement.Starting) StartingItems.Add(Items.GetAndRemove(ItemID.Codices));
+            if (Settings.RandomFDC == ItemPlacement.Starting) StartingItems.Add(Items.GetAndRemove(ItemID.FutureDevelopmentCompany));
+            if(Settings.RandomRing == ItemPlacement.Starting) StartingItems.Add(Items.GetAndRemove(ItemID.Ring));
+            if(Settings.RandomShellHorn == ItemPlacement.Starting) StartingItems.Add(Items.GetAndRemove(ItemID.ShellHorn));
         }
 
         private void PlaceAvailableAtStart(ItemPool items)
         {
             //create a list of the items we want to place that are accessible from the start
             ItemPool earlyItems = new ItemPool();
-            if (Settings.RandomGrail == ItemPlacement.AvailableAtStart)
-                earlyItems.Add(items.GetAndRemove(ItemID.HolyGrail));
-            if (Settings.RandomScanner == ItemPlacement.AvailableAtStart)
-                earlyItems.Add(items.GetAndRemove(ItemID.HandScanner));
-            if (Settings.RandomCodices == ItemPlacement.AvailableAtStart)
-                earlyItems.Add(items.GetAndRemove(ItemID.Codices));
-            if (Settings.RandomFDC == ItemPlacement.AvailableAtStart)
-                earlyItems.Add(items.GetAndRemove(ItemID.FutureDevelopmentCompany));
-            if (Settings.RandomRing == ItemPlacement.AvailableAtStart)
-                earlyItems.Add(items.GetAndRemove(ItemID.Ring));
-            if (Settings.RandomShellHorn == ItemPlacement.AvailableAtStart)
-                earlyItems.Add(items.GetAndRemove(ItemID.ShellHorn));
+            if (Settings.RandomGrail == ItemPlacement.AvailableAtStart) earlyItems.Add(items.GetAndRemove(ItemID.HolyGrail));
+            if (Settings.RandomScanner == ItemPlacement.AvailableAtStart) earlyItems.Add(items.GetAndRemove(ItemID.HandScanner));
+            if (Settings.RandomCodices == ItemPlacement.AvailableAtStart) earlyItems.Add(items.GetAndRemove(ItemID.Codices));
+            if (Settings.RandomFDC == ItemPlacement.AvailableAtStart) earlyItems.Add(items.GetAndRemove(ItemID.FutureDevelopmentCompany));
+            if (Settings.RandomRing == ItemPlacement.AvailableAtStart) earlyItems.Add(items.GetAndRemove(ItemID.Ring));
+            if (Settings.RandomShellHorn == ItemPlacement.AvailableAtStart) earlyItems.Add(items.GetAndRemove(ItemID.ShellHorn));
 
             PlayerState state = PlayerState.GetStateWithItems(this, new ItemPool());
             var locations = state.GetReachableLocations(GetUnplacedLocations());
@@ -775,22 +765,42 @@ namespace LaMulana2Randomizer
         {
             if (Settings.RemoveMaps)
             {
-                for (ItemID i = ItemID.Map1; i <= ItemID.Map16; i++)
-                    Items.GetAndRemove(i);
+                for (ItemID id = ItemID.Map1; id <= ItemID.Map16; id++)
+                    Items.Remove(id);
             }
 
             if (Settings.RemoveResearch)
             {
-                for (ItemID i = ItemID.Research1; i <= ItemID.Research10; i++)
-                    Items.GetAndRemove(i);
+                for (ItemID id = ItemID.Research1; id <= ItemID.Research10; id++)
+                    Items.Remove(id);
             }
 
             if (Settings.RemoveSkulls)
             {
                 int skullsToRemove = 12 - Settings.RequiredSkulls;
-                for (ItemID i = ItemID.CrystalSkull1; i < ItemID.CrystalSkull1 + skullsToRemove; i++)
-                    Items.GetAndRemove(i);
+                for (ItemID id = ItemID.CrystalSkull1; id < ItemID.CrystalSkull1 + skullsToRemove; id++)
+                    Items.Remove(id);
             }
+        }
+
+        private void FixLogic()
+        {
+            //fix some logic based on settings chosen
+            Location tent = GetLocation(LocationID.ResearchIBTent3);
+            Location secret = GetLocation(LocationID.SecretTreasureofLifeItem);
+            if (Settings.RandomDissonance)
+            {
+                tent.AppendLogicString(" and GuardianKills(5)"); 
+                secret.AppendLogicString(" and GuardianKills(5)");
+            }
+            else
+            {
+                tent.AppendLogicString(" and IsDead(Anu)");
+                secret.AppendLogicString(" and IsDead(Anu)");
+            }
+
+            Location nibiruDiss = GetLocation(LocationID.DissonanceNibiru);
+            nibiruDiss.AppendLogicString($" and SkullCount({Settings.RequiredSkulls})");
         }
 
         private bool RandomiseAssumedFill(ItemPool itemsToPlace)
@@ -891,7 +901,6 @@ namespace LaMulana2Randomizer
                 {
                     Location location = chestLocations[i];
                     location.AppendLogicString("and Has(Mulana Talisman)");
-                    location.BuildLogicTree();
                     CursedLocations.Add(location);
                 }
             }
@@ -903,7 +912,6 @@ namespace LaMulana2Randomizer
                 {
                     Location location = GetLocation(locationID);
                     location.AppendLogicString("and Has(Mulana Talisman)");
-                    location.BuildLogicTree();
                     CursedLocations.Add(location);
                 }
             }
@@ -982,15 +990,9 @@ namespace LaMulana2Randomizer
                 if (leftDoor.ID == ExitID.fL02Left)
                 {
                     if (rightDoor.ID == ExitID.f01Right || (rightDoor.ID == ExitID.fP00Right && cavernToVillage))
-                    {
                         rightDoor.AppendLogicString(" and CanWarp");
-                        rightDoor.BuildLogicTree();
-                    }
                     else
-                    {
                         rightDoor.AppendLogicString($" and (CanWarp or CanReach({AreaID.AnnwfnMain}))");
-                        rightDoor.BuildLogicTree();
-                    }
                 }
 
                 leftDoor.ConnectingAreaID = rightDoor.ParentAreaID;
@@ -1077,31 +1079,16 @@ namespace LaMulana2Randomizer
         private void FixLadderLogic(Exit downLadder, Exit upLadder)
         {
             if (downLadder.ID == ExitID.f02Down)
-            {
                 upLadder.AppendLogicString($" and (CanReach({AreaID.AnnwfnMain}) or CanWarp)");
-                upLadder.BuildLogicTree();
-            }
             else if (downLadder.ID == ExitID.f03Down2)
-            {
                 upLadder.AppendLogicString($" and Has(Life Sigil) and (CanWarp or CanReach({AreaID.IBDinosaur}))");
-                upLadder.BuildLogicTree();
-            }
             else if (downLadder.ID == ExitID.f02Down)
-            {
                 upLadder.AppendLogicString(" and HorizontalAttack");
-                upLadder.BuildLogicTree();
-            }
 
             if (upLadder.ID == ExitID.f03Up)
-            {
                 downLadder.AppendLogicString($" and (CanWarp or CanKill(Cetus) or CanReach({AreaID.IBMain}))");
-                downLadder.BuildLogicTree();
-            }
             else if (upLadder.ID == ExitID.f04Up3)
-            {
                 downLadder.AppendLogicString(" and False");
-                downLadder.BuildLogicTree();
-            }
         }
 
         private void RandomiseGateEntrances()
@@ -1194,37 +1181,31 @@ namespace LaMulana2Randomizer
                 case ExitID.f00GateYA:
                 {
                     gate2.AppendLogicString(" and False");
-                    gate2.BuildLogicTree();
                     break;
                 }
                 case ExitID.f00GateYB:
                 {
                     gate2.AppendLogicString(" and (CanWarp or CanKill(Nidhogg))");
-                    gate2.BuildLogicTree();
                     break;
                 }
                 case ExitID.f00GateYC:
                 {
                     gate2.AppendLogicString(" and (CanWarp or Has(Birth Sigil))");
-                    gate2.BuildLogicTree();
                     break;
                 }
                 case ExitID.f06_2GateP0:
                 {
                     gate2.AppendLogicString(" and (CanKill(Tezcatlipoca) and (CanWarp or Has(Grapple Claw)))");
-                    gate2.BuildLogicTree();
                     break;
                 }
                 case ExitID.f07GateP0:
                 {
                     gate2.AppendLogicString(" and (CanWarp or (Has(Pepper) and Has(Birth Sigil) and CanChant(Sun) and CanKill(Unicorn)))");
-                    gate2.BuildLogicTree();
                     break;
                 }
                 case ExitID.f09GateP0:
                 {
                     gate2.AppendLogicString(" and CanWarp");
-                    gate2.BuildLogicTree();
                     break;
                 }
             }
@@ -1428,81 +1409,79 @@ namespace LaMulana2Randomizer
                 case ExitID.f00GateYA:
                 {
                     entrance2.AppendLogicString(" and False");
-                    break;
+                    return;
                 }
                 case ExitID.f00GateYB:
                 {
                     entrance2.AppendLogicString(" and (CanWarp or CanKill(Nidhogg))");
-                    break;
+                    return;
                 }
                 case ExitID.f00GateYC:
                 {
                     entrance2.AppendLogicString(" and (CanWarp or Has(Birth Sigil))");
-                    break;
+                    return;
                 }
                 case ExitID.fL02Left:
                 {
                     entrance2.AppendLogicString($" and (CanWarp or CanReach({AreaID.AnnwfnMain}))");
-                    break;
+                    return;
                 }
                 case ExitID.f02Down:
                 {
                     entrance2.AppendLogicString(" and CanWarp and HorizontalAttack");
-                    break;
+                    return;
                 }
                 case ExitID.f03Right:
                 {
                     entrance2.AppendLogicString(" and (Has(Feather) or Has(Grapple Claw))");
-                    break;
+                    return;
                 }
                 case ExitID.f03Down2:
                 {
                     entrance2.AppendLogicString($" and Has(Life Sigil) and (CanWarp or CanReach({AreaID.IBDinosaur}))");
-                    break;
+                    return;
                 }
                 case ExitID.f03Up:
                 {
                     entrance2.AppendLogicString($" and (CanWarp or CanKill(Cetus) or CanReach({AreaID.IBMain}))");
-                    break;
+                    return;
                 }
                 case ExitID.f03In:
                 {
                     entrance2.AppendLogicString(" and CanWarp");
-                    break;
+                    return;
                 }
                 case ExitID.f04Up3:
                 {
                     entrance2.AppendLogicString(" and False");
-                    break;
+                    return;
                 }
                 case ExitID.f06_2GateP0:
                 {
                     entrance2.AppendLogicString(" and (CanKill(Tezcatlipoca) and (CanWarp or Has(Grapple Claw)))");
-                    break;
+                    return;
                 }
                 case ExitID.f07GateP0:
                 {
                     entrance2.AppendLogicString(" and (CanWarp or (Has(Pepper) and Has(Birth Sigil) and CanChant(Sun) and CanKill(Unicorn)))");
-                    break;
+                    return;
                 }
                 case ExitID.f08Neck:
                 {
                     entrance2.AppendLogicString("and (CanWarp or (CanChant(Heaven) and CanChant(Earth) and CanChant(Sea) and CanChant(Fire) and CanChant(Wind)))");
-                    break;
+                    return;
                 }
                 case ExitID.f09GateP0:
                 {
                     entrance2.AppendLogicString(" and CanWarp");
-                    break;
+                    return;
                 }
                 case ExitID.f11Pyramid:
                 {
                     entrance2.AppendLogicString(" and False");
-                    break;
+                    return;
                 }
             }
-
-            entrance2.BuildLogicTree();
         }
 
         private void RandomiseSoulGateEntrances()
@@ -1556,13 +1535,21 @@ namespace LaMulana2Randomizer
                     gates.Remove(gate1);
                 }
 
+                //the spirit bote soul gate can't go to the belial soul gate 
                 do
                 {
                     gate2 = gates[random.Next(gates.Count)];
                 } while (gate1.ID == ExitID.f03GateN9 && gate2.ID == ExitID.f08GateN8);
                 gates.Remove(gate2);
 
-                int soulAmount = soulAmounts[random.Next(soulAmounts.Count)];
+                int soulAmount;
+
+                //the EPG soul gate can't be 9 because its needed to beat a guardian
+                do
+                {
+                    soulAmount = soulAmounts[random.Next(soulAmounts.Count)];
+                } while ((gate1.ID == ExitID.f03GateN9 || gate2.ID == ExitID.f03GateN9) && soulAmount == 9);
+
                 //only remove if we are using the vanilla list of soul pair values
                 if(!Settings.RandomSoulPairs)
                     soulAmounts.Remove(soulAmount);
@@ -1586,7 +1573,6 @@ namespace LaMulana2Randomizer
                         toHel.AppendLogicString($" and IsDead(Vidofnir) and GuardianKills({ soulAmount})");
                     else
                         toHel.AppendLogicString($" and GuardianKills({ soulAmount})");
-                    toHel.BuildLogicTree();
                 }
             }
         }
@@ -1601,8 +1587,6 @@ namespace LaMulana2Randomizer
                 case ExitID.f13GateN9: gate2.AppendLogicString(" and False"); break;
                 default: break;
             }
-
-            gate2.BuildLogicTree();
         }
     }
 }

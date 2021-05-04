@@ -88,7 +88,7 @@ namespace LM2RandomiserMod.Patches
                     else if (MessString[0].Contains("Shield"))
                     {
                         short data = 0;
-                        sys.getFlag(2, 184, ref data);
+                        sys.getFlag(2, 196, ref data);
                         if (MessString[1] == "kataribe")
                         {
                             if (data == 0) MessString[0] = "Shield";
@@ -105,6 +105,10 @@ namespace LM2RandomiserMod.Patches
                     else if (MessString[0].Contains("Research"))
                     {
                         MessString[0] = "Research";
+                    }
+                    else if (MessString[0].Contains("Beherit"))
+                    {
+                        MessString[0] = "Beherit";
                     }
                     con.Icon.sprite = L2Math.Load("Textures/icons_itemmenu", MessString[0]);
                 }

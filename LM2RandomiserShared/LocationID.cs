@@ -281,6 +281,7 @@ namespace LaMulana2RandomizerShared
 
         AnnwfnRightShortcut,
         IBLeftShortcut,
+        HoMLadder,
         Bergelmir,
         WhitePedestals,
         GarmStatuePuzzle,

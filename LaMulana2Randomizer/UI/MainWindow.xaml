@@ -266,6 +266,13 @@
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
+                            <CheckBox Name="RandomDissonanceCheck" IsChecked="{Binding Settings.RandomDissonance}" Margin="0,2" Content="Randomise Dissonance">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="."/>
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
                             <StackPanel Orientation="Horizontal" Margin="21,0,0,2" Height="22">
                                 <TextBlock Text="Skulls Required for Nibiru Dissonance" Height="15" Margin="0,0,2,0"/>
                                 <TextBox x:Name="SkullTextBox" Width="20" HorizontalAlignment="Stretch" Margin="0,2,0,0">

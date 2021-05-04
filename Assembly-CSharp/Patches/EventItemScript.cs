@@ -50,6 +50,8 @@ namespace LM2RandomiserMod.Patches
                     pl.setGetItemIcon(L2SystemCore.getItemData("Mantra"));
                 else if(itemLabel.Contains("Research"))
                     pl.setGetItemIcon(L2SystemCore.getItemData("Research"));
+                else if (itemLabel.Contains("Beherit"))
+                    pl.setGetItemIcon(L2SystemCore.getItemData("Beherit"));
                 else
                     pl.setGetItemIcon(L2SystemCore.getItemData(itemLabel));
             }

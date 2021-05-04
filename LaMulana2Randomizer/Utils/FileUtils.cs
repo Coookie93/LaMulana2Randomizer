@@ -114,6 +114,7 @@ namespace LaMulana2Randomizer.Utils
                         if (randomiser.Settings.RandomHorizontalEntrances)
                         {
                             sw.WriteLine("  Horizontal Entrances: {");
+                            randomiser.HorizontalPairs.Sort();
                             foreach (string pair in randomiser.HorizontalPairs)
                                 sw.WriteLine($"    {pair}");
 
@@ -123,6 +124,7 @@ namespace LaMulana2Randomizer.Utils
                         if (randomiser.Settings.RandomLadderEntrances)
                         {
                             sw.WriteLine("  Ladders Entrances: {");
+                            randomiser.LadderPairs.Sort();
                             foreach (string pair in randomiser.LadderPairs)
                                 sw.WriteLine($"    {pair}");
 
@@ -132,6 +134,7 @@ namespace LaMulana2Randomizer.Utils
                         if (randomiser.Settings.RandomGateEntrances)
                         {
                             sw.WriteLine("  Gate Entrances: {");
+                            randomiser.GatePairs.Sort();
                             foreach (string pair in randomiser.GatePairs)
                                 sw.WriteLine($"    {pair}");
 
@@ -141,6 +144,7 @@ namespace LaMulana2Randomizer.Utils
                     else
                     {
                         sw.WriteLine("  Entrances: {");
+                        randomiser.EntrancePairs.Sort();
                         foreach (string pair in randomiser.EntrancePairs)
                             sw.WriteLine($"    {pair}");
 
@@ -150,7 +154,7 @@ namespace LaMulana2Randomizer.Utils
                     if (randomiser.Settings.RandomSoulGateEntrances)
                     {
                         sw.WriteLine("  Soul Gate Entrances: {");
-                        foreach (var pair in randomiser.SoulGatePairs)
+                        foreach (var pair in randomiser.SoulGatePairs.OrderBy(x => x.Item1.Name))
                             sw.WriteLine($"    {pair.Item1.Name} - {pair.Item2.Name}: Soul Amount {pair.Item3}");
 
                         sw.WriteLine("  }");
@@ -160,7 +164,7 @@ namespace LaMulana2Randomizer.Utils
                     sw.WriteLine("Item Placement {");
                     foreach (Location location in randomiser.GetPlacedLocations().OrderBy(x => x.ID))
                     {
-                        if (location.ID < LocationID.DissonanceValhalla && location.ID != LocationID.None)
+                        if (location.ID < LocationID.Ratatoskr1 && location.ID != LocationID.None)
                             sw.WriteLine($"  {location.Name} -> {location.Item.Name}");
                     }
                     sw.WriteLine("}\n");
@@ -209,7 +213,7 @@ namespace LaMulana2Randomizer.Utils
             List<(LocationID, ItemID, int)> shopItems = new List<(LocationID, ItemID, int)>();
             foreach (Location location in randomiser.GetPlacedLocations())
             {
-                if (location.ID < LocationID.DissonanceValhalla && location.ID != LocationID.None)
+                if (location.ID < LocationID.Ratatoskr1 && location.ID != LocationID.None && location.Item.ID != ItemID.None)
                 {
                     if (location.LocationType == LocationType.Shop)
                     {
@@ -228,6 +232,7 @@ namespace LaMulana2Randomizer.Utils
                 {
                     br.Write((int)randomiser.StartingWeapon.ID);
                     br.Write((int)randomiser.StartingArea.ID);
+                    br.Write(randomiser.Settings.RandomDissonance);
                     br.Write(randomiser.Settings.RequiredSkulls);
                     br.Write(randomiser.Settings.RemoveITStatue);
                     br.Write(randomiser.Settings.EasyEchidna);

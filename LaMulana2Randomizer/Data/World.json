@@ -227,11 +227,7 @@
       {
         "Name": "Dissonance MoG",
         "LocationType": "Dissonance",
-        "Logic": "Has(Beherit) and CanChant(Sun) and PuzzleFinished(Sakit)",
-        "Item": {
-          "Name": "Dissonance",
-          "IsRequired": true
-        }
+        "Logic": "Has(Progressive Beherit) and CanChant(Sun) and PuzzleFinished(Sakit)"
       }
     ],
     "Exits": [
@@ -243,7 +239,7 @@
         "Logic": "True"
       },
       {
-        "ConnectionType": "Unique",
+        "ConnectionType": "Elevator",
         "ConnectingAreaID": "GateofGuidanceLeft",
         "Logic": "True"
       },
@@ -817,7 +813,7 @@
       {
         "Name": "Secret Treasure of Life Item",
         "LocationType": "FreeStanding",
-        "Logic": "Has(Dinosaur Figure) and IsDead(Anu) and Dissonance(6) and CanChant(Night)"
+        "Logic": "IsDead(Jormangund) and Dissonance(6) and CanChant(Night) and CanReach(IBBoat)"
       },
       {
         "Name": "Research IB Top Right",
@@ -837,7 +833,7 @@
       {
         "Name": "Research IB Tent 3",
         "LocationType": "FreeStanding",
-        "Logic": "(Has(Gale Fibula) or CanStopTime) and (IsDead(Anu) and Dissonance(6) and CanChant(Night))"
+        "Logic": "(Has(Gale Fibula) or CanStopTime) and (Dissonance(6) and CanChant(Night) and CanReach(IBBoat))"
       },
       {
         "Name": "Hiro Roderick Shop 1",
@@ -1105,12 +1101,12 @@
         "ID": "f03GateN9",
         "ConnectionType": "SoulGate",
         "ConnectingAreaID": "HoM",
-        "Logic": "GuardianKills(9) or Setting(Random Soul Gates)"
+        "Logic": "False"
       },
       {
-        "ConnectionType": "Unique",
+        "ConnectionType": "SpiralGate",
         "ConnectingAreaID": "SpiralHell",
-        "Logic": "IsDead(Anu) and Dissonance(6) and Has(Secret Treasure of Life) and CanChant(Heaven) and CanChant(Earth) and CanChant(Sun) and CanChant(Moon) and CanChant(Fire) and CanChant(Sea) and CanChant(Wind) and CanChant(Mother) and CanChant(Child) and CanChant(Night)"
+        "Logic": "Dissonance(6) and Has(Secret Treasure of Life) and CanChant(Heaven) and CanChant(Earth) and CanChant(Sun) and CanChant(Moon) and CanChant(Fire) and CanChant(Sea) and CanChant(Wind) and CanChant(Mother) and CanChant(Child) and CanChant(Night)"
       }
     ]
   },
@@ -1428,7 +1424,7 @@
       {
         "ConnectionType": "Internal",
         "ConnectingAreaID": "DFRight",
-        "Logic": "CanUse(Shuriken) or CanUse(Chakram) or Has(Claydoll Suit)"
+        "Logic": "CanUse(Shuriken) or CanUse(Chakram) or Has(Claydoll Suit) or CanUse(Pistol)"
       },
       {
         "Name": "Divine Fortress Soul Gate (C-5)",
@@ -1478,7 +1474,7 @@
       {
         "ConnectionType": "Internal",
         "ConnectingAreaID": "DFMain",
-        "Logic": "CanUse(Shuriken) or CanUse(Chakram) or Has(Claydoll Suit) or (CanUse(Earth Spear) and Has(Ring))"
+        "Logic": "CanUse(Shuriken) or CanUse(Chakram) or Has(Claydoll Suit) or CanUse(Pistol) or (CanUse(Earth Spear) and Has(Ring))"
       },
       {
         "ConnectionType": "Internal",
@@ -1570,24 +1566,9 @@
         "Logic": "True"
       },
       {
-        "Name": "Birth Sigil Chest",
-        "LocationType": "Chest",
-        "Logic": "Has(Origin Sigil) and HorizontalAttack"
-      },
-      {
-        "Name": "Ankh Chest SotFG",
-        "LocationType": "Chest",
-        "Logic": "True"
-      },
-      {
         "Name": "Pochette Key Chest",
         "LocationType": "Chest",
         "Logic": "IsDead(Badhbh Cath) and Has(Life Sigil) and Has(Grapple Claw) and (HorizontalAttack or (CanUse(Flare) and (CanWarp or Has(Feather))))"
-      },
-      {
-        "Name": "Rapier Puzzle Reward",
-        "LocationType": "FreeStanding",
-        "Logic": "True"
       },
       {
         "Name": "Weapon Fairy",
@@ -1629,8 +1610,95 @@
       },
       {
         "ConnectionType": "Internal",
+        "ConnectingAreaID": "SotFGGrail",
+        "Logic": "CanWarp or HorizontalAttack"
+      },
+      {
+        "ConnectionType": "Internal",
         "ConnectingAreaID": "SotFGTop",
         "Logic": "IsDead(Badhbh Cath) and Has(Grapple Claw) and HorizontalAttack"
+      }
+    ]
+  },
+  {
+    "ID": "SotFGGrail",
+    "Name": "Shrine of the Frost Giants Grail",
+    "Locations": [
+      {
+        "Name": "Birth Sigil Chest",
+        "LocationType": "Chest",
+        "Logic": "Has(Origin Sigil) and HorizontalAttack"
+      },
+      {
+        "Name": "Ankh Chest SotFG",
+        "LocationType": "Chest",
+        "Logic": "True"
+      },
+      {
+        "Name": "Rapier Puzzle Reward",
+        "LocationType": "FreeStanding",
+        "Logic": "True"
+      }
+    ],
+    "Exits": [
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaID": "SotFGMain",
+        "Logic": "HorizontalAttack"
+      }
+    ]
+  },
+  {
+    "ID": "SotFGLeft",
+    "Name": "Shrine of the Frost Giants Left",
+    "Locations": [
+      {
+        "Name": "Gauntlet Chest",
+        "LocationType": "Chest",
+        "Logic": "Has(Feather) and Has(Life Sigil) and ((HorizontalAttack and CanUse(Flare)) or Has(Leather Whip) or Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana) or CanUse(Earth Spear) or CanUse(Bomb))"
+      },
+      {
+        "Name": "Hydlit Shop 1",
+        "LocationType": "Shop",
+        "Logic": "((Has(Snow Shoes) and Has(Gale Fibula)) or CanStopTime) and PuzzleFinished(Bergelmir)"
+      },
+      {
+        "Name": "Hydlit Shop 2",
+        "LocationType": "Shop",
+        "Logic": "((Has(Snow Shoes) and Has(Gale Fibula)) or CanStopTime) and PuzzleFinished(Bergelmir)"
+      },
+      {
+        "Name": "Hydlit Shop 3",
+        "LocationType": "Shop",
+        "Logic": "((Has(Snow Shoes) and Has(Gale Fibula)) or CanStopTime) and PuzzleFinished(Bergelmir)"
+      },
+      {
+        "Name": "Bergelmir",
+        "LocationType": "Puzzle",
+        "Logic": "CanChant(Earth) and CanChant(Moon) and CanChant(Heaven)",
+        "Item": {
+          "Name": "Bergelmir",
+          "IsRequired": true
+        }
+      }
+    ],
+    "Exits": [
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaID": "SotFGMain",
+        "Logic": "Has(Feather)"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaID": "SotFGGrail",
+        "Logic": "CanWarp or HorizontalAttack"
+      },
+      {
+        "Name": "Shrine of the Frost Giants Bergelmir Gate (B-4)",
+        "ID": "f06GateP0",
+        "ConnectionType": "Gate",
+        "ConnectingAreaID": "SotFGBlood",
+        "Logic": "False"
       }
     ]
   },
@@ -1731,58 +1799,9 @@
         "Logic": "CanSpinCorridor"
       },
       {
-        "ConnectionType": "CorridorSealed",
+        "ConnectionType": "Corridor",
         "ConnectingAreaID": "EPDEntrance",
         "Logic": "CanSpinCorridor and CanChant(Sun) and CanChant(Moon) and CanChant(Sea) and CanWarp"
-      }
-    ]
-  },
-  {
-    "ID": "SotFGLeft",
-    "Name": "Shrine of the Frost Giants Left",
-    "Locations": [
-      {
-        "Name": "Gauntlet Chest",
-        "LocationType": "Chest",
-        "Logic": "Has(Feather) and Has(Life Sigil) and ((HorizontalAttack and CanUse(Flare)) or Has(Leather Whip) or Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana) or CanUse(Earth Spear) or CanUse(Bomb))"
-      },
-      {
-        "Name": "Hydlit Shop 1",
-        "LocationType": "Shop",
-        "Logic": "((Has(Snow Shoes) and Has(Gale Fibula)) or CanStopTime) and PuzzleFinished(Bergelmir)"
-      },
-      {
-        "Name": "Hydlit Shop 2",
-        "LocationType": "Shop",
-        "Logic": "((Has(Snow Shoes) and Has(Gale Fibula)) or CanStopTime) and PuzzleFinished(Bergelmir)"
-      },
-      {
-        "Name": "Hydlit Shop 3",
-        "LocationType": "Shop",
-        "Logic": "((Has(Snow Shoes) and Has(Gale Fibula)) or CanStopTime) and PuzzleFinished(Bergelmir)"
-      },
-      {
-        "Name": "Bergelmir",
-        "LocationType": "Puzzle",
-        "Logic": "CanChant(Earth) and CanChant(Moon) and CanChant(Heaven)",
-        "Item": {
-          "Name": "Bergelmir",
-          "IsRequired": true
-        }
-      }
-    ],
-    "Exits": [
-      {
-        "ConnectionType": "Internal",
-        "ConnectingAreaID": "SotFGMain",
-        "Logic": "True"
-      },
-      {
-        "Name": "Shrine of the Frost Giants Bergelmir Gate (B-4)",
-        "ID": "f06GateP0",
-        "ConnectionType": "Gate",
-        "ConnectingAreaID": "SotFGBlood",
-        "Logic": "False"
       }
     ]
   },
@@ -2191,11 +2210,7 @@
       {
         "Name": "Dissonance HL",
         "LocationType": "Dissonance",
-        "Logic": "CanWarp and IsDead(Echidna) and Has(Beherit) and Has(Hand Scanner)",
-        "Item": {
-          "Name": "Dissonance",
-          "IsRequired": true
-        }
+        "Logic": "CanWarp and IsDead(Echidna) and Has(Progressive Beherit) and Has(Hand Scanner)"
       }
     ],
     "Exits": []
@@ -2283,8 +2298,8 @@
       {
         "Name": "Vritra",
         "LocationType": "Guardian",
-        "Logic": "(CanReach(RoY) and MeleeAttack) and IsDead(Vucub Caquiz) and (((Has(Leather Whip) or Has(Knife) or Has(Rapier) or CanUse(Rolling Shuriken) or CanUse(Caltrops)) and OrbCount(2)) or ((Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana) or CanUse(Bomb) or CanUse(Earth Spear) or CanUse(Shuriken)) and OrbCount(1)) or CanUse(Pistol))",
-        "HardLogic": "IsDead(Fafnir) and IsDead(Vucub Caquiz)",
+        "Logic": "CanReach(RoY) and MeleeAttack and IsDead(Vucub Caquiz) and (((Has(Leather Whip) or Has(Knife) or Has(Rapier) or CanUse(Rolling Shuriken) or CanUse(Caltrops)) and OrbCount(2)) or ((Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Katana) or CanUse(Bomb) or CanUse(Earth Spear) or CanUse(Shuriken)) and OrbCount(1)) or CanUse(Pistol))",
+        "HardLogic": "CanReach(RoY) and MeleeAttack and IsDead(Vucub Caquiz)",
         "Item": {
           "Name": "Vritra",
           "IsRequired": true
@@ -2293,11 +2308,7 @@
       {
         "Name": "Dissonance Valhalla",
         "LocationType": "Dissonance",
-        "Logic": "Has(Beherit) and IsDead(Vritra)",
-        "Item": {
-          "Name": "Dissonance",
-          "IsRequired": true
-        }
+        "Logic": "Has(Progressive Beherit) and IsDead(Vritra)"
       }
     ],
     "Exits": [
@@ -2319,7 +2330,7 @@
         "Logic": "CanWarp or CanSpinCorridor or (CanReach(SotFG Main) and CanKill(Tezcatlipoca) and Setting(Non Random Gates))"
       },
       {
-        "ConnectionType": "CorridorSealed",
+        "ConnectionType": "Corridor",
         "ConnectingAreaID": "ACBlood",
         "Logic": "CanSpinCorridor"
       },
@@ -2475,11 +2486,7 @@
       {
         "Name": "Dissonance DSLM",
         "LocationType": "Dissonance",
-        "Logic": "Has(Beherit) and IsDead(Aten Ra)",
-        "Item": {
-          "Name": "Dissonance",
-          "IsRequired": true
-        }
+        "Logic": "Has(Progressive Beherit) and IsDead(Aten Ra)"
       }
     ],
     "Exits": [
@@ -2557,7 +2564,7 @@
         "Logic": "CanWarp or CanSpinCorridor"
       },
       {
-        "ConnectionType": "CorridorSealed",
+        "ConnectionType": "Corridor",
         "ConnectingAreaID": "SotFGBlood",
         "Logic": "CanSpinCorridor"
       },
@@ -2590,11 +2597,7 @@
       {
         "Name": "Dissonance Nibiru",
         "LocationType": "Dissonance",
-        "Logic": "Has(Beherit) and Has(Power Band) and Has(Mjolnir) and Has(Claydoll Suit)",
-        "Item": {
-          "Name": "Dissonance",
-          "IsRequired": true
-        }
+        "Logic": "Has(Progressive Beherit) and Has(Power Band) and Has(Mjolnir) and Has(Claydoll Suit)"
       }
     ],
     "Exits": [
@@ -2635,7 +2638,7 @@
       {
         "Name": "Ki sikil lil la ke",
         "LocationType": "Miniboss",
-        "Logic": "OrbCount(2)",
+        "Logic": "OrbCount(2) and (Has(Leather Whip) or Has(Axe) or Has(Katana) or Has(Claydoll Suit) or CanUse(Shuriken) or CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Chakram) or CanUse(Pistol))",
         "HardLogic": "True",
         "Item": {
           "Name": "Ki sikil lil la ke",
@@ -2781,7 +2784,7 @@
         "Logic": "CanSpinCorridor"
       },
       {
-        "ConnectionType": "CorridorSealed",
+        "ConnectionType": "Corridor",
         "ConnectingAreaID": "HoM",
         "Logic": "CanWarp or CanSpinCorridor"
       },
@@ -2801,6 +2804,15 @@
         "Name": "Map Chest HoM",
         "LocationType": "Chest",
         "Logic": "True"
+      },
+      {
+        "Name": "HoM Ladder",
+        "LocationType": "Puzzle",
+        "Logic": "True",
+        "Item": {
+          "Name": "HoM Ladder",
+          "IsRequired": false
+        }
       }
     ],
     "Exits": [
@@ -2845,6 +2857,11 @@
       }
     ],
     "Exits": [
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaID": "HoMTop",
+        "Logic": "Has(HoM Ladder)"
+      },
       {
         "ConnectionType": "Corridor",
         "ConnectingAreaID": "ACBlood",
@@ -3084,11 +3101,7 @@
       {
         "Name": "Dissonance EPG",
         "LocationType": "Dissonance",
-        "Logic": "IsDead(Hel) and Has(Beherit)",
-        "Item": {
-          "Name": "Dissonance",
-          "IsRequired": true
-        }
+        "Logic": "IsDead(Hel) and Has(Progressive Beherit)"
       }
     ],
     "Exits": []
@@ -3213,7 +3226,7 @@
       {
         "Name": "Ninth Child",
         "LocationType": "FinalBoss",
-        "Logic": "True",
+        "Logic": "OrbCount(8) and (Has(Flail Whip) or Has(Axe))",
         "HardLogic": "True",
         "Item": {
           "Name": "Winner",

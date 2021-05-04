@@ -131,7 +131,7 @@ namespace LM2RandomiserMod.Patches
                                     flagValue = 1;
 
                                 HaveItems = false;
-                                if (itemInfo.BoxName.Contains("Research") || itemInfo.BoxName.Equals("Nothing")) 
+                                if (itemInfo.BoxName.Contains("Research") || itemInfo.BoxName.Equals("Nothing") || itemInfo.BoxName.Contains("Beherit")) 
                                 {
                                     short data = 0;
                                     sys.getFlag(itemInfo.ItemSheet, itemInfo.ItemFlag, ref data);

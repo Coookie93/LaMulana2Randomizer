@@ -128,7 +128,7 @@ namespace LaMulana2Randomizer
 
         public static bool EntrancePlacementCheck(Randomiser randomiser)
         {
-            PlayerState state = new PlayerState(randomiser);
+            PlayerState state = new PlayerState(randomiser);// { IgnoreFalseChecks = true };
 
             //collect the items that arent placed yet
             foreach (Item item in randomiser.Items)
@@ -154,6 +154,7 @@ namespace LaMulana2Randomizer
             //check to see if all locations are accessable
             foreach (Location location in randomiser.GetLocations())
             {
+                state.RemoveFalseCheckedAreasAndEntrances();
                 if (!location.CanReach(state))
                     return false;
             }

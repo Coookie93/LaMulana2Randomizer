@@ -45,6 +45,7 @@
         DFMain,
         DFTop,
         SotFGMain,
+        SotFGGrail,
         SotFGTop,
         SotFGBalor,
         SotFGBlood,
