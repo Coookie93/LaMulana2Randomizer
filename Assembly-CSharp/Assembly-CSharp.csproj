@@ -52,37 +52,29 @@
   <ItemGroup>
     <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\Original\Assembly-CSharp.dll</HintPath>
+      <HintPath>$(LAMULANA2PATH)\LaMulana2_Data\Managed\Original\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
-    </Reference>
-    <Reference Include="LaMulana2RandomizerShared">
-      <HintPath>..\LM2RandomiserShared\bin\Release\LaMulana2RandomizerShared.dll</HintPath>
+      <HintPath>$(LAMULANA2PATH)\LaMulana2_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Cecil, Version=0.10.0.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\LaMulana2Randomizer\Monomod\Mono.Cecil.dll</HintPath>
     </Reference>
-    <Reference Include="Mono.Cecil.Mdb, Version=0.10.0.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\LM2Randomiser\Monomod\Mono.Cecil.Mdb.dll</HintPath>
+    <Reference Include="Mono.Cecil.Mdb">
+      <HintPath>..\LaMulana2Randomizer\Monomod\Mono.Cecil.Mdb.dll</HintPath>
     </Reference>
-    <Reference Include="Mono.Cecil.Pdb, Version=0.10.0.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\LM2Randomiser\Monomod\Mono.Cecil.Pdb.dll</HintPath>
+    <Reference Include="Mono.Cecil.Pdb">
+      <HintPath>..\LaMulana2Randomizer\Monomod\Mono.Cecil.Pdb.dll</HintPath>
     </Reference>
-    <Reference Include="Mono.Cecil.Rocks, Version=0.10.0.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\LM2Randomiser\Monomod\Mono.Cecil.Rocks.dll</HintPath>
+    <Reference Include="Mono.Cecil.Rocks">
+      <HintPath>..\LaMulana2Randomizer\Monomod\Mono.Cecil.Rocks.dll</HintPath>
     </Reference>
-    <Reference Include="MonoMod, Version=18.10.0.38149, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\LM2Randomiser\Monomod\MonoMod.exe</HintPath>
+    <Reference Include="MonoMod">
+      <HintPath>..\LaMulana2Randomizer\Monomod\MonoMod.exe</HintPath>
     </Reference>
-    <Reference Include="MonoMod.Utils, Version=18.10.0.38148, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\LM2Randomiser\Monomod\MonoMod.Utils.dll</HintPath>
+    <Reference Include="MonoMod.Utils">
+      <HintPath>..\LaMulana2Randomizer\Monomod\MonoMod.Utils.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -91,49 +83,49 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="TextMeshPro">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\TextMeshPro.dll</HintPath>
+      <HintPath>$(LAMULANA2PATH)\LaMulana2_Data\Managed\TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>$(LAMULANA2PATH)\LaMulana2_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
+      <HintPath>$(LAMULANA2PATH)\LaMulana2_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AudioModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
+      <HintPath>$(LAMULANA2PATH)\LaMulana2_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>$(LAMULANA2PATH)\LaMulana2_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ImageConversionModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+      <HintPath>$(LAMULANA2PATH)\LaMulana2_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+      <HintPath>$(LAMULANA2PATH)\LaMulana2_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ParticleSystemModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
+      <HintPath>$(LAMULANA2PATH)\LaMulana2_Data\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+      <HintPath>$(LAMULANA2PATH)\LaMulana2_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TextRenderingModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+      <HintPath>$(LAMULANA2PATH)\LaMulana2_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\UnityEngine.UI.dll</HintPath>
+      <HintPath>$(LAMULANA2PATH)\LaMulana2_Data\Managed\UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UIElementsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\UnityEngine.UIElementsModule.dll</HintPath>
+      <HintPath>$(LAMULANA2PATH)\LaMulana2_Data\Managed\UnityEngine.UIElementsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\La-Mulana 2\LaMulana2_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+      <HintPath>$(LAMULANA2PATH)\LaMulana2_Data\Managed\UnityEngine.UIModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -156,13 +148,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Patches\ShopScript.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LM2RandomiserShared\LaMulana2RandomizerShared.csproj">
+      <Project>{9f97eb8e-6dce-4f97-a1a6-5d0f354f581b}</Project>
+      <Name>LaMulana2RandomizerShared</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>xcopy /f /y "$(TargetPath)" "$(SolutionDir)LaMulana2Randomizer\Monomod"</PostBuildEvent>
   </PropertyGroup>
 </Project>
