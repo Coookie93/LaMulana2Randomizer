@@ -404,17 +404,17 @@
         "Logic": "Has(Life Sigil) and (Has(Knife) or (Has(Mjolnir) and MeleeAttack) or (Has(Earth Spear) and Has(Ring) and MeleeAttack) or (Has(Spaulder) and (Has(Leather Whip) or Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Katana))) or (Has(Gauntlet) and (Has(Leather Whip) or Has(Chain Whip) or Has(Flail Whip))))"
       },
       {
-        "Name": "Korobok Shop 1",
+        "Name": "Korobock Shop 1",
         "LocationType": "Shop",
         "Logic": "True"
       },
       {
-        "Name": "Korobok Shop 2",
+        "Name": "Korobock Shop 2",
         "LocationType": "Shop",
         "Logic": "True"
       },
       {
-        "Name": "Korobok Shop 3",
+        "Name": "Korobock Shop 3",
         "LocationType": "Shop",
         "Logic": "True"
       }
@@ -1194,17 +1194,17 @@
         "Logic": "IsDead(Surtr) and HorizontalAttack"
       },
       {
-        "Name": "Btk Shop 1",
+        "Name": "BTK Shop 1",
         "LocationType": "Shop",
         "Logic": "MeleeAttack or Has(Claydoll Suit) or Has(Shuriken) or Has(Rolling Shuriken) or Has(Earth Spear) or Has(Caltrops) or Has(Bomb) or ((Has(Chakram) or Has(Flare)) and Has(Feather))"
       },
       {
-        "Name": "Btk Shop 2",
+        "Name": "BTK Shop 2",
         "LocationType": "Shop",
         "Logic": "MeleeAttack or Has(Claydoll Suit) or Has(Shuriken) or Has(Rolling Shuriken) or Has(Earth Spear) or Has(Caltrops) or Has(Bomb) or ((Has(Chakram) or Has(Flare)) and Has(Feather))"
       },
       {
-        "Name": "Btk Shop 3",
+        "Name": "BTK Shop 3",
         "LocationType": "Shop",
         "Logic": "MeleeAttack or Has(Claydoll Suit) or Has(Shuriken) or Has(Rolling Shuriken) or Has(Earth Spear) or Has(Caltrops) or Has(Bomb) or ((Has(Chakram) or Has(Flare)) and Has(Feather))"
       },
@@ -2508,17 +2508,17 @@
         "Logic": "Has(Leather Whip) or Has(Chain Whip) or Has(Flail Whip) or Has(Axe) or Has(Earth Spear) or (Has(Katana) and Has(Vajra)) or (CanUse(Flare) and HorizontalAttack)"
       },
       {
-        "Name": "Venom Shop 1",
+        "Name": "Venum Shop 1",
         "LocationType": "Shop",
         "Logic": "Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(4))"
       },
       {
-        "Name": "Venom Shop 2",
+        "Name": "Venum Shop 2",
         "LocationType": "Shop",
         "Logic": "Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(4))"
       },
       {
-        "Name": "Venom Shop 3",
+        "Name": "Venum Shop 3",
         "LocationType": "Shop",
         "Logic": "Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(4))"
       },
@@ -2708,17 +2708,17 @@
     "IsBackside": true,
     "Locations": [
       {
-        "Name": "FairyLan Shop 1",
+        "Name": "Fairylan Shop 1",
         "LocationType": "Shop",
         "Logic": "Has(Claydoll Suit)"
       },
       {
-        "Name": "FairyLan Shop 2",
+        "Name": "Fairylan Shop 2",
         "LocationType": "Shop",
         "Logic": "Has(Claydoll Suit)"
       },
       {
-        "Name": "FairyLan Shop 3",
+        "Name": "Fairylan Shop 3",
         "LocationType": "Shop",
         "Logic": "Has(Claydoll Suit)"
       }

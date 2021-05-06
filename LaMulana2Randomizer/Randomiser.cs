@@ -428,9 +428,9 @@ namespace LaMulana2Randomizer
                 GetLocation("Hiner Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.AnkhJewel1));
                 GetLocation("Hiner Shop 4").PlaceItem(itemPool.GetAndRemove(ItemID.AnkhJewel8));
 
-                GetLocation("Korobok Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.Weights));
-                GetLocation("Korobok Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.ShurikenAmmo));
-                GetLocation("Korobok Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.Guild));
+                GetLocation("Korobock Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.Weights));
+                GetLocation("Korobock Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.ShurikenAmmo));
+                GetLocation("Korobock Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.Guild));
 
                 GetLocation("Shuhoka Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.Weights));
                 GetLocation("Shuhoka Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.ShurikenAmmo));
@@ -440,9 +440,9 @@ namespace LaMulana2Randomizer
                 GetLocation("Pym Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.RollingShurikenAmmo));
                 GetLocation("Pym Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.Snapshot));
 
-                GetLocation("Btk Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.Weights));
-                GetLocation("Btk Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.CaltropsAmmo));
-                GetLocation("Btk Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.EngaMusica));
+                GetLocation("BTK Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.Weights));
+                GetLocation("BTK Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.CaltropsAmmo));
+                GetLocation("BTK Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.EngaMusica));
 
                 GetLocation("Mino Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.Weights));
                 GetLocation("Mino Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.BombAmmo));
@@ -476,17 +476,17 @@ namespace LaMulana2Randomizer
                 GetLocation("Ash Geen Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.FlareAmmo));
                 GetLocation("Ash Geen Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.MekuriMaster));
 
-                GetLocation("Venom Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.Weights));
-                GetLocation("Venom Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.CaltropsAmmo));
-                GetLocation("Venom Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.SpaceCapstarII));
+                GetLocation("Venum Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.Weights));
+                GetLocation("Venum Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.CaltropsAmmo));
+                GetLocation("Venum Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.SpaceCapstarII));
 
                 GetLocation("Megarock Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.Weights));
                 GetLocation("Megarock Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.EarthSpearAmmo));
                 GetLocation("Megarock Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.Bracelet));
 
-                GetLocation("FairyLan Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.Weights));
-                GetLocation("FairyLan Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.ChakramAmmo));
-                GetLocation("FairyLan Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.Shield3));
+                GetLocation("Fairylan Shop 1").PlaceItem(itemPool.GetAndRemove(ItemID.Weights));
+                GetLocation("Fairylan Shop 2").PlaceItem(itemPool.GetAndRemove(ItemID.ChakramAmmo));
+                GetLocation("Fairylan Shop 3").PlaceItem(itemPool.GetAndRemove(ItemID.Shield3));
             }
         }
 
