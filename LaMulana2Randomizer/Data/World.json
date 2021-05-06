@@ -1270,7 +1270,7 @@
       {
         "Name": "Ratatoskr 3",
         "LocationType": "Miniboss",
-        "Logic": "IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2) and CanReach(Icefire Treetop Left) and (((Has(Leather Whip) or CanUse(Rolling Shuriken) or CanUse(Caltrops)) and OrbCount(3)) or ((Has(Chain Whip) or Has(Flail Whip) or Has(Knife) or Has(Rapier) or Has(Axe) or Has(Katana) or CanUse(Shuriken) or CanUse(Earth Spear) or CanUse(Flare) or CanUse(Bomb) or CanUse(Chakram)) and OrbCount(2)) or (CanUse(Psitol) and OrbCount(1)))",
+        "Logic": "IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2) and CanReach(Icefire Treetop Left) and (((Has(Leather Whip) or CanUse(Rolling Shuriken) or CanUse(Caltrops)) and OrbCount(3)) or ((Has(Chain Whip) or Has(Flail Whip) or Has(Knife) or Has(Rapier) or Has(Axe) or Has(Katana) or CanUse(Shuriken) or CanUse(Earth Spear) or CanUse(Flare) or CanUse(Bomb) or CanUse(Chakram)) and OrbCount(2)) or (CanUse(Pistol) and OrbCount(1)))",
         "HardLogic": "IsDead(Ratatoskr 1) and IsDead(Ratatoskr 2)",
         "Item": {
           "Name": "Ratatoskr 3",
