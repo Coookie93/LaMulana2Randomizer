@@ -2095,7 +2095,7 @@ namespace LM2RandomiserMod
             shopDataBase.cellData[6][24][1][0] = CreateShopItemsString(LocationID.PymShop1, LocationID.PymShop2, LocationID.PymShop3);
             shopDataBase.cellData[7][24][1][0] = CreateShopItemsString(LocationID.PeibalusaShop1, LocationID.PeibalusaShop2, LocationID.PeibalusaShop3);
             shopDataBase.cellData[8][24][1][0] = CreateShopItemsString(LocationID.HiroRoderickShop1, LocationID.HiroRoderickShop2, LocationID.HiroRoderickShop3);
-            shopDataBase.cellData[9][24][1][0] = CreateShopItemsString(LocationID.BtkShop1, LocationID.BtkShop2, LocationID.BtkShop3);
+            shopDataBase.cellData[9][24][1][0] = CreateShopItemsString(LocationID.BTKShop1, LocationID.BTKShop2, LocationID.BTKShop3);
             shopDataBase.cellData[10][24][1][0] = CreateShopItemsString(LocationID.StartingShop1, LocationID.StartingShop2, LocationID.StartingShop3);
             shopDataBase.cellData[11][24][1][0] = CreateShopItemsString(LocationID.MinoShop1, LocationID.MinoShop2, LocationID.MinoShop3);
             shopDataBase.cellData[12][24][1][0] = CreateShopItemsString(LocationID.ShuhokaShop1, LocationID.ShuhokaShop2, LocationID.ShuhokaShop3);
@@ -2172,7 +2172,7 @@ namespace LM2RandomiserMod
             ChangeThanksStrings(LocationID.PymShop1, LocationID.PymShop2, LocationID.PymShop3, 6, 8);
             ChangeThanksStrings(LocationID.PeibalusaShop1, LocationID.PeibalusaShop2, LocationID.PeibalusaShop3, 7, 8);
             ChangeThanksStrings(LocationID.HiroRoderickShop1, LocationID.HiroRoderickShop2, LocationID.HiroRoderickShop3, 8, 8);
-            ChangeThanksStrings(LocationID.BtkShop1, LocationID.BtkShop2, LocationID.BtkShop3, 9, 8);
+            ChangeThanksStrings(LocationID.BTKShop1, LocationID.BTKShop2, LocationID.BTKShop3, 9, 8);
             ChangeThanksStrings(LocationID.StartingShop1, LocationID.StartingShop2, LocationID.StartingShop3, 10, 8);
             ChangeThanksStrings(LocationID.MinoShop1, LocationID.MinoShop2, LocationID.MinoShop3, 11, 8);
             ChangeThanksStrings(LocationID.ShuhokaShop1, LocationID.ShuhokaShop2, LocationID.ShuhokaShop3, 12, 8);
