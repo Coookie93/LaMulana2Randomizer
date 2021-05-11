@@ -49,13 +49,8 @@
     <ApplicationIcon>LaMulana2.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="LaMulana2RandomizerShared, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\LM2RandomiserShared\bin\Release\LaMulana2RandomizerShared.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Newtonsoft\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -145,7 +140,7 @@
     <None Include="Data\World.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Newtonsoft\LICENSE.md" />
+    <None Include="packages.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -178,14 +173,16 @@
     <Content Include="Monomod\MonoMod.Utils.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Newtonsoft\Newtonsoft.Json.dll" />
-    <Content Include="Newtonsoft\Newtonsoft.Json.pdb" />
     <Resource Include="Icons\dice.png" />
     <None Include="Seed\spoilers.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Resource Include="Newtonsoft\Newtonsoft.Json.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\LM2RandomiserShared\LaMulana2RandomizerShared.csproj">
+      <Project>{9f97eb8e-6dce-4f97-a1a6-5d0f354f581b}</Project>
+      <Name>LaMulana2RandomizerShared</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

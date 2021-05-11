@@ -2091,7 +2091,7 @@ namespace LM2RandomiserMod
             shopDataBase.cellData[2][24][1][0] = CreateShopItemsString(LocationID.NeburShop1, LocationID.NeburShop2, LocationID.NeburShop3);
             shopDataBase.cellData[3][25][1][0] = CreateShopItemsString(LocationID.HinerShop1, LocationID.HinerShop2, LocationID.HinerShop3);
             shopDataBase.cellData[4][24][1][0] = CreateShopItemsString(LocationID.HinerShop1, LocationID.HinerShop2, LocationID.HinerShop4);
-            shopDataBase.cellData[5][24][1][0] = CreateShopItemsString(LocationID.KorobokShop1, LocationID.KorobokShop2, LocationID.KorobokShop3);
+            shopDataBase.cellData[5][24][1][0] = CreateShopItemsString(LocationID.KorobockShop1, LocationID.KorobockShop2, LocationID.KorobockShop3);
             shopDataBase.cellData[6][24][1][0] = CreateShopItemsString(LocationID.PymShop1, LocationID.PymShop2, LocationID.PymShop3);
             shopDataBase.cellData[7][24][1][0] = CreateShopItemsString(LocationID.PeibalusaShop1, LocationID.PeibalusaShop2, LocationID.PeibalusaShop3);
             shopDataBase.cellData[8][24][1][0] = CreateShopItemsString(LocationID.HiroRoderickShop1, LocationID.HiroRoderickShop2, LocationID.HiroRoderickShop3);
@@ -2105,8 +2105,8 @@ namespace LM2RandomiserMod
             shopDataBase.cellData[16][24][1][0] = CreateShopItemsString(LocationID.MegarockShop1, LocationID.MegarockShop2, LocationID.MegarockShop3);
             shopDataBase.cellData[17][24][1][0] = CreateShopItemsString(LocationID.BargainDuckShop1, LocationID.BargainDuckShop2, LocationID.BargainDuckShop3);
             shopDataBase.cellData[18][24][1][0] = CreateShopItemsString(LocationID.KeroShop1, LocationID.KeroShop2, LocationID.KeroShop3);
-            shopDataBase.cellData[19][24][1][0] = CreateShopItemsString(LocationID.VenomShop1, LocationID.VenomShop2, LocationID.VenomShop3);
-            shopDataBase.cellData[20][24][1][0] = CreateShopItemsString(LocationID.FairyLanShop1, LocationID.FairyLanShop2, LocationID.FairyLanShop3);
+            shopDataBase.cellData[19][24][1][0] = CreateShopItemsString(LocationID.VenumShop1, LocationID.VenumShop2, LocationID.VenumShop3);
+            shopDataBase.cellData[20][24][1][0] = CreateShopItemsString(LocationID.FairylanShop1, LocationID.FairylanShop2, LocationID.FairylanShop3);
         }
 
         private string CreateShopItemsString(LocationID firstSpot, LocationID secondSpot, LocationID thirdSpot)
@@ -2168,7 +2168,7 @@ namespace LM2RandomiserMod
             ChangeThanksStrings(LocationID.NeburShop1, LocationID.NeburShop2, LocationID.NeburShop3, 2, 8);
             ChangeThanksStrings(LocationID.HinerShop1, LocationID.HinerShop2, LocationID.HinerShop3, 3, 9);
             ChangeThanksStrings(LocationID.HinerShop1, LocationID.HinerShop2, LocationID.HinerShop4, 4, 8);
-            ChangeThanksStrings(LocationID.KorobokShop1, LocationID.KorobokShop2, LocationID.KorobokShop3, 5, 8);
+            ChangeThanksStrings(LocationID.KorobockShop1, LocationID.KorobockShop2, LocationID.KorobockShop3, 5, 8);
             ChangeThanksStrings(LocationID.PymShop1, LocationID.PymShop2, LocationID.PymShop3, 6, 8);
             ChangeThanksStrings(LocationID.PeibalusaShop1, LocationID.PeibalusaShop2, LocationID.PeibalusaShop3, 7, 8);
             ChangeThanksStrings(LocationID.HiroRoderickShop1, LocationID.HiroRoderickShop2, LocationID.HiroRoderickShop3, 8, 8);
@@ -2182,8 +2182,8 @@ namespace LM2RandomiserMod
             ChangeThanksStrings(LocationID.MegarockShop1, LocationID.MegarockShop2, LocationID.MegarockShop3, 16, 8);
             ChangeThanksStrings(LocationID.BargainDuckShop1, LocationID.BargainDuckShop2, LocationID.BargainDuckShop3, 17, 8);
             ChangeThanksStrings(LocationID.KeroShop1, LocationID.KeroShop2, LocationID.KeroShop3, 18, 8);
-            ChangeThanksStrings(LocationID.VenomShop1, LocationID.VenomShop2, LocationID.VenomShop3, 19, 8);
-            ChangeThanksStrings(LocationID.FairyLanShop1, LocationID.FairyLanShop2, LocationID.FairyLanShop3, 20, 8);
+            ChangeThanksStrings(LocationID.VenumShop1, LocationID.VenumShop2, LocationID.VenumShop3, 19, 8);
+            ChangeThanksStrings(LocationID.FairylanShop1, LocationID.FairylanShop2, LocationID.FairylanShop3, 20, 8);
         }
 
         private void ChangeThanksStrings(LocationID firstSlot, LocationID secondSlot, LocationID thirdSlot, int sheet, int first, int secondOffset = 1, int thirdOffset = 2)
