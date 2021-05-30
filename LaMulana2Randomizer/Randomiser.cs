@@ -661,68 +661,54 @@ namespace LaMulana2Randomizer
             {
                 case AreaID.VoD:
                 {
-                    if(Settings.RandomGateEntrances)
-                        entrances.Add(ExitID.f01Right);
-                    if(Settings.IncludeUniqueTransitions)
-                        entrances.Add(ExitID.f01Start);
+                    if(Settings.RandomGateEntrances) entrances.Add(ExitID.f01Right);
+                    if(Settings.IncludeUniqueTransitions) entrances.Add(ExitID.f01Start);
                     break;
                 }
                 case AreaID.RoY:
                 {
-                    if (Settings.RandomGateEntrances)
-                        entrances.Add(ExitID.f00GateY0);
+                    if (Settings.RandomGateEntrances) entrances.Add(ExitID.f00GateY0);
                     break;
                 }
                 case AreaID.AnnwfnMain:
                 {
-                    if(Settings.RandomLadderEntrances)
-                        entrances.Add(ExitID.f02Up);
-                    if (Settings.IncludeUniqueTransitions)
-                        entrances.Add(ExitID.f02Down);
+                    if(Settings.RandomLadderEntrances) entrances.Add(ExitID.f02Up);
+                    if (Settings.IncludeUniqueTransitions) entrances.Add(ExitID.f02Down);
                     break;
                 }
                 case AreaID.IBMain:
                 {
-                    if(Settings.RandomHorizontalEntrances)
-                        entrances.Add(ExitID.f03Right);
+                    if(Settings.RandomHorizontalEntrances) entrances.Add(ExitID.f03Right);
                     break;
                 }
                 case AreaID.ITLeft:
                 {
-                    if (Settings.RandomLadderEntrances)
-                        entrances.Add(ExitID.f04Up);
+                    if (Settings.RandomLadderEntrances) entrances.Add(ExitID.f04Up);
                     break;
                 }
                 case AreaID.DFMain:
                 {
-                    if (Settings.RandomGateEntrances)
-                        entrances.Add(ExitID.f05GateP1);
+                    if (Settings.RandomGateEntrances) entrances.Add(ExitID.f05GateP1);
                     break;
                 }
                 case AreaID.ValhallaMain:
                 {
-                    if (Settings.RandomGateEntrances)
-                        entrances.Add(ExitID.f10GateP0);
+                    if (Settings.RandomGateEntrances) entrances.Add(ExitID.f10GateP0);
                     break;
                 }
                 case AreaID.DSLMMain:
                 {
-                    if (Settings.RandomGateEntrances)
-                        entrances.Add(ExitID.f11GateP0);
+                    if (Settings.RandomGateEntrances) entrances.Add(ExitID.f11GateP0);
                     break;
                 }
                 case AreaID.ACTablet:
                 {
-                    if (Settings.RandomGateEntrances)
-                        entrances.Add(ExitID.f12GateP0);
+                    if (Settings.RandomGateEntrances) entrances.Add(ExitID.f12GateP0);
                     break;
                 }
             }
 
-            if (entrances.Count > 0)
-                startingEntrance = entrances[random.Next(entrances.Count)];
-            else
-                startingEntrance = ExitID.None;
+            startingEntrance = entrances.Count > 0 ? entrances[random.Next(entrances.Count)] : ExitID.None;
         }
 
         private void CheckStartingItems()
@@ -790,8 +776,8 @@ namespace LaMulana2Randomizer
             Location secret = GetLocation(LocationID.SecretTreasureofLifeItem);
             if (Settings.RandomDissonance)
             {
-                tent.AppendLogicString(" and GuardianKills(5)"); 
-                secret.AppendLogicString(" and GuardianKills(5)");
+                tent.AppendLogicString($" and GuardianKills({Settings.RequiredGuardians})"); 
+                secret.AppendLogicString($" and GuardianKills({Settings.RequiredGuardians})");
             }
             else
             {
@@ -881,12 +867,18 @@ namespace LaMulana2Randomizer
         private void RandomiseWithoutChecks(ItemPool items)
         {
             var locations = Shuffle.FisherYates(GetUnplacedLocations(), random);
+
+            //Hiner Shop 3 always needs an item, so place one first if its empty
+            Location hinerShop3 = locations.Find(x => x.ID == LocationID.HinerShop3);
+            if (hinerShop3 != null) {
+                hinerShop3.PlaceItem(items.RandomGetAndRemove(random), true);
+                locations.Remove(hinerShop3);
+            }
+
             while (items.ItemCount > 0)
             {
-                Item item = items.RandomGetAndRemove(random);
                 Location location = locations.Last();
-
-                location.PlaceItem(item, true);
+                location.PlaceItem(items.RandomGetAndRemove(random), true);
                 locations.Remove(location);
             }
         }
@@ -897,7 +889,7 @@ namespace LaMulana2Randomizer
             if (Settings.RandomCurses)
             {
                 var chestLocations = Shuffle.FisherYates(GetUnplacedLocationsOfType(LocationType.Chest), random);
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < Settings.TotalCursedChests; i++)
                 {
                     Location location = chestLocations[i];
                     location.AppendLogicString("and Has(Mulana Talisman)");
@@ -939,7 +931,6 @@ namespace LaMulana2Randomizer
                 leftDoors.Remove(exit);
 
             bool cavernToCliff = false;
-            bool cavernToVillage = false;
             Exit leftDoor = null;
             Exit rightDoor = null;
 
@@ -984,17 +975,6 @@ namespace LaMulana2Randomizer
                 if (leftDoor.ID == ExitID.fP02Left && rightDoor.ID == ExitID.fP00Right)
                     cavernToCliff = true;
 
-                if (rightDoor.ID == ExitID.f01Right && (leftDoor.ID == ExitID.fP00Left && !cavernToCliff))
-                    cavernToVillage = true;
-
-                if (leftDoor.ID == ExitID.fL02Left)
-                {
-                    if (rightDoor.ID == ExitID.f01Right || (rightDoor.ID == ExitID.fP00Right && cavernToVillage))
-                        rightDoor.AppendLogicString(" and CanWarp");
-                    else
-                        rightDoor.AppendLogicString($" and (CanWarp or CanReach({AreaID.AnnwfnMain}))");
-                }
-
                 leftDoor.ConnectingAreaID = rightDoor.ParentAreaID;
                 rightDoor.ConnectingAreaID = leftDoor.ParentAreaID;
 
@@ -1020,8 +1000,6 @@ namespace LaMulana2Randomizer
                     downLadder = downLadders[random.Next(downLadders.Count)];
                 } while (downLadder.ID != ExitID.f02Down && downLadder.ID != ExitID.fLDown);
                 downLadders.Remove(downLadder);
-
-                FixLadderLogic(downLadder, upLadder);
 
                 upLadder.ConnectingAreaID = downLadder.ParentAreaID;
                 downLadder.ConnectingAreaID = upLadder.ParentAreaID;
@@ -1066,29 +1044,12 @@ namespace LaMulana2Randomizer
                 }
                 upLadders.Remove(upLadder);
 
-                FixLadderLogic(downLadder, upLadder);
-
                 upLadder.ConnectingAreaID = downLadder.ParentAreaID;
                 downLadder.ConnectingAreaID = upLadder.ParentAreaID;
 
                 ExitPairs.Add((upLadder.ID, downLadder.ID));
                 LadderPairs.Add($"{upLadder.Name} - {downLadder.Name}");
             }
-        }
-
-        private void FixLadderLogic(Exit downLadder, Exit upLadder)
-        {
-            if (downLadder.ID == ExitID.f02Down)
-                upLadder.AppendLogicString($" and (CanReach({AreaID.AnnwfnMain}) or CanWarp)");
-            else if (downLadder.ID == ExitID.f03Down2)
-                upLadder.AppendLogicString($" and Has(Life Sigil) and (CanWarp or CanReach({AreaID.IBDinosaur}))");
-            else if (downLadder.ID == ExitID.f02Down)
-                upLadder.AppendLogicString(" and HorizontalAttack");
-
-            if (upLadder.ID == ExitID.f03Up)
-                downLadder.AppendLogicString($" and (CanWarp or CanKill(Cetus) or CanReach({AreaID.IBMain}))");
-            else if (upLadder.ID == ExitID.f04Up3)
-                downLadder.AppendLogicString(" and False");
         }
 
         private void RandomiseGateEntrances()
@@ -1110,9 +1071,6 @@ namespace LaMulana2Randomizer
                 if (gate2.ID == ExitID.fL11GateN || gate2.ID == ExitID.fL11GateY0)
                     startToIllusion = true;
 
-                FixGateLogic(gate1, gate2);
-                FixGateLogic(gate2, gate1);
-
                 gate2.ConnectingAreaID = gate1.ParentAreaID;
                 gate1.ConnectingAreaID = gate2.ParentAreaID;
 
@@ -1130,9 +1088,6 @@ namespace LaMulana2Randomizer
                 gate2 = gates[random.Next(gates.Count)];
             } while (gate2.ID == ExitID.fL11GateY0 || (startToIllusion && gate2.IsInaccessible));
             gates.Remove(gate2);
-
-            FixGateLogic(gate1, gate2);
-            FixGateLogic(gate2, gate1);
 
             gate2.ConnectingAreaID = gate1.ParentAreaID;
             gate1.ConnectingAreaID = gate2.ParentAreaID;
@@ -1163,51 +1118,11 @@ namespace LaMulana2Randomizer
                 gate2 = gates[random.Next(gates.Count)];
                 gates.Remove(gate2);
 
-                FixGateLogic(gate1, gate2);
-                FixGateLogic(gate2, gate1);
-
                 gate1.ConnectingAreaID = gate2.ParentAreaID;
                 gate2.ConnectingAreaID = gate1.ParentAreaID;
 
                 ExitPairs.Add((gate1.ID, gate2.ID));
                 GatePairs.Add($"{gate1.Name} - {gate2.Name}");
-            }
-        }
-
-        private void FixGateLogic(Exit gate1, Exit gate2)
-        {
-            switch (gate1.ID)
-            {
-                case ExitID.f00GateYA:
-                {
-                    gate2.AppendLogicString(" and False");
-                    break;
-                }
-                case ExitID.f00GateYB:
-                {
-                    gate2.AppendLogicString(" and (CanWarp or CanKill(Nidhogg))");
-                    break;
-                }
-                case ExitID.f00GateYC:
-                {
-                    gate2.AppendLogicString(" and (CanWarp or Has(Birth Sigil))");
-                    break;
-                }
-                case ExitID.f06_2GateP0:
-                {
-                    gate2.AppendLogicString(" and (CanKill(Tezcatlipoca) and (CanWarp or Has(Grapple Claw)))");
-                    break;
-                }
-                case ExitID.f07GateP0:
-                {
-                    gate2.AppendLogicString(" and (CanWarp or (Has(Pepper) and Has(Birth Sigil) and CanChant(Sun) and CanKill(Unicorn)))");
-                    break;
-                }
-                case ExitID.f09GateP0:
-                {
-                    gate2.AppendLogicString(" and CanWarp");
-                    break;
-                }
             }
         }
 
@@ -1260,9 +1175,6 @@ namespace LaMulana2Randomizer
                 else if (entrance2.ID == ExitID.fL11GateN || entrance2.ID == ExitID.fL11GateY0)
                     illusionToDeadEnd = true;
 
-                FixFullRandomEntranceLogic(entrance1, entrance2);
-                FixFullRandomEntranceLogic(entrance2, entrance1);
-
                 entrance1.ConnectingAreaID = entrance2.ParentAreaID;
                 entrance2.ConnectingAreaID = entrance1.ParentAreaID;
 
@@ -1282,9 +1194,6 @@ namespace LaMulana2Randomizer
 
                     if (entrance2.IsInaccessible)
                         cavernToDeadEnd = true;
-
-                    FixFullRandomEntranceLogic(entrance1, entrance2);
-                    FixFullRandomEntranceLogic(entrance2, entrance1);
 
                     entrance1.ConnectingAreaID = entrance2.ParentAreaID;
                     entrance2.ConnectingAreaID = entrance1.ParentAreaID;
@@ -1309,9 +1218,6 @@ namespace LaMulana2Randomizer
                                 ((entrance2.ID == ExitID.fP00Right || entrance2.ID == ExitID.fP00Left) && cavernToDeadEnd));
                     entrances.Remove(entrance2);
 
-                    FixFullRandomEntranceLogic(entrance1, entrance2);
-                    FixFullRandomEntranceLogic(entrance2, entrance1);
-
                     entrance1.ConnectingAreaID = entrance2.ParentAreaID;
                     entrance2.ConnectingAreaID = entrance1.ParentAreaID;
 
@@ -1333,9 +1239,6 @@ namespace LaMulana2Randomizer
                     } while (entrance2.ID == ExitID.fL11GateY0 || (entrance2.ID == startingEntrance && illusionToDeadEnd && Settings.ReduceDeadEndStarts));
 
                     entrances.Remove(entrance2);
-
-                    FixFullRandomEntranceLogic(entrance1, entrance2);
-                    FixFullRandomEntranceLogic(entrance2, entrance1);
 
                     entrance1.ConnectingAreaID = entrance2.ParentAreaID;
                     entrance2.ConnectingAreaID = entrance1.ParentAreaID;
@@ -1365,9 +1268,6 @@ namespace LaMulana2Randomizer
 
                 entrance2 = entrances[random.Next(entrances.Count)];
                 entrances.Remove(entrance2);
-
-                FixFullRandomEntranceLogic(entrance1, entrance2);
-                FixFullRandomEntranceLogic(entrance2, entrance1);
 
                 entrance1.ConnectingAreaID = entrance2.ParentAreaID;
                 entrance2.ConnectingAreaID = entrance1.ParentAreaID;
@@ -1399,88 +1299,6 @@ namespace LaMulana2Randomizer
                     return entrance.ID == ExitID.f04Up2 || entrance.ID == ExitID.f04Up3 || entrance.ID == ExitID.f04GateYB;
                 default:
                     return false;
-            }
-        }
-
-        private void FixFullRandomEntranceLogic(Exit entrance1, Exit entrance2)
-        {
-            switch (entrance1.ID)
-            {
-                case ExitID.f00GateYA:
-                {
-                    entrance2.AppendLogicString(" and False");
-                    return;
-                }
-                case ExitID.f00GateYB:
-                {
-                    entrance2.AppendLogicString(" and (CanWarp or CanKill(Nidhogg))");
-                    return;
-                }
-                case ExitID.f00GateYC:
-                {
-                    entrance2.AppendLogicString(" and (CanWarp or Has(Birth Sigil))");
-                    return;
-                }
-                case ExitID.fL02Left:
-                {
-                    entrance2.AppendLogicString($" and (CanWarp or CanReach({AreaID.AnnwfnMain}))");
-                    return;
-                }
-                case ExitID.f02Down:
-                {
-                    entrance2.AppendLogicString(" and CanWarp and HorizontalAttack");
-                    return;
-                }
-                case ExitID.f03Right:
-                {
-                    entrance2.AppendLogicString(" and (Has(Feather) or Has(Grapple Claw))");
-                    return;
-                }
-                case ExitID.f03Down2:
-                {
-                    entrance2.AppendLogicString($" and Has(Life Sigil) and (CanWarp or CanReach({AreaID.IBDinosaur}))");
-                    return;
-                }
-                case ExitID.f03Up:
-                {
-                    entrance2.AppendLogicString($" and (CanWarp or CanKill(Cetus) or CanReach({AreaID.IBMain}))");
-                    return;
-                }
-                case ExitID.f03In:
-                {
-                    entrance2.AppendLogicString(" and CanWarp");
-                    return;
-                }
-                case ExitID.f04Up3:
-                {
-                    entrance2.AppendLogicString(" and False");
-                    return;
-                }
-                case ExitID.f06_2GateP0:
-                {
-                    entrance2.AppendLogicString(" and (CanKill(Tezcatlipoca) and (CanWarp or Has(Grapple Claw)))");
-                    return;
-                }
-                case ExitID.f07GateP0:
-                {
-                    entrance2.AppendLogicString(" and (CanWarp or (Has(Pepper) and Has(Birth Sigil) and CanChant(Sun) and CanKill(Unicorn)))");
-                    return;
-                }
-                case ExitID.f08Neck:
-                {
-                    entrance2.AppendLogicString("and (CanWarp or (CanChant(Heaven) and CanChant(Earth) and CanChant(Sea) and CanChant(Fire) and CanChant(Wind)))");
-                    return;
-                }
-                case ExitID.f09GateP0:
-                {
-                    entrance2.AppendLogicString(" and CanWarp");
-                    return;
-                }
-                case ExitID.f11Pyramid:
-                {
-                    entrance2.AppendLogicString(" and False");
-                    return;
-                }
             }
         }
 

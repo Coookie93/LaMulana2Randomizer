@@ -486,6 +486,7 @@ namespace LaMulana2Randomizer
                 case "Non Random Gates": return !randomiser.Settings.RandomGateEntrances;
                 case "Random Soul Gates": return randomiser.Settings.RandomSoulGateEntrances;
                 case "Non Random Soul Gates": return !randomiser.Settings.RandomSoulGateEntrances;
+                case "Non Random Unique": return !randomiser.Settings.IncludeUniqueTransitions;
                 case "Remove IT Statue": return randomiser.Settings.RemoveITStatue;
                 case "Not Life for HoM": return !randomiser.Settings.LifeForHoM;
                 default: return false;
