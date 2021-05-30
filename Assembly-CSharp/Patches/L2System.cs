@@ -453,9 +453,7 @@ namespace LM2RandomiserMod.Patches
 			short num = 0;
 			int num2 = SeetNametoNo("02Items");
 			if (num2 < 0)
-			{
 				return -1;
-			}
 
 			switch (item_name)
 			{

@@ -147,6 +147,12 @@ namespace LaMulana2Randomizer
             set => Set(ref randomCurses, value);
         }
 
+        private int totalCursedChests;
+        public int TotalCursedChests {
+            get => totalCursedChests;
+            set => Set(ref totalCursedChests, value);
+        }
+
         private bool removeITStatue;
         public bool RemoveITStatue {
             get => removeITStatue;
@@ -165,6 +171,12 @@ namespace LaMulana2Randomizer
             set => Set(ref randomDissonance, value);
         }
 
+
+        private int requiredGuardians;
+        public int RequiredGuardians {
+            get => requiredGuardians;
+            set => Set(ref requiredGuardians, value);
+        }
 
         //LAYOUT
         private bool randomHorizontalEntrances;
@@ -505,12 +517,6 @@ namespace LaMulana2Randomizer
             set => Set(ref autoPlaceSkulls, value);
         }
 
-        private bool fastCorridor;
-        public bool FastCorridor {
-            get => fastCorridor;
-            set => Set(ref fastCorridor, value);
-        }
-
         private int startingMoney;
         public int StartingMoney {
             get => startingMoney;
@@ -560,9 +566,11 @@ namespace LaMulana2Randomizer
             fDCForBacksides = false;
             lifeForHoM = false;
             randomCurses = false;
+            totalCursedChests = 4;
             removeITStatue = false;
             requiredSkulls = 12;
             randomDissonance = false;
+            requiredGuardians = 5;
 
             whip = true;
             knife = false;
@@ -603,7 +611,6 @@ namespace LaMulana2Randomizer
 
             autoScanTablets = false;
             autoPlaceSkulls = false;
-            fastCorridor = false;
             startingMoney = 100;
             startingWeights = 20;
 

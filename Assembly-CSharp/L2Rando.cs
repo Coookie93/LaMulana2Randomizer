@@ -38,11 +38,9 @@ namespace LM2RandomiserMod
         private bool randomDissonance = false;
         private bool autoPlaceSkull = false;
         private bool easyEchidna = false;
+        private int requiredGuardians = 0;
         private int itemChestColour = 0;
         private int weightChestColour = 0;
-
-        //TODO:REMOVE THIS
-        private bool fastCorridor = false;
 
         private patched_L2System sys;
         private L2ShopDataBase shopDataBase;
@@ -68,7 +66,7 @@ namespace LM2RandomiserMod
 
         public void OnGUI()
         {
-            if (onTitle)
+            if (onTitle || !string.IsNullOrEmpty(message))
             {
                 if (font == null)
                     font = Font.CreateDynamicFontFromOSFont("Consolas", 14);
@@ -90,9 +88,7 @@ namespace LM2RandomiserMod
             }
 
             if (loading)
-            {
                 GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), Texture2D.whiteTexture, ScaleMode.StretchToFill, true, 0, Color.black, 0, 0);
-            }
         }
 
         public void OnEnable()
@@ -112,10 +108,11 @@ namespace LM2RandomiserMod
             if (scene.name.Equals("fieldLast") || scene.name.Equals("title"))
                 return;
 
-            using (StreamWriter sr = new StreamWriter(File.Open(Path.Combine(Directory.GetCurrentDirectory(), "log.txt"), FileMode.Open)))
-            {
+            //using (StreamWriter sr = new StreamWriter(File.Open(Path.Combine(Directory.GetCurrentDirectory(), "log.txt"), FileMode.Open)))
+            //{
                 try
                 {
+                    message = string.Empty;
                     if (IsRandomising)
                     {
                         CreateStartingAreaObjects(scene.name);
@@ -128,13 +125,14 @@ namespace LM2RandomiserMod
                         AddAnchorPoints(scene.name);
                         ObjectChanges();
                     }
-
+                   
                 }        
                 catch (Exception ex)
                 {
-                    sr.WriteLine(ex.ToString());
+                    message = ex.ToString();
+                    //sr.WriteLine(ex.ToString());
                 }
-            }
+            //}
         }
 
         public ItemID GetItemIDForLocation(LocationID locationID)
@@ -255,12 +253,12 @@ namespace LM2RandomiserMod
                     StartingWeapon = (ItemID)br.ReadInt32();
                     StartingArea = (AreaID)br.ReadInt32();
                     randomDissonance = br.ReadBoolean();
+                    requiredGuardians = br.ReadInt32();
                     RequiredSkulls = br.ReadInt32();
                     RemoveITStatue = br.ReadBoolean();
                     easyEchidna = br.ReadBoolean();
                     AutoScanTablets = br.ReadBoolean();
                     autoPlaceSkull = br.ReadBoolean();
-                    fastCorridor = br.ReadBoolean();
                     StartingMoney = br.ReadInt32();
                     StartingWeights = br.ReadInt32();
                     itemChestColour = br.ReadInt32();
@@ -278,7 +276,8 @@ namespace LM2RandomiserMod
                     for (int i = 0; i < shopItemCount; i++)
                         shopToItemMap.Add((LocationID)br.ReadInt32(), new ShopItem((ItemID)br.ReadInt32(), br.ReadInt32()));
 
-                    for (int i = 0; i < 4; i++)
+                    int cursedCount = br.ReadInt32();
+                    for (int i = 0; i < cursedCount; i++)
                         cursedChests.Add((LocationID)br.ReadInt32());
 
                     int exitPairCount = br.ReadInt32();
@@ -307,7 +306,7 @@ namespace LM2RandomiserMod
             }
             catch (Exception ex)
             {
-                message = ex.Message;
+                message = ex.ToString();
                 return false;
             }
             message = "Successfully loaded seed.";
@@ -628,6 +627,13 @@ namespace LM2RandomiserMod
 
         private IEnumerator ChangeTreasureChests()
         {
+            List<GameObject> curses = new List<GameObject>();
+            foreach (Animator animator in FindObjectsOfType<Animator>())
+            {
+                if (animator.name.Equals("Curse Tresure"))
+                    curses.Add(animator.gameObject);
+            }
+
             List<TreasureBoxScript> oldChests = new List<TreasureBoxScript>();
             foreach (TreasureBoxScript oldChest in FindObjectsOfType<TreasureBoxScript>())
             {
@@ -648,6 +654,7 @@ namespace LM2RandomiserMod
                     {
                         GameObject curse = Instantiate(objects["curse"], oldChest.transform.position, oldChest.transform.rotation);
                         curse.SetActive(true);
+                        curse.transform.SetParent(newChest.transform);
                         newChest.curseAnime = curse.GetComponent<Animator>();
                         newChest.curseParticle = curse.GetComponent<ParticleSystem>();
                         newChest.curseMode = true;
@@ -675,6 +682,9 @@ namespace LM2RandomiserMod
             yield return new WaitForEndOfFrame();
             foreach (var box in oldChests)
                 box.gameObject.SetActive(false);
+
+            foreach (var obj in curses)
+                obj.SetActive(false);
         }
 
         private void ChangeChestItemFlags(TreasureBoxScript chest, ItemID itemID)
@@ -1108,92 +1118,6 @@ namespace LM2RandomiserMod
                 if (obj != null)
                     obj.SetActive(false);
             }
-            else if (fieldName.Equals("field03"))
-            {
-                //setup the flagwatcher to drop the spiral boat
-                GameObject obj = new GameObject("SpiralBoatFlagWatcher");
-                obj.transform.position = new Vector3(-255, -16, 0);
-                FlagWatcherScript flagWatcher = obj.AddComponent<FlagWatcherScript>();
-                flagWatcher.setTaskSystemName(L2Base.TASKSYSNAME.SCENE);
-                flagWatcher.actionWaitFrames = 90;
-                flagWatcher.autoFinish = false;
-                flagWatcher.characterEfxType = MoveCharacterBase.CharacterEffectType.NONE;
-                flagWatcher.startAreaMode = MoveCharacterBase.ActionstartAreaMode.VIEW;
-                flagWatcher.taskLayerNo = 2;
-                flagWatcher.AnimeData = new GameObject[0];
-                flagWatcher.ResetFlags = new L2FlagBoxEnd[0];
-                flagWatcher.CheckFlags = new L2FlagBoxParent[1];
-                flagWatcher.CheckFlags[0] = new L2FlagBoxParent();
-                List<L2FlagBox> flagBoxes = new List<L2FlagBox>
-            {
-                new L2FlagBox()
-                {
-                    seet_no1 = 3,
-                    flag_no1 = 93,
-                    seet_no2 = -1,
-                    flag_no2 = 0,
-                    logic = LOGIC.AND,
-                    comp = COMPARISON.Equal
-                },
-                new L2FlagBox()
-                {
-                    seet_no1 = 2,
-                    flag_no1 = 3,
-                    seet_no2 = -1,
-                    flag_no2 = 7,
-                    logic = LOGIC.AND,
-                    comp = COMPARISON.Equal
-                }
-            };
-
-                if (randomDissonance)
-                {
-                    flagBoxes.Add(new L2FlagBox()
-                    {
-                        seet_no1 = 3,
-                        flag_no1 = 0,
-                        seet_no2 = -1,
-                        flag_no2 = 5,
-                        logic = LOGIC.AND,
-                        comp = COMPARISON.GreaterEq
-                    });
-                }
-                else
-                {
-                    flagBoxes.Add(new L2FlagBox()
-                    {
-                        seet_no1 = 3,
-                        flag_no1 = 15,
-                        seet_no2 = -1,
-                        flag_no2 = 4,
-                        logic = LOGIC.AND,
-                        comp = COMPARISON.GreaterEq
-                    });
-                }
-
-                flagWatcher.CheckFlags[0].BOX = flagBoxes.ToArray();
-                flagWatcher.ActionFlags = new L2FlagBoxEnd[]
-                {
-                new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 93, data = 2, calcu = CALCU.EQR },
-                };
-                flagWatcher.finishFlags = new L2FlagBoxParent[1];
-                flagWatcher.finishFlags[0] = new L2FlagBoxParent
-                {
-                    BOX = new L2FlagBox[]
-                    {
-                    new L2FlagBox()
-                    {
-                        seet_no1 = 3,
-                        flag_no1 = 93,
-                        seet_no2 = -1,
-                        flag_no2 = 2,
-                        logic = LOGIC.NON,
-                        comp = COMPARISON.Equal
-                    }
-                    }
-                };
-                obj.SetActive(true);
-            }
             else if (fieldName.Equals("field04"))
             {
                 foreach (ShopGateScript shopGate in FindObjectsOfType<ShopGateScript>())
@@ -1209,6 +1133,28 @@ namespace LM2RandomiserMod
             {
                 //i hate this stupid trapdoor's hitbox
                 StartCoroutine(FixTrapDoor());
+
+                CorridorSealerFlagWatcher(new Vector3(48, 208, 0));
+            }
+            else if (fieldName.Equals("field11"))
+            {
+                CorridorSealerFlagWatcher(new Vector3(28, 504, 0));
+            }
+            else if (fieldName.Equals("field12"))
+            {
+                CorridorSealerFlagWatcher(new Vector3(210, 168, 0));
+            }
+            else if (fieldName.Equals("field13"))
+            {
+                CorridorSealerFlagWatcher(new Vector3(824, -544, 0));
+            }
+            else if (fieldName.Equals("field14"))
+            {
+                CorridorSealerFlagWatcher(new Vector3(-8, 48, 0));
+            }
+            else if (fieldName.Equals("field06-2"))
+            {
+                CorridorSealerFlagWatcher(new Vector3(572, -16, 0));
             }
             else if (fieldName.Equals("fieldSpace"))
             {
@@ -1259,6 +1205,93 @@ namespace LM2RandomiserMod
             }
         }
 
+        private void CorridorSealerFlagWatcher(Vector3 position)
+        {
+            //setup the flagwatcher to drop the spiral boat
+            GameObject obj = new GameObject("CorridorSealerFlagWatcher");
+            obj.transform.position = position;
+            FlagWatcherScript flagWatcher = obj.AddComponent<FlagWatcherScript>();
+            flagWatcher.setTaskSystemName(L2Base.TASKSYSNAME.SCENE);
+            flagWatcher.actionWaitFrames = 90;
+            flagWatcher.autoFinish = false;
+            flagWatcher.characterEfxType = MoveCharacterBase.CharacterEffectType.NONE;
+            flagWatcher.startAreaMode = MoveCharacterBase.ActionstartAreaMode.VIEW;
+            flagWatcher.taskLayerNo = 2;
+            flagWatcher.AnimeData = new GameObject[0];
+            flagWatcher.ResetFlags = new L2FlagBoxEnd[0];
+            flagWatcher.CheckFlags = new L2FlagBoxParent[1];
+            flagWatcher.CheckFlags[0] = new L2FlagBoxParent();
+            List<L2FlagBox> flagBoxes = new List<L2FlagBox>
+            {
+                new L2FlagBox()
+                {
+                    seet_no1 = 3,
+                    flag_no1 = 93,
+                    seet_no2 = -1,
+                    flag_no2 = 0,
+                    logic = LOGIC.AND,
+                    comp = COMPARISON.Equal
+                },
+                new L2FlagBox()
+                {
+                    seet_no1 = 2,
+                    flag_no1 = 3,
+                    seet_no2 = -1,
+                    flag_no2 = 7,
+                    logic = LOGIC.AND,
+                    comp = COMPARISON.Equal
+                }
+            };
+
+            if (randomDissonance)
+            {
+                flagBoxes.Add(new L2FlagBox()
+                {
+                    seet_no1 = 3,
+                    flag_no1 = 0,
+                    seet_no2 = -1,
+                    flag_no2 = requiredGuardians,
+                    logic = LOGIC.AND,
+                    comp = COMPARISON.GreaterEq
+                });
+            }
+            else
+            {
+                flagBoxes.Add(new L2FlagBox()
+                {
+                    seet_no1 = 3,
+                    flag_no1 = 15,
+                    seet_no2 = -1,
+                    flag_no2 = 4,
+                    logic = LOGIC.AND,
+                    comp = COMPARISON.GreaterEq
+                });
+            }
+
+            flagWatcher.CheckFlags[0].BOX = flagBoxes.ToArray();
+            flagWatcher.ActionFlags = new L2FlagBoxEnd[]
+            {
+                new L2FlagBoxEnd(){ seet_no1 = 3, flag_no1 = 93, data = 2, calcu = CALCU.EQR },
+            };
+            flagWatcher.finishFlags = new L2FlagBoxParent[1];
+            flagWatcher.finishFlags[0] = new L2FlagBoxParent
+            {
+                BOX = new L2FlagBox[]
+                {
+                    new L2FlagBox()
+                    {
+                        seet_no1 = 3,
+                        flag_no1 = 93,
+                        seet_no2 = -1,
+                        flag_no2 = 1,
+                        logic = LOGIC.NON,
+                        comp = COMPARISON.Equal
+                    }
+                }
+            };
+            obj.SetActive(true);
+        }
+
         private void ObjectChanges()
         {
             //these cause the message to popup when you record a mantra for the first time, so just deactivate
@@ -1291,13 +1324,6 @@ namespace LM2RandomiserMod
                         }
                     }
                 }
-            }
-
-            //turn off the corridor of blood cutscene
-            foreach(Animator animator in FindObjectsOfType<Animator>())
-            {
-                if (animator.name.Equals("6starDemo"))
-                    animator.gameObject.SetActive(false);
             }
 
             //make it so fake items always play the wrong puzzle solve noise

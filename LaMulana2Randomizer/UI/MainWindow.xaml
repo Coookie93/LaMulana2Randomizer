@@ -259,24 +259,76 @@
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
-                            <CheckBox Name="RandomCurseCheck" IsChecked="{Binding Settings.RandomCurses}" Margin="0,2" Content="Randomise Curses">
+                            <CheckBox Name="RandomCurseCheck" IsChecked="{Binding Settings.RandomCurses}" Margin="0,2" Content="Randomise Cursed Chests">
                                 <CheckBox.ToolTip>
                                     <ToolTip Style="{StaticResource TootltipStyle}">
                                         <TextBlock Text="Randomises which chests will have the curse the Mulana Talsiman is needed to break."/>
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
+                            <StackPanel Orientation="Horizontal" Margin="21,0,0,2" Height="22">
+                                <TextBlock Text="Amount of Cursed Chests" Height="15" Margin="0,0,2,0"/>
+                                <TextBox x:Name="CursesTextBox" Width="20" HorizontalAlignment="Stretch" Margin="0,2,0,0">
+                                    <TextBox.Text>
+                                        <Binding Path="Settings.TotalCursedChests" UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <local:IntRangeRule Min="0" Max="86"/>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
+                                <StackPanel.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="Total number of cursed chests. Value between 0 and 86."/>
+                                    </ToolTip>
+                                </StackPanel.ToolTip>
+                                <StackPanel.Style>
+                                    <Style TargetType="StackPanel">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=RandomCurseCheck, Path=IsChecked}" Value="True">
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
+                            </StackPanel>
                             <CheckBox Name="RandomDissonanceCheck" IsChecked="{Binding Settings.RandomDissonance}" Margin="0,2" Content="Randomise Dissonance">
                                 <CheckBox.ToolTip>
                                     <ToolTip Style="{StaticResource TootltipStyle}">
-                                        <TextBlock Text="."/>
+                                        <TextBlock Text="Randomise Dissonace, original Dissonance locations are replaced with chests."/>
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
                             <StackPanel Orientation="Horizontal" Margin="21,0,0,2" Height="22">
+                                <TextBlock Text="Guardians required" Height="15" Margin="0,0,2,0"/>
+                                <TextBox x:Name="GuardiansTextBox" Width="20" HorizontalAlignment="Stretch" Margin="0,2,0,0">
+                                    <Binding Path="Settings.RequiredGuardians" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <local:IntRangeRule Min="0" Max="9"/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox>
+                                <StackPanel.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="Amount of Guardians required to seal the Corridor of Blood along with all the Dissonance. Value between 0 and 9"/>
+                                    </ToolTip>
+                                </StackPanel.ToolTip>
+                                <StackPanel.Style>
+                                    <Style TargetType="StackPanel">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=RandomDissonanceCheck, Path=IsChecked}" Value="True">
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="21,0,0,2" Height="22">
                                 <TextBlock Text="Skulls Required for Nibiru Dissonance" Height="15" Margin="0,0,2,0"/>
                                 <TextBox x:Name="SkullTextBox" Width="20" HorizontalAlignment="Stretch" Margin="0,2,0,0">
-                                    <Binding Path="Settings.RequiredSkulls">
+                                    <Binding Path="Settings.RequiredSkulls" UpdateSourceTrigger="PropertyChanged">
                                         <Binding.ValidationRules>
                                             <local:IntRangeRule Min="1" Max="12"/>
                                         </Binding.ValidationRules>
@@ -568,7 +620,7 @@
                                     </Style>
                                 </CheckBox.Style>
                             </CheckBox>
-                            <CheckBox Name="ACStartCheck" Content="Anceint Chaos" IsChecked="{Binding Settings.AncientStart}">
+                            <CheckBox Name="ACStartCheck" Content="Ancient Chaos" IsChecked="{Binding Settings.AncientStart}">
                                 <CheckBox.Style>
                                     <Style TargetType="CheckBox">
                                         <Setter Property="IsEnabled" Value="False"/>
@@ -599,7 +651,7 @@
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
-                    <GroupBox Header="Qaulity of Life" Grid.Row="0" Grid.ColumnSpan="2">
+                    <GroupBox Header="Quality of Life" Grid.Row="0" Grid.ColumnSpan="2">
                         <StackPanel >
                             <CheckBox Name="AutoScanCheck" IsChecked="{Binding Settings.AutoScanTablets}" Content="Auto-scan Holy Tablets" Margin="2">
                                 <CheckBox.ToolTip>
@@ -615,17 +667,10 @@
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
-                            <CheckBox Name="FastCorridorCheck" IsChecked="{Binding Settings.FastCorridor}" Content="Fast Corridor of Blood Sealing" Margin="2">
-                                <CheckBox.ToolTip>
-                                    <ToolTip Style="{StaticResource TootltipStyle}">
-                                        <TextBlock Text="Going to the Valhalla Corridor of Blood Entrance seals the entire Corridor if all the requirements to seal it are meet." />
-                                    </ToolTip>
-                                </CheckBox.ToolTip>
-                            </CheckBox>
                             <StackPanel Orientation="Horizontal" Margin="21,0,0,2" Height="22">
                                 <TextBlock Text="Starting Money" Margin="0,2,9,2"/>
                                 <TextBox x:Name="MoneyTextBox" Width="30" HorizontalAlignment="Stretch" Margin="0,2,0,0">
-                                    <Binding Path="Settings.StartingMoney">
+                                    <Binding Path="Settings.StartingMoney" UpdateSourceTrigger="PropertyChanged">
                                         <Binding.ValidationRules>
                                             <local:IntRangeRule Min="0" Max="999"/>
                                         </Binding.ValidationRules>
@@ -640,7 +685,7 @@
                             <StackPanel Orientation="Horizontal" Margin="21,0,0,2" Height="22">
                                 <TextBlock Text="Starting Weights" Margin="0,2,2,2"/>
                                 <TextBox x:Name="WeightTextBox" Width="30" HorizontalAlignment="Stretch" Margin="0,2,0,0">
-                                    <Binding Path="Settings.StartingWeights">
+                                    <Binding Path="Settings.StartingWeights" UpdateSourceTrigger="PropertyChanged">
                                         <Binding.ValidationRules>
                                             <local:IntRangeRule Min="0" Max="100"/>
                                         </Binding.ValidationRules>
@@ -704,6 +749,8 @@
                                     <MultiDataTrigger.Conditions>
                                         <Condition Binding="{Binding Path=(Validation.HasError), ElementName=InputTextBox}" Value="False"/>
                                         <Condition Binding="{Binding Path=(Validation.HasError), ElementName=SkullTextBox}" Value="False"/>
+                                        <Condition Binding="{Binding Path=(Validation.HasError), ElementName=CursesTextBox}" Value="False"/>
+                                        <Condition Binding="{Binding Path=(Validation.HasError), ElementName=GuardiansTextBox}" Value="False"/>
                                         <Condition Binding="{Binding Path=(Validation.HasError), ElementName=MoneyTextBox}" Value="False"/>
                                         <Condition Binding="{Binding Path=(Validation.HasError), ElementName=WeightTextBox}" Value="False"/>
                                     </MultiDataTrigger.Conditions>

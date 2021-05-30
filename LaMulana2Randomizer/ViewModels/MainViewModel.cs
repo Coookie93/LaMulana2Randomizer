@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -10,17 +11,17 @@ namespace LaMulana2Randomizer.ViewModels
 {
     public class MainViewModel : BindableBase
     {
-        private string _title;
+        private string title;
         public string Title {
-            get => _title;
-            set => Set(ref _title, value);
+            get => title;
+            set => Set(ref title, value);
         }
 
-        private Settings _settings;
+        private Settings settings;
         public Settings Settings 
         {
-            get => _settings;
-            set => Set(ref _settings, value);
+            get => settings;
+            set => Set(ref settings, value);
         }
 
         public MainViewModel()
@@ -30,25 +31,25 @@ namespace LaMulana2Randomizer.ViewModels
             Reroll();
         }
 
-        private ICommand _rerollCommand;
+        private ICommand rerollCommand;
         public ICommand RerollCommand {
             get {
-                if (_rerollCommand == null)
+                if (rerollCommand == null)
                 {
-                    _rerollCommand = new RelayCommand((x) => true, (x) => Reroll());
+                    rerollCommand = new RelayCommand((x) => true, (x) => Reroll());
                 }
-                return _rerollCommand;
+                return rerollCommand;
             }
         }
 
-        private ICommand _generateCommand;
+        private ICommand generateCommand;
         public ICommand GenerateCommand {
             get {
-                if (_generateCommand == null)
+                if (generateCommand == null)
                 {
-                    _generateCommand = new RelayCommand((x) => true, (x) => Generate());
+                    generateCommand = new RelayCommand((x) => true, (x) => Generate());
                 }
-                return _generateCommand;
+                return generateCommand;
             }
         }
 
@@ -122,6 +123,8 @@ namespace LaMulana2Randomizer.ViewModels
                     });
                     return;
                 }
+
+                Logger.Log($"Generated beatable entrance configuartion after {attemptCount} attempts.");
 
                 randomiser.FixAnkhLogic();
                 randomiser.FixFDCLogic();
@@ -210,7 +213,7 @@ namespace LaMulana2Randomizer.ViewModels
                 return;
             }
 
-            Logger.LogAndFlush($"Successfully generated for seed {randomiser.Settings.Seed}");
+            Logger.LogAndFlush($"Successfully generated for seed {randomiser.Settings.Seed} after {attemptCount} attempts.");
             progress.Report(new ProgressInfo
             {
                 Label = "Successfully generated seed.",
@@ -218,6 +221,5 @@ namespace LaMulana2Randomizer.ViewModels
                 IsIndeterminate = false
             });
         }
-
     }
 }

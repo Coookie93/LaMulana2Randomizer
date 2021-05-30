@@ -3,7 +3,6 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using LaMulana2RandomizerShared;
-using LaMulana2Randomizer.Utils;
 
 namespace LaMulana2Randomizer
 {
@@ -114,7 +113,7 @@ namespace LaMulana2Randomizer
 
             var shopItems = GetAndRemoveShopOnlyItems();
             if (shopItems.Count <= 0)
-                throw new RandomiserException($"Can not create a random shop item pool from {size} shop items.");
+                throw new RandomiserException($"Can not create a random shop item pool from {shopItems.Count} shop items.");
 
             ItemPool itemPool = new ItemPool(shopItems);
             for (; size > 0; size--)

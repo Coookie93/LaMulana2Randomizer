@@ -233,12 +233,12 @@ namespace LaMulana2Randomizer.Utils
                     br.Write((int)randomiser.StartingWeapon.ID);
                     br.Write((int)randomiser.StartingArea.ID);
                     br.Write(randomiser.Settings.RandomDissonance);
+                    br.Write(randomiser.Settings.RequiredGuardians);
                     br.Write(randomiser.Settings.RequiredSkulls);
                     br.Write(randomiser.Settings.RemoveITStatue);
                     br.Write(randomiser.Settings.EasyEchidna);
                     br.Write(randomiser.Settings.AutoScanTablets);
                     br.Write(randomiser.Settings.AutoPlaceSkulls);
-                    br.Write(randomiser.Settings.FastCorridor);
                     br.Write(randomiser.Settings.StartingMoney);
                     br.Write(randomiser.Settings.StartingWeights);
                     br.Write((int)randomiser.Settings.ItemChestColour);
@@ -263,6 +263,7 @@ namespace LaMulana2Randomizer.Utils
                         br.Write(item.Item3);
                     }
 
+                    br.Write(randomiser.CursedLocations.Count);
                     foreach (Location location in randomiser.CursedLocations)
                         br.Write((int)location.ID);
 
