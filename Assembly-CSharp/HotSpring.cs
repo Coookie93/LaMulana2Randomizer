@@ -12,12 +12,12 @@ namespace LM2RandomiserMod
 
         private const float hpModifier = 0.0004f;
 
-        public void Init(L2System sys, Vector2 pos)
+        public void Init(L2System sys)
         {
             this.sys = sys;
             bounds.width = 50;
             bounds.height = 50;
-            bounds.center = pos;
+            bounds.center = transform.position;
             playerRect.width = 16;
             playerRect.height = 20;
         }

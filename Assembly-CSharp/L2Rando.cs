@@ -34,13 +34,14 @@ namespace LM2RandomiserMod
         private List<LocationID> cursedChests;
         private Dictionary<ExitID, ExitID> exitToExitMap;
         private Dictionary<ExitID, int> soulGateValueMap;
-        private bool randomSoulGates = false;
-        private bool randomDissonance = false;
-        private bool autoPlaceSkull = false;
-        private bool easyEchidna = false;
-        private int requiredGuardians = 0;
-        private int itemChestColour = 0;
-        private int weightChestColour = 0;
+        private bool randomSoulGates;
+        private bool randomDissonance;
+        private bool autoPlaceSkull;
+        private bool easyEchidna;
+        private int requiredGuardians;
+        private int itemChestColour;
+        private int weightChestColour;
+        private string startFieldName;
 
         private patched_L2System sys;
         private L2ShopDataBase shopDataBase;
@@ -50,19 +51,19 @@ namespace LM2RandomiserMod
 
         private Font font = null;
         private GUIStyle style = null;
-        private bool onTitle = false;
-        private bool loading = false;
+        private bool onTitle;
+        private bool loading;
         private string message;
 
-        public bool IsRandomising { get; private set; } = false;
+        public bool IsRandomising { get; private set; }
         public ItemID StartingWeapon { get; private set; }
         public AreaID StartingArea { get; private set; }
         public List<ItemID> StartingItems { get; private set; }
-        public int RequiredSkulls { get; private set; } = 0;
-        public bool AutoScanTablets { get; private set; } = false;
-        public bool RemoveITStatue { get; private set; } = false;
-        public int StartingMoney { get; private set; } = 0;
-        public int StartingWeights { get; private set; } = 0;
+        public int RequiredSkulls { get; private set; }
+        public bool AutoScanTablets { get; private set; }
+        public bool RemoveITStatue { get; private set; }
+        public int StartingMoney { get; private set; }
+        public int StartingWeights { get; private set; }
 
         public void OnGUI()
         {
@@ -115,7 +116,7 @@ namespace LM2RandomiserMod
                     message = string.Empty;
                     if (IsRandomising)
                     {
-                        CreateStartingAreaObjects(scene.name);
+                        CreateStartingFieldObjects(scene.name);
                         StartCoroutine(ChangeTreasureChests());
                         ChangeEventItems();
                         StartCoroutine(ChangeEntrances(scene.name));
@@ -252,6 +253,7 @@ namespace LM2RandomiserMod
                 {
                     StartingWeapon = (ItemID)br.ReadInt32();
                     StartingArea = (AreaID)br.ReadInt32();
+                    SetStartFieldName(StartingArea);
                     randomDissonance = br.ReadBoolean();
                     requiredGuardians = br.ReadInt32();
                     RequiredSkulls = br.ReadInt32();
@@ -306,12 +308,30 @@ namespace LM2RandomiserMod
             }
             catch (Exception ex)
             {
-                message = ex.ToString();
+                message = "Failed to load seed: " + ex.ToString();
                 return false;
             }
             message = "Successfully loaded seed.";
             return true;
         }
+
+
+        private void SetStartFieldName(AreaID startID)
+        {
+            switch (StartingArea)
+            {
+                case AreaID.RoY: startFieldName = "field00"; break;
+                case AreaID.AnnwfnMain: startFieldName = "field02"; break;
+                case AreaID.IBMain: startFieldName = "field03"; break;
+                case AreaID.ITLeft: startFieldName = "field04"; break;
+                case AreaID.DFMain: startFieldName = "field05"; break;
+                case AreaID.ValhallaMain: startFieldName = "field10"; break;
+                case AreaID.DSLMMain: startFieldName = "field11"; break;
+                case AreaID.ACTablet: startFieldName = "field12"; break;
+                default: startFieldName = string.Empty; break;
+            }
+        }
+
 
         private IEnumerator InitalSetup()
         {
@@ -1524,56 +1544,47 @@ namespace LM2RandomiserMod
             }
         }
 
-        private void CreateStartingAreaObjects(string field)
+        private void CreateStartingFieldObjects(string field)
         {
-            //surface has a shop that can be used already so it doesnt matter;
-            if (StartingArea == AreaID.VoD)
+            //surface has a shop that can be used already so it doesnt matter
+            //if its not the start field nothing needs to be done
+            if (StartingArea == AreaID.VoD || !field.Equals(startFieldName))
                 return;
 
-            string startingFieldName;
-            switch (StartingArea)
+            Vector3 tabletPosition = new Vector3();
+            foreach(HolyTabretScript holyTablet in FindObjectsOfType<HolyTabretScript>())
             {
-                case AreaID.RoY: startingFieldName = "field00"; break;
-                case AreaID.AnnwfnMain: startingFieldName = "field02"; break;
-                case AreaID.IBMain: startingFieldName = "field03"; break;
-                case AreaID.ITLeft: startingFieldName = "field04"; break;
-                case AreaID.DFMain: startingFieldName = "field05"; break;
-                case AreaID.ValhallaMain: startingFieldName = "field10"; break;
-                case AreaID.DSLMMain: startingFieldName = "field11"; break;
-                case AreaID.ACTablet: startingFieldName = "field12"; break;
-                default: startingFieldName = string.Empty; break;
+                if (holyTablet.name.Equals("TabletH"))
+                {
+                    tabletPosition = holyTablet.transform.position;
+                    var hotSpring = holyTablet.gameObject.AddComponent<HotSpring>();
+                    hotSpring.Init(sys);
+                }
             }
 
-            if (!field.Equals(startingFieldName))
-                return;
-
             StartInfo startInfo = StartDB.GetStartInfo(StartingArea);
-            GameObject obj = new GameObject("Tablet Hotspring");
-            obj.transform.position = startInfo.TabletPosition;
-            var hotSpring = obj.AddComponent<HotSpring>();
-            hotSpring.Init(sys, startInfo.TabletPosition);
-            obj.SetActive(true);
-
             foreach (ShopGateScript shopGate in FindObjectsOfType<ShopGateScript>())
             {
                 if (shopGate.name.Equals("ShopGate"))
                 {
-                    //make a copy of a shop for the start dhop
-                    GameObject shop = Instantiate(shopGate.gameObject, new Vector3(startInfo.ShopPosition.x, startInfo.ShopPosition.y, 0), 
-                                                    Quaternion.identity, shopGate.transform.parent);
+                    //make a copy of a shop for the start shop
+                    Vector3 shopPosition = tabletPosition + startInfo.ShopOffset;
+                    shopPosition.z = 0;
+                    GameObject shop = Instantiate(shopGate.gameObject, shopPosition, Quaternion.identity, shopGate.transform.parent);
                     shop.name = "Start Shop";
+                    shop.SetActive(true);
                     ShopGateScript gateScript = shop.GetComponent<ShopGateScript>();
                     gateScript.sheetName = "f04-1e";
                     gateScript.shdowtask = null;
-                    shop.SetActive(true);
 
-                    GameObject shopVisual = new GameObject("Shop Entrance");
-                    shopVisual.transform.position = new Vector3(startInfo.ShopPosition.x - 10, startInfo.ShopPosition.y, 1);
+                    //add a white rectangle so the shop entrance is visible
+                    GameObject shopVisual = new GameObject("Start Shop Entrance");
+                    shopVisual.transform.position = new Vector3(shopPosition.x - 10, shopPosition.y, 1);
                     shopVisual.transform.localScale = new Vector3(5, 7, 1);
+                    shopVisual.SetActive(true);
                     SpriteRenderer spriteRenderer = shopVisual.AddComponent<SpriteRenderer>();
                     spriteRenderer.sprite = Sprite.Create(Texture2D.whiteTexture, new Rect(0, 0, Texture2D.whiteTexture.width, Texture2D.whiteTexture.height), new Vector2(0, 0), 1);
                     spriteRenderer.color = Color.white;
-                    shopVisual.SetActive(true);
                     break;
                 }
             }
