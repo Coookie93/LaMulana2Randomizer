@@ -231,11 +231,11 @@
             </TabItem>
             <TabItem Header="Logic" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="-2,0" Width="49">
                 <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <GroupBox Header="Logic" Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <GroupBox Header="Logic">
                         <StackPanel>
                             <CheckBox Name="FDCBacksideCheck" IsChecked="{Binding Settings.FDCForBacksides}" Style="{StaticResource OriginalShopCheck}" Margin="0,2">
                                 <TextBlock Text="Require Future Development Company for backsides." TextWrapping="Wrap"/>
@@ -342,15 +342,34 @@
                             </StackPanel>
                         </StackPanel>
                     </GroupBox>
+                    <GroupBox Header="Glitches/Tricks" Grid.Column="1">
+                        <StackPanel>
+                            <CheckBox Name="CostumeClipCheck" IsChecked="{Binding Settings.CostumeClip}" Margin="0,2" Content="Costume Clip">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="."/>
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <CheckBox Name="CrouchJumpCheck" IsChecked="{Binding Settings.CrouchJump}" Margin="0,2" Content="Crouch Jump">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="."/>
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                        </StackPanel>
+                    </GroupBox>
                 </Grid>
             </TabItem>
             <TabItem Header="Combat">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="70*"/>
+                        <ColumnDefinition Width="115*"/>
+                        <ColumnDefinition Width="371*"/>
                     </Grid.ColumnDefinitions>
-                    <GroupBox Header="Starting Weapon" Grid.Column="0">
+                    <GroupBox Header="Starting Weapon" Grid.Column="0" Grid.ColumnSpan="2">
                         <StackPanel Margin="2">
                             <CheckBox Content="Leather Whip" IsChecked="{Binding Settings.Whip}">
                                 <CheckBox.Style>
@@ -399,7 +418,7 @@
                             </StackPanel.ToolTip>
                         </StackPanel>
                     </GroupBox>
-                    <GroupBox Header="Bosses" Grid.Column="1">
+                    <GroupBox Header="Bosses" Grid.Column="2">
                         <StackPanel Margin="2">
                             <CheckBox Name="DifficultyCheck" Content="Hard Guardian/Room Guarders requirements" IsChecked="{Binding Settings.HardBosses}">
                                 <CheckBox.ToolTip>
