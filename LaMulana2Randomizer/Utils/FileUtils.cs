@@ -114,8 +114,7 @@ namespace LaMulana2Randomizer.Utils
                         if (randomiser.Settings.RandomHorizontalEntrances)
                         {
                             sw.WriteLine("  Horizontal Entrances: {");
-                            randomiser.HorizontalPairs.Sort();
-                            foreach (string pair in randomiser.HorizontalPairs)
+                            foreach (string pair in randomiser.HorizontalPairs.OrderBy(x => x))
                                 sw.WriteLine($"    {pair}");
 
                             sw.WriteLine("  }");
@@ -144,8 +143,7 @@ namespace LaMulana2Randomizer.Utils
                     else
                     {
                         sw.WriteLine("  Entrances: {");
-                        randomiser.EntrancePairs.Sort();
-                        foreach (string pair in randomiser.EntrancePairs)
+                        foreach (string pair in randomiser.EntrancePairs.OrderBy(x => x))
                             sw.WriteLine($"    {pair}");
 
                         sw.WriteLine("  }");

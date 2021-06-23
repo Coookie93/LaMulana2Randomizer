@@ -51,9 +51,10 @@ namespace LM2RandomiserMod
 
         private Font font = null;
         private GUIStyle style = null;
-        private bool onTitle;
         private bool loading;
+        private bool onTitle;
         private string message;
+        private string errorMessage;
 
         public bool IsRandomising { get; private set; }
         public ItemID StartingWeapon { get; private set; }
@@ -67,25 +68,33 @@ namespace LM2RandomiserMod
 
         public void OnGUI()
         {
-            if (onTitle || !string.IsNullOrEmpty(message))
+            if(font == null)
+                font = Font.CreateDynamicFontFromOSFont("Consolas", 14);
+
+            if (style == null)
             {
-                if (font == null)
-                    font = Font.CreateDynamicFontFromOSFont("Consolas", 14);
+                style = new GUIStyle(GUI.skin.label);
+                style.normal.textColor = Color.white;
+                style.font = font;
+                style.fontStyle = FontStyle.Bold;
+            }
 
-                if (style == null)
-                {
-                    style = new GUIStyle(GUI.skin.label);
-                    style.normal.textColor = Color.white;
-                    style.font = font;
-                    style.fontStyle = FontStyle.Bold;
-                }
-
-                GUIContent verContent = new GUIContent("La-Mulana 2 Randomiser " + LaMulana2RandomizerShared.Version.version);
+            if (onTitle)
+            {
+                GUIContent content = new GUIContent("La-Mulana 2 Randomiser " + LaMulana2RandomizerShared.Version.version);
                 style.fontSize = 14;
-                Vector2 verSize = style.CalcSize(verContent);
-                GUI.Label(new Rect(0, 0, verSize.x, verSize.y), verContent, style);
+                Vector2 size = style.CalcSize(content);
+                GUI.Label(new Rect(0, 0, size.x, size.y), content, style);
                 style.fontSize = 10;
-                GUI.Label(new Rect(0, verSize.y, 500, 50), message, style);
+                GUI.Label(new Rect(0, size.y, 500, 50), message, style);
+            }
+
+            if (!string.IsNullOrEmpty(errorMessage))
+            {
+                GUIContent content = new GUIContent(errorMessage);
+                style.fontSize = 10;
+                Vector2 size = style.CalcSize(content);
+                GUI.Label(new Rect(0, 0, size.x, size.y), content, style);
             }
 
             if (loading)
@@ -109,31 +118,38 @@ namespace LM2RandomiserMod
             if (scene.name.Equals("fieldLast") || scene.name.Equals("title"))
                 return;
 
-            //using (StreamWriter sr = new StreamWriter(File.Open(Path.Combine(Directory.GetCurrentDirectory(), "log.txt"), FileMode.Open)))
-            //{
-                try
+            try
+            {
+                errorMessage = string.Empty;
+                List<GameObject> objectsToDeactivate = new List<GameObject>();
+                if (IsRandomising)
                 {
-                    message = string.Empty;
-                    if (IsRandomising)
-                    {
-                        CreateStartingFieldObjects(scene.name);
-                        StartCoroutine(ChangeTreasureChests());
-                        ChangeEventItems();
-                        StartCoroutine(ChangeEntrances(scene.name));
-                        DissonanceChests(scene.name);
-                        ChangeFlagWatchers(scene.name);
-                        FieldSpecificChanges(scene.name);
-                        AddAnchorPoints(scene.name);
-                        ObjectChanges();
-                    }
-                   
-                }        
-                catch (Exception ex)
-                {
-                    message = ex.ToString();
-                    //sr.WriteLine(ex.ToString());
+                    CreateStartingFieldObjects(scene.name);
+                    AddAnchorPoints(scene.name);
+                    objectsToDeactivate.AddRange(ChangeEntrances(scene.name));
+                    objectsToDeactivate.AddRange(ChangeTreasureChests());
+                    ChangeEventItems();
+                    DissonanceChests(scene.name);
+                    ChangeFlagWatchers(scene.name);
+                    FieldSpecificChanges(scene.name);
+                    ObjectChanges();
+                    StartCoroutine(DeactivateObjects(objectsToDeactivate));
                 }
-            //}
+                   
+            }        
+            catch (Exception ex)
+            {
+                errorMessage = "Something Has Gone Wrong!!! Take a screenshot and tell me thanks.\n";
+                errorMessage += ex.ToString();
+            }
+        }
+
+        private IEnumerator DeactivateObjects(List<GameObject> objects)
+        {
+            yield return new WaitForEndOfFrame();
+
+            foreach (GameObject obj in objects)
+                obj.SetActive(false);
         }
 
         public ItemID GetItemIDForLocation(LocationID locationID)
@@ -146,7 +162,7 @@ namespace LM2RandomiserMod
         {
             if (snapTarget.itemName == ItemDatabaseSystem.ItemNames.BeoEgLana)
             {
-                return (LocationID)snapTarget.itemName;
+                return LocationID.BeoEglanaMural;
             }
             else if (snapTarget.itemName == ItemDatabaseSystem.ItemNames.Mantra)
             {
@@ -232,7 +248,7 @@ namespace LM2RandomiserMod
             sys = system;
             gameObject.AddComponent<ItemTracker>();
 #if DEV
-            DevUI devUI = gameObject.AddComponent<DevUI>() as DevUI;
+            DevUI devUI = gameObject.AddComponent<DevUI>();
             devUI.Initialise(sys);
 #endif
             StartCoroutine(InitalSetup());
@@ -253,7 +269,6 @@ namespace LM2RandomiserMod
                 {
                     StartingWeapon = (ItemID)br.ReadInt32();
                     StartingArea = (AreaID)br.ReadInt32();
-                    SetStartFieldName(StartingArea);
                     randomDissonance = br.ReadBoolean();
                     requiredGuardians = br.ReadInt32();
                     RequiredSkulls = br.ReadInt32();
@@ -316,7 +331,7 @@ namespace LM2RandomiserMod
         }
 
 
-        private void SetStartFieldName(AreaID startID)
+        private void SetStartFieldName()
         {
             switch (StartingArea)
             {
@@ -351,6 +366,7 @@ namespace LM2RandomiserMod
         {
             if (LoadSeedFile())
             {
+                SetStartFieldName();
                 ChangeShopItems();
                 ChangeShopThanks();
                 ChangeDialogueItems();
@@ -362,23 +378,13 @@ namespace LM2RandomiserMod
         private IEnumerator GetGameObjects()
         {
             objects = new Dictionary<string, GameObject>();
+            AnimatorController[] controllers;
 
             var ao = SceneManager.LoadSceneAsync("field04");
             while (!ao.isDone)
                 yield return null;
 
-            foreach (TreasureBoxScript box in FindObjectsOfType<TreasureBoxScript>())
-            {
-                if (box.closetMode)
-                {
-                    GameObject obj = Instantiate(box.gameObject);
-                    obj.name = "Turquise Chest Prefab";
-                    DontDestroyOnLoad(obj);
-                    obj.SetActive(false);
-                    objects.Add("turquiseChest", obj);
-                    break;
-                }
-            }
+            GetTreasureChest("turquiseChest", "Turquise Chest Prefab", true);
 
             foreach (Animator animator in FindObjectsOfType<Animator>())
             {
@@ -449,35 +455,10 @@ namespace LM2RandomiserMod
             while (!ao.isDone)
                 yield return null;
 
-            foreach (TreasureBoxScript box in FindObjectsOfType<TreasureBoxScript>())
-            {
-                GameObject obj = Instantiate(box.gameObject);
-                obj.name = "Blue Chest Prefab";
-                DontDestroyOnLoad(obj);
-                obj.SetActive(false);
-                objects.Add("blueChest", obj);
-                break;
-            }
-
-            foreach (AnimatorController controller in FindObjectsOfType<AnimatorController>())
-            {
-                if (controller.name.Equals("soul_gate") && !objects.ContainsKey("oneSoulGate"))
-                {
-                    GameObject obj = Instantiate(controller.gameObject);
-                    obj.name = "One Soul Gate Prefab";
-                    DontDestroyOnLoad(obj);
-                    obj.SetActive(false);
-                    objects.Add("oneSoulGate", obj);
-                }
-                else if (controller.name.Equals("soul_cont") && !objects.ContainsKey("oneSoul"))
-                {
-                    GameObject obj = Instantiate(controller.gameObject);
-                    obj.name = "One Soul Prefab";
-                    DontDestroyOnLoad(obj);
-                    obj.SetActive(false);
-                    objects.Add("oneSoul", obj);
-                }
-            }
+            controllers = FindObjectsOfType<AnimatorController>();
+            GetSoulGate(controllers, "oneSoulGate", "One Soul Gate Prefab");
+            GetSoulGateSoul(controllers, "oneSoul", "One Soul Prefab");
+            GetTreasureChest("blueChest", "Blue Chest Prefab", false);
 
             sys.reInitSystem();
 
@@ -485,25 +466,9 @@ namespace LM2RandomiserMod
             while (!ao.isDone)
                 yield return null;
 
-            foreach (AnimatorController controller in FindObjectsOfType<AnimatorController>())
-            {
-                if (controller.name.Equals("soul_gate") && !objects.ContainsKey("nineSoulGate"))
-                {
-                    GameObject obj = Instantiate(controller.gameObject);
-                    obj.name = "Nine Soul Gate Prefab";
-                    DontDestroyOnLoad(obj);
-                    obj.SetActive(false);
-                    objects.Add("nineSoulGate", obj);
-                }
-                else if (controller.name.Equals("soul_cont") && !objects.ContainsKey("nineSoul"))
-                {
-                    GameObject obj = Instantiate(controller.gameObject);
-                    obj.name = "Nine Soul Prefab";
-                    DontDestroyOnLoad(obj);
-                    obj.SetActive(false);
-                    objects.Add("nineSoul", obj);
-                }
-            }
+            controllers = FindObjectsOfType<AnimatorController>();
+            GetSoulGate(controllers, "nineSoulGate", "Nine Soul Gate Prefab");
+            GetSoulGateSoul(controllers, "nineSoul", "Nine Soul Prefab");
 
             sys.reInitSystem();
 
@@ -511,18 +476,7 @@ namespace LM2RandomiserMod
             while (!ao.isDone)
                 yield return null;
 
-            foreach (TreasureBoxScript box in FindObjectsOfType<TreasureBoxScript>())
-            {
-                if (box.closetMode)
-                {
-                    GameObject obj = Instantiate(box.gameObject);
-                    obj.name = "Red Chest Prefab";
-                    DontDestroyOnLoad(obj);
-                    obj.SetActive(false);
-                    objects.Add("redChest", obj);
-                    break;
-                }
-            }
+            GetTreasureChest("redChest", "Red Chest Prefab", true);
 
             sys.reInitSystem();
 
@@ -530,38 +484,10 @@ namespace LM2RandomiserMod
             while (!ao.isDone)
                 yield return null;
 
-            foreach (TreasureBoxScript box in FindObjectsOfType<TreasureBoxScript>())
-            {
-                if (box.closetMode)
-                {
-                    GameObject obj = Instantiate(box.gameObject);
-                    obj.name = "Pink Chest Prefab";
-                    DontDestroyOnLoad(obj);
-                    obj.SetActive(false);
-                    objects.Add("pinkChest", obj);
-                    break;
-                }
-            }
-
-            foreach (AnimatorController controller in FindObjectsOfType<AnimatorController>())
-            {
-                if (controller.name.Equals("soul_gate") && !objects.ContainsKey("twoSoulGate"))
-                {
-                    GameObject obj = Instantiate(controller.gameObject);
-                    obj.name = "Two Soul Gate Prefab";
-                    DontDestroyOnLoad(obj);
-                    obj.SetActive(false);
-                    objects.Add("twoSoulGate", obj);
-                }
-                else if (controller.name.Equals("soul_cont") && !objects.ContainsKey("twoSoul"))
-                {
-                    GameObject obj = Instantiate(controller.gameObject);
-                    obj.name = "Two Soul Prefab";
-                    DontDestroyOnLoad(obj);
-                    obj.SetActive(false);
-                    objects.Add("twoSoul", obj);
-                }
-            }
+            controllers = FindObjectsOfType<AnimatorController>();
+            GetSoulGate(controllers, "twoSoulGate", "Two Soul Gate Prefab");
+            GetSoulGateSoul(controllers, "twoSoul", "Two Soul Prefab");
+            GetTreasureChest("pinkChest", "Pink Chest Prefab", true);
 
             sys.reInitSystem();
 
@@ -569,23 +495,60 @@ namespace LM2RandomiserMod
             while (!ao.isDone)
                 yield return null;
 
-            foreach (TreasureBoxScript box in FindObjectsOfType<TreasureBoxScript>())
-            {
-                if (box.closetMode)
-                {
-                    GameObject obj = Instantiate(box.gameObject);
-                    obj.name = "Yellow Chest Prefab";
-                    DontDestroyOnLoad(obj);
-                    obj.SetActive(false);
-                    objects.Add("yellowChest", obj);
-                    break;
-                }
-            }
+            GetTreasureChest("yellowChest", "Yellow Chest Prefab", true);
 
             sys.reInitSystem();
         }
 
-        private ItemData GetItemDataFromName(string objName)
+        private void GetTreasureChest(string objName, string prefabName, bool costumeChest)
+        {
+            foreach (TreasureBoxScript box in FindObjectsOfType<TreasureBoxScript>())
+            {
+                if (!costumeChest || (costumeChest && box.closetMode))
+                {
+                    GameObject obj = Instantiate(box.gameObject);
+                    obj.name = prefabName;
+                    DontDestroyOnLoad(obj);
+                    obj.SetActive(false);
+                    objects.Add(objName, obj);
+                    break;
+                }
+            }
+        }
+
+        private void GetSoulGate(AnimatorController[] controllers, string objName, string prefabName)
+        {
+            foreach (AnimatorController controller in controllers)
+            {
+                if (controller.name.Equals("soul_gate"))
+                {
+                    GameObject obj = Instantiate(controller.gameObject);
+                    obj.name = prefabName;
+                    DontDestroyOnLoad(obj);
+                    obj.SetActive(false);
+                    objects.Add(objName, obj);
+                    return;
+                }
+            }
+        }
+
+        private void GetSoulGateSoul(AnimatorController[] controllers, string objName, string prefabName)
+        {
+            foreach (AnimatorController controller in controllers)
+            {
+                if (controller.name.Equals("soul_cont"))
+                {
+                    GameObject obj = Instantiate(controller.gameObject);
+                    obj.name = prefabName;
+                    DontDestroyOnLoad(obj);
+                    obj.SetActive(false);
+                    objects.Add(objName, obj);
+                    return;
+                }
+            }
+        }
+
+        private LocationID GetLocationID(string objName)
         {
             if (objName.Contains("ItemSym "))
             {
@@ -595,10 +558,12 @@ namespace LM2RandomiserMod
                     name = name.Insert(6, " ");
                 else if (name.Equals("MSX3p"))
                     name = "MSX";
+                else if (name.Equals("B Mirror2"))
+                    return LocationID.None;
 
-                return L2SystemCore.getItemData(name);
+                return (LocationID)L2SystemCore.getItemData(name).getItemName();
             }
-            return null;
+            return LocationID.None;
         }
 
         private LocationID GetLocationIDForResearch(L2FlagBoxParent[] flags)
@@ -645,66 +610,55 @@ namespace LM2RandomiserMod
             }
         }
 
-        private IEnumerator ChangeTreasureChests()
+        private List<GameObject> ChangeTreasureChests()
         {
-            List<GameObject> curses = new List<GameObject>();
-            foreach (Animator animator in FindObjectsOfType<Animator>())
-            {
-                if (animator.name.Equals("Curse Tresure"))
-                    curses.Add(animator.gameObject);
-            }
-
-            List<TreasureBoxScript> oldChests = new List<TreasureBoxScript>();
+            List<GameObject> objectsToDeactivate = new List<GameObject>();
             foreach (TreasureBoxScript oldChest in FindObjectsOfType<TreasureBoxScript>())
             {
-                ItemData oldItemData = GetItemDataFromName(oldChest.itemObj.name);
-                if (oldItemData == null)
+                LocationID locationID = GetLocationID(oldChest.itemObj.name);
+                if (locationID == LocationID.None)
                     continue;
 
-                LocationID locationID = (LocationID)oldItemData.getItemName();
-                if (locationToItemMap.TryGetValue(locationID, out ItemID newItemID))
+                if (!locationToItemMap.TryGetValue(locationID, out ItemID newItemID))
+                    continue;
+                
+                TreasureBoxScript newChest;
+                if (newItemID >= ItemID.ChestWeight01)
+                    newChest = CreateChest(weightChestColour, oldChest.transform.position, oldChest.transform.rotation);
+                else
+                    newChest = CreateChest(itemChestColour, oldChest.transform.position, oldChest.transform.rotation);
+
+                if (IsLocationCursed(locationID))
                 {
-                    TreasureBoxScript newChest;
-                    if (newItemID >= ItemID.ChestWeight01)
-                        newChest = CreateChest(weightChestColour, oldChest.transform.position, oldChest.transform.rotation);
-                    else
-                        newChest = CreateChest(itemChestColour, oldChest.transform.position, oldChest.transform.rotation);
-
-                    if (IsLocationCursed(locationID))
-                    {
-                        GameObject curse = Instantiate(objects["curse"], oldChest.transform.position, oldChest.transform.rotation);
-                        curse.SetActive(true);
-                        curse.transform.SetParent(newChest.transform);
-                        newChest.curseAnime = curse.GetComponent<Animator>();
-                        newChest.curseParticle = curse.GetComponent<ParticleSystem>();
-                        newChest.curseMode = true;
-                    }
-                    else
-                    {
-                        newChest.curseMode = false;
-                    }
-
-                    newChest.closetMode = false;
-                    newChest.forceOpenFlags = oldChest.forceOpenFlags;
-                    newChest.itemFlags = oldChest.itemFlags;
-                    newChest.openActionFlags = oldChest.openActionFlags;
-                    newChest.openFlags = oldChest.openFlags;
-                    newChest.unlockFlags = oldChest.unlockFlags;
-                    newChest.itemObj = oldChest.itemObj;
-                    newChest.transform.SetParent(oldChest.transform.parent);
-
-                    ChangeChestItemFlags(newChest, newItemID); 
-                    newChest.gameObject.SetActive(true);
-                    oldChests.Add(oldChest);
+                    GameObject curse = Instantiate(objects["curse"], oldChest.transform.position, oldChest.transform.rotation);
+                    curse.SetActive(true);
+                    curse.transform.SetParent(newChest.transform);
+                    newChest.curseAnime = curse.GetComponent<Animator>();
+                    newChest.curseParticle = curse.GetComponent<ParticleSystem>();
+                    newChest.curseMode = true;
                 }
+                else
+                {
+                    newChest.curseMode = false;
+                }
+
+                newChest.closetMode = false;
+                newChest.forceOpenFlags = oldChest.forceOpenFlags;
+                newChest.itemFlags = oldChest.itemFlags;
+                newChest.openActionFlags = oldChest.openActionFlags;
+                newChest.openFlags = oldChest.openFlags;
+                newChest.unlockFlags = oldChest.unlockFlags;
+                newChest.itemObj = oldChest.itemObj;
+                newChest.transform.SetParent(oldChest.transform.parent);
+                newChest.gameObject.SetActive(true);
+
+                ChangeChestItemFlags(newChest, newItemID); 
+
+                oldChest.curseMode = false;
+                objectsToDeactivate.Add(oldChest.gameObject);
             }
 
-            yield return new WaitForEndOfFrame();
-            foreach (var box in oldChests)
-                box.gameObject.SetActive(false);
-
-            foreach (var obj in curses)
-                obj.SetActive(false);
+            return objectsToDeactivate;
         }
 
         private void ChangeChestItemFlags(TreasureBoxScript chest, ItemID itemID)
@@ -736,26 +690,24 @@ namespace LM2RandomiserMod
 
             //Change the Event Items active flags to correspond to the new item
             //These flags are used to set the item inactive after you have got it
-            foreach (L2FlagBoxParent flagBoxParent in item.itemActiveFlag)
+            item.itemActiveFlag = new L2FlagBoxParent[]
             {
-                foreach (L2FlagBox flagBox in flagBoxParent.BOX)
+                new L2FlagBoxParent
                 {
-                    if (flagBox.seet_no1 == 2)
-                    {
-                        flagBox.seet_no1 = itemInfo.ItemSheet;
-                        flagBox.flag_no1 = itemInfo.ItemFlag;
-                        flagBox.comp = COMPARISON.Equal;
-                        flagBox.flag_no2 = 0;
-
-                        //msx flag starts at 1 so have to check against 1 not 0
-                        if (itemID == ItemID.MobileSuperx3P)
+                    BOX = new L2FlagBox[] {
+                        new L2FlagBox()
                         {
-                            flagBox.flag_no2 = 1;
-                            flagBox.comp = COMPARISON.LessEq;
+                            seet_no1 = itemInfo.ItemSheet,
+                            flag_no1 = itemInfo.ItemFlag,
+                            seet_no2 = -1,
+                            flag_no2 = itemID == ItemID.MobileSuperx3P ? 1 : 0,
+                            comp = itemID == ItemID.MobileSuperx3P ? COMPARISON.LessEq : COMPARISON.Equal,
+                            logic = LOGIC.NON,
                         }
-                    }
+                    } 
                 }
-            }
+            };
+
             //Change the Event Items get flags to correspond to the new item
             //These are flags that are set when the item is gotten
             item.itemGetFlags = CreateGetFlags(itemID, itemInfo);
@@ -783,125 +735,126 @@ namespace LM2RandomiserMod
                 }
                 else
                 {
-                    ItemData oldItemData = GetItemDataFromName(item.name);
-                    if (oldItemData != null)
-                        locationID = (LocationID)oldItemData.getItemName();
-                    else
+                    locationID = GetLocationID(item.name);
+                    if (locationID == LocationID.None)
                         continue;
                 }
 
-                if (locationToItemMap.TryGetValue(locationID, out ItemID newItemID))
+                if (!locationToItemMap.TryGetValue(locationID, out ItemID newItemID))
+                    continue;
+                
+                ItemInfo newItemInfo = ItemDB.GetItemInfo(newItemID);
+                if (locationID >= LocationID.ResearchAnnwfn && locationID <= LocationID.ResearchDSLM)
                 {
-                    ItemInfo newItemInfo = ItemDB.GetItemInfo(newItemID);
-                    if (locationID >= LocationID.ResearchAnnwfn && locationID <= LocationID.ResearchDSLM)
+                    List<L2FlagBox> flags = new List<L2FlagBox>();
+                    L2FlagBox flagBox = new L2FlagBox()
                     {
-                        //stop this item becoming inaccessable under the failing pit of time thing
-                        if (locationID == LocationID.ResearchIBPit)
-                            item.gameObject.transform.position = item.gameObject.transform.position + new Vector3(0, 70, 0);
+                        seet_no1 = newItemInfo.ItemSheet,
+                        flag_no1 = newItemInfo.ItemFlag,
+                        seet_no2 = -1,
+                        flag_no2 = 0,
+                        comp = COMPARISON.Equal,
+                        logic = LOGIC.AND
+                    };
 
-                        List<L2FlagBox> flags = new List<L2FlagBox>();
-                        L2FlagBox flagBox = new L2FlagBox()
+                    //MSX flag starts at 1 so have to check against 1 not 0
+                    if (newItemID == ItemID.MobileSuperx3P)
+                    {
+                        flagBox.flag_no2 = 1;
+                        flagBox.comp = COMPARISON.LessEq;
+                    }
+
+                    flags.Add(flagBox);
+
+                    if (locationID == LocationID.ResearchIBTent2)
+                    {
+                        //check to see if 7 guardians are beaten
+                        flags.Add(new L2FlagBox()
                         {
-                            seet_no1 = newItemInfo.ItemSheet,
-                            flag_no1 = newItemInfo.ItemFlag,
+                            seet_no1 = 3,
+                            flag_no1 = 0,
                             seet_no2 = -1,
-                            flag_no2 = 0,
+                            flag_no2 = 7,
+                            comp = COMPARISON.GreaterEq,
+                            logic = LOGIC.AND
+                        });
+                    }
+                    else if (locationID == LocationID.ResearchIBTent3)
+                    {
+                        //check to see if ragnarok has started
+                        flags.Add(new L2FlagBox()
+                        {
+                            seet_no1 = 3,
+                            flag_no1 = 86,
+                            seet_no2 = -1,
+                            flag_no2 = 1,
                             comp = COMPARISON.Equal,
                             logic = LOGIC.AND
-                        };
-
-                        //MSX flag starts at 1 so have to check against 1 not 0
-                        if (newItemID == ItemID.MobileSuperx3P)
-                        {
-                            flagBox.flag_no2 = 1;
-                            flagBox.comp = COMPARISON.LessEq;
-                        }
-
-                        flags.Add(flagBox);
-
-                        if (locationID == LocationID.ResearchIBTent2)
-                        {
-                            flags.Add(new L2FlagBox()
-                            {
-                                seet_no1 = 3,
-                                flag_no1 = 0,
-                                seet_no2 = -1,
-                                flag_no2 = 7,
-                                comp = COMPARISON.GreaterEq,
-                                logic = LOGIC.AND
-                            });
-                        }
-                        else if (locationID == LocationID.ResearchIBTent3)
-                        {
-                            flags.Add(new L2FlagBox()
-                            {
-                                seet_no1 = 3,
-                                flag_no1 = 86,
-                                seet_no2 = -1,
-                                flag_no2 = 1,
-                                comp = COMPARISON.Equal,
-                                logic = LOGIC.AND
-                            });
-                        }
-
-                        item.itemActiveFlag[0].BOX = flags.ToArray();
+                        });
                     }
-                    else
+                    else if (locationID == LocationID.ResearchIBPit)
                     {
-                        //Change the Event Items active flags to correspond to the new item
-                        //These flags are used to set the item inactive after you have got it
-                        foreach (L2FlagBoxParent flagBoxParent in item.itemActiveFlag)
-                        {
-                            foreach (L2FlagBox flagBox in flagBoxParent.BOX)
-                            {
-                                if (flagBox.seet_no1 == 2)
-                                {
-                                    flagBox.seet_no1 = newItemInfo.ItemSheet;
-                                    flagBox.flag_no1 = newItemInfo.ItemFlag;
-                                    flagBox.comp = COMPARISON.Equal;
-                                    flagBox.flag_no2 = 0;
+                        //stop this item becoming inaccessable under the failing pit of time thing
+                        item.gameObject.transform.position = item.gameObject.transform.position + new Vector3(0, 70, 0);
+                    }
 
-                                    //msx flag starts at 1 so have to check against 1 not 0
-                                    if (newItemID == ItemID.MobileSuperx3P)
-                                    {
-                                        flagBox.flag_no2 = 1;
-                                        flagBox.comp = COMPARISON.LessEq;
-                                    }
+                    item.itemActiveFlag[0].BOX = flags.ToArray();
+                }
+                else
+                {
+                    //Change the Event Items active flags to correspond to the new item
+                    //These flags are used to set the item inactive after you have got it
+                    foreach (L2FlagBoxParent flagBoxParent in item.itemActiveFlag)
+                    {
+                        foreach (L2FlagBox flagBox in flagBoxParent.BOX)
+                        {
+                            if (flagBox.seet_no1 == 2)
+                            {
+                                flagBox.seet_no1 = newItemInfo.ItemSheet;
+                                flagBox.flag_no1 = newItemInfo.ItemFlag;
+                                flagBox.comp = COMPARISON.Equal;
+                                flagBox.flag_no2 = 0;
+
+                                //msx flag starts at 1 so have to check against 1 not 0
+                                if (newItemID == ItemID.MobileSuperx3P)
+                                {
+                                    flagBox.flag_no2 = 1;
+                                    flagBox.comp = COMPARISON.LessEq;
                                 }
                             }
                         }
                     }
+                }
 
-                    if (newItemID < ItemID.ChestWeight01)
-                    {
-                        //Change the Event Items get flags to correspond to the new item
-                        //These are flags that are set when the item is gotten
-                        item.itemGetFlags = CreateGetFlags(newItemID, newItemInfo);
+                if (newItemID < ItemID.ChestWeight01)
+                {
+                    //Change the Event Items get flags to correspond to the new item
+                    //These are flags that are set when the item is gotten
+                    item.itemGetFlags = CreateGetFlags(newItemID, newItemInfo);
 
-                        //Change the name used when calling setitem to correspond to new item
-                        item.itemLabel = newItemInfo.BoxName;
+                    //Change the name used when calling setitem to correspond to new item
+                    item.itemLabel = newItemInfo.BoxName;
 
-                        //Change the sprite to correspond to new itemwhip"
-                        item.gameObject.GetComponent<SpriteRenderer>().sprite = GetItemSprite(newItemInfo.BoxName, newItemID);
-                    }
-                    else
-                    {
-                        //make a fake item instead of the item
-                        GameObject obj = new GameObject(newItemID.ToString());
-                        obj.transform.position = item.transform.position;
-                        obj.transform.SetParent(item.transform.parent);
+                    //Change the sprite to correspond to new itemwhip"
+                    item.gameObject.GetComponent<SpriteRenderer>().sprite = GetItemSprite(newItemInfo.BoxName, newItemID);
+                }
+                else
+                {
+                    //make a fake item instead of the item
+                    GameObject obj = new GameObject(newItemID.ToString());
+                    obj.transform.position = item.transform.position;
+                    obj.transform.SetParent(item.transform.parent);
 
-                        FakeItem fakeItem = obj.AddComponent<FakeItem>();
-                        fakeItem.Init(sys, item.itemActiveFlag, newItemInfo.ItemFlag);
+                    FakeItem fakeItem = obj.AddComponent<FakeItem>();
+                    fakeItem.Init(sys, item.itemActiveFlag, newItemInfo.ItemFlag);
 
-                        //random sprite
-                        SpriteRenderer renderer = obj.AddComponent<SpriteRenderer>();
-                        renderer.sprite = GetRandomSprite();
-                        renderer.enabled = false;
+                    //random sprite
+                    SpriteRenderer renderer = obj.AddComponent<SpriteRenderer>();
+                    renderer.sprite = GetRandomSprite();
+                    renderer.enabled = false;
 
-                        //set old item to inactive
-                        item.gameObject.SetActive(false);
-                    }
+                    //set old item to inactive
+                    item.gameObject.SetActive(false);
                 }
             }
         }
@@ -1159,6 +1112,24 @@ namespace LM2RandomiserMod
             else if (fieldName.Equals("field11"))
             {
                 CorridorSealerFlagWatcher(new Vector3(28, 504, 0));
+
+                foreach(var stepController in FindObjectsOfType<StepAnimationController>())
+                {
+                    if (stepController.name.Equals("Pyramid"))
+                    {
+                        //StepAnimationController.AnimationStep[] temp = new StepAnimationController.AnimationStep[3];
+                        //Array.Copy(stepController.animeSteps, 0, temp, 0, 3);
+                        //stepController.animeSteps = temp;
+                        foreach (var flagBoxParent in stepController.animeSteps[2].nextFlag)
+                        {
+                            foreach(var flagBox in flagBoxParent.BOX)
+                            {
+                                if (flagBox.seet_no1 == 3 && flagBox.flag_no1 == 95)
+                                    flagBox.comp = COMPARISON.Greater;
+                            }
+                        }
+                    }
+                }
             }
             else if (fieldName.Equals("field12"))
             {
@@ -1546,15 +1517,16 @@ namespace LM2RandomiserMod
 
         private void CreateStartingFieldObjects(string field)
         {
-            //surface has a shop that can be used already so it doesnt matter
-            //if its not the start field nothing needs to be done
+            //surface has a shop/hotspring that can be used already so it doesnt matter
+            //also if its not the start field nothing needs to be done
             if (StartingArea == AreaID.VoD || !field.Equals(startFieldName))
                 return;
 
             Vector3 tabletPosition = new Vector3();
             foreach(HolyTabretScript holyTablet in FindObjectsOfType<HolyTabretScript>())
             {
-                if (holyTablet.name.Equals("TabletH"))
+                if (holyTablet.name.Equals("TabletH") || (holyTablet.name.Equals("TabletHB") && 
+                    (StartingArea == AreaID.ValhallaMain || StartingArea == AreaID.DSLMMain || StartingArea == AreaID.ACTablet)))
                 {
                     tabletPosition = holyTablet.transform.position;
                     var hotSpring = holyTablet.gameObject.AddComponent<HotSpring>();
@@ -1611,9 +1583,11 @@ namespace LM2RandomiserMod
             return ExitDB.AnchorNameToExitID(anchorName);
         }
 
-        private IEnumerator ChangeEntrances(string field)
+        private List<GameObject> ChangeEntrances(string field)
         {
-            if(StartingGame && field.Equals("field01-2"))
+            List<GameObject> objectsToDeactivate = new List<GameObject>();
+
+            if (StartingGame && field.Equals("field01-2"))
             {
                 var gate = FindObjectOfType<AnchorGateZ>();
                 var startInfo = StartDB.GetStartInfo(StartingArea);
@@ -1623,7 +1597,16 @@ namespace LM2RandomiserMod
 
                 StartingGame = false;
 
-                yield return true;
+                return objectsToDeactivate;
+            }
+
+            if (randomSoulGates)
+            {
+                foreach (AnimatorController controller in FindObjectsOfType<AnimatorController>())
+                {
+                    if (controller.name.Equals("soul_gate") || controller.name.Equals("soul_cont"))
+                        objectsToDeactivate.Add(controller.gameObject);
+                }
             }
 
             List<AnimatorController> yugGates = new List<AnimatorController>(); 
@@ -1633,15 +1616,6 @@ namespace LM2RandomiserMod
                     yugGates.Add(animator);
             }
 
-            List<GameObject> objectsToRemove = new List<GameObject>();
-            if (randomSoulGates)
-            {
-                foreach (AnimatorController controller in FindObjectsOfType<AnimatorController>())
-                {
-                    if (controller.name.Equals("soul_gate") || controller.name.Equals("soul_cont"))
-                        objectsToRemove.Add(controller.gameObject);
-                }
-            }
 
             foreach(AnchorGateZ gate in FindObjectsOfType<AnchorGateZ>())
             {
@@ -1913,9 +1887,7 @@ namespace LM2RandomiserMod
                 }
             }
 
-            yield return new WaitForEndOfFrame();
-            foreach (var obj in objectsToRemove)
-                obj.SetActive(false);
+            return objectsToDeactivate;
         }
 
         private IEnumerator FixTrapDoor()

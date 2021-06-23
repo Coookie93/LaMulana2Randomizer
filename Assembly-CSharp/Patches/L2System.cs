@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using MonoMod;
+﻿using MonoMod;
 using UnityEngine;
 using L2Word;
 using L2STATUS;
