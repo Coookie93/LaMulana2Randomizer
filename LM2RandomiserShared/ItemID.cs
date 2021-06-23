@@ -181,6 +181,14 @@ namespace LaMulana2RandomizerShared
         Research9,
         Research10,
 
+        ProgressiveBeherit1,
+        ProgressiveBeherit2,
+        ProgressiveBeherit3,
+        ProgressiveBeherit4,
+        ProgressiveBeherit5,
+        ProgressiveBeherit6,
+        ProgressiveBeherit7,
+
         ShurikenAmmo,
         RollingShurikenAmmo,
         EarthSpearAmmo,
@@ -190,14 +198,6 @@ namespace LaMulana2RandomizerShared
         CaltropsAmmo,
         PistolAmmo,
         Weights,
-
-        ProgressiveBeherit1,
-        ProgressiveBeherit2,
-        ProgressiveBeherit3,
-        ProgressiveBeherit4,
-        ProgressiveBeherit5,
-        ProgressiveBeherit6,
-        ProgressiveBeherit7,
 
         ChestWeight01,
         ChestWeight02,

@@ -16,7 +16,7 @@
   },
   {
     "name": "Progressive Beherit",
-    "id": 184,
+    "id": 175,
     "isRequired": true
   },
   {
@@ -816,47 +816,47 @@
   },
   {
     "name": "Shuriken Ammo",
-    "id": 175,
-    "isRequired": true
-  },
-  {
-    "name": "Rolling Shuriken Ammo",
-    "id": 176,
-    "isRequired": true
-  },
-  {
-    "name": "Earth Spear Ammo",
-    "id": 177,
-    "isRequired": true
-  },
-  {
-    "name": "Flare Ammo",
-    "id": 178,
-    "isRequired": true
-  },
-  {
-    "name": "Bomb Ammo",
-    "id": 179,
-    "isRequired": true
-  },
-  {
-    "name": "Chakram Ammo",
-    "id": 180,
-    "isRequired": true
-  },
-  {
-    "name": "Caltrops Ammo",
-    "id": 181,
-    "isRequired": true
-  },
-  {
-    "name": "Pistol Ammo",
     "id": 182,
     "isRequired": true
   },
   {
-    "name": "Weights",
+    "name": "Rolling Shuriken Ammo",
     "id": 183,
+    "isRequired": true
+  },
+  {
+    "name": "Earth Spear Ammo",
+    "id": 184,
+    "isRequired": true
+  },
+  {
+    "name": "Flare Ammo",
+    "id": 185,
+    "isRequired": true
+  },
+  {
+    "name": "Bomb Ammo",
+    "id": 186,
+    "isRequired": true
+  },
+  {
+    "name": "Chakram Ammo",
+    "id": 187,
+    "isRequired": true
+  },
+  {
+    "name": "Caltrops Ammo",
+    "id": 188,
+    "isRequired": true
+  },
+  {
+    "name": "Pistol Ammo",
+    "id": 189,
+    "isRequired": true
+  },
+  {
+    "name": "Weights",
+    "id": 190,
     "isRequired": false
   }
 ]
