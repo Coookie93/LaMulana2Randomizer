@@ -290,6 +290,7 @@ namespace LaMulana2Randomizer
                 case LogicType.Dissonance: return Dissonance(int.Parse(rule.value));
                 case LogicType.SkullCount: return SkullCount(int.Parse(rule.value));
                 case LogicType.Setting: return Settings(rule.value);
+                case LogicType.Glitch: return Glitches(rule.value);
                 case LogicType.True: return true;
                 case LogicType.False: return false;
                 default: return false;
@@ -397,15 +398,14 @@ namespace LaMulana2Randomizer
 
         private bool MeleeAttack()
         {
-            return HasItem("Leather Whip") || HasItem("Chain Whip") || HasItem("Flail Whip") || HasItem("Knife") 
-                    || HasItem("Rapier") || HasItem("Axe") || HasItem("Katana");
+            return HasItem("Leather Whip") || HasItem("Knife") || HasItem("Rapier") || HasItem("Axe") || HasItem("Katana");
         }
 
         private bool HorizontalAttack()
         {
-            return HasItem("Leather Whip") || HasItem("Chain Whip") || HasItem("Flail Whip") || HasItem("Knife") || HasItem("Rapier") || HasItem("Axe") 
-                    || HasItem("Katana") || CanUse("Shuriken") || CanUse("Rolling Shuriken") || CanUse("Earth Spear") || CanUse("Caltrops") || CanUse("Chakram") 
-                    || CanUse("Bomb") || CanUse("Pistol") || HasItem("Claydoll Suit");
+            return HasItem("Leather Whip") || HasItem("Knife") || HasItem("Rapier") || HasItem("Axe") || HasItem("Katana") || 
+                    CanUse("Shuriken") || CanUse("Rolling Shuriken") || CanUse("Earth Spear") || CanUse("Caltrops") || 
+                    CanUse("Chakram") || CanUse("Bomb") || CanUse("Pistol") || HasItem("Claydoll Suit");
         }
 
         private bool CanSpinCorridor()
@@ -489,6 +489,16 @@ namespace LaMulana2Randomizer
                 case "Non Random Unique": return !randomiser.Settings.IncludeUniqueTransitions;
                 case "Remove IT Statue": return randomiser.Settings.RemoveITStatue;
                 case "Not Life for HoM": return !randomiser.Settings.LifeForHoM;
+                default: return false;
+            }
+        }
+
+        private bool Glitches(string glitchName)
+        {
+            switch (glitchName)
+            {
+                case "Costume Clip": return randomiser.Settings.CostumeClip;
+                case "Crouch Jump" : return randomiser.Settings.CrouchJump;
                 default: return false;
             }
         }

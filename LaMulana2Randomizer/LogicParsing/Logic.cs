@@ -36,6 +36,7 @@ namespace LaMulana2Randomizer.LogicParsing
         Dissonance,
         SkullCount,
         Setting,
+        Glitch,
         True,
         False
     }

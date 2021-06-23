@@ -378,8 +378,8 @@
       {
         "Name": "Fafnir",
         "LocationType": "Guardian",
-        "Logic": "((OrbCount(1) and (Has(Leather Whip) or Has(Knife))) or Has(Chain Whip) or Has(Flail Whip) or Has(Rapier) or Has(Axe) or Has(Katana))",
-        "HardLogic": "MeleeAttack",
+        "Logic": "MeleeAttack or Glitch(Costume Clip)",
+        "HardLogic": "MeleeAttack or Glitch(Costume Clip)",
         "Item": {
           "Name": "Fafnir",
           "IsRequired": true
@@ -848,6 +848,11 @@
         "ConnectionType": "Internal",
         "ConnectingAreaID": "IBTop",
         "Logic": "(Has(Feather) and (CanUse(Earth Spear) or CanUse(Chakram) or CanUse(Bomb) or CanUse(Rolling Shuriken) or CanUse(Caltrops))) or (Has(Gloves) and (CanUse(Earth Spear) or CanUse(Chakram) or CanUse(Bomb)))"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaID": "IBMain",
+        "Logic": "Glitch(Costume Clip)" 
       }
     ]
   },
@@ -997,7 +1002,7 @@
       {
         "Name": "Chakram Puzzle Reward",
         "LocationType": "FreeStanding",
-        "Logic": "IsDead(Svipdagr) and Has(Life Sigil) and CanUse(Earth Spear) and CanUse(Rolling Shuriken)"
+        "Logic": "CanUse(Rolling Shuriken) and ((IsDead(Svipdagr) and Has(Life Sigil) and CanUse(Earth Spear)) or Glitch(Costume Clip))"
       },
       {
         "Name": "Hiro Roderick Shop 1",
@@ -1138,7 +1143,7 @@
       {
         "Name": "Battery Chest",
         "LocationType": "Chest",
-        "Logic": "IsDead(Svipdagr) and CanWarp and Has(Life Sigil) and Has(Feather) and CanChant(Wind) and CanChant(Sea) and CanChant(Fire) and CanChant(Earth)"
+        "Logic": "IsDead(Svipdagr) and CanWarp and Has(Life Sigil) and Has(Feather) and ((CanChant(Wind) and CanChant(Sea) and CanChant(Fire) and CanChant(Earth)) or (Has(Claydoll Suit) and Glitch(Costume Clip)))"
       }
     ],
     "Exits": [
@@ -1170,7 +1175,12 @@
       {
         "ConnectionType": "Internal",
         "ConnectingAreaID": "IBBattery",
-        "Logic": "Has(Grapple Claw)"
+        "Logic": "Has(Grapple Claw) or (Glitch(Costume Clip) and CanWarp)"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaID": "IBMoon",
+        "Logic": "Glitch(Costume Clip) and Has(Feather) and CanWarp"
       }
     ]
   },
@@ -1181,7 +1191,7 @@
       {
         "Name": "Moon Mantra Mural",
         "LocationType": "Mural",
-        "Logic": "CanChant(Sun) and Has(Snapshot) and HorizontalAttack and Has(Life Sigil) and (CanWarp or CanReach(IBDinosaur) or (Has(Grapple Claw) and Setting(Non Random Ladders)))"
+        "Logic": "CanChant(Sun) and Has(Snapshot) and HorizontalAttack and Has(Life Sigil) and (CanWarp or CanReach(IBDinosaur) or ((Has(Grapple Claw) or Glitch(Costume Clip)) and Setting(Non Random Ladders)))"
       }
     ],
     "Exits": [
@@ -1439,6 +1449,11 @@
         "ConnectionType": "Internal",
         "ConnectingAreaID": "ITSinmara",
         "Logic": "HorizontalAttack"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaID": "ITEntrance",
+        "Logic": "Glitch(Costume Clip) and (Has(Claydoll Suit) or Has(Ice Cloak) or OrbCount(2) or CanWarp)"
       },
       {
         "Name": "Icefire Treetop Fire Side Up Ladder (C-1)",
@@ -2307,7 +2322,7 @@
       {
         "Name": "Crystal Skull Chest HL",
         "LocationType": "Chest",
-        "Logic": "Has(Grapple Claw) and Has(Feather)"
+        "Logic": "(Has(Grapple Claw) or Glitch(Costume Clip)) and Has(Feather)"
       },
       {
         "Name": "Megarock Shop 1",
@@ -2357,7 +2372,7 @@
       {
         "Name": "Axe Puzzle Reward",
         "LocationType": "FreeStanding",
-        "Logic": "(Has(Feather) or Has(Grapple Claw)) and Has(Gloves) and IsDead(Glasya Labolas)"
+        "Logic": "(Has(Feather) or Has(Grapple Claw)) and (Has(Gloves) or Glitch(Crouch Jump)) and IsDead(Glasya Labolas)"
       },
       {
         "Name": "Mobile Super X3 Item",
@@ -2615,7 +2630,7 @@
       {
         "Name": "Feather Chest",
         "LocationType": "Chest",
-        "Logic": "(Has(Feather) or IsDead(Angra Mainyu)) and HorizontalAttack"
+        "Logic": "Has(Feather) or ((IsDead(Angra Mainyu) or (Glitch(Costume Clip) and CanReach(DSLMTop))) and HorizontalAttack)"
       },
       {
         "Name": "Ankh Chest DLM",
@@ -2679,8 +2694,8 @@
       {
         "Name": "Aten Ra",
         "LocationType": "Guardian",
-        "Logic": "IsDead(Sekhmet) and PuzzleFinished(White Pedestals) and (((Has(Chain Whip) or Has(Axe) or CanUse(Earth Spear) or CanUse(Flare) or CanUse(Chakrams) or CanUse(Bomb)) and OrbCount(6)) or ((Has(Flail Whip) or Has(Katana)) and OrbCount(5)) or (CanUse(Pistol) and OrbCount(4)))",
-        "HardLogic": "IsDead(Sekhmet) and PuzzleFinished(White Pedestals)",
+        "Logic": "(IsDead(Sekhmet) or Glitch(Costume Clip)) and PuzzleFinished(White Pedestals) and (((Has(Chain Whip) or CanUse(Earth Spear) or CanUse(Flare) or CanUse(Chakrams) or CanUse(Bomb)) and OrbCount(6)) or ((Has(Flail Whip) or Has(Katana) or Has(Axe)) and OrbCount(5)) or (CanUse(Pistol) and OrbCount(4)))",
+        "HardLogic": "(IsDead(Sekhmet) or Glitch(Costume Clip))and PuzzleFinished(White Pedestals)",
         "Item": {
           "Name": "Aten Ra",
           "IsRequired": true
@@ -2917,7 +2932,7 @@
       {
         "Name": "Crystal Skull Chest AC",
         "LocationType": "Chest",
-        "Logic": "CanUse(Shuriken) or CanUse(Rolling Shuriken) or CanUse(Earth Spear) or CanUse(Chakram) or CanUse(Bomb) or Has(Claydoll Suit)"
+        "Logic": "(CanUse(Shuriken) or CanUse(Rolling Shuriken) or CanUse(Earth Spear) or CanUse(Chakram) or CanUse(Bomb) or Has(Claydoll Suit)) or (Glitch(Costume Clip) and HorizontalAttack)"
       }
     ],
     "Exits": [
@@ -2993,6 +3008,11 @@
         "ConnectionType": "SoulGate",
         "ConnectingAreaID": "TSBlood",
         "Logic": "Has(Feather) and (GuardianKills(5) or Setting(Random Soul Gates))"
+      },
+      {
+        "ConnectionType": "Internal",
+        "ConnectingAreaID": "ACMain",
+        "Logic": "Glitch(Costume Clip) and CanWarp"
       },
       {
         "ConnectionType": "Corridor",
@@ -3378,7 +3398,7 @@
       {
         "Name": "Sakit Puzzle",
         "LocationType": "Puzzle",
-        "Logic": "Has(Enga Musica) and Has(Feather) and Has(Giants Flute) and Has(Vessel) and Has(Hand Scanner) and CanChant(Moon) and CanChant(Mother) and CanChant(Child) and IsDead(Vidofnir) and IsDead(Fenrir)",
+        "Logic": "((Has(Enga Musica) and IsDead(Vidofnir)) or Glitch(Costume Clip)) and Has(Feather) and Has(Giants Flute) and Has(Vessel) and Has(Hand Scanner) and CanChant(Moon) and CanChant(Mother) and CanChant(Child) and IsDead(Fenrir)",
         "Item": {
           "Name": "Sakit",
           "IsRequired": true

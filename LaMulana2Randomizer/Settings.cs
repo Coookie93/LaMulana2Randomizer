@@ -171,11 +171,22 @@ namespace LaMulana2Randomizer
             set => Set(ref randomDissonance, value);
         }
 
-
         private int requiredGuardians;
         public int RequiredGuardians {
             get => requiredGuardians;
             set => Set(ref requiredGuardians, value);
+        }
+
+        private bool costumeClip;
+        public bool CostumeClip {
+            get => costumeClip;
+            set => Set(ref costumeClip, value);
+        }
+
+        private bool crouchJump;
+        public bool CrouchJump {
+            get => crouchJump;
+            set => Set(ref crouchJump, value);
         }
 
         //LAYOUT
@@ -571,6 +582,8 @@ namespace LaMulana2Randomizer
             requiredSkulls = 12;
             randomDissonance = false;
             requiredGuardians = 5;
+            costumeClip = false;
+            crouchJump = false;
 
             whip = true;
             knife = false;
