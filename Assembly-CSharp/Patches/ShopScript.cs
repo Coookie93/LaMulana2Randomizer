@@ -60,10 +60,7 @@ namespace LM2RandomiserMod.Patches
             {
                 name = "Research";
             }
-            else if (name.Contains("Beherit"))
-            {
-                name = "Beherit";
-            }
+            else
             item_id[item_copunter] = name;
             
             if (name.Contains("Mantra") && !name.Equals("Mantra"))
@@ -74,6 +71,25 @@ namespace LM2RandomiserMod.Patches
                 string mojiName = name.Equals("Mantra10") ? "mantra1stM10" : "mantra1stM" + name.Substring(6, 1);
                 item_name[item_copunter].text = sys.getMojiText(true, sys.mojiSheetNameToNo(tab, sys.getMojiScript(mojiScriptType.system)),
                     sys.mojiIdToNo(tab, mojiName, sys.getMojiScript(mojiScriptType.system)), sys.getNowLangage(), sys.getMojiScript(mojiScriptType.system));
+            }
+            else if (name.Contains("Beherit"))
+            {
+                name = "Beherit";
+                icon[item_copunter] = L2SystemCore.getShopIconSprite(L2SystemCore.getItemData("Beherit"));
+                shop_item[item_copunter].sprite = icon[item_copunter];
+
+                short data = 0;
+                sys.getFlag(2, 3, ref data);
+                if (data > 0)
+                {
+                    item_name[item_copunter].text = "Dissonance " + data;
+                }
+                else
+                {
+                    item_name[item_copunter].text = sys.getMojiText(true, sys.mojiSheetNameToNo(tab, sys.getMojiScript(mojiScriptType.item)),
+                        sys.mojiIdToNo(tab, name, sys.getMojiScript(mojiScriptType.item)), sys.getNowLangage(), sys.getMojiScript(mojiScriptType.item));
+                }
+
             }
             else
             {

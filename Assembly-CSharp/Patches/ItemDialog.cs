@@ -160,6 +160,23 @@ namespace LM2RandomiserMod.Patches
                     str2 = "Nothing";
                     str3 = sys.getMojiText(true, "system", "itemDialog2", mojiScriptType.system);
                 }
+                else if (MessString[0].Equals("Beherit"))
+                {
+                    con.Icon.gameObject.SetActive(false);
+                    str = sys.getMojiText(true, "system", "itemDialog1", mojiScriptType.system);
+                    short data = 0;
+                    sys.getFlag(2, 3, ref data);
+                    if(data > 1)
+                    {
+                        str2 = "Dissonance " + (data - 1);
+                    }
+                    else
+                    {
+                        string itemSheetName = sys.getItemSheetName(MessString[0]);
+                        str2 = sys.getMojiText(false, itemSheetName, MessString[0], mojiScriptType.item);
+                    }
+                    str3 = sys.getMojiText(true, "system", "itemDialog2", mojiScriptType.system);
+                }
                 else
                 {
                     str = sys.getMojiText(true, "system", "itemDialog1", mojiScriptType.system);

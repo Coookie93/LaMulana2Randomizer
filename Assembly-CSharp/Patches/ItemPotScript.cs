@@ -78,5 +78,4 @@ namespace LM2RandomiserMod.Patches
         }
     }
 }
-
 #endif
