@@ -74,9 +74,13 @@
         f01Start,
         f02Bifrost,
         f03In,
+        f03GateP0,
+        f03GateP1,
         f08Neck,
         f09In,
         f11Pyramid,
         fNibiru,
+        fP01Left,
+        fP01Right
     }
 }
