@@ -23,6 +23,7 @@ namespace LaMulana2Randomizer.LogicParsing
         CanWarp,
         CanSpinCorridor,
         CanStopTime,
+        CanSealCorridor,
         Has,
         CanUse,
         MeleeAttack,
@@ -37,6 +38,7 @@ namespace LaMulana2Randomizer.LogicParsing
         SkullCount,
         Setting,
         Glitch,
+        Start,
         True,
         False
     }
