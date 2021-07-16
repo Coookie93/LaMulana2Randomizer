@@ -42,6 +42,8 @@
         IBBoat,
         Cavern,
         Cliff,
+        AltarLeft,
+        AltarRight,
         ITEntrance,
         ITBottom,
         ITSinmara,

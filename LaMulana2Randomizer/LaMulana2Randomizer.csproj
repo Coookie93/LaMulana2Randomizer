@@ -78,6 +78,7 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="Location.cs" />
+    <Compile Include="SpoilerLog.cs" />
     <Compile Include="Utils\Logger.cs" />
     <Compile Include="PlayerState.cs" />
     <Compile Include="Randomiser.cs" />
@@ -125,11 +126,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -142,9 +138,8 @@
     </None>
     <None Include="packages.config" />
     <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    <None Include="Seed\spoilers.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -173,10 +168,6 @@
     <Content Include="Monomod\MonoMod.Utils.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Icons\dice.png" />
-    <None Include="Seed\spoilers.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LM2RandomiserShared\LaMulana2RandomizerShared.csproj">

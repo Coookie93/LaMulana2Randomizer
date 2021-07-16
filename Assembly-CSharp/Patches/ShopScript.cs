@@ -60,7 +60,6 @@ namespace LM2RandomiserMod.Patches
             {
                 name = "Research";
             }
-            else
             item_id[item_copunter] = name;
             
             if (name.Contains("Mantra") && !name.Equals("Mantra"))

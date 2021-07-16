@@ -554,11 +554,16 @@ namespace LM2RandomiserMod.Patches
 						setFlagData(itemInfo.ItemSheet, itemInfo.ItemFlag, 1);
 						mainWeapon = exchengeMainWeaponNameToEnum("Whip");
 					}
+					else if (l2Rando.StartingWeapon == ItemID.ClaydollSuit)
+					{
+						setItem(itemInfo.BoxName, 1, false, false, true);
+						setEffectFlag(l2Rando.CreateGetFlags(l2Rando.StartingWeapon, itemInfo));
+					}
 					else
 					{
 						mainWeapon = exchengeMainWeaponNameToEnum(itemInfo.BoxName);
+						subWeapon = exchengeSubWeaponNameToEnum(itemInfo.BoxName);
 					}
-					subWeapon = exchengeSubWeaponNameToEnum(itemInfo.BoxName);
 				}
 				else
 				{
@@ -575,7 +580,79 @@ namespace LM2RandomiserMod.Patches
 				if (l2Rando.RemoveITStatue)
 					setFlagData(8, 10, 1);
 
+				setFlagData(0, 12, 0);
 				setFlagData(5, 47, (short)(12 - l2Rando.RequiredSkulls));
+
+				switch (l2Rando.StartingArea)
+				{
+					case AreaID.VoD: 
+					{ 
+						setFlagData(0, 12, 1); 
+						break; 
+					}
+					case AreaID.RoY: 
+					{ 
+						setFlagData(0, 13, 1); 
+						break; 
+					}
+					case AreaID.AnnwfnMain: 
+					{ 
+						setFlagData(0, 14, 1); 
+						break; 
+					}
+					case AreaID.IBMain: 
+					{ 
+						setFlagData(0, 15, 1); 
+						break; 
+					}
+					case AreaID.ITLeft: 
+					{ 
+						setFlagData(0, 16, 1); 
+						break; 
+					}
+					case AreaID.DFMain: 
+					{ 
+						setFlagData(0, 17, 1); 
+						break; 
+					}
+					case AreaID.SotFGGrail:
+					{
+						setFlagData(0, 18, 1);
+						setFlagData(10, 27, 1);
+						setFlagData(10, 87, 1);
+						break;
+					}
+					case AreaID.TSLeft:
+					{
+						setFlagData(0, 20, 1);
+						setFlagData(12, 38, 1);
+						setFlagData(12, 45, 1);
+						setFlagData(12, 50, 1);
+						break;
+					}
+					case AreaID.ValhallaMain: 
+					{
+						setFlagData(0, 26, 1); 
+						break; 
+					}
+					case AreaID.DSLMMain: 
+					{
+						setFlagData(0, 28, 1); 
+						break; 
+					} 
+					case AreaID.ACTablet: 
+					{
+						setFlagData(0, 29, 1); 
+						break;
+					}
+					case AreaID.HoMTop:
+					{
+						setFlagData(0, 30, 1);
+						setFlagData(17, 2, 1);
+						setFlagData(17, 62, 1);
+						break;
+					}
+				}
 
 				l2Rando.StartingGame = true;
 			}
@@ -587,7 +664,6 @@ namespace LM2RandomiserMod.Patches
             setFlagData(0, 42, 1);
 			setFlagData(4, 60, 4);
 			setFlagData(4, 62, 2);
-			setFlagData(0, 12, 0);
 		}
 
 		[MonoModIgnore]

@@ -128,7 +128,7 @@ namespace LaMulana2Randomizer
 
         public static bool EntrancePlacementCheck(Randomiser randomiser)
         {
-            PlayerState state = new PlayerState(randomiser);// { IgnoreFalseChecks = true };
+            PlayerState state = new PlayerState(randomiser);
 
             //collect the items that arent placed yet
             foreach (Item item in randomiser.Items)
@@ -152,19 +152,22 @@ namespace LaMulana2Randomizer
                 return false;
 
             //check to see if all locations are accessable
-            foreach (Location location in randomiser.GetLocations())
+            if (randomiser.Settings.AllAccessible)
             {
-                state.RemoveFalseCheckedAreasAndEntrances();
-                if (!location.CanReach(state))
-                    return false;
+                foreach (Location location in randomiser.GetLocations())
+                {
+                    state.RemoveFalseCheckedAreasAndEntrances();
+                    if (!location.CanReach(state))
+                        return false;
+                }
             }
 
             //check to see if its possible to actually escape
             state.EscapeCheck = true;
             state.StartingArea = randomiser.GetArea(AreaID.IBMain);
-            List<AreaID> exitAreas = new List<AreaID>() { AreaID.Cliff, AreaID.GateofGuidance, AreaID.MausoleumofGiants, 
+            List<AreaID> escapeAreas = new List<AreaID>() { AreaID.Cliff, AreaID.GateofGuidance, AreaID.MausoleumofGiants, 
                                                             AreaID.VoD, AreaID.VoDLadder, AreaID.GateofIllusion, AreaID.Nibiru};
-            foreach(AreaID areaID in exitAreas)
+            foreach(AreaID areaID in escapeAreas)
             {
                 state.ClearCheckedAreasAndEntrances();
                 if (state.CanReach(areaID))
@@ -277,6 +280,7 @@ namespace LaMulana2Randomizer
                 case LogicType.CanWarp: return CanWarp();
                 case LogicType.CanSpinCorridor: return CanSpinCorridor();
                 case LogicType.CanStopTime: return CanStopTime();
+                case LogicType.CanSealCorridor: return CanSealCorridor();
                 case LogicType.Has: return HasItem(rule.value);
                 case LogicType.CanUse: return CanUse(rule.value);
                 case LogicType.MeleeAttack: return MeleeAttack();
@@ -291,6 +295,7 @@ namespace LaMulana2Randomizer
                 case LogicType.SkullCount: return SkullCount(int.Parse(rule.value));
                 case LogicType.Setting: return Settings(rule.value);
                 case LogicType.Glitch: return Glitches(rule.value);
+                case LogicType.Start: return Start(rule.value);
                 case LogicType.True: return true;
                 case LogicType.False: return false;
                 default: return false;
@@ -394,6 +399,19 @@ namespace LaMulana2Randomizer
                 return HasItem(subWeapon) && HasItem(subWeapon + " Ammo") && (HasItem("Money Fairy"));
             else
                 return HasItem(subWeapon) && HasItem(subWeapon + " Ammo");
+        }
+
+        private bool CanSealCorridor()
+        {
+            if(Dissonance(6) && (CanReach(AreaID.ValhallaMain) || CanReach(AreaID.DSLMTop) || CanReach(AreaID.SotFGBlood) || 
+                CanReach(AreaID.ACBlood) || CanReach(AreaID.HoM) || CanReach(AreaID.EPDEntrance)))
+            {
+                if (randomiser.Settings.RandomDissonance)
+                    return GuardianKills(randomiser.Settings.RequiredGuardians);
+                else
+                    return HasItem("Anu");
+            }
+            return false;
         }
 
         private bool MeleeAttack()
@@ -502,5 +520,13 @@ namespace LaMulana2Randomizer
                 default: return false;
             }
         }
+
+        private bool Start(string startName)
+        {
+            if (!Enum.TryParse(startName.RemoveWhitespace(), out AreaID areaID))
+                throw new InvalidAreaException($"AreaID does not exist {startName}.");
+
+            return areaID == randomiser.StartingArea.ID;
+        } 
     }
 }
