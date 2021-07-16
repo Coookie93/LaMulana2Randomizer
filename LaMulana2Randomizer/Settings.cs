@@ -770,6 +770,7 @@ namespace LaMulana2Randomizer
             AddFlag(BoolToUlong(frostGiantsStart), 46, ref part1);
             AddFlag(BoolToUlong(takaStart), 47, ref part1);
             AddFlag(BoolToUlong(maliceStart), 48, ref part1);
+            AddFlag(BoolToUlong(allAccessible), 49, ref part1);
 
             ulong part2 = 0;
             AddFlag((ulong)randomGrail, 0, ref part2);
@@ -860,6 +861,7 @@ namespace LaMulana2Randomizer
             FrostGiantsStart = UintToBool(GetFlag(46, parts[0]));
             TakaStart = UintToBool(GetFlag(47, parts[0]));
             MaliceStart = UintToBool(GetFlag(48, parts[0]));
+            AllAccessible = UintToBool(GetFlag(49, parts[0]));
 
             RandomGrail = (ItemPlacement)GetFlag(0, parts[1], 3ul);
             RandomScanner = (ItemPlacement)GetFlag(2, parts[1], 3ul);

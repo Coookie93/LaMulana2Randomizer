@@ -1263,7 +1263,7 @@ namespace LaMulana2Randomizer
                 priorityEntrances.AddRange(entrances.Where(x => x.IsInaccessible));
 
             if (Settings.CostumeClip)
-                priorityEntrances.RemoveAll(x => x.ID == ExitID.f12GateP0);
+                priorityEntrances.Remove(entrances.Find(x => x.ID == ExitID.f12GateP0));
 
             priorityEntrances.RemoveAll(x => x == null);
             foreach (Exit entrance in priorityEntrances)
