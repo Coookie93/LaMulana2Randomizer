@@ -93,6 +93,10 @@ namespace LM2RandomiserMod
             { ExitID.f09In,           new ExitInfo("PlayerStart f09In",           9, -1, -1)},
             { ExitID.f11Pyramid,      new ExitInfo("PlayerStart f11Pyramid",     11, -1, -1)},
             { ExitID.fNibiru,         new ExitInfo("PlayerStart",                27, -1, -1)},
+            { ExitID.f03GateP0,       new ExitInfo("PlayerStart f03GateP0",       3, -1, -1)},
+            { ExitID.f03GateP1,       new ExitInfo("PlayerStart f03GateP1",       3, -1, -1)},
+            { ExitID.fP01Left,        new ExitInfo("PlayerStart0",               24, -1, -1)},
+            { ExitID.fP01Right,       new ExitInfo("PlayerStart1",               24, -1, -1)},
         };
 
 
@@ -175,6 +179,8 @@ namespace LM2RandomiserMod
             {"PlayerStart f03In",          ExitID.f02Bifrost },
             {"PlayerStart f09In",          ExitID.f08Neck },
             {"PlayerStart f11Pyramid",     ExitID.fNibiru },
+            {"PlayerStart f03GateP0",      ExitID.fP01Left },
+            {"PlayerStart f03GateP1",      ExitID.fP01Right },
         };
     }
 
