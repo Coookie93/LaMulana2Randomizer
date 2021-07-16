@@ -19,9 +19,9 @@ namespace LaMulana2Randomizer.Utils
                     return (Settings)serializer.Deserialize(sr, typeof(Settings));
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Logger.Log($"Failed to deserialise Settings.json.\n{ex.Message}");
+                Logger.Log($"Failed to deserialise Settings.json.\n{ex.ToString()}");
             }
             return new Settings();
         }
@@ -42,9 +42,9 @@ namespace LaMulana2Randomizer.Utils
                     serializer.Serialize(jw, settings);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Logger.Log($"Failed to serialise Settings.json.\n{ex.Message}");
+                Logger.Log($"Failed to serialise Settings.json.\n{ex.ToString()}");
             }
         }
 
@@ -60,7 +60,7 @@ namespace LaMulana2Randomizer.Utils
             }
             catch (Exception ex)
             {
-                Logger.Log($"Failed to deserialise World.json.\n{ex.Message}");
+                Logger.Log($"Failed to deserialise World.json.\n{ex.ToString()}");
                 throw new RandomiserException("Failed to parse World.json.");
             }
         }
@@ -77,135 +77,105 @@ namespace LaMulana2Randomizer.Utils
             }
             catch (Exception ex)
             {
-                Logger.Log($"Failed to deserialise Data\\items.json.\n{ex.Message}");
+                Logger.Log($"Failed to deserialise Data\\items.json.\n{ex.ToString()}");
                 throw new RandomiserException($"Failed to parse Data\\items.json.");
             }
         }
         
-        public static bool WriteSpoilerLog(Randomiser randomiser)
+        public static void WriteSpoilerLog(Randomiser randomiser)
         {
+            SpoilerLog spoilerLog = new SpoilerLog
+            {
+                Seed = randomiser.Seed,
+                SettingsString = randomiser.Settings.GenerateSettingsString(),
+                StartingArea = randomiser.StartingArea.Name,
+                StartingWeapon = randomiser.StartingWeapon?.Name,
+                StartingItems = randomiser.StartingItems.Select(item => item.Name).ToList(),
+                Settings = randomiser.Settings
+            };
+
+            SortedList<string, string> entrances = new SortedList<string, string>();
+            foreach (var pair in randomiser.EntrancePairs)
+            {
+                entrances.Add(pair.Item1.Name, pair.Item2.Name);
+                entrances.Add(pair.Item2.Name, pair.Item1.Name);
+            }
+
+            spoilerLog.Entrances = entrances;
+
+            SortedList<int, SortedList<string, string>> soulGates = new SortedList<int, SortedList<string, string>>();
+            foreach (var group in randomiser.SoulGatePairs.GroupBy(x => x.Item3))
+            {
+                SortedList<string, string> pairs = new SortedList<string, string>();
+                foreach(var item in group)
+                {
+                    pairs.Add(item.Item1.Name, item.Item2.Name);
+                    pairs.Add(item.Item2.Name, item.Item1.Name);
+                }
+                soulGates.Add(group.Key, pairs);
+            }
+            spoilerLog.SoulGates = soulGates;
+
+            Dictionary<string, string> locations = new Dictionary<string, string>();
+            foreach (Location location in randomiser.GetPlacedLocations().OrderBy(x => x.ID))
+            {
+                if (location.ID < LocationID.Ratatoskr1 && location.ID != LocationID.None)
+                    locations.Add(location.Name, location.Item.Name);
+            }
+            spoilerLog.Locations = locations;
+
+            PlayerState state = new PlayerState(randomiser)
+            {
+                IgnoreFalseChecks = true
+            };
+
+            List<Location> reachableLocations;
+            Dictionary<int, Dictionary<string, string>> playthrough = new Dictionary<int, Dictionary<string, string>>();
+            int sphere = 0;
+            do
+            {
+                Dictionary<string, string> spoilerSphere = new Dictionary<string, string>();
+                reachableLocations = state.GetReachableLocations(randomiser.GetPlacedRequiredItemLocations());
+                foreach (Location location in reachableLocations.OrderBy(x => x.ID))
+                {
+                    state.CollectItem(location.Item);
+                    state.CollectLocation(location);
+                    spoilerSphere.Add(location.Name,location.Item.Name);
+                }
+
+                playthrough.Add(sphere++, spoilerSphere);
+
+                if (state.CanBeatGame())
+                    break;
+
+                state.RemoveFalseCheckedAreasAndEntrances();
+
+            } while (reachableLocations.Count > 0);
+
+            spoilerLog.Playthrough = playthrough;
+
             try
             {
-                using (StreamWriter sw = File.CreateText("Seed\\spoilers.txt"))
+                using (StreamWriter sw = new StreamWriter("Seed\\Spoilers.json"))
+                using (JsonWriter jw = new JsonTextWriter(sw))
                 {
-                    sw.WriteLine($"Seed: {randomiser.Settings.Seed}\n");
-
-                    sw.WriteLine($"Starting Area: {randomiser.StartingArea.Name}\n");
-                    sw.WriteLine($"Starting Weapon: {randomiser.StartingWeapon?.Name}\n");
-
-                    if(randomiser.StartingItems.Count != 0)
+                    JsonSerializer serializer = new JsonSerializer
                     {
-                        sw.WriteLine("Starting Items: {");
-                        foreach (Item item in randomiser.StartingItems)
-                            sw.WriteLine($"  {item.Name}");
-
-                        sw.WriteLine("}\n");
-                    }
-
-                    sw.WriteLine("Curse Locations: {");
-                    foreach (Location location in randomiser.CursedLocations)
-                        sw.WriteLine($"  {location.Name}");
-
-                    sw.WriteLine("}\n");
-
-                    sw.WriteLine("Entrance Placement: {");
-                    if (!randomiser.Settings.FullRandomEntrances)
-                    {
-                        if (randomiser.Settings.RandomHorizontalEntrances)
-                        {
-                            sw.WriteLine("  Horizontal Entrances: {");
-                            foreach (string pair in randomiser.HorizontalPairs.OrderBy(x => x))
-                                sw.WriteLine($"    {pair}");
-
-                            sw.WriteLine("  }");
-                        }
-
-                        if (randomiser.Settings.RandomLadderEntrances)
-                        {
-                            sw.WriteLine("  Ladders Entrances: {");
-                            randomiser.LadderPairs.Sort();
-                            foreach (string pair in randomiser.LadderPairs)
-                                sw.WriteLine($"    {pair}");
-
-                            sw.WriteLine("  }");
-                        }
-
-                        if (randomiser.Settings.RandomGateEntrances)
-                        {
-                            sw.WriteLine("  Gate Entrances: {");
-                            randomiser.GatePairs.Sort();
-                            foreach (string pair in randomiser.GatePairs)
-                                sw.WriteLine($"    {pair}");
-
-                            sw.WriteLine("  }");
-                        }
-                    }
-                    else
-                    {
-                        sw.WriteLine("  Entrances: {");
-                        foreach (string pair in randomiser.EntrancePairs.OrderBy(x => x))
-                            sw.WriteLine($"    {pair}");
-
-                        sw.WriteLine("  }");
-                    }
-
-                    if (randomiser.Settings.RandomSoulGateEntrances)
-                    {
-                        sw.WriteLine("  Soul Gate Entrances: {");
-                        foreach (var pair in randomiser.SoulGatePairs.OrderBy(x => x.Item1.Name))
-                            sw.WriteLine($"    {pair.Item1.Name} - {pair.Item2.Name}: Soul Amount {pair.Item3}");
-
-                        sw.WriteLine("  }");
-                    }
-                    sw.WriteLine("}\n");
-
-                    sw.WriteLine("Item Placement {");
-                    foreach (Location location in randomiser.GetPlacedLocations().OrderBy(x => x.ID))
-                    {
-                        if (location.ID < LocationID.Ratatoskr1 && location.ID != LocationID.None)
-                            sw.WriteLine($"  {location.Name} -> {location.Item.Name}");
-                    }
-                    sw.WriteLine("}\n");
-                    sw.WriteLine("Expected Playthrough {");
-
-                    PlayerState playthrough = new PlayerState(randomiser)
-                    {
-                        IgnoreFalseChecks = true
+                        NullValueHandling = NullValueHandling.Ignore,
+                        Formatting = Formatting.Indented
                     };
 
-                    List<Location> reachableLocations;
-                    int sphere = 0;
-                    do
-                    {
-                        reachableLocations = playthrough.GetReachableLocations(randomiser.GetPlacedRequiredItemLocations());
-                        sw.WriteLine($"  Sphere {sphere} {{");
-                        foreach (Location location in reachableLocations.OrderBy(x => x.ID))
-                        {
-                            playthrough.CollectItem(location.Item);
-                            playthrough.CollectLocation(location);
-                            sw.WriteLine($"    {location.Name} -> {location.Item.Name}");
-                        }
-                        sw.WriteLine("  }");
-
-                        if (playthrough.CanBeatGame())
-                            break;
-
-                        playthrough.RemoveFalseCheckedAreasAndEntrances();
-                        sphere++;
-
-                    } while (reachableLocations.Count > 0);
-                    sw.WriteLine("}");
+                    serializer.Serialize(jw, spoilerLog);
                 }
-                return true;
             }
             catch (Exception ex)
             {
-                Logger.Log($"Failed to write spoiler log.\n {ex.Message}");
-                return false;
+                Logger.Log($"Failed to write spoiler log.\n {ex.ToString()}");
+                throw new RandomiserException("Failed to write spoiler log.");
             }
         }
 
-        public static bool WriteSeedFile(Randomiser randomiser)
+        public static void WriteSeedFile(Randomiser randomiser)
         {
             List<(LocationID, ItemID)> items = new List<(LocationID, ItemID)>();
             List<(LocationID, ItemID, int)> shopItems = new List<(LocationID, ItemID, int)>();
@@ -234,7 +204,7 @@ namespace LaMulana2Randomizer.Utils
                     br.Write(randomiser.Settings.RequiredGuardians);
                     br.Write(randomiser.Settings.RequiredSkulls);
                     br.Write(randomiser.Settings.RemoveITStatue);
-                    br.Write(randomiser.Settings.EasyEchidna);
+                    br.Write((int)randomiser.Settings.ChosenEchidna);
                     br.Write(randomiser.Settings.AutoScanTablets);
                     br.Write(randomiser.Settings.AutoPlaceSkulls);
                     br.Write(randomiser.Settings.StartingMoney);
@@ -265,11 +235,11 @@ namespace LaMulana2Randomizer.Utils
                     foreach (Location location in randomiser.CursedLocations)
                         br.Write((int)location.ID);
 
-                    br.Write(randomiser.ExitPairs.Count);
-                    foreach(var d in randomiser.ExitPairs)
+                    br.Write(randomiser.EntrancePairs.Count);
+                    foreach(var d in randomiser.EntrancePairs)
                     {
-                        br.Write((int)d.Item1);
-                        br.Write((int)d.Item2);
+                        br.Write((int)d.Item1.ID);
+                        br.Write((int)d.Item2.ID);
                     }
 
                     br.Write(randomiser.SoulGatePairs.Count);
@@ -284,10 +254,9 @@ namespace LaMulana2Randomizer.Utils
             }
             catch (Exception ex)
             {
-                Logger.Log($"Failed to write seed file.\n {ex.Message}");
-                return false;
+                Logger.Log($"Failed to write seed file.\n {ex.ToString()}");
+                throw new RandomiserException("Failed to write seed file.");
             }
-            return true;
         }
     }
 }
