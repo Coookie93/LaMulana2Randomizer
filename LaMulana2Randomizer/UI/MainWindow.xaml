@@ -7,7 +7,7 @@
         xmlns:main="clr-namespace:LaMulana2Randomizer"
         xmlns:vm="clr-namespace:LaMulana2Randomizer.ViewModels"
         mc:Ignorable="d"
-        Title="{Binding Title}"  Width="580" Height="495" MinWidth="580" MinHeight="495">
+        Title="{Binding Title}"  Width="580" Height="515" MinWidth="580" MinHeight="515">
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
@@ -39,7 +39,7 @@
                 <Setter Property="BorderBrush" Value="DarkGray"/>
             </Style>
         </Grid.Resources>
-        <TabControl Margin="5,5,5,90">
+        <TabControl Margin="5,5,5,110">
             <TabControl.Resources>
                 <Style TargetType="TabItem">
                     <Setter Property="FontSize" Value="16"/>
@@ -48,8 +48,11 @@
             </TabControl.Resources>
             <TabItem Header="Items">
                 <Grid>
-                    <DockPanel>
-                        <GroupBox Header="Items" DockPanel.Dock="Left">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <GroupBox Header="Items" Grid.Column="0">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="auto"/>
@@ -140,103 +143,114 @@
                                 </Grid.ToolTip>
                             </Grid>
                         </GroupBox>
-                        <StackPanel DockPanel.Dock="Left">
-                            <GroupBox Header="Mantras">
-                                <StackPanel Margin="2">
-                                    <RadioButton Content="Randomised" IsChecked="{Binding Settings.MantraPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:MantraPlacement.Random}}"/>
-                                    <RadioButton Content="Only at murals" IsChecked="{Binding Settings.MantraPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:MantraPlacement.OnlyMurals}}"/>
-                                    <RadioButton Content="Original Placement" IsChecked="{Binding Settings.MantraPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:MantraPlacement.Original}}"/>
-                                    <StackPanel.ToolTip>
+                    <StackPanel Grid.Column="1">
+                        <GroupBox Header="Mantras">
+                            <StackPanel Margin="2">
+                                <RadioButton Content="Randomised" IsChecked="{Binding Settings.MantraPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:MantraPlacement.Random}}"/>
+                                <RadioButton Content="Only at murals" IsChecked="{Binding Settings.MantraPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:MantraPlacement.OnlyMurals}}"/>
+                                <RadioButton Content="Original Placement" IsChecked="{Binding Settings.MantraPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:MantraPlacement.Original}}"/>
+                                <StackPanel.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <StackPanel>
+                                            <TextBlock Text="Randomised"  FontWeight="Bold"/>
+                                            <TextBlock Text="Fully randomises mantra placement."/>
+                                            <TextBlock Text="Only Murals"  FontWeight="Bold"/>
+                                            <TextBlock Text="Mantras only placed at mantra murals."/>
+                                            <TextBlock Text="Original"  FontWeight="Bold"/>
+                                            <TextBlock Text="Mantras are placed at original locations."/>
+                                        </StackPanel>
+                                    </ToolTip>
+                                </StackPanel.ToolTip>
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox Header="Shops">
+                            <StackPanel Margin="5">
+                                <RadioButton Name="RandomShopCheck" Content="Randomised" IsChecked="{Binding Settings.ShopPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ShopPlacement.Random}}"/>
+                                <RadioButton Name="OnlyOneShopCheck" Content="At least one item" IsChecked="{Binding Settings.ShopPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ShopPlacement.AtLeastOne}}"/>
+                                <RadioButton Name="OriginalShopCheck" Content="Original Items" IsChecked="{Binding Settings.ShopPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ShopPlacement.Original}}"/>
+                                <StackPanel.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <StackPanel>
+                                            <TextBlock Text="Randomised"  FontWeight="Bold"/>
+                                            <TextBlock Text="Fully randomises shop contents."/>
+                                            <TextBlock Text="At least one"  FontWeight="Bold"/>
+                                            <TextBlock Text="Ensure every shops has atleast one item."/>
+                                            <TextBlock Text="Original"  FontWeight="Bold"/>
+                                            <TextBlock Text="Shops have their orginal contents."/>
+                                        </StackPanel>
+                                    </ToolTip>
+                                </StackPanel.ToolTip>
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox Header="Research Notes">
+                            <StackPanel>
+                                <CheckBox Name="ResearchCheck" Content="Randomised" IsChecked="{Binding Settings.RandomResearch}" Margin="0,2">
+                                    <CheckBox.ToolTip>
                                         <ToolTip Style="{StaticResource TootltipStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Randomised"  FontWeight="Bold"/>
-                                                <TextBlock Text="Fully randomises mantra placement."/>
-                                                <TextBlock Text="Only Murals"  FontWeight="Bold"/>
-                                                <TextBlock Text="Mantras only placed at mantra murals."/>
-                                                <TextBlock Text="Original"  FontWeight="Bold"/>
-                                                <TextBlock Text="Mantras are placed at original locations."/>
-                                            </StackPanel>
+                                            <TextBlock Text="Adds the Research Papers to the pool of random items."/>
                                         </ToolTip>
-                                    </StackPanel.ToolTip>
-                                </StackPanel>
-                            </GroupBox>
-                            <GroupBox Header="Shops">
-                                <StackPanel Margin="5">
-                                    <RadioButton Name="RandomShopCheck" Content="Randomised" IsChecked="{Binding Settings.ShopPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ShopPlacement.Random}}"/>
-                                    <RadioButton Name="OnlyOneShopCheck" Content="At least one item" IsChecked="{Binding Settings.ShopPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ShopPlacement.AtLeastOne}}"/>
-                                    <RadioButton Name="OriginalShopCheck" Content="Original Items" IsChecked="{Binding Settings.ShopPlacement, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ShopPlacement.Original}}"/>
-                                    <StackPanel.ToolTip>
+                                    </CheckBox.ToolTip>
+                                </CheckBox>
+                                <CheckBox Name="RemoveResearchCheck" IsChecked="{Binding Settings.RemoveResearch}" Content="Remove Research Notes" Margin="20,2,2,2">
+                                    <CheckBox.ToolTip>
                                         <ToolTip Style="{StaticResource TootltipStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Randomised"  FontWeight="Bold"/>
-                                                <TextBlock Text="Fully randomises shop contents."/>
-                                                <TextBlock Text="At least one"  FontWeight="Bold"/>
-                                                <TextBlock Text="Ensure every shops has atleast one item."/>
-                                                <TextBlock Text="Original"  FontWeight="Bold"/>
-                                                <TextBlock Text="Shops have their orginal contents."/>
-                                            </StackPanel>
+                                            <TextBlock Text="Removes the reasearch items from the pool but items can still be placed at research locations." />
                                         </ToolTip>
-                                    </StackPanel.ToolTip>
-                                </StackPanel>
-                            </GroupBox>
-                            <GroupBox Header="Research Notes">
-                                <StackPanel>
-                                    <CheckBox Name="ResearchCheck" Content="Randomised" IsChecked="{Binding Settings.RandomResearch}" Margin="0,2">
-                                        <CheckBox.ToolTip>
-                                            <ToolTip Style="{StaticResource TootltipStyle}">
-                                                <TextBlock Text="Adds the Research Papers to the pool of random items."/>
-                                            </ToolTip>
-                                        </CheckBox.ToolTip>
-                                    </CheckBox>
-                                    <CheckBox Name="RemoveResearchCheck" IsChecked="{Binding Settings.RemoveResearch}" Content="Remove Research Notes" Margin="20,2,2,2">
-                                        <CheckBox.ToolTip>
-                                            <ToolTip Style="{StaticResource TootltipStyle}">
-                                                <TextBlock Text="Removes the reasearch items from the pool but items can still be placed at research locations." />
-                                            </ToolTip>
-                                        </CheckBox.ToolTip>
-                                        <CheckBox.Style>
-                                            <Style TargetType="CheckBox">
-                                                <Setter Property="IsEnabled" Value="False"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=ResearchCheck, Path=IsChecked}" Value="True">
-                                                        <Setter Property="IsEnabled" Value="True"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </CheckBox.Style>
-                                    </CheckBox>
-                                </StackPanel>
-                            </GroupBox>
-                            <GroupBox Header="Other">
-                                <StackPanel>
-                                    <CheckBox Name="RemoveMapsCheck" Content="Remove Maps" IsChecked="{Binding Settings.RemoveMaps}" Margin="0,2">
-                                        <CheckBox.ToolTip>
-                                            <ToolTip Style="{StaticResource TootltipStyle}">
-                                                <TextBlock Text="Removes the maps from the item pool."/>
-                                            </ToolTip>
-                                        </CheckBox.ToolTip>
-                                    </CheckBox>
-                                    <CheckBox Name="RemoveSkullsCheck" Content="Remove Excess Skulls" IsChecked="{Binding Settings.RemoveSkulls}" Margin="0,2">
-                                        <CheckBox.ToolTip>
-                                            <ToolTip Style="{StaticResource TootltipStyle}">
-                                                <TextBlock Text="Removes any excess skulls if the amount required for Nibiru dissonace has been changed."/>
-                                            </ToolTip>
-                                        </CheckBox.ToolTip>
-                                    </CheckBox>
-                                </StackPanel>
-                            </GroupBox>
-                        </StackPanel>
-                    </DockPanel>
+                                    </CheckBox.ToolTip>
+                                    <CheckBox.Style>
+                                        <Style TargetType="CheckBox">
+                                            <Setter Property="IsEnabled" Value="False"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=ResearchCheck, Path=IsChecked}" Value="True">
+                                                    <Setter Property="IsEnabled" Value="True"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </CheckBox.Style>
+                                </CheckBox>
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox Header="Other">
+                            <StackPanel>
+                                <CheckBox Name="RemoveMapsCheck" Content="Remove Maps" IsChecked="{Binding Settings.RemoveMaps}" Margin="0,2">
+                                    <CheckBox.ToolTip>
+                                        <ToolTip Style="{StaticResource TootltipStyle}">
+                                            <TextBlock Text="Removes the maps from the item pool."/>
+                                        </ToolTip>
+                                    </CheckBox.ToolTip>
+                                </CheckBox>
+                                <CheckBox Name="RemoveSkullsCheck" Content="Remove Excess Skulls" IsChecked="{Binding Settings.RemoveSkulls}" Margin="0,2">
+                                    <CheckBox.ToolTip>
+                                        <ToolTip Style="{StaticResource TootltipStyle}">
+                                            <TextBlock Text="Removes any excess skulls if the amount required for Nibiru dissonace has been changed."/>
+                                        </ToolTip>
+                                    </CheckBox.ToolTip>
+                                </CheckBox>
+                            </StackPanel>
+                        </GroupBox>
+                    </StackPanel>
                 </Grid>
             </TabItem>
             <TabItem Header="Logic" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="-2,0" Width="49">
                 <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*"/>
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
-                    <GroupBox Header="Logic">
+                    <GroupBox Header="Logic" Grid.Row="0" Grid.Column="0">
                         <StackPanel>
+                            <CheckBox Name="AllAccessibleCheck" IsChecked="{Binding Settings.AllAccessible}" Style="{StaticResource OriginalShopCheck}" Margin="0,2">
+                                <TextBlock Text="All Locations Accessible." TextWrapping="Wrap"/>
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="."/>
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
                             <CheckBox Name="FDCBacksideCheck" IsChecked="{Binding Settings.FDCForBacksides}" Style="{StaticResource OriginalShopCheck}" Margin="0,2">
                                 <TextBlock Text="Require Future Development Company for backsides." TextWrapping="Wrap"/>
                                 <CheckBox.ToolTip>
@@ -249,13 +263,6 @@
                                 <CheckBox.ToolTip>
                                     <ToolTip Style="{StaticResource TootltipStyle}">
                                         <TextBlock Text="Requires Life Sigil for Awoken Hall of Malice to be in logic."/>
-                                    </ToolTip>
-                                </CheckBox.ToolTip>
-                            </CheckBox>
-                            <CheckBox Name="RemoveITStatue" IsChecked="{Binding Settings.RemoveITStatue}" Content="Remove Statue in Icefire Treetop" Margin="0,2">
-                                <CheckBox.ToolTip>
-                                    <ToolTip Style="{StaticResource TootltipStyle}">
-                                        <TextBlock Text="Starts the game with the statue next to the gate in Icefire Treetop removed." />
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
@@ -293,6 +300,10 @@
                                     </Style>
                                 </StackPanel.Style>
                             </StackPanel>
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Header="Dissonance" Grid.Row="1" Grid.Column="0">
+                        <StackPanel>
                             <CheckBox Name="RandomDissonanceCheck" IsChecked="{Binding Settings.RandomDissonance}" Margin="0,2" Content="Randomise Dissonance">
                                 <CheckBox.ToolTip>
                                     <ToolTip Style="{StaticResource TootltipStyle}">
@@ -325,7 +336,7 @@
                                     </Style>
                                 </StackPanel.Style>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="21,0,0,2" Height="22">
+                            <StackPanel Orientation="Horizontal" Margin="1,0,0,2" Height="22">
                                 <TextBlock Text="Skulls Required for Nibiru Dissonance" Height="15" Margin="0,0,2,0"/>
                                 <TextBox x:Name="SkullTextBox" Width="20" HorizontalAlignment="Stretch" Margin="0,2,0,0">
                                     <Binding Path="Settings.RequiredSkulls" UpdateSourceTrigger="PropertyChanged">
@@ -342,7 +353,7 @@
                             </StackPanel>
                         </StackPanel>
                     </GroupBox>
-                    <GroupBox Header="Glitches/Tricks" Grid.Column="1">
+                    <GroupBox Header="Glitches/Tricks" Grid.Column="1" Grid.RowSpan="2">
                         <StackPanel>
                             <CheckBox Name="CostumeClipCheck" IsChecked="{Binding Settings.CostumeClip}" Margin="0,2" Content="Costume Clip">
                                 <CheckBox.ToolTip>
@@ -364,12 +375,15 @@
             </TabItem>
             <TabItem Header="Combat">
                 <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="70*"/>
-                        <ColumnDefinition Width="115*"/>
-                        <ColumnDefinition Width="371*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
-                    <GroupBox Header="Starting Weapon" Grid.Column="0" Grid.ColumnSpan="2">
+                    <GroupBox Header="Starting Weapon" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2">
                         <StackPanel Margin="2">
                             <CheckBox Content="Leather Whip" IsChecked="{Binding Settings.Whip}">
                                 <CheckBox.Style>
@@ -390,6 +404,7 @@
                                                     <Condition Binding="{Binding ElementName=ChakramsCheck, Path=IsChecked}" Value="False"/>
                                                     <Condition Binding="{Binding ElementName=BombsCheck, Path=IsChecked}" Value="False"/>
                                                     <Condition Binding="{Binding ElementName=PistolCheck, Path=IsChecked}" Value="False"/>
+                                                    <Condition Binding="{Binding ElementName=ClaydollCheck, Path=IsChecked}" Value="False"/>
                                                 </MultiDataTrigger.Conditions>
                                                 <MultiDataTrigger.Setters>
                                                     <Setter Property="IsEnabled" Value="False"/>
@@ -411,6 +426,7 @@
                             <CheckBox Name="ChakramsCheck" Content="Chakrams" IsChecked="{Binding Settings.Chakrams}"/>
                             <CheckBox Name="BombsCheck" Content="Bombs" IsChecked="{Binding Settings.Bomb}"/>
                             <CheckBox Name="PistolCheck" Content="Pistol" IsChecked="{Binding Settings.Pistol}"/>
+                            <CheckBox Name="ClaydollCheck" Content="Claydoll Suit" IsChecked="{Binding Settings.ClayDoll}"/>
                             <StackPanel.ToolTip>
                                 <ToolTip Style="{StaticResource TootltipStyle}">
                                     <TextBlock Text="If one weapon is selected it will be the starting weapon, if more than one weapon is selected the starting weapon will be randomly chosen from them." />
@@ -418,34 +434,45 @@
                             </StackPanel.ToolTip>
                         </StackPanel>
                     </GroupBox>
-                    <GroupBox Header="Bosses" Grid.Column="2">
-                        <StackPanel Margin="2">
-                            <CheckBox Name="DifficultyCheck" Content="Hard Guardian/Room Guarders requirements" IsChecked="{Binding Settings.HardBosses}">
+                    <GroupBox Header="Guardians" Grid.Row="0" Grid.Column="1">
+                            <CheckBox Name="DifficultyCheck" Content="Hard Guardian/Room Guarder requirements" IsChecked="{Binding Settings.HardBosses}">
                                 <CheckBox.ToolTip>
                                     <ToolTip Style="{StaticResource TootltipStyle}">
                                         <TextBlock Text="Reduces the requirements to fight Guardians/Room Guarders to basically only what is need to start the fight. WARNING this can be really hard." />
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
-                            <CheckBox Name="EasyEchidnaCheck" Content="Always Baby Echidna" IsChecked="{Binding Settings.EasyEchidna}">
-                                <CheckBox.ToolTip>
-                                    <ToolTip Style="{StaticResource TootltipStyle}">
-                                        <TextBlock Text="Makes it so that the Echidna fight is always the version of the fight that happens sub 3hours in-game time." />
-                                    </ToolTip>
-                                </CheckBox.ToolTip>
-                            </CheckBox>
+                        </GroupBox>
+                    <GroupBox Header="Echidna Type" Grid.Row="1" Grid.Column="1">
+                        <StackPanel Margin="5" >
+                            <RadioButton Name="ChildEchidnaCheck" Content="Child" IsChecked="{Binding Settings.Echidna, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:EchidnaType.Child}}"/>
+                            <RadioButton Name="TeenageEchidnaCheck" Content="Teenager" IsChecked="{Binding Settings.Echidna, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:EchidnaType.Teenager}}"/>
+                            <RadioButton Name="YoungAdultEchidnaCheck" Content="Young Adult" IsChecked="{Binding Settings.Echidna, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:EchidnaType.YoungAdult}}"/>
+                            <RadioButton Name="AdultEchidnaCheck" Content="Adult" IsChecked="{Binding Settings.Echidna, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:EchidnaType.Adult}}"/>
+                            <RadioButton Name="RandomAdultEchidnaCheck" Content="Random" IsChecked="{Binding Settings.Echidna, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:EchidnaType.Random}}"/>
+                            <RadioButton Name="NormalAdultEchidnaCheck" Content="Normal" IsChecked="{Binding Settings.Echidna, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:EchidnaType.Normal}}"/>
+                            <StackPanel.ToolTip>
+                                <ToolTip Style="{StaticResource TootltipStyle}">
+                                    <StackPanel>
+                                        <TextBlock Text="."/>
+                                    </StackPanel>
+                                </ToolTip>
+                            </StackPanel.ToolTip>
                         </StackPanel>
                     </GroupBox>
                 </Grid>
             </TabItem>
             <TabItem Header="Layout">
                 <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="17"/>
-                        <ColumnDefinition Width="261*"/>
-                        <ColumnDefinition Width="278*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
-                    <GroupBox Header="Entrances" Grid.Column="0" Grid.ColumnSpan="2">
+                    <GroupBox Header="Entrances" Grid.Row="0" Grid.Column="0" >
                         <StackPanel>
                             <CheckBox Name="RandomHorizontal" IsChecked="{Binding Settings.RandomHorizontalEntrances}" Content="Randomise Horizontal Entrances" Margin="2">
                                 <CheckBox.ToolTip>
@@ -559,7 +586,18 @@
                             </CheckBox>
                         </StackPanel>
                     </GroupBox>
-                    <GroupBox Header="Starting Area" Grid.Column="2">
+                    <GroupBox Header="Other" Grid.Row="1" Grid.Column="0">
+                        <StackPanel Margin="2">
+                            <CheckBox Name="RemoveITStatue" IsChecked="{Binding Settings.RemoveITStatue}" Content="Remove Statue in Icefire Treetop" Margin="0,2">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="Starts the game with the statue next to the gate in Icefire Treetop removed." />
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Header="Starting Area" Grid.RowSpan="2" Grid.Column="1">
                         <StackPanel Margin="2">
                             <CheckBox Name="VoDStartCheck" Content="Village of Departure" IsChecked="{Binding Settings.VillageStart}">
                                 <CheckBox.Style>
@@ -573,9 +611,12 @@
                                                     <Condition Binding="{Binding ElementName=IBStartCheck, Path=IsChecked}" Value="False"/>
                                                     <Condition Binding="{Binding ElementName=ITStartCheck, Path=IsChecked}" Value="False"/>
                                                     <Condition Binding="{Binding ElementName=DFStartCheck, Path=IsChecked}" Value="False"/>
+                                                    <Condition Binding="{Binding ElementName=FrostGiantsStartCheck, Path=IsChecked}" Value="False"/>
+                                                    <Condition Binding="{Binding ElementName=TakaStartCheck, Path=IsChecked}" Value="False"/>
                                                     <Condition Binding="{Binding ElementName=ValhallaStartCheck, Path=IsChecked}" Value="False"/>
                                                     <Condition Binding="{Binding ElementName=DSLMStartCheck, Path=IsChecked}" Value="False"/>
                                                     <Condition Binding="{Binding ElementName=ACStartCheck, Path=IsChecked}" Value="False"/>
+                                                    <Condition Binding="{Binding ElementName=MaliceStartCheck, Path=IsChecked}" Value="False"/>
                                                 </MultiDataTrigger.Conditions>
                                                 <MultiDataTrigger.Setters>
                                                     <Setter Property="IsEnabled" Value="False"/>
@@ -593,9 +634,6 @@
                                     <Style TargetType="CheckBox">
                                         <Setter Property="IsEnabled" Value="False"/>
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ElementName=RandomGates, Path=IsChecked}" Value="True">
-                                                <Setter Property="IsEnabled" Value="True"/>
-                                            </DataTrigger>
                                             <DataTrigger Binding="{Binding ElementName=RandomLadder, Path=IsChecked}" Value="True">
                                                 <Setter Property="IsEnabled" Value="True"/>
                                             </DataTrigger>
@@ -604,6 +642,30 @@
                                 </CheckBox.Style>
                             </CheckBox>
                             <CheckBox Name="DFStartCheck" Content="Divine Fotress" IsChecked="{Binding Settings.DivineStart}">
+                                <CheckBox.Style>
+                                    <Style TargetType="CheckBox">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=RandomGates, Path=IsChecked}" Value="True">
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </CheckBox.Style>
+                            </CheckBox>
+                            <CheckBox Name="FrostGiantsStartCheck" Content="Shrine of the Frost Giants" IsChecked="{Binding Settings.FrostGiantsStart}">
+                                <CheckBox.Style>
+                                    <Style TargetType="CheckBox">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=RandomGates, Path=IsChecked}" Value="True">
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </CheckBox.Style>
+                            </CheckBox>
+                            <CheckBox Name="TakaStartCheck" Content="Takamagahara Shrine" IsChecked="{Binding Settings.TakaStart}">
                                 <CheckBox.Style>
                                     <Style TargetType="CheckBox">
                                         <Setter Property="IsEnabled" Value="False"/>
@@ -640,6 +702,18 @@
                                 </CheckBox.Style>
                             </CheckBox>
                             <CheckBox Name="ACStartCheck" Content="Ancient Chaos" IsChecked="{Binding Settings.AncientStart}">
+                                <CheckBox.Style>
+                                    <Style TargetType="CheckBox">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=RandomGates, Path=IsChecked}" Value="True">
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </CheckBox.Style>
+                            </CheckBox>
+                            <CheckBox Name="MaliceStartCheck" Content="Hall of Malice" IsChecked="{Binding Settings.MaliceStart}">
                                 <CheckBox.Style>
                                     <Style TargetType="CheckBox">
                                         <Setter Property="IsEnabled" Value="False"/>
@@ -739,25 +813,28 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <GroupBox Header="Seed" VerticalAlignment="Bottom" Height="80" Margin="5,0,5,5">
+        <GroupBox Header="Seed" VerticalAlignment="Bottom" Height="105" Margin="5,0,5,5">
             <StackPanel>
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" Content="Seed:"/>
-                    <TextBox Grid.Column="1" x:Name="InputTextBox" HorizontalAlignment="Stretch" Margin="0,5,5,5">
-                        <Binding Path="Settings.Seed" UpdateSourceTrigger="PropertyChanged">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Content="Seed:"/>
+                    <TextBox Grid.Row="0" x:Name="SeedTextBox" Margin="95,5,50,5">
+                        <Binding Path="Seed" UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
                                 <local:IntRangeRule Min="-2147483648" Max="2147483647"/>
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox>
-                    <Button Grid.Column="2" Width="18" Height="18" Command="{Binding RerollCommand}" BorderThickness="0" Background="Snow">
-                        <Image Source="/Icons/dice.png" />
-                    </Button>
+                    <Button Grid.Row="0" Height="20" Content="Roll" Command="{Binding RerollCommand}" Margin="0,5,5,4" RenderTransformOrigin="1.033,0.55" HorizontalAlignment="Right" Width="40" />
+
+                    <Label Grid.Row="1" Content="Settings String:"/>
+                    <TextBox Grid.Row="1" x:Name="SettingsStringTextBox" HorizontalAlignment="Stretch" Margin="95,5,90,5" Text="{Binding Path=SettingsString}"/>
+                    <Button Grid.Row="1" Height="20" Margin="0,5,50,5" Content="Get" Command="{Binding GenerateSettingsStringCommand}" HorizontalAlignment="Right" Width="35"/>
+                    <Button Grid.Row="1" Height="20" Width="40" Margin="0,5,5,5" Content="Apply" Command="{Binding ApplySettingsStringCommand}" HorizontalAlignment="Right"/>
                 </Grid>
                 <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="100" Content="Generate" Command="{Binding GenerateCommand}">
                     <Button.Style>
@@ -766,7 +843,7 @@
                             <Style.Triggers>
                                 <MultiDataTrigger>
                                     <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding Path=(Validation.HasError), ElementName=InputTextBox}" Value="False"/>
+                                        <Condition Binding="{Binding Path=(Validation.HasError), ElementName=SeedTextBox}" Value="False"/>
                                         <Condition Binding="{Binding Path=(Validation.HasError), ElementName=SkullTextBox}" Value="False"/>
                                         <Condition Binding="{Binding Path=(Validation.HasError), ElementName=CursesTextBox}" Value="False"/>
                                         <Condition Binding="{Binding Path=(Validation.HasError), ElementName=GuardiansTextBox}" Value="False"/>

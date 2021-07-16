@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -24,20 +23,24 @@ namespace LaMulana2Randomizer.ViewModels
             set => Set(ref settings, value);
         }
 
-        public MainViewModel()
-        {
-            Title = "La Mulana 2 Randomiser " + Version.version;
-            Settings = FileUtils.LoadSettings();
-            Reroll();
+        private int seed;
+        public int Seed {
+            get => seed;
+            set => Set(ref seed, value);
+        }
+
+        private string settingsString;
+        public string SettingsString {
+            get => settingsString;
+            set => Set(ref settingsString, value);
         }
 
         private ICommand rerollCommand;
         public ICommand RerollCommand {
             get {
                 if (rerollCommand == null)
-                {
                     rerollCommand = new RelayCommand((x) => true, (x) => Reroll());
-                }
+
                 return rerollCommand;
             }
         }
@@ -46,21 +49,62 @@ namespace LaMulana2Randomizer.ViewModels
         public ICommand GenerateCommand {
             get {
                 if (generateCommand == null)
-                {
                     generateCommand = new RelayCommand((x) => true, (x) => Generate());
-                }
+
                 return generateCommand;
+            }
+        }
+
+        private ICommand generateSettingsStringCommand;
+        public ICommand GenerateSettingsStringCommand {
+            get {
+                if (generateSettingsStringCommand == null)
+                    generateSettingsStringCommand = new RelayCommand((x) => true, (x) => SettingsString = Settings.GenerateSettingsString());
+
+                return generateSettingsStringCommand;
+            }
+        }
+
+        private ICommand applySettingsStringCommand;
+        public ICommand ApplySettingsStringCommand {
+            get {
+                if (applySettingsStringCommand == null)
+                    applySettingsStringCommand = new RelayCommand((x) => true, (x) => ApplySettingsString());
+
+                return applySettingsStringCommand;
+            }
+        }
+
+        public MainViewModel()
+        {
+            Title = "La Mulana 2 Randomiser " + Version.version;
+            Settings = FileUtils.LoadSettings();
+            SettingsString = Settings.GenerateSettingsString();
+            Reroll();
+        }
+
+        public void ApplySettingsString()
+        {
+            try
+            {
+                Settings.ApplySettingsString(settingsString);
+            }
+            catch(Exception ex)
+            {
+                Logger.Log($"Failed to apply settings string {ex.ToString()}");
+                MessageBox.Show("Failed to apply settings string.");
             }
         }
 
         public void Reroll()
         {
-            Settings.Seed = new Random().Next(int.MinValue, int.MaxValue);
+            Seed = new Random().Next(int.MinValue, int.MaxValue);
         }
 
         public void Generate()
         {
-            FileUtils.SaveSettings(Settings);
+            FileUtils.SaveSettings(settings);
+            SettingsString = Settings.GenerateSettingsString();
             ProgressDialogViewModel dialogViewModel = new ProgressDialogViewModel();
             ProgressDialog dialog = new ProgressDialog()
             {
@@ -78,7 +122,7 @@ namespace LaMulana2Randomizer.ViewModels
             const int MaxEntranceAttempts = 1000;
             const int MaxItemAttempts = 250;
 
-            Randomiser randomiser = new Randomiser(Settings);
+            Randomiser randomiser = new Randomiser(settings, seed);
 
             progress.Report(new ProgressInfo 
             { 
@@ -114,7 +158,7 @@ namespace LaMulana2Randomizer.ViewModels
                 if (attemptCount == MaxEntranceAttempts && !entranceCheck)
                 {
                     FileUtils.WriteSpoilerLog(randomiser);
-                    Logger.LogAndFlush($"Failed to generate beatable entrance configuration for seed {randomiser.Settings.Seed}");
+                    Logger.LogAndFlush($"Failed to generate beatable entrance configuration for seed {Seed}");
                     progress.Report(new ProgressInfo
                     {
                         Label = $"Failed to generate beatable entrance configuration, stopping after {MaxEntranceAttempts} attempts.",
@@ -155,7 +199,7 @@ namespace LaMulana2Randomizer.ViewModels
                 if (attemptCount == MaxItemAttempts && !canBeatGame)
                 {
                     FileUtils.WriteSpoilerLog(randomiser);
-                    Logger.LogAndFlush($"Failed to generate beatable item placement for seed {randomiser.Settings.Seed}");
+                    Logger.LogAndFlush($"Failed to generate beatable item placement for seed {Seed}");
                     progress.Report(new ProgressInfo
                     {
                         Label = $"Failed to generate beatable item placement, stopping after {MaxItemAttempts} attempts.",
@@ -166,6 +210,9 @@ namespace LaMulana2Randomizer.ViewModels
                 }
                 randomiser.AdjustShopPrices();
                 randomiser.FixEmptyLocations();
+
+                FileUtils.WriteSpoilerLog(randomiser);
+                FileUtils.WriteSeedFile(randomiser);
             }
             catch (RandomiserException ex)
             {
@@ -180,7 +227,7 @@ namespace LaMulana2Randomizer.ViewModels
             }
             catch (Exception ex)
             {
-                Logger.Log($"Error generating seed: {randomiser.Settings.Seed}");
+                Logger.Log($"Error generating seed: {Seed}");
                 Logger.LogAndFlush(ex.Message);
                 progress.Report(new ProgressInfo
                 {
@@ -191,29 +238,7 @@ namespace LaMulana2Randomizer.ViewModels
                 return;
             }
 
-            if (!FileUtils.WriteSpoilerLog(randomiser))
-            {
-                progress.Report(new ProgressInfo
-                {
-                    Label = "Failed to write spoiler log.",
-                    ProgressValue = 100,
-                    IsIndeterminate = false
-                });
-                return;
-            }
-
-            if (!FileUtils.WriteSeedFile(randomiser))
-            {
-                progress.Report(new ProgressInfo
-                {
-                    Label = "Failed to write seed file.",
-                    ProgressValue = 100,
-                    IsIndeterminate = false
-                });
-                return;
-            }
-
-            Logger.LogAndFlush($"Successfully generated for seed {randomiser.Settings.Seed} after {attemptCount} attempts.");
+            Logger.LogAndFlush($"Successfully generated for seed {Seed} after {attemptCount} attempts.");
             progress.Report(new ProgressInfo
             {
                 Label = "Successfully generated seed.",

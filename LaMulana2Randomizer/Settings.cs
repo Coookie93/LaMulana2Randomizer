@@ -1,5 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
+using LaMulana2Randomizer.Utils;
+using LaMulana2Randomizer.ExtensionMethods;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace LaMulana2Randomizer
 {
@@ -15,6 +20,16 @@ namespace LaMulana2Randomizer
         Random,
         AtLeastOne,
         Original
+    }
+
+    public enum EchidnaType
+    {
+        Child,
+        Teenager,
+        YoungAdult,
+        Adult,
+        Random,
+        Normal
     }
 
     public enum MantraPlacement
@@ -34,46 +49,44 @@ namespace LaMulana2Randomizer
     }
 
     public class Settings : BindableBase {
-        private int seed;
-        [JsonIgnore]
-        public int Seed 
-        {
-            get => seed;
-            set => Set(ref seed, value);
-        }
-
         //ITEMS
         private ItemPlacement randomGrail;
+        [JsonConverter(typeof(StringEnumConverter))]
         public ItemPlacement RandomGrail { 
             get=>randomGrail; 
             set =>Set(ref randomGrail, value); 
         }
 
         private ItemPlacement randomScanner;
+        [JsonConverter(typeof(StringEnumConverter))]
         public ItemPlacement RandomScanner { 
             get=>randomScanner; 
             set=>Set(ref randomScanner, value); 
         }
 
         private ItemPlacement randomCodices;
+        [JsonConverter(typeof(StringEnumConverter))]
         public ItemPlacement RandomCodices { 
             get=>randomCodices; 
             set=>Set(ref randomCodices, value); 
         }
 
         private ItemPlacement randomFDC;
+        [JsonConverter(typeof(StringEnumConverter))]
         public ItemPlacement RandomFDC {
             get => randomFDC;
             set => Set(ref randomFDC, value);
         }
 
         private ItemPlacement randomRing;
+        [JsonConverter(typeof(StringEnumConverter))]
         public ItemPlacement RandomRing {
             get => randomRing;
             set => Set(ref randomRing, value);
         }
 
         private ItemPlacement randomShellHorn;
+        [JsonConverter(typeof(StringEnumConverter))]
         public ItemPlacement RandomShellHorn {
             get => randomShellHorn;
             set => Set(ref randomShellHorn, value);
@@ -108,12 +121,14 @@ namespace LaMulana2Randomizer
         }
 
         private MantraPlacement mantraPlacement;
+        [JsonConverter(typeof(StringEnumConverter))]
         public MantraPlacement MantraPlacement {
             get => mantraPlacement;
             set => Set(ref mantraPlacement, value);
         }
 
         private ShopPlacement shopPlacement;
+        [JsonConverter(typeof(StringEnumConverter))]
         public ShopPlacement ShopPlacement {
             get => shopPlacement;
             set {
@@ -189,6 +204,12 @@ namespace LaMulana2Randomizer
             set => Set(ref crouchJump, value);
         }
 
+        private bool allAccessible;
+        public bool AllAccessible {
+            get => allAccessible;
+            set => Set(ref allAccessible, value);
+        }
+
         //LAYOUT
         private bool randomHorizontalEntrances;
         public bool RandomHorizontalEntrances {
@@ -213,8 +234,7 @@ namespace LaMulana2Randomizer
                     if (!RandomGateEntrances && !RandomHorizontalEntrances)
                         FullRandomEntrances = false;
 
-                    if(!RandomGateEntrances)
-                        IcefireStart = false;
+                    IcefireStart = false;
                 }
             }
         }
@@ -229,13 +249,13 @@ namespace LaMulana2Randomizer
                     if (!RandomLadderEntrances && !RandomHorizontalEntrances)
                         FullRandomEntrances = false;
 
-                    if (!RandomLadderEntrances)
-                        IcefireStart = false;
-
                     DivineStart = false;
+                    FrostGiantsStart = false;
+                    TakaStart = false;
                     ValhallaStart = false;
                     DarkStarStart = false;
                     AncientStart = false;
+                    MaliceStart = false;
                 }
             }
         }
@@ -339,6 +359,26 @@ namespace LaMulana2Randomizer
             }
         }
 
+        private bool frostGiantsStart;
+        public bool FrostGiantsStart {
+            get => frostGiantsStart;
+            set {
+                Set(ref frostGiantsStart, value);
+                if (!value && NoStartsSelected)
+                    VillageStart = true;
+            }
+        }
+
+        private bool takaStart;
+        public bool TakaStart {
+            get => takaStart;
+            set {
+                Set(ref takaStart, value);
+                if (!value && NoStartsSelected)
+                    VillageStart = true;
+            }
+        }
+
         private bool valhallaStart;
         public bool ValhallaStart {
             get => valhallaStart;
@@ -364,6 +404,16 @@ namespace LaMulana2Randomizer
             get => ancientStart;
             set { 
                 Set(ref ancientStart, value);
+                if (!value && NoStartsSelected)
+                    VillageStart = true;
+            }
+        }
+
+        private bool maliceStart;
+        public bool MaliceStart {
+            get => maliceStart;
+            set {
+                Set(ref maliceStart, value);
                 if (!value && NoStartsSelected)
                     VillageStart = true;
             }
@@ -497,6 +547,17 @@ namespace LaMulana2Randomizer
             }
         }
 
+
+        private bool clayDoll;
+        public bool ClayDoll {
+            get => clayDoll;
+            set {
+                Set(ref clayDoll, value);
+                if (!value && NoWeaponsSelected)
+                    Whip = true;
+            }
+        }
+
         private bool whip;
         public bool Whip {
             get => whip;
@@ -509,11 +570,15 @@ namespace LaMulana2Randomizer
             set=>Set(ref hardBosses, value); 
         }
 
-        private bool easyEchidna;
-        public bool EasyEchidna {
-            get => easyEchidna;
-            set => Set(ref easyEchidna, value);
+        private EchidnaType echidna;
+        [JsonConverter(typeof(StringEnumConverter))]
+        public EchidnaType Echidna {
+            get => echidna;
+            set => Set(ref echidna, value);
         }
+
+        [JsonIgnore]
+        public EchidnaType ChosenEchidna;
 
         //OTHER
         private bool autoScanTablets;
@@ -541,25 +606,27 @@ namespace LaMulana2Randomizer
         }
 
         private ChestColour itemChestColour;
+        [JsonConverter(typeof(StringEnumConverter))]
         public ChestColour ItemChestColour {
             get => itemChestColour;
             set => Set(ref itemChestColour, value);
         }
 
         private ChestColour weightChestColour;
+        [JsonConverter(typeof(StringEnumConverter))]
         public ChestColour WeightChestColour {
             get => weightChestColour;
             set => Set(ref weightChestColour, value);
         }
 
         private bool NoStartsSelected {
-            get => !VillageStart && !RootsStart && !AnnwfnStart && !ImmortalStart && !IcefireStart && 
-                        !DivineStart && !ValhallaStart && !DarkStarStart && !AncientStart;
+            get => !VillageStart && !RootsStart && !AnnwfnStart && !ImmortalStart && !IcefireStart && !DivineStart 
+                    && !FrostGiantsStart && !TakaStart && !ValhallaStart && !DarkStarStart && !AncientStart && !MaliceStart;
         }
 
         private bool NoWeaponsSelected {
             get => !Whip && !Knife && !Rapier && !Axe && !Katana && !Shuriken && !RollingShuriken && 
-                        !EarthSpear && !Flare && !Chakrams && !Caltrops && !Bomb && !Pistol;
+                        !EarthSpear && !Flare && !Chakrams && !Caltrops && !Bomb && !Pistol && !ClayDoll;
         }
 
         public Settings()
@@ -570,9 +637,12 @@ namespace LaMulana2Randomizer
             randomFDC = ItemPlacement.Random;
             randomRing = ItemPlacement.Random;
             randomShellHorn = ItemPlacement.Random;
-            randomResearch = false;
             mantraPlacement = MantraPlacement.Original;
             shopPlacement = ShopPlacement.Original;
+            randomResearch = false;
+            removeResearch = false;
+            removeMaps = false;
+            removeSkulls = false;
 
             fDCForBacksides = false;
             lifeForHoM = false;
@@ -584,6 +654,7 @@ namespace LaMulana2Randomizer
             requiredGuardians = 5;
             costumeClip = false;
             crouchJump = false;
+            allAccessible = true;
 
             whip = true;
             knife = false;
@@ -598,9 +669,10 @@ namespace LaMulana2Randomizer
             chakram = false;
             bomb = false;
             pistol = false;
+            clayDoll = false;
 
             hardBosses = false;
-            easyEchidna = false;
+            echidna = EchidnaType.Normal;
 
             randomHorizontalEntrances = false;
             randomLadderEntrances = false;
@@ -633,14 +705,178 @@ namespace LaMulana2Randomizer
 
         public List<bool> GetWeaponChoices()
         {
-            return new List<bool>() { Whip, Knife, Rapier, Axe, Katana, Shuriken, 
-                RollingShuriken, EarthSpear, Flare, Caltrops, Chakrams, Bomb, Pistol };
+            return new List<bool>() { Whip, Knife, Rapier, Axe, Katana, Shuriken, RollingShuriken, 
+                                        EarthSpear, Flare, Caltrops, Chakrams, Bomb, Pistol, clayDoll};
         }
 
         public List<bool> GetStartingAreaChoices()
         {
-            return new List<bool>() { VillageStart, RootsStart, AnnwfnStart, ImmortalStart, IcefireStart, 
-                                        DivineStart, ValhallaStart, DarkStarStart, AncientStart };
+            return new List<bool>() { VillageStart, RootsStart, AnnwfnStart, ImmortalStart, IcefireStart, DivineStart,
+                                       FrostGiantsStart, TakaStart, ValhallaStart, DarkStarStart, AncientStart, MaliceStart };
+        }
+
+        public string GenerateSettingsString()
+        {
+            ulong BoolToUlong(bool value) { return value ? 1ul : 0ul; }
+            void AddFlag(ulong flag, int positon, ref ulong value) { value |= flag << positon; }
+
+            ulong part1 = 0;
+            AddFlag(BoolToUlong(randomResearch), 0, ref part1);
+            AddFlag(BoolToUlong(removeResearch), 1, ref part1);
+            AddFlag(BoolToUlong(removeMaps), 2, ref part1);
+            AddFlag(BoolToUlong(removeSkulls), 3, ref part1);
+            AddFlag(BoolToUlong(fDCForBacksides), 4, ref part1);
+            AddFlag(BoolToUlong(lifeForHoM), 5, ref part1);
+            AddFlag(BoolToUlong(randomCurses), 6, ref part1);
+            AddFlag(BoolToUlong(removeITStatue), 7, ref part1);
+            AddFlag(BoolToUlong(randomDissonance), 8, ref part1);
+            AddFlag(BoolToUlong(costumeClip), 9, ref part1);
+            AddFlag(BoolToUlong(crouchJump), 10, ref part1);
+            AddFlag(BoolToUlong(whip), 11, ref part1);
+            AddFlag(BoolToUlong(knife), 12, ref part1);
+            AddFlag(BoolToUlong(rapier), 13, ref part1);
+            AddFlag(BoolToUlong(axe), 14, ref part1);
+            AddFlag(BoolToUlong(katana), 15, ref part1);
+            AddFlag(BoolToUlong(shuriken), 16, ref part1);
+            AddFlag(BoolToUlong(rollingShuriken), 17, ref part1);
+            AddFlag(BoolToUlong(earthSpear), 18, ref part1);
+            AddFlag(BoolToUlong(flare), 19, ref part1);
+            AddFlag(BoolToUlong(caltrop), 20, ref part1);
+            AddFlag(BoolToUlong(chakram), 21, ref part1);
+            AddFlag(BoolToUlong(bomb), 22, ref part1);
+            AddFlag(BoolToUlong(pistol), 23, ref part1);
+            AddFlag(BoolToUlong(clayDoll), 24, ref part1);
+            AddFlag(BoolToUlong(hardBosses), 25, ref part1);
+            AddFlag(BoolToUlong(randomHorizontalEntrances), 26, ref part1);
+            AddFlag(BoolToUlong(randomLadderEntrances), 27, ref part1);
+            AddFlag(BoolToUlong(randomGateEntrances), 28, ref part1);
+            AddFlag(BoolToUlong(fullRandomEntrances), 29, ref part1);
+            AddFlag(BoolToUlong(includeUniqueTransitions), 30, ref part1);
+            AddFlag(BoolToUlong(randomSoulGateEntrances), 31, ref part1);
+            AddFlag(BoolToUlong(includeNineGates), 32, ref part1);
+            AddFlag(BoolToUlong(randomSoulPairs), 33, ref part1);
+            AddFlag(BoolToUlong(reduceDeadEndStarts), 34, ref part1);
+            AddFlag(BoolToUlong(villageStart), 35, ref part1);
+            AddFlag(BoolToUlong(rootsStart), 36, ref part1);
+            AddFlag(BoolToUlong(annwfnStart), 37, ref part1);
+            AddFlag(BoolToUlong(immortalStart), 38, ref part1);
+            AddFlag(BoolToUlong(icefireStart), 39, ref part1);
+            AddFlag(BoolToUlong(divineStart), 40, ref part1);
+            AddFlag(BoolToUlong(valhallaStart),41, ref part1);
+            AddFlag(BoolToUlong(darkStarStart), 42, ref part1);
+            AddFlag(BoolToUlong(ancientStart), 43, ref part1);
+            AddFlag(BoolToUlong(autoScanTablets), 44, ref part1);
+            AddFlag(BoolToUlong(autoPlaceSkulls), 45, ref part1);
+            AddFlag(BoolToUlong(frostGiantsStart), 46, ref part1);
+            AddFlag(BoolToUlong(takaStart), 47, ref part1);
+            AddFlag(BoolToUlong(maliceStart), 48, ref part1);
+
+            ulong part2 = 0;
+            AddFlag((ulong)randomGrail, 0, ref part2);
+            AddFlag((ulong)randomScanner, 2, ref part2);
+            AddFlag((ulong)randomCodices, 4, ref part2);
+            AddFlag((ulong)randomFDC, 6, ref part2);
+            AddFlag((ulong)randomRing, 8, ref part2);
+            AddFlag((ulong)randomShellHorn, 10, ref part2);
+            AddFlag((ulong)mantraPlacement, 12, ref part2);
+            AddFlag((ulong)shopPlacement, 14, ref part2);
+            AddFlag((ulong)totalCursedChests, 16, ref part2);
+            AddFlag((ulong)requiredSkulls, 23, ref part2);
+            AddFlag((ulong)requiredGuardians, 27, ref part2);
+            AddFlag((ulong)echidna, 31, ref part2);
+            AddFlag((ulong)itemChestColour, 34, ref part2);
+            AddFlag((ulong)weightChestColour, 36, ref part2);
+            AddFlag((ulong)startingMoney, 38, ref part2);
+            AddFlag((ulong)startingWeights, 48, ref part2);
+
+            return $"{part1:X16}{part2:X16}";
+        }
+
+        public void ApplySettingsString(string settingString)
+        {
+            List<ulong> parts = null;
+            try
+            {
+                parts = settingString.Chunk(16).Select(x => ulong.Parse(x, System.Globalization.NumberStyles.HexNumber)).ToList();
+            }
+            catch(Exception e)
+            {
+                Logger.Log($"Failed to chunk settings string: {e.ToString()}");
+                throw new RandomiserException("Invalid settings string");
+            }
+
+            if (parts.Count < 2)
+                throw new RandomiserException("Invalid settings string");
+
+            bool UintToBool(ulong value) { return (value & 1ul) == 1; }
+            ulong GetFlag(int position, ulong value, ulong mask = 1ul) { return (value >> position) & mask; }
+
+            RandomResearch = UintToBool(GetFlag(0, parts[0]));
+            RemoveResearch = UintToBool(GetFlag(1, parts[0]));
+            RemoveMaps = UintToBool(GetFlag(2, parts[0]));
+            RemoveSkulls = UintToBool(GetFlag(3, parts[0]));
+            FDCForBacksides = UintToBool(GetFlag(4, parts[0]));
+            LifeForHoM = UintToBool(GetFlag(5, parts[0]));
+            RandomCurses = UintToBool(GetFlag(6, parts[0]));
+            RemoveITStatue = UintToBool(GetFlag(7, parts[0]));
+            RandomDissonance = UintToBool(GetFlag(8, parts[0]));
+            CostumeClip = UintToBool(GetFlag(9, parts[0]));
+            CrouchJump  = UintToBool(GetFlag(10, parts[0]));
+            Whip = UintToBool(GetFlag(11, parts[0]));
+            Knife = UintToBool(GetFlag(12, parts[0]));
+            Rapier = UintToBool(GetFlag(13, parts[0]));
+            Axe = UintToBool(GetFlag(14, parts[0]));
+            Katana = UintToBool(GetFlag(15, parts[0]));
+            Shuriken = UintToBool(GetFlag(16, parts[0]));
+            RollingShuriken = UintToBool(GetFlag(17, parts[0]));
+            EarthSpear = UintToBool(GetFlag(18, parts[0]));
+            Flare = UintToBool(GetFlag(19, parts[0]));
+            Caltrops = UintToBool(GetFlag(20, parts[0]));
+            Chakrams = UintToBool(GetFlag(21, parts[0]));
+            Bomb = UintToBool(GetFlag(22, parts[0]));
+            Pistol = UintToBool(GetFlag(23, parts[0]));
+            ClayDoll = UintToBool(GetFlag(24, parts[0]));
+            HardBosses = UintToBool(GetFlag(25, parts[0]));
+            RandomHorizontalEntrances = UintToBool(GetFlag(26, parts[0]));
+            RandomLadderEntrances = UintToBool(GetFlag(27, parts[0]));
+            RandomGateEntrances = UintToBool(GetFlag(28, parts[0]));
+            FullRandomEntrances = UintToBool(GetFlag(29, parts[0]));
+            IncludeUniqueTransitions = UintToBool(GetFlag(30, parts[0]));
+            RandomSoulGateEntrances = UintToBool(GetFlag(31, parts[0]));
+            IncludeNineGates = UintToBool(GetFlag(32, parts[0]));
+            RandomSoulPairs = UintToBool(GetFlag(33, parts[0]));
+            ReduceDeadEndStarts = UintToBool(GetFlag(34, parts[0]));
+            VillageStart = UintToBool(GetFlag(35, parts[0]));
+            RootsStart = UintToBool(GetFlag(36, parts[0]));;
+            AnnwfnStart = UintToBool(GetFlag(37, parts[0]));;
+            ImmortalStart = UintToBool(GetFlag(38, parts[0]));;
+            IcefireStart = UintToBool(GetFlag(39, parts[0]));;
+            DivineStart = UintToBool(GetFlag(40, parts[0]));;
+            ValhallaStart = UintToBool(GetFlag(41, parts[0]));;
+            DarkStarStart = UintToBool(GetFlag(42, parts[0]));;
+            AncientStart = UintToBool(GetFlag(43, parts[0]));;
+            AutoScanTablets = UintToBool(GetFlag(44, parts[0]));
+            AutoPlaceSkulls = UintToBool(GetFlag(45, parts[0]));
+            FrostGiantsStart = UintToBool(GetFlag(46, parts[0]));
+            TakaStart = UintToBool(GetFlag(47, parts[0]));
+            MaliceStart = UintToBool(GetFlag(48, parts[0]));
+
+            RandomGrail = (ItemPlacement)GetFlag(0, parts[1], 3ul);
+            RandomScanner = (ItemPlacement)GetFlag(2, parts[1], 3ul);
+            RandomCodices = (ItemPlacement)GetFlag(4, parts[1], 3ul);
+            RandomFDC = (ItemPlacement)GetFlag(6, parts[1], 3ul);
+            RandomRing = (ItemPlacement)GetFlag(8, parts[1], 3ul);
+            RandomShellHorn = (ItemPlacement)GetFlag(10, parts[1], 3ul);
+            MantraPlacement = (MantraPlacement)GetFlag(12, parts[1], 3ul);
+            ShopPlacement = (ShopPlacement)GetFlag(14, parts[1], 3ul);
+            TotalCursedChests = (int)GetFlag(16, parts[1], 127ul);
+            RequiredSkulls = (int)GetFlag(23, parts[1], 15ul);
+            RequiredGuardians = (int)GetFlag(27, parts[1], 15ul);
+            Echidna = (EchidnaType)GetFlag(31, parts[1], 7ul);
+            ItemChestColour = (ChestColour)GetFlag(34, parts[1], 7ul);
+            WeightChestColour = (ChestColour)GetFlag(36, parts[1], 7ul);
+            StartingMoney = (int)GetFlag(38, parts[1], 1023ul);
+            StartingWeights = (int)GetFlag(48, parts[1], 127ul);
         }
     }
 }

@@ -37,7 +37,7 @@ namespace LM2RandomiserMod
         private bool randomSoulGates;
         private bool randomDissonance;
         private bool autoPlaceSkull;
-        private bool easyEchidna;
+        private int echidna;
         private int requiredGuardians;
         private int itemChestColour;
         private int weightChestColour;
@@ -273,7 +273,7 @@ namespace LM2RandomiserMod
                     requiredGuardians = br.ReadInt32();
                     RequiredSkulls = br.ReadInt32();
                     RemoveITStatue = br.ReadBoolean();
-                    easyEchidna = br.ReadBoolean();
+                    echidna = br.ReadInt32();
                     AutoScanTablets = br.ReadBoolean();
                     autoPlaceSkull = br.ReadBoolean();
                     StartingMoney = br.ReadInt32();
@@ -340,13 +340,15 @@ namespace LM2RandomiserMod
                 case AreaID.IBMain: startFieldName = "field03"; break;
                 case AreaID.ITLeft: startFieldName = "field04"; break;
                 case AreaID.DFMain: startFieldName = "field05"; break;
+                case AreaID.SotFGGrail: startFieldName = "field06"; break;
+                case AreaID.TSLeft: startFieldName = "field08"; break;
                 case AreaID.ValhallaMain: startFieldName = "field10"; break;
                 case AreaID.DSLMMain: startFieldName = "field11"; break;
                 case AreaID.ACTablet: startFieldName = "field12"; break;
+                case AreaID.HoMTop: startFieldName = "field13"; break;
                 default: startFieldName = string.Empty; break;
             }
         }
-
 
         private IEnumerator InitalSetup()
         {
@@ -1117,15 +1119,15 @@ namespace LM2RandomiserMod
                 {
                     if (stepController.name.Equals("Pyramid"))
                     {
-                        //StepAnimationController.AnimationStep[] temp = new StepAnimationController.AnimationStep[3];
-                        //Array.Copy(stepController.animeSteps, 0, temp, 0, 3);
-                        //stepController.animeSteps = temp;
                         foreach (var flagBoxParent in stepController.animeSteps[2].nextFlag)
                         {
                             foreach(var flagBox in flagBoxParent.BOX)
                             {
                                 if (flagBox.seet_no1 == 3 && flagBox.flag_no1 == 95)
+                                {
+                                    flagBox.flag_no2 = 2;
                                     flagBox.comp = COMPARISON.Greater;
+                                }
                             }
                         }
                     }
@@ -1274,7 +1276,7 @@ namespace LM2RandomiserMod
                         seet_no1 = 3,
                         flag_no1 = 93,
                         seet_no2 = -1,
-                        flag_no2 = 1,
+                        flag_no2 = 2,
                         logic = LOGIC.NON,
                         comp = COMPARISON.Equal
                     }
@@ -1335,13 +1337,24 @@ namespace LM2RandomiserMod
                     }
                 }
             }
+
+            //remove corridor sealing cutscene
+            foreach (Animator animator in FindObjectsOfType<Animator>())
+            {
+                if (animator.name.Equals("6starDemo"))
+                    animator.gameObject.SetActive(false);
+            }
         }
 
         private void ChangeFlagWatchers(string fieldName) 
         {
             foreach (FlagWatcherScript flagWatcher in FindObjectsOfType<FlagWatcherScript>())
             {
-                if (flagWatcher.name.Equals("sougiOn"))
+                if (flagWatcher.name.Equals("hardWatcher3"))
+                {
+                    flagWatcher.gameObject.SetActive(false);
+                }
+                else if (flagWatcher.name.Equals("sougiOn"))
                 {
                     //Change funeral event start conditions so they can reliably be in logic
                     foreach (L2FlagBoxParent flagBoxParent in flagWatcher.CheckFlags)
@@ -1431,9 +1444,41 @@ namespace LM2RandomiserMod
                 }
                 else if (fieldName.Equals("field13"))
                 {
-                    //disable these the Flagwatchers tht change the Echidna fight if easy Echidna option is on
-                    if (easyEchidna && (flagWatcher.name.Equals("FlagWatcherTime1") || flagWatcher.name.Equals("FlagWatcherTime2") || flagWatcher.name.Equals("FlagWatcherTime3")))
+                    //change flagwatchers for echidna difficulty setting 
+                    if (echidna != 5 && (flagWatcher.name.Equals("FlagWatcherTime2") || flagWatcher.name.Equals("FlagWatcherTime3")))
                         flagWatcher.gameObject.SetActive(false);
+
+                    if (flagWatcher.name.Equals("FlagWatcherTime1"))
+                    {
+                        switch (echidna)
+                        {
+                            case 0:
+                            {
+                                flagWatcher.gameObject.SetActive(false);
+                                break;
+                            }
+                            case 1:
+                            case 2:
+                            case 3:
+                            {
+                                foreach (L2FlagBoxParent flagBoxParent in flagWatcher.CheckFlags)
+                                {
+                                    foreach (L2FlagBox flagBox in flagBoxParent.BOX)
+                                    {
+                                        if (flagBox.seet_no1 == 0 && flagBox.flag_no1 == 35)
+                                            flagBox.flag_no2 = 0;
+                                    }
+                                }
+                                foreach (L2FlagBoxEnd flagBoxEnd in flagWatcher.ActionFlags)
+                                {
+                                    flagBoxEnd.data = (short)echidna;
+                                }
+                                break;
+                            }
+                            default: 
+                                break;
+                        }
+                    }
 
                     RemoveCorridorSealers(flagWatcher);
                 }
@@ -1525,8 +1570,7 @@ namespace LM2RandomiserMod
             Vector3 tabletPosition = new Vector3();
             foreach(HolyTabretScript holyTablet in FindObjectsOfType<HolyTabretScript>())
             {
-                if (holyTablet.name.Equals("TabletH") || (holyTablet.name.Equals("TabletHB") && 
-                    (StartingArea == AreaID.ValhallaMain || StartingArea == AreaID.DSLMMain || StartingArea == AreaID.ACTablet)))
+                if (holyTablet.name.Equals("TabletH") || (holyTablet.name.Equals("TabletHB") && StartingArea >= AreaID.ValhallaMain))
                 {
                     tabletPosition = holyTablet.transform.position;
                     var hotSpring = holyTablet.gameObject.AddComponent<HotSpring>();
@@ -1571,6 +1615,14 @@ namespace LM2RandomiserMod
                 else if (field.Equals("fieldP00")) return ExitID.fP00Right;
                 else if (field.Equals("field01")) return ExitID.f01Down;
                 else if (field.Equals("field11")) return ExitID.f11Pyramid;
+            }
+            else if (anchorName.Equals("PlayerStart0"))
+            {
+                return ExitID.f03GateP0;
+            }
+            else if (anchorName.Equals("PlayerStart1"))
+            {
+                return ExitID.f03GateP1;
             }
             else if (field.Equals("field01-2") && anchorName.Equals("PlayerStart f01Right"))
             {
