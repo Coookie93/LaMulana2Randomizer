@@ -1097,8 +1097,8 @@ namespace LaMulana2Randomizer
             if (Settings.AllAccessible)
                 priorityGates.AddRange(gates.Where(x => x.IsInaccessible));
 
-            if (!Settings.CostumeClip)
-                priorityGates.Add(gates.Find(x => x.ID == ExitID.f12GateP0));
+            if (Settings.CostumeClip)
+                priorityGates.Remove(gates.Find(x => x.ID == ExitID.f12GateP0));
 
             priorityGates.RemoveAll(x => x == null);
             foreach (Exit gate in priorityGates)
@@ -1108,7 +1108,7 @@ namespace LaMulana2Randomizer
             {
                 if (priorityGates.Count > 0)
                 {
-                    gate1 = priorityGates.First();
+                    gate1 = priorityGates[random.Next(priorityGates.Count)];
                     priorityGates.Remove(gate1);
                 }
                 else
