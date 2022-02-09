@@ -129,7 +129,7 @@ namespace LM2RandomiserMod.Patches
 					playerst.setMainWeaponNum(MAINWEAPON.HWHIP, 0);
 					haveMainWeapon(MAINWEAPON.HWHIP, false);
 				}
-				else if (value == 3)
+				else if (value >= 3)
 				{
 					item_name = "Whip3";
 					value = 1;
@@ -139,7 +139,7 @@ namespace LM2RandomiserMod.Patches
 			{
 				if (value == 1) item_name = "Shield";
 				else if (value == 2) item_name = "Shield2";
-				else if (value == 3) item_name = "Shield3";
+				else if (value >= 3) item_name = "Shield3";
 				setFlagData(num2, "Shield", (short)value);
 			}
 
@@ -273,7 +273,7 @@ namespace LM2RandomiserMod.Patches
 				{
 					if (value == 1) item_name = "Shield";
 					else if (value == 2) item_name = "Shield2";
-					else if (value == 3) item_name = "Shield3";
+					else if (value >= 3) item_name = "Shield3";
 					setFlagData(num2, "Shield", (short)value);
 				}
 				else
@@ -546,6 +546,9 @@ namespace LM2RandomiserMod.Patches
 				Init_Coin_num = l2Rando.StartingMoney;
 				Init_Weight_num = l2Rando.StartingWeights;
 
+				playerst.addCoin(Init_Coin_num);
+				playerst.addWait(Init_Weight_num);
+
 				ItemInfo itemInfo = ItemDB.GetItemInfo(l2Rando.StartingWeapon);
 				if (itemInfo != null)
 				{
@@ -565,10 +568,9 @@ namespace LM2RandomiserMod.Patches
 						subWeapon = exchengeSubWeaponNameToEnum(itemInfo.BoxName);
 					}
 				}
-				else
-				{
-					mainWeapon = MAINWEAPON.LWHIP;
-				}
+
+				playerst.resetPlayerStatus(Init_PLayer_lv, 0, 999, Init_Coin_num, Init_Weight_num, 0, mainWeapon, 0, subWeapon, 0, USEITEM.NON, 0);
+				playerst.resetExp();
 
 				foreach (ItemID itemID in l2Rando.StartingItems)
 				{
@@ -579,7 +581,10 @@ namespace LM2RandomiserMod.Patches
 
 				if (l2Rando.RemoveITStatue)
 					setFlagData(8, 10, 1);
-
+				
+				setFlagData(0, 42, 1);
+				setFlagData(4, 60, 4);
+				setFlagData(4, 62, 2);
 				setFlagData(0, 12, 0);
 				setFlagData(5, 47, (short)(12 - l2Rando.RequiredSkulls));
 
@@ -656,14 +661,14 @@ namespace LM2RandomiserMod.Patches
 
 				l2Rando.StartingGame = true;
 			}
-
-			playerst.addCoin(Init_Coin_num);
-			playerst.addWait(Init_Weight_num);
-            playerst.resetPlayerStatus(Init_PLayer_lv, 0, 999, Init_Coin_num, Init_Weight_num, 0, mainWeapon, 0, subWeapon, 0, USEITEM.NON, 0);
-            playerst.resetExp();
-            setFlagData(0, 42, 1);
-			setFlagData(4, 60, 4);
-			setFlagData(4, 62, 2);
+			else
+			{
+				mainWeapon = MAINWEAPON.LWHIP;
+				playerst.addCoin(Init_Coin_num);
+				playerst.addWait(Init_Weight_num);
+				playerst.resetPlayerStatus(Init_PLayer_lv, 0, 999, Init_Coin_num, Init_Weight_num, 0, mainWeapon, 0, subWeapon, 0, USEITEM.NON, 0);
+				playerst.resetExp();
+			}
 		}
 
 		[MonoModIgnore]

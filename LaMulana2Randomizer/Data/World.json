@@ -932,17 +932,17 @@
       {
         "Name": "Research IB Tent 1",
         "LocationType": "FreeStanding",
-        "Logic": "(Has(Gale Fibula) or CanStopTime)"
+        "Logic": "(Has(Gale Fibula) or CanStopTime or Glitch(Costume Clip))"
       },
       {
         "Name": "Research IB Tent 2",
         "LocationType": "FreeStanding",
-        "Logic": "(Has(Gale Fibula) or CanStopTime) and GuardianKills(7)"
+        "Logic": "(Has(Gale Fibula) or CanStopTime or Glitch(Costume Clip)) and GuardianKills(7)"
       },
       {
         "Name": "Research IB Tent 3",
         "LocationType": "FreeStanding",
-        "Logic": "(Has(Gale Fibula) or CanStopTime) and IsDead(Heimdall)"
+        "Logic": "(Has(Gale Fibula) or CanStopTime or Glitch(Costume Clip)) and IsDead(Heimdall)"
       },
       {
         "Name": "Mulbruk Item",
@@ -2653,11 +2653,6 @@
         "ConnectionType": "Internal",
         "ConnectingAreaID": "ValhallaMain",
         "Logic": "True"
-      },
-      {
-        "ConnectionType": "Internal",
-        "ConnectingAreaID": "ValhallaTopRight",
-        "Logic": "Has(Claydoll Suit) and Has(Birth Sigil) and CanUse(Rolling Shuriken)"
       }
     ]
   },
@@ -3242,20 +3237,10 @@
         }
       },
       {
-        "Name": "Orthrus",
-        "LocationType": "Miniboss",
-        "Logic": "IsDead(HoM Right Path)",
-        "HardLogic": "IsDead(HoM Right Path)",
-        "Item": {
-          "Name": "Orthrus",
-          "IsRequired": true
-        }
-      },
-      {
         "Name": "Echidna",
         "LocationType": "Guardian",
-        "Logic": "IsDead(Orthrus) and IsDead(HoM Left Path) and IsDead(HoM Middle Path) and Has(Feather) and ((OrbCount(8) and (Has(Flail Whip) or Has(Axe))) or (OrbCount(6) and CanUse(Pistol)))",
-        "HardLogic": "IsDead(Orthrus) and IsDead(HoM Left Path) and IsDead(HoM Middle Path) and Has(Feather)",
+        "Logic": "IsDead(HoM Left Path) and IsDead(HoM Middle Path) and Has(Feather) and ((OrbCount(8) and (Has(Flail Whip) or Has(Axe))) or (OrbCount(6) and CanUse(Pistol)))",
+        "HardLogic": "IsDead(HoM Left Path) and IsDead(HoM Middle Path) and Has(Feather)",
         "Item": {
           "Name": "Echidna",
           "IsRequired": true
@@ -3483,7 +3468,7 @@
       {
         "ConnectionType": "Internal",
         "ConnectingAreaID": "EPDMain",
-        "Logic": "((Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(1))) or Has(Grapple Claw)) and Has(Feather)"
+        "Logic": "(Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(1)) or Has(Grapple Claw)) and Has(Feather)"
       },
       {
         "ConnectionType": "Internal",
@@ -3526,8 +3511,8 @@
       {
         "Name": "Ninth Child",
         "LocationType": "FinalBoss",
-        "Logic": "CanChant(Heaven) and CanChant(Earth) and CanChant(Sun) and CanChant(Moon) and CanChant(Fire) and CanChant(Sea) and CanChant(Wind) and CanChant(Mother) and CanChant(Child) and CanChant(Night) and Dissonance(6) and Has(Grapple Claw) and Has(Feather) and OrbCount(8) and (Has(Flail Whip) or Has(Axe))",
-        "HardLogic": "CanChant(Heaven) and CanChant(Earth) and CanChant(Sun) and CanChant(Moon) and CanChant(Fire) and CanChant(Sea) and CanChant(Wind) and CanChant(Mother) and CanChant(Child) and CanChant(Night) and Dissonance(6) and Has(Grapple Claw) and Has(Feather)",
+        "Logic": "CanChant(Heaven) and CanChant(Earth) and CanChant(Sun) and CanChant(Moon) and CanChant(Fire) and CanChant(Sea) and CanChant(Wind) and CanChant(Mother) and CanChant(Child) and CanChant(Night) and Dissonance(6) and Has(Grapple Claw) and Has(Feather) and Has(Flame Torc) and OrbCount(8) and (Has(Flail Whip) or Has(Axe))",
+        "HardLogic": "CanChant(Heaven) and CanChant(Earth) and CanChant(Sun) and CanChant(Moon) and CanChant(Fire) and CanChant(Sea) and CanChant(Wind) and CanChant(Mother) and CanChant(Child) and CanChant(Night) and Dissonance(6) and Has(Grapple Claw) and Has(Feather) and Has(Flame Torc) and MeleeAttack",
         "Item": {
           "Name": "Winner",
           "IsRequired": true

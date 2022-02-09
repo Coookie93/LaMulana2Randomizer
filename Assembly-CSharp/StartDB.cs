@@ -23,7 +23,7 @@ namespace LM2RandomiserMod
             { AreaID.SotFGGrail,    new StartInfo(6,  "PlayerStart f06Holy",  new Vector3( 30, -10, 0))},
             { AreaID.TSLeft,        new StartInfo(8,  "PlayerStart f08Holy",  new Vector3( 30, -10, 0))},
             { AreaID.ValhallaMain,  new StartInfo(10, "PlayerStart f10RHoly", new Vector3( 30, -10, 0))},
-            { AreaID.DSLMMain,      new StartInfo(11, "PlayerStart f11RHoly", new Vector3( 80, -10, 0))},
+            { AreaID.DSLMMain,      new StartInfo(11, "PlayerStart f11RHoly", new Vector3( 90, -10, 0))},
             { AreaID.ACTablet,      new StartInfo(12, "PlayerStart f12RHoly", new Vector3(-80, -10, 0))},
             { AreaID.HoMTop,        new StartInfo(13, "PlayerStart f13RHoly", new Vector3( 30, -10, 0))},
         };

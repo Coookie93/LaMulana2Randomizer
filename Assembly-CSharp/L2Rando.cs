@@ -1115,6 +1115,7 @@ namespace LM2RandomiserMod
             {
                 CorridorSealerFlagWatcher(new Vector3(28, 504, 0));
 
+                //make it so that the pyramid can be used in the escape
                 foreach(var stepController in FindObjectsOfType<StepAnimationController>())
                 {
                     if (stepController.name.Equals("Pyramid"))
@@ -1125,7 +1126,18 @@ namespace LM2RandomiserMod
                             {
                                 if (flagBox.seet_no1 == 3 && flagBox.flag_no1 == 95)
                                 {
-                                    flagBox.flag_no2 = 2;
+                                    flagBox.flag_no2 = 100;
+                                    flagBox.comp = COMPARISON.Greater;
+                                }
+                            }
+                        }
+                        foreach (var flagBoxParent in stepController.animeSteps[3].stateFlag)
+                        {
+                            foreach (var flagBox in flagBoxParent.BOX)
+                            {
+                                if (flagBox.seet_no1 == 3 && flagBox.flag_no1 == 95)
+                                {
+                                    flagBox.flag_no2 = 100;
                                     flagBox.comp = COMPARISON.Greater;
                                 }
                             }
@@ -1515,10 +1527,7 @@ namespace LM2RandomiserMod
             BGScrollSystem bgScroll = FindObjectOfType<BGScrollSystem>();
             if (fieldName.Equals("field02"))
             {
-                GameObject obj = new GameObject
-                {
-                    name = "PlayerStart f02Bifrost"
-                };
+                GameObject obj = new GameObject("PlayerStart f02Bifrost");
                 obj.transform.SetParent(bgScroll.transform);
                 PlayerAnchor2 playerAnchor = obj.AddComponent<PlayerAnchor2>();
                 playerAnchor.transform.position = new Vector3(-480, -460, 0);
@@ -1527,10 +1536,7 @@ namespace LM2RandomiserMod
             }
             else if (fieldName.Equals("field03"))
             {
-                GameObject obj = new GameObject
-                {
-                    name = "PlayerStart f03Up"
-                };
+                GameObject obj = new GameObject("PlayerStart f03Up");
                 obj.transform.SetParent(bgScroll.transform);
                 PlayerAnchor2 playerAnchor = obj.AddComponent<PlayerAnchor2>();
                 playerAnchor.transform.position = new Vector3(488, 756, 0);
@@ -1538,10 +1544,7 @@ namespace LM2RandomiserMod
             }
             else if (fieldName.Equals("field04"))
             {
-                GameObject obj = new GameObject
-                {
-                    name = "PlayerStart f04Up3"
-                };
+                GameObject obj = new GameObject("PlayerStart f04Up3");
                 obj.transform.SetParent(bgScroll.transform);
                 PlayerAnchor2 playerAnchor = obj.AddComponent<PlayerAnchor2>();
                 playerAnchor.transform.position = new Vector3(840, 640, 0);
@@ -1549,10 +1552,7 @@ namespace LM2RandomiserMod
             }
             else if (fieldName.Equals("field08"))
             {
-                GameObject obj = new GameObject
-                {
-                    name = "PlayerStart f08Neck"
-                };
+                GameObject obj = new GameObject("PlayerStart f08Neck");
                 obj.transform.SetParent(bgScroll.transform);
                 PlayerAnchor2 playerAnchor = obj.AddComponent<PlayerAnchor2>();
                 playerAnchor.transform.position = new Vector3(910, 170, 0);
@@ -2013,7 +2013,7 @@ namespace LM2RandomiserMod
                 "[@iff,3,35,=,1,freyja,3rd]\n[@iff,5,67,=,1,freyja,2nd]\n[@exit]\n[@anim,talk,1]\n[@p,2nd]");
 
             //Mulbruk's item
-            talkDataBase.cellData[10][42][1][0] = ChangeTalkString(LocationID.MulbrukItem,
+            talkDataBase.cellData[10][48][1][0] = ChangeTalkString(LocationID.MulbrukItem,
                 "{0}[@setf,5,101,=,2]\n[@anim,talk,1]\n[@p,3rd-2]");
 
             //Add check too Mulbruk to see if you have her item
@@ -2132,7 +2132,7 @@ namespace LM2RandomiserMod
             talkDataBase.cellData[7][14][1][0] = "[@anim,talk,1]\n[@setf,5,12,=,1]\n[@setf,3,29,=,1]\n[@setf,3,39,=,1]\n[@setf,9,38,=,1]";
 
             //Add check to see if you have beaten 4 guardians so mulbruuk can give you the item
-            talkDataBase.cellData[10][41][1][0] = "[@exit]\n[@anim,talk,1]\n[@setf,3,33,=,10]\n[@iff,3,0,&gt;,3,mulbruk2,3rd-1]\n[@p,lastC]";
+            talkDataBase.cellData[10][47][1][0] = "[@exit]\n[@anim,talk,1]\n[@setf,3,33,=,10]\n[@iff,3,0,&gt;,3,mulbruk2,3rd-1]\n[@p,lastC]";
 
             //remove giltoriyo check on his item
             talkDataBase.cellData[3][3][1][0] = "[@iff,5,62,=,7,giltoriyo,9th]\n[@iff,5,62,=,6,giltoriyo,7th]\n[@iff,5,62,=,5,giltoriyo,6th]\n" +
@@ -2277,6 +2277,5 @@ namespace LM2RandomiserMod
         }
 
         #endregion
-
     }
 }
