@@ -362,13 +362,6 @@
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
-                            <CheckBox Name="CrouchJumpCheck" IsChecked="{Binding Settings.CrouchJump}" Margin="0,2" Content="Crouch Jump">
-                                <CheckBox.ToolTip>
-                                    <ToolTip Style="{StaticResource TootltipStyle}">
-                                        <TextBlock Text="."/>
-                                    </ToolTip>
-                                </CheckBox.ToolTip>
-                            </CheckBox>
                         </StackPanel>
                     </GroupBox>
                 </Grid>

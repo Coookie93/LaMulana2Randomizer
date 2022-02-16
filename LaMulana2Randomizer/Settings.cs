@@ -198,16 +198,16 @@ namespace LaMulana2Randomizer
             set => Set(ref costumeClip, value);
         }
 
-        private bool crouchJump;
-        public bool CrouchJump {
-            get => crouchJump;
-            set => Set(ref crouchJump, value);
-        }
-
         private bool allAccessible;
         public bool AllAccessible {
             get => allAccessible;
             set => Set(ref allAccessible, value);
+        }
+
+        private bool dlcItem;
+        public bool DLCItem {
+            get => dlcItem;
+            set => Set(ref dlcItem, value);
         }
 
         //LAYOUT
@@ -653,7 +653,6 @@ namespace LaMulana2Randomizer
             randomDissonance = false;
             requiredGuardians = 5;
             costumeClip = false;
-            crouchJump = false;
             allAccessible = true;
 
             whip = true;
@@ -731,7 +730,7 @@ namespace LaMulana2Randomizer
             AddFlag(BoolToUlong(removeITStatue), 7, ref part1);
             AddFlag(BoolToUlong(randomDissonance), 8, ref part1);
             AddFlag(BoolToUlong(costumeClip), 9, ref part1);
-            AddFlag(BoolToUlong(crouchJump), 10, ref part1);
+            //AddFlag(BoolToUlong(crouchJump), 10, ref part1);
             AddFlag(BoolToUlong(whip), 11, ref part1);
             AddFlag(BoolToUlong(knife), 12, ref part1);
             AddFlag(BoolToUlong(rapier), 13, ref part1);
@@ -822,7 +821,7 @@ namespace LaMulana2Randomizer
             RemoveITStatue = UintToBool(GetFlag(7, parts[0]));
             RandomDissonance = UintToBool(GetFlag(8, parts[0]));
             CostumeClip = UintToBool(GetFlag(9, parts[0]));
-            CrouchJump  = UintToBool(GetFlag(10, parts[0]));
+            //CrouchJump  = UintToBool(GetFlag(10, parts[0]));
             Whip = UintToBool(GetFlag(11, parts[0]));
             Knife = UintToBool(GetFlag(12, parts[0]));
             Rapier = UintToBool(GetFlag(13, parts[0]));

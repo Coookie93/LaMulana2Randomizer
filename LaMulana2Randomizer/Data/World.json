@@ -736,8 +736,8 @@
       {
         "Name": "Kujata",
         "LocationType": "Guardian",
-        "Logic": "Has(Freys Ship) and (IsDead(Ixtab) or Has(Feather)) and ((CanUse(Pistol) and OrbCount(1)) or ((Has(Flail Whip) or Has(Axe) or CanUse(Bombs)) and OrbCount(2)) or ((Has(Chain Whip) or Has(Katana) or CanUse(Earth Spear) or CanUse(Chakram)) and OrbCount(3)) or ((Has(Knife) or Has(Rapier) or (CanUse(Shuriken) and Has(Ring))) and OrbCount(3) and Has(Feather)) or ((Has(Leather Whip) and CanUse(Rolling Shuriken)) and OrbCount(4)))",
-        "HardLogic": "Has(Freys Ship) and (IsDead(Ixtab) or Has(Feather))",
+        "Logic": "Has(Freys Ship) and IsDead(Ixtab) and ((CanUse(Pistol) and OrbCount(1)) or ((Has(Flail Whip) or Has(Axe) or CanUse(Bombs)) and OrbCount(2)) or ((Has(Chain Whip) or Has(Katana) or CanUse(Earth Spear) or CanUse(Chakram)) and OrbCount(3)) or ((Has(Knife) or Has(Rapier) or (CanUse(Shuriken) and Has(Ring))) and OrbCount(3) and Has(Feather)) or ((Has(Leather Whip) and CanUse(Rolling Shuriken)) and OrbCount(4)))",
+        "HardLogic": "Has(Freys Ship) and IsDead(Ixtab)",
         "Item": {
           "Name": "Kujata",
           "IsRequired": true
@@ -746,7 +746,7 @@
       {
         "Name": "Annwfn Right Shortcut",
         "LocationType": "Puzzle",
-        "Logic": "IsDead(Ixtab) or Has(Feather)",
+        "Logic": "IsDead(Ixtab)",
         "Item": {
           "Name": "Annwfn Right Shortcut",
           "IsRequired": false
@@ -757,7 +757,7 @@
       {
         "ConnectionType": "Internal",
         "ConnectingAreaID": "AnnwfnMain",
-        "Logic": "IsDead(Ixtab) or Has(Feather)"
+        "Logic": "IsDead(Ixtab)"
       },
       {
         "ConnectionType": "Internal",
@@ -807,7 +807,7 @@
       {
         "Name": "Cetus",
         "LocationType": "Miniboss",
-        "Logic": "CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Rolling Shuriken) or CanUse(Caltrops) or Has(Claydoll Suit) or (CanUse(Flare) and Has(Anchor)) or ((CanUse(Shuriken) or CanUse(Chakram)) and Has(Scalesphere)) or (Has(Axe) and (Has(Scalesphere) or (OrbCount(1) and Has(anchor)))) or (Has(Leather Whip) and Has(anchor) and (Has(ScaleSphere) or OrbCount(2))) or ((Has(Chain Whip) or Has(Katana)) and Has(anchor) and (Has(ScaleSphere) or OrbCount(1)))",
+        "Logic": "CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Rolling Shuriken) or CanUse(Caltrops) or Has(Claydoll Suit) or (CanUse(Flare) and (Has(Anchor) or Has(Fish Suit))) or ((CanUse(Shuriken) or CanUse(Chakram)) and Has(Scalesphere)) or (Has(Axe) and (Has(Scalesphere) or (OrbCount(1) and Has(anchor)))) or (Has(Leather Whip) and Has(anchor) and (Has(ScaleSphere) or OrbCount(2))) or ((Has(Chain Whip) or Has(Katana)) and Has(anchor) and (Has(ScaleSphere) or OrbCount(1)))",
         "HardLogic": "True",
         "Item": {
           "Name": "Cetus",
@@ -984,7 +984,7 @@
       {
         "ConnectionType": "Internal",
         "ConnectingAreaID": "IBDinosaur",
-        "Logic": "(Has(Anchor) or Has(Claydoll Suit)) and (IsDead(Cetus) or Has(Feather) or CanWarp)"
+        "Logic": "(Has(Anchor) or Has(Fish Suit) or Has(Claydoll Suit)) and (IsDead(Cetus) or Has(Feather) or CanWarp)"
       },
       {
         "ConnectionType": "Internal",
@@ -1539,7 +1539,7 @@
       {
         "Name": "Sacred Orb Chest IT",
         "LocationType": "Chest",
-        "Logic": "(Has(Claydoll Suit) or (Has(Anchor) and (OrbCount(1) or Has(Scalesphere)))) and HorizontalAttack"
+        "Logic": "(Has(Claydoll Suit) or ((Has(Anchor) or Has(Fish Suit)) and (OrbCount(1) or Has(Scalesphere)))) and HorizontalAttack"
       },
       {
         "Name": "Ratatoskr 3",
@@ -1580,7 +1580,7 @@
         "ID": "f04GateN5",
         "ConnectionType": "SoulGate",
         "ConnectingAreaID": "HL",
-        "Logic": "(Has(Anchor) or Has(Claydoll Suit)) and IsDead(Ratatoskr 3) and (GuardianKills(3) or Setting(Random Soul Gates))"
+        "Logic": "(Has(Anchor) or Has(Fish Suit) or Has(Claydoll Suit)) and IsDead(Ratatoskr 3) and (GuardianKills(3) or Setting(Random Soul Gates))"
       }
     ]
   },
@@ -1659,7 +1659,7 @@
       {
         "Name": "Frey Ship",
         "LocationType": "FreeStanding",
-        "Logic": "Has(Hand Scanner) and CanReach(Annwfn Right) and (IsDead(Ixtab) or Has(Feather)) and (Has(Origin Sigil) or Has(Feather) or Has(Grapple Claw))"
+        "Logic": "Has(Hand Scanner) and CanReach(Annwfn Right) and IsDead(Ixtab) and (Has(Origin Sigil) or Has(Feather) or Has(Grapple Claw))"
       },
       {
         "Name": "Heaven Mantra Mural",
@@ -2061,7 +2061,7 @@
       {
         "Name": "Anchor Chest",
         "LocationType": "Chest",
-        "Logic": "HorizontalAttack and CanReach(DF Main) and Has(Gloves) and CanReach(Annwfn Right) and (IsDead(Ixtab) or Has(Feather)) and Has(Hand Scanner)"
+        "Logic": "HorizontalAttack and CanReach(DF Main) and Has(Gloves) and CanReach(Annwfn Right) and IsDead(Ixtab) and Has(Hand Scanner)"
       },
       {
         "Name": "Crystal Skull Chest GotD",
@@ -2221,7 +2221,7 @@
       {
         "ConnectionType": "Internal",
         "ConnectingAreaID": "TSEntrance",
-        "Logic": "Has(Feather) and (Has(Leather Whip) or Has(Axe) or Has(Earth Spear) or (Has(Katana) and Has(Vajra)) or CanUse(Flare))"
+        "Logic": "Has(Leather Whip) or Has(Axe) or Has(Earth Spear) or (Has(Katana) and Has(Vajra)) or (CanUse(Flare) and HorizontalAttack)"
       }
     ]
   },
@@ -2436,7 +2436,7 @@
       {
         "Name": "Axe Puzzle Reward",
         "LocationType": "FreeStanding",
-        "Logic": "(Has(Feather) or Has(Grapple Claw)) and (Has(Gloves) or Glitch(Crouch Jump)) and IsDead(Glasya Labolas)"
+        "Logic": "(Has(Feather) or Has(Grapple Claw)) and Has(Gloves) and IsDead(Glasya Labolas)"
       },
       {
         "Name": "Mobile Super X3 Item",
@@ -2535,7 +2535,7 @@
       {
         "Name": "Crystal Skull Chest Valhalla",
         "LocationType": "Chest",
-        "Logic": "(Has(Anchor) or Has(Claydoll Suit)) and Has(Death Sigil) and CanChant(Fire) and CanChant(Earth) and IsDead(Jalandhara) and HorizontalAttack"
+        "Logic": "(Has(Anchor) or Has(Fish Suit) or Has(Claydoll Suit)) and Has(Death Sigil) and CanChant(Fire) and CanChant(Earth) and IsDead(Jalandhara) and HorizontalAttack"
       },
       {
         "Name": "Caltrop Puzzle Reward",
@@ -3322,7 +3322,7 @@
       {
         "ConnectionType": "PrisonGate",
         "ConnectingAreaID": "EPG",
-        "Logic": "Has(Grapple Claw) and (Has(Gale Fibula) or CanStopTime) and (Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(1) and Has(Anchor)))"
+        "Logic": "Has(Grapple Claw) and (Has(Gale Fibula) or CanStopTime) and (Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(1) and (Has(Anchor) or Has(Fish Suit))))"
       },
       {
         "ConnectionType": "PrisonExit",

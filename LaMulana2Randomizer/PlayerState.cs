@@ -36,6 +36,9 @@ namespace LaMulana2Randomizer
             CollectItem(randomiser.StartingWeapon);
             foreach (Item item in randomiser.StartingItems)
                 CollectItem(item);
+
+            if (randomiser.Settings.DLCItem)
+                CollectItem(new Item("Fish Suit", ItemID.None, false));
         }
 
         public static PlayerState GetStateWithItems(Randomiser randomiser, ItemPool currentItems)
@@ -516,7 +519,6 @@ namespace LaMulana2Randomizer
             switch (glitchName)
             {
                 case "Costume Clip": return randomiser.Settings.CostumeClip;
-                case "Crouch Jump" : return randomiser.Settings.CrouchJump;
                 default: return false;
             }
         }
