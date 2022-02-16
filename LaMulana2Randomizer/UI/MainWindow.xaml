@@ -266,6 +266,13 @@
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
+                            <CheckBox Name="DLCItemLogocCheck" IsChecked="{Binding Settings.DLCItem}" Margin="0,2" Content="DLC Reward Item Logic">
+                                <CheckBox.ToolTip>
+                                    <ToolTip Style="{StaticResource TootltipStyle}">
+                                        <TextBlock Text="DLC reward item can be required in logic."/>
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
                             <CheckBox Name="RandomCurseCheck" IsChecked="{Binding Settings.RandomCurses}" Margin="0,2" Content="Randomise Cursed Chests">
                                 <CheckBox.ToolTip>
                                     <ToolTip Style="{StaticResource TootltipStyle}">
