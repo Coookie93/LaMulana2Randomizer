@@ -2645,7 +2645,7 @@
       {
         "Name": "Flail Whip Puzzle Reward",
         "LocationType": "FreeStanding",
-        "Logic": "(Has(Feather) or Has(Grapple Claw)) and Has(Origin Sigil) and Has(Birth Sigil) and Has(Life Sigil) and Has(Death Sigil) and Has(Claydoll Suit) and ((CanUse(Rolling Shuriken) and Has(Birth Sigil)) or CanReach(Valhalla Top Right))"
+        "Logic": "(Has(Feather) or Has(Grapple Claw)) and Has(Origin Sigil) and Has(Birth Sigil) and Has(Life Sigil) and Has(Death Sigil) and Has(Claydoll Suit) and CanReach(Valhalla Top Right)"
       }
     ],
     "Exits": [
