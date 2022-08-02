@@ -92,6 +92,13 @@ namespace LaMulana2Randomizer
             set => Set(ref randomShellHorn, value);
         }
 
+        private ItemPlacement randomMapping;
+        [JsonConverter(typeof(StringEnumConverter))]
+        public ItemPlacement RandomMapping {
+            get => randomMapping;
+            set => Set(ref randomMapping, value);
+        }
+
         private bool randomResearch;
         public bool RandomResearch {
             get => randomResearch;
@@ -785,9 +792,10 @@ namespace LaMulana2Randomizer
             AddFlag((ulong)requiredGuardians, 27, ref part2);
             AddFlag((ulong)echidna, 31, ref part2);
             AddFlag((ulong)itemChestColour, 34, ref part2);
-            AddFlag((ulong)weightChestColour, 36, ref part2);
-            AddFlag((ulong)startingMoney, 38, ref part2);
-            AddFlag((ulong)startingWeights, 48, ref part2);
+            AddFlag((ulong)weightChestColour, 37, ref part2);
+            AddFlag((ulong)startingMoney, 40, ref part2);
+            AddFlag((ulong)startingWeights, 50, ref part2);
+            AddFlag((ulong)randomMapping, 57, ref part2);
 
             return $"{part1:X16}{part2:X16}";
         }
@@ -808,8 +816,8 @@ namespace LaMulana2Randomizer
             if (parts.Count < 2)
                 throw new RandomiserException("Invalid settings string");
 
-            bool UintToBool(ulong value) { return (value & 1ul) == 1; }
-            ulong GetFlag(int position, ulong value, ulong mask = 1ul) { return (value >> position) & mask; }
+            bool UintToBool(int value) { return (value & 1) == 1; }
+            int GetFlag(int position, ulong value, ulong mask = 1ul) { return (int)((value >> position) & mask); }
 
             RandomResearch = UintToBool(GetFlag(0, parts[0]));
             RemoveResearch = UintToBool(GetFlag(1, parts[0]));
@@ -870,14 +878,15 @@ namespace LaMulana2Randomizer
             RandomShellHorn = (ItemPlacement)GetFlag(10, parts[1], 3ul);
             MantraPlacement = (MantraPlacement)GetFlag(12, parts[1], 3ul);
             ShopPlacement = (ShopPlacement)GetFlag(14, parts[1], 3ul);
-            TotalCursedChests = (int)GetFlag(16, parts[1], 127ul);
-            RequiredSkulls = (int)GetFlag(23, parts[1], 15ul);
-            RequiredGuardians = (int)GetFlag(27, parts[1], 15ul);
+            TotalCursedChests = GetFlag(16, parts[1], 127ul);
+            RequiredSkulls = GetFlag(23, parts[1], 15ul);
+            RequiredGuardians = GetFlag(27, parts[1], 15ul);
             Echidna = (EchidnaType)GetFlag(31, parts[1], 7ul);
             ItemChestColour = (ChestColour)GetFlag(34, parts[1], 7ul);
-            WeightChestColour = (ChestColour)GetFlag(36, parts[1], 7ul);
-            StartingMoney = (int)GetFlag(38, parts[1], 1023ul);
-            StartingWeights = (int)GetFlag(48, parts[1], 127ul);
+            WeightChestColour = (ChestColour)GetFlag(37, parts[1], 7ul);
+            StartingMoney = GetFlag(40, parts[1], 1023ul);
+            StartingWeights = GetFlag(50, parts[1], 127ul);
+            RandomMapping = (ItemPlacement)GetFlag(57, parts[1], 3ul);
         }
     }
 }

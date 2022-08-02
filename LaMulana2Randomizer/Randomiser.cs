@@ -727,6 +727,13 @@ namespace LaMulana2Randomizer
             if (Settings.RandomFDC == ItemPlacement.Starting) StartingItems.Add(Items.GetAndRemove(ItemID.FutureDevelopmentCompany));
             if (Settings.RandomRing == ItemPlacement.Starting) StartingItems.Add(Items.GetAndRemove(ItemID.Ring));
             if (Settings.RandomShellHorn == ItemPlacement.Starting) StartingItems.Add(Items.GetAndRemove(ItemID.ShellHorn));
+            if (Settings.RandomMapping == ItemPlacement.Starting)
+            {
+                StartingItems.Add(Items.GetAndRemove(ItemID.YagooMapReader));
+                StartingItems.Add(Items.GetAndRemove(ItemID.YagooMapStreet));
+                for(ItemID id = ItemID.Map1; id <= ItemID.Map16; id++)
+                    StartingItems.Add(Items.GetAndRemove(id));
+            }
         }
 
         private void PlaceAvailableAtStart(ItemPool items)

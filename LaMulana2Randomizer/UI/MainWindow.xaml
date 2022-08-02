@@ -62,7 +62,8 @@
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
-                                </Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
                                 <StackPanel Grid.Row="0" Grid.Column="0" Margin="2,2,5,2">
                                     <TextBlock Text="Holy Grail" FontSize="16"/>
                                     <RadioButton Content="Starting Item" IsChecked="{Binding Settings.RandomGrail, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ItemPlacement.Starting}}"/>
@@ -129,7 +130,12 @@
                                     <RadioButton Content="Available at start" IsChecked="{Binding Settings.RandomShellHorn, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ItemPlacement.AvailableAtStart}}"/>
                                     <RadioButton Content="Random" IsChecked="{Binding Settings.RandomShellHorn, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ItemPlacement.Random}}"/>
                                 </StackPanel>
-                                <Grid.ToolTip>
+                            <StackPanel Grid.Row="3" Grid.Column="0" Margin="2,2,5,2">
+                                <TextBlock Text="Maps &amp; Software" FontSize="16"/>
+                                <RadioButton Content="Starting Item" IsChecked="{Binding Settings.RandomMapping, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ItemPlacement.Starting}}"/>
+                                <RadioButton Content="Random" IsChecked="{Binding Settings.RandomMapping, Converter={StaticResource enumBooleanConverter}, ConverterParameter={x:Static main:ItemPlacement.Random}}"/>
+                            </StackPanel>
+                            <Grid.ToolTip>
                                     <ToolTip Style="{StaticResource TootltipStyle}">
                                         <StackPanel>
                                             <TextBlock Text="Starting Item"  FontWeight="Bold"/>
