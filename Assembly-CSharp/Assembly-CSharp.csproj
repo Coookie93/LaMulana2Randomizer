@@ -136,6 +136,7 @@
     <Compile Include="ItemDB.cs" />
     <Compile Include="ItemTracker.cs" />
     <Compile Include="L2Rando.cs" />
+    <Compile Include="Patches\CostumeScript.cs" />
     <Compile Include="Patches\SeihaiMenu.cs" />
     <Compile Include="Patches\TrapFloor.cs" />
     <Compile Include="Patches\L2SystemCore.cs" />
