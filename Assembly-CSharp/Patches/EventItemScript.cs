@@ -6,15 +6,9 @@ namespace LM2RandomiserMod.Patches
     [MonoModPatch("global::EventItemScript")]
     public class patched_EventItemScript : global::EventItemScript
     {
-#if ONEPOINTZERO
-        protected NewPlayer pl;
-#endif
         [MonoModReplace]
         protected override void itemGetAction()
         {
-#if ONEPOINTZERO
-            pl = sys.getPlayer();
-#endif
             int slotNo = getL2Core().seManager.playSE(null, 39);
             getL2Core().seManager.releaseGameObjectFromPlayer(slotNo);
             pl.setActionOder(PLAYERACTIONODER.getitem);
@@ -45,7 +39,6 @@ namespace LM2RandomiserMod.Patches
             else
             {
                 pl.setGetItem(ref itemLabel);
-                //Mantras don't have an icon so just use the mantra software icon
                 if (itemLabel.Contains("Mantra"))
                     pl.setGetItemIcon(L2SystemCore.getItemData("Mantra"));
                 else if(itemLabel.Contains("Research"))
