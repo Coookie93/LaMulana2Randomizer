@@ -78,7 +78,7 @@ namespace LaMulana2Randomizer
             PlaceOriginalDissonance();
             RemoveItems();
 
-            FixLogic();
+            FixNibiruLogic();
             ChooseEchidnaType();
         }
 
@@ -784,7 +784,7 @@ namespace LaMulana2Randomizer
             }
         }
 
-        private void FixLogic()
+        private void FixNibiruLogic()
         {
             //fix some logic based on settings chosen
             Location nibiruDiss = GetLocation(LocationID.DissonanceNibiru);
