@@ -98,6 +98,11 @@ namespace LM2RandomiserMod.Patches
 					USEITEM item = exchengeUseItemNameToEnum("Beherit");
 					haveUsesItem(item, true);
 					addUseItemNum(item, 1);
+
+					short data = 0;
+					getFlag(2, 3, ref data);
+					setFlagData(num2, 3, (short)(data + 1));
+
 					return;
 				}
 				else if (item_name.Contains("Mantra") && !item_name.Equals("Mantra"))
