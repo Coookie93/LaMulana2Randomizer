@@ -225,7 +225,7 @@ namespace LM2RandomiserMod
             }
             else if (itemID >= ItemID.ProgressiveBeherit1 && itemID <= ItemID.ProgressiveBeherit7)
             {
-                getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 2, flag_no1 = 3, data = 1 });
+                //getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.ADD, seet_no1 = 2, flag_no1 = 3, data = 1 });
                 getFlags.Add(new L2FlagBoxEnd { calcu = CALCU.EQR, seet_no1 = itemInfo.ItemSheet, flag_no1 = itemInfo.ItemFlag, data = 1 });
             }
             else

@@ -613,7 +613,7 @@
         "Name": "Heimdall",
         "LocationType": "Miniboss",
         "Logic": "CanSealCorridor and CanChant(Night) and OrbCount(7) and Has(Silver Shield) and (Has(Flail Whip) or Has(Katana) or Has(Axe))",
-        "HardLogic": "CanSealCorridor",
+        "HardLogic": "CanSealCorridor and CanChant(Night)",
         "Item": {
           "Name": "Heimdall",
           "IsRequired": true
@@ -2929,7 +2929,7 @@
         "Name": "Ki sikil lil la ke",
         "LocationType": "Miniboss",
         "Logic": "OrbCount(2) and (Has(Leather Whip) or Has(Axe) or Has(Katana) or Has(Claydoll Suit) or CanUse(Shuriken) or CanUse(Earth Spear) or CanUse(Bomb) or CanUse(Chakram) or CanUse(Pistol))",
-        "HardLogic": "True",
+        "HardLogic": "Has(Leather Whip) or (Has(Knife) and Has(Feather)) or Has(Rapier) or Has(Axe) or Has(Katana) or Has(Claydoll Suit) or CanUse(Shuriken) or CanUse(Earth Spear) or CanUse(Rolling Shuriken) or CanUse(Caltrops) or CanUse(Bomb) or CanUse(Chakram) or CanUse(Pistol)",
         "Item": {
           "Name": "Ki sikil lil la ke",
           "IsRequired": true
@@ -3030,7 +3030,7 @@
         "Name": "Anu",
         "LocationType": "Guardian",
         "Logic": "Has(Gloves) and IsDead(Ki sikil lil la ke) and (((Has(Chain Whip) or Has(Rapier) or Has(Axe) or CanUse(Earth Spear) or (CanUse(Shuriken) and Has(Ring))) and OrbCount(5)) or ((Has(Flail Whip) or (CanUse(Flare) and (Has(Feather) or Has(Ring)))) and OrbCount(4)) or (CanUse(Pistol) and OrbCount(3)))",
-        "HardLogic": "Has(Gloves) and IsDead(Ki sikil lil la ke)",
+        "HardLogic": "Has(Gloves) and IsDead(Ki sikil lil la ke) and (Has(Leather Whip) or Has(Knife) or Has(Rapier) or Has(Katana) or Has(Axe) or CanUse(Shuriken) or CanUse(Rolling Shuriken) or CanUse(Caltrops) or CanUse(Flare) or CanUse(Earth Spear) or CanUse(Bomb) or Has(Claydoll Suit))",
         "Item": {
           "Name": "Anu",
           "IsRequired": true
@@ -3322,7 +3322,7 @@
       {
         "ConnectionType": "PrisonGate",
         "ConnectingAreaID": "EPG",
-        "Logic": "Has(Grapple Claw) and (Has(Gale Fibula) or CanStopTime) and (Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(1) and (Has(Anchor) or Has(Fish Suit))))"
+        "Logic": "Has(Grapple Claw) and (Has(Gale Fibula) or CanStopTime) and (Has(Claydoll Suit) or (Has(Ice Cloak) and OrbCount(1) and Has(Anchor)))"
       },
       {
         "ConnectionType": "PrisonExit",
