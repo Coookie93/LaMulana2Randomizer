@@ -1127,12 +1127,12 @@
       {
         "ConnectionType": "Internal",
         "ConnectingAreaID": "IBBottom",
-        "Logic": "True"
+        "Logic": "CanWarp or Has(Birth Sigil)"
       },
       {
         "ConnectionType": "Internal",
         "ConnectingAreaID": "IBLeftSG",
-        "Logic": "True"
+        "Logic": "CanWarp or Has(Birth Sigil)"
       }
     ]
   },
