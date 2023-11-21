@@ -3051,7 +3051,7 @@
       {
         "ConnectionType": "Internal",
         "ConnectingAreaID": "ACBlood",
-        "Logic": "Has(Bomb)"
+        "Logic": "CanUse(Bomb)"
       }
     ]
   },
