@@ -2952,7 +2952,7 @@
         "ID": "f12GateP0",
         "ConnectionType": "Gate",
         "ConnectingAreaID": "TSBottom",
-        "Logic": "False or Setting(Random Gates)"
+        "Logic": "True"
       }
     ]
   },
@@ -3051,7 +3051,7 @@
       {
         "ConnectionType": "Internal",
         "ConnectingAreaID": "ACBlood",
-        "Logic": "Has(Winner) and Has(Bomb)"
+        "Logic": "CanUse(Bomb)"
       }
     ]
   },
